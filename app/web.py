@@ -10,7 +10,6 @@ import sys
 import traceback
 from email import policy
 from email.parser import BytesParser
-from http import cookies as http_cookies
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlsplit
@@ -30,6 +29,25 @@ class HTTPError(Exception):
         self.detail = detail
 
 
+def parse_cookies(header: str) -> dict:
+    """Forgiving Cookie-header parser.
+
+    Browsers send every cookie for the host, and on localhost that includes cookies from other apps on
+    other ports. http.cookies.SimpleCookie stops at the first cookie it dislikes (JSON, spaces,
+    brackets), which silently dropped our login cookie. Split on ';' and keep whatever parses.
+    """
+    out: dict[str, str] = {}
+    for part in header.split(";"):
+        name, sep, value = part.strip().partition("=")
+        if not sep or not name:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] == '"':
+            value = value[1:-1]
+        out.setdefault(name.strip(), value)  # first one wins, like browsers' most-specific-path order
+    return out
+
+
 class UploadedFile:
     def __init__(self, filename: str, content_type: str, data: bytes):
         self.filename = filename
@@ -46,13 +64,18 @@ class Request:
         self.headers = headers
         self.body = body
         self.client_ip = client_ip
-        jar = http_cookies.SimpleCookie()
-        try:
-            jar.load(headers.get("Cookie") or "")
-        except http_cookies.CookieError:
-            pass
-        self.cookies = {k: m.value for k, m in jar.items()}
+        self.cookie_header = headers.get("Cookie") or ""
+        self.cookies = parse_cookies(self.cookie_header)
         self._form = None
+
+    def cookie_all(self, name: str) -> list[str]:
+        """Every value sent for this cookie name (several apps on localhost may share a name)."""
+        vals = []
+        for part in self.cookie_header.split(";"):
+            n, sep, v = part.strip().partition("=")
+            if sep and n.strip() == name:
+                vals.append(v.strip().strip('"'))
+        return vals
 
     def header(self, name: str, default: str | None = None) -> str | None:
         return self.headers.get(name, default)

@@ -61,7 +61,7 @@ def read_owner_cookie(value: str | None) -> int | None:
 
 def require_owner(request: Request) -> dict:
     """The logged-in owner, or 401."""
-    owner_id = read_owner_cookie(request.cookies.get(COOKIE_NAME))
+    owner_id = next((oid for oid in map(read_owner_cookie, request.cookie_all(COOKIE_NAME)) if oid is not None), None)
     if owner_id is None:
         raise HTTPError(401, "Please log in")
     with db() as conn:
