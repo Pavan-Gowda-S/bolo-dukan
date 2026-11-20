@@ -1,0 +1,13 @@
+.auth-wrap { min-height: 100dvh; display: grid; place-items: center; align-content: center; gap: 22px; padding: 32px 16px; }
+.auth-brand { font-size: 1.4rem; }
+.auth-card { width: min(440px, 100%); padding: clamp(24px, 5vw, 38px); transition: transform .5s var(--ease), opacity .35s; }
+.auth-card.leave { opacity: 0; transform: perspective(900px) rotateX(10deg) translateY(-20px) scale(.96) !important; }
+.auth-card.shake { animation: shake .45s; }
+@keyframes shake { 20%, 60% { translate: -8px 0; } 40%, 80% { translate: 8px 0; } }
+.or { display: flex; align-items: center; gap: 12px; color: var(--faint); font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin: 4px 0; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+.g-wrap { display: flex; justify-content: center; min-height: 44px; }
+.g-off { gap: 10px; opacity: .55; cursor: not-allowed; }
+.steps-strip { display: flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 700; color: var(--faint); }
+.steps-strip span.on { color: var(--marigold); }
+.steps-strip i { width: 26px; height: 2px; background: var(--line-2); border-radius: 2px; }

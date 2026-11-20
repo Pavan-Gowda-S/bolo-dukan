@@ -1,0 +1,3 @@
+# Pure-Python only, so Windows Smart App Control never blocks anything.
+# The web server, database and HTTP calls all use Python's standard library.
+qrcode>=7.4

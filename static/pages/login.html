@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Owner Login</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/auth.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app auth-wrap">
+  <a class="brand auth-brand" href="/"><span class="brand-mark" id="mark"></span><span>Bolo Dukaan</span></a>
+  <form class="glass auth-card reveal" data-tilt="4" id="form" novalidate>
+    <div class="eyebrow">Owner & cashier</div>
+    <h2 style="margin:8px 0 22px">Welcome <span class="hot-text serif-i">back</span></h2>
+    <div class="stack">
+      <div id="gbox"></div>
+      <div class="or">or with email</div>
+      <label class="field"><span>Email</span><input class="input" type="email" name="email" autocomplete="email" required></label>
+      <label class="field"><span>Password</span><input class="input" type="password" name="password" autocomplete="current-password" required></label>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn lg block" id="go">Log in →</button>
+      <p class="center small muted" style="margin:4px 0 0">New here? <a href="/owner/signup">Create a restaurant</a></p>
+    </div>
+  </form>
+</div>
+<script>
+document.getElementById("mark").innerHTML = BD.logoSvg;
+const form = document.getElementById("form"), err = document.getElementById("err"), go = document.getElementById("go");
+BD.googleButton(document.getElementById("gbox"), "signin", null, msg => { err.textContent = msg; });
+form.addEventListener("submit", async e => {
+  e.preventDefault(); err.textContent = "";
+  const d = Object.fromEntries(new FormData(form));
+  BD.busy(go, true, "Checking…");
+  try {
+    const r = await BD.api("/api/owner/login", { body: d });
+    const next = BD.qs("next");
+    form.classList.add("leave");
+    setTimeout(() => location.href = (next && next.startsWith("/") && !next.startsWith("//")) ? next : r.next, 350);
+  } catch (x) { err.textContent = x.message; BD.busy(go, false); form.classList.add("shake"); setTimeout(() => form.classList.remove("shake"), 500); }
+});
+</script>
+</body>
+</html>

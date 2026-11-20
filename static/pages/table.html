@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Order at Your Table</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/table.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app guest">
+
+  <!-- loading -->
+  <section class="screen center-screen" id="sLoading"><div class="loader-orb"><i></i><i></i><i></i><b></b></div></section>
+
+  <!-- error -->
+  <section class="screen center-screen hidden" id="sError"><div class="narrow center"><div style="font-size:3rem">🧾</div><h2 style="margin:12px 0 8px">Hmm.</h2><p class="muted" id="errText"></p><button class="btn" onclick="location.reload()">Try again</button></div></section>
+
+  <!-- welcome -->
+  <section class="screen hidden" id="sWelcome">
+    <div class="narrow welcome">
+      <div class="eyebrow center reveal" id="wRest"></div>
+      <div class="plate3d reveal" style="--d:.1s" aria-hidden="true"><div class="plate"><span>Table</span><b id="wTable"></b></div><div class="plate-shadow"></div></div>
+      <h1 class="center reveal" style="--d:.18s">Hungry? <span class="hot-text serif-i">Just say it.</span></h1>
+      <p class="center muted reveal" style="--d:.24s;margin:12px auto 26px;max-width:30ch">Order from your phone: tap the menu or talk to it. Pay by UPI when you're done.</p>
+      <div class="glass wifi reveal hidden" id="wifiCard" style="--d:.3s">
+        <div class="row" style="gap:12px"><span class="wifi-ic">📶</span><div class="grow"><div class="small muted">Free Wi-Fi</div><strong id="wifiName"></strong><div class="mono" id="wifiPass"></div></div><button class="btn-ghost sm" id="wifiCopy">Copy password</button></div>
+      </div>
+      <div class="reveal" style="--d:.36s" id="startBox">
+        <button class="btn lg block" id="startBtn">Start ordering →</button>
+        <button class="btn-ghost block" id="haveCode" style="margin-top:10px">My friends already started · enter code</button>
+      </div>
+      <button class="btn-ghost open-games reveal" style="--d:.42s;justify-self:center;margin-top:14px">🎮 Dosa Flip · Chai Catch · Spice Match</button>
+      <div class="glass card reveal hidden" id="joinBox" style="--d:.36s">
+        <h3 style="margin-bottom:4px">Enter your table's code</h3>
+        <p class="muted small" id="joinHint" style="margin:0 0 16px">Ask whoever started the order for the 4-digit code on their screen.</p>
+        <div class="code-boxes" id="codeBoxes">
+          <input inputmode="numeric" maxlength="1" aria-label="Digit 1"><input inputmode="numeric" maxlength="1" aria-label="Digit 2"><input inputmode="numeric" maxlength="1" aria-label="Digit 3"><input inputmode="numeric" maxlength="1" aria-label="Digit 4">
+        </div>
+        <div class="err center" id="joinErr" role="alert"></div>
+        <button class="btn block" id="joinBtn">Join table</button>
+        <button class="btn-ghost block hidden" id="backStart" style="margin-top:10px">← Start a new order instead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- waiting for approval -->
+  <section class="screen center-screen hidden" id="sWaiting">
+    <div class="narrow center">
+      <div class="loader-orb"><i></i><i></i><i></i><b></b></div>
+      <h2 style="margin:28px 0 10px">Saying hello to the cashier…</h2>
+      <p class="muted">Table <b id="waitTable"></b> will open in a moment, as soon as the cashier taps approve.</p>
+      <p class="faint small" style="margin-top:22px">This stops prank orders from outside the restaurant.</p>
+      <button class="btn cool open-games play-link">🎮 Play a game while you wait</button>
+    </div>
+  </section>
+
+  <!-- rejected -->
+  <section class="screen center-screen hidden" id="sRejected">
+    <div class="narrow center"><div style="font-size:3rem">🙏</div><h2 style="margin:12px 0 8px">The cashier couldn't open this table</h2><p class="muted">Please ask a staff member for help.</p><button class="btn" id="retryStart">Try again</button></div>
+  </section>
+
+  <!-- closed / thanks -->
+  <section class="screen center-screen hidden" id="sClosed">
+    <div class="narrow center"><div class="thanks-orb">✓</div><h2 style="margin:18px 0 8px" id="closedTitle">Thank you!</h2><p class="muted" id="closedText">Your table is closed. See you again soon.</p><a class="btn-ghost" id="closedAgain" href="">Start a new order</a></div>
+  </section>
+
+  <!-- main ordering screen -->
+  <section class="screen hidden" id="sMain">
+    <header class="g-head">
+      <div class="container g-head-in">
+        <div class="grow" style="min-width:0"><div class="g-rest" id="mRest"></div><div class="g-table">Table <b id="mTable"></b> <span class="g-guests" id="mGuests"></span></div></div>
+        <button class="code-chip" id="codeChip" title="Share this code with friends at your table"><span>CODE</span><b id="mCode">····</b></button>
+        <button class="btn-ghost icon-btn open-games" aria-label="Games" title="Play while you wait">🎮</button>
+        <button class="btn-ghost icon-btn" id="waiterBtn" aria-label="Call waiter" title="Call waiter">🔔</button>
+      </div>
+      <nav class="container g-tabs" role="tablist">
+        <button class="active" data-tab="menu" role="tab">Menu</button>
+        <button data-tab="orders" role="tab">My orders <span class="badge-n hidden" id="ordersN"></span></button>
+        <button data-tab="bill" role="tab">Bill <span class="badge-n hidden" id="billN"></span></button>
+      </nav>
+    </header>
+
+    <div class="container g-body">
+      <div id="tabMenu">
+        <div class="search-row"><input class="input" id="search" type="search" placeholder="Search dosa, coffee, ಕಾಫಿ…" autocomplete="off"></div>
+        <div class="pill-scroller" id="cats"></div>
+        <div id="menuList"></div>
+      </div>
+      <div id="tabOrders" class="hidden"></div>
+      <div id="tabBill" class="hidden"></div>
+    </div>
+
+    <button class="mic-fab hidden" id="micFab" aria-label="Order by voice"><span class="mic-rings"></span>🎙️</button>
+    <div class="cart-bar" id="cartBar"><button class="cart-btn" id="cartOpen"><span class="cart-count" id="cartCount">0</span><span class="grow">View cart</span><b id="cartTotal">₹0</b><span>→</span></button></div>
+  </section>
+</div>
+
+<div class="overlay" id="ov"></div>
+
+<div class="sheet" id="cartSheet" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div class="grab"></div>
+  <div class="row spread"><h3 id="cartTitle">Your order</h3><button class="btn-ghost sm" data-close>Close</button></div>
+  <div id="cartItems" style="margin:16px 0"></div>
+  <div class="row spread" style="margin-bottom:14px"><span class="muted">Total</span><strong style="font-size:1.4rem" id="cartSum">₹0</strong></div>
+  <button class="btn lg block" id="placeBtn">Place order</button>
+  <p class="faint small center" style="margin:10px 0 0">The cashier confirms each order. You can order more any time.</p>
+</div>
+
+<div class="sheet voice-sheet" id="voiceSheet" role="dialog" aria-modal="true" aria-labelledby="vTitle">
+  <div class="grab"></div>
+  <div class="row spread"><h3 id="vTitle">Just say it</h3><button class="btn-ghost sm" data-close>Close</button></div>
+  <p class="muted small" style="margin:4px 0 0" id="vHint">Try “2 masala dosa and 1 filter coffee”, “ಎರಡು ಇಡ್ಲಿ ವಡೆ”, or “₹600 for 3 people”.</p>
+  <div class="voice-stage">
+    <button class="voice-orb" id="vOrb" aria-label="Start recording"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="core">🎙️</span></button>
+    <div class="v-state" id="vState">Tap to talk</div>
+  </div>
+  <div id="vResult"></div>
+  <form class="row" id="vForm" style="gap:8px;margin-top:10px"><input class="input grow" id="vText" placeholder="…or type it here" autocomplete="off" maxlength="300"><button class="btn" id="vSend" aria-label="Send">→</button></form>
+</div>
+
+<script src="/static/js/games.js"></script>
+<script src="/static/js/table.js"></script>
+</body>
+</html>

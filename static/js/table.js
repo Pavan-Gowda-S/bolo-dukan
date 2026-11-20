@@ -1,0 +1,496 @@
+/* Guest table page: start/join, menu + cart, voice ordering, order tracking, bill and payment. */
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const TOKEN = decodeURIComponent(location.pathname.split("/").filter(Boolean).pop() || "");
+  const KEY = "bd_t_" + TOKEN;
+  let info = null, me = null, sess = null, cart = new Map(), tab = "menu", cat = "", query = "";
+  let prevOrders = new Map(), prevStatus = null, busyPoll = false, menuById = new Map();
+
+  // ---------------------------------------------------------------- utils
+  const screens = ["sLoading", "sError", "sWelcome", "sWaiting", "sRejected", "sClosed", "sMain"];
+  function show(id) { screens.forEach(s => $(s).classList.toggle("hidden", s !== id)); if (id !== "sMain") closeSheets(); BD.reveal(); }
+  function guestApi(path, opts = {}) { return BD.api(path, Object.assign({}, opts, { headers: Object.assign({ "X-Guest-Token": me ? me.token : "" }, opts.headers) })); }
+  function saveMe() { me ? BD.store.set(KEY, JSON.stringify(me)) : BD.store.del(KEY); }
+  function loadMe() { try { return JSON.parse(BD.store.get(KEY) || "null"); } catch (e) { return null; } }
+  function cartKey() { return me ? "bd_cart_" + me.sid : null; }
+  function saveCart() { if (cartKey()) BD.store.set(cartKey(), JSON.stringify([...cart])); }
+  function loadCart() { try { cart = new Map(JSON.parse(BD.store.get(cartKey()) || "[]").filter(([id]) => menuById.has(id))); } catch (e) { cart = new Map(); } }
+  function forget() { if (cartKey()) BD.store.del(cartKey()); if (me) BD.store.set("bd_g_" + me.sid, ""); me = null; sess = null; cart = new Map(); saveMe(); }
+
+  function openSheet(id) { $("ov").classList.add("show"); $(id).classList.add("show"); }
+  function closeSheets() { $("ov").classList.remove("show"); document.querySelectorAll(".sheet.show").forEach(s => s.classList.remove("show")); stopRecording(true); }
+  $("ov").onclick = closeSheets;
+  document.querySelectorAll("[data-close]").forEach(b => b.onclick = closeSheets);
+  addEventListener("keydown", e => { if (e.key === "Escape") closeSheets(); });
+
+  // ---------------------------------------------------------------- boot
+  async function boot() {
+    try {
+      info = await BD.api("/api/t/" + encodeURIComponent(TOKEN));
+    } catch (x) { $("errText").textContent = x.message; return show("sError"); }
+    menuById = new Map(info.menu.map(m => [m.id, m]));
+    document.title = `${info.restaurant.name} · Table ${info.table.number}`;
+    me = loadMe();
+    if (me) { await fetchSession(); loadCart(); }
+    route();
+    setInterval(tick, 2500);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+  }
+
+  async function fetchSession() {
+    try { sess = await guestApi("/api/session/" + me.sid); }
+    catch (x) { if (x.status === 401 || x.status === 404) { forget(); } }
+  }
+
+  let welcomeTicks = 0;
+  async function tick() {
+    if (busyPoll || document.hidden) return;
+    busyPoll = true;
+    try {
+      if (me) { await fetchSession(); route(); }
+      else if (++welcomeTicks % 2 === 0) {
+        const fresh = await BD.api("/api/t/" + encodeURIComponent(TOKEN)).catch(() => null);
+        if (fresh) {
+          const changed = fresh.active_status !== info.active_status;
+          info = fresh; menuById = new Map(info.menu.map(m => [m.id, m]));
+          if (changed && !$("sWelcome").classList.contains("hidden")) renderWelcome(false);
+        }
+      }
+    } finally { busyPoll = false; }
+  }
+
+  function route() {
+    if (!sess) { if ($("sWelcome").classList.contains("hidden")) renderWelcome(true); prevStatus = null; return; }
+    const st = sess.status;
+    if (st !== prevStatus) onStatusChange(prevStatus, st);
+    prevStatus = st;
+    if (st === "WAITING_APPROVAL") { $("waitTable").textContent = info.table.number; return show("sWaiting"); }
+    if (st === "REJECTED") return show("sRejected");
+    if (st === "CLOSED" || st === "PAID_CASH") {
+      $("closedTitle").textContent = st === "PAID_CASH" ? "Paid. Thank you!" : "Thank you!";
+      $("closedText").textContent = st === "PAID_CASH" ? `The cashier marked ${BD.rupees(sess.settled_paise)} as paid in cash. See you again soon.` : "This table's order is closed. See you again soon.";
+      $("closedAgain").href = location.pathname;
+      forget();
+      return show("sClosed");
+    }
+    if ($("sMain").classList.contains("hidden")) { show("sMain"); renderMenu(); }
+    renderMain();
+  }
+
+  function onStatusChange(from, to) {
+    if (from === "WAITING_APPROVAL" && to === "OPEN") { BD.toast("You're in! Order away.", "ok"); BD.buzz([20, 40, 20]); BD.confetti(80); }
+    if (to === "PAID" && from && from !== "PAID") { BD.confetti(); BD.toast("Payment confirmed. Thank you!", "ok", 5000); setTab("bill"); }
+    if (to === "BILL_REQUESTED" && from === "OPEN") setTab("bill");
+  }
+
+  // ---------------------------------------------------------------- welcome / start / join
+  function renderWelcome(animate) {
+    const r = info.restaurant;
+    $("wRest").textContent = r.name; $("wTable").textContent = info.table.number;
+    if (r.wifi_name || r.wifi_password) {
+      $("wifiCard").classList.remove("hidden");
+      $("wifiName").textContent = r.wifi_name || "Wi-Fi";
+      $("wifiPass").textContent = r.wifi_password ? "Password: " + r.wifi_password : "";
+      $("wifiCopy").classList.toggle("hidden", !r.wifi_password);
+    }
+    const st = info.active_status;
+    // Someone already started at this table -> only the join-code box makes sense.
+    const joinMode = st === "OPEN" || st === "BILL_REQUESTED" || st === "PAID" || st === "WAITING_APPROVAL";
+    const showJoin = joinMode || showJoinOverride;
+    $("startBox").classList.toggle("hidden", showJoin);
+    $("joinBox").classList.toggle("hidden", !showJoin);
+    $("backStart").classList.toggle("hidden", joinMode || !showJoinOverride);
+    $("joinHint").textContent = st === "WAITING_APPROVAL"
+      ? "Someone at this table already asked to start. Once the cashier approves, ask them for the 4-digit code on their screen."
+      : "Your table is already ordering. Ask whoever started for the 4-digit code on their screen.";
+    if (animate) show("sWelcome");
+  }
+  let showJoinOverride = false;
+  $("haveCode").onclick = () => { showJoinOverride = true; $("startBox").classList.add("hidden"); $("joinBox").classList.remove("hidden"); $("backStart").classList.remove("hidden"); boxes[0].focus(); };
+  $("backStart").onclick = () => { showJoinOverride = false; $("joinBox").classList.add("hidden"); $("startBox").classList.remove("hidden"); };
+  $("wifiCopy").onclick = async () => { try { await navigator.clipboard.writeText(info.restaurant.wifi_password); BD.toast("Wi-Fi password copied", "ok"); } catch (e) { BD.toast(info.restaurant.wifi_password); } };
+
+  $("startBtn").onclick = async () => {
+    const b = $("startBtn"); BD.busy(b, true, "Asking the cashier…");
+    try {
+      const r = await BD.api(`/api/t/${encodeURIComponent(TOKEN)}/start`, { body: { device_id: BD.deviceId() } });
+      me = { sid: r.session_id, token: r.guest_token }; saveMe(); BD.store.set("bd_g_" + me.sid, me.token);
+      await fetchSession(); route();
+    } catch (x) {
+      BD.toast(x.message, "bad", 5000);
+      if (x.status === 409) { info.active_status = "OPEN"; renderWelcome(false); }
+    }
+    BD.busy(b, false);
+  };
+  $("retryStart").onclick = () => { forget(); info.active_status = null; renderWelcome(true); };
+
+  const boxes = [...$("codeBoxes").querySelectorAll("input")];
+  boxes.forEach((inp, i) => {
+    inp.addEventListener("input", () => {
+      inp.value = inp.value.replace(/\D/g, "").slice(-1);
+      if (inp.value && i < 3) boxes[i + 1].focus();
+      if (boxes.every(b => b.value)) join();
+    });
+    inp.addEventListener("keydown", e => { if (e.key === "Backspace" && !inp.value && i > 0) boxes[i - 1].focus(); });
+    inp.addEventListener("paste", e => {
+      const t = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 4);
+      if (t.length) { e.preventDefault(); t.split("").forEach((c, k) => boxes[k].value = c); (boxes[t.length] || boxes[3]).focus(); if (t.length === 4) join(); }
+    });
+  });
+  $("joinBtn").onclick = join;
+  let joining = false;
+  async function join() {
+    const code = boxes.map(b => b.value).join("");
+    if (code.length !== 4) { $("joinErr").textContent = "Enter all 4 digits"; return; }
+    if (joining) return; joining = true;
+    $("joinErr").textContent = ""; BD.busy($("joinBtn"), true, "Joining…");
+    try {
+      const r = await BD.api(`/api/t/${encodeURIComponent(TOKEN)}/join`, { body: { code, device_id: BD.deviceId() } });
+      me = { sid: r.session_id, token: r.guest_token }; saveMe(); BD.store.set("bd_g_" + me.sid, me.token);
+      await fetchSession(); loadCart(); BD.toast("Joined the table", "ok"); route();
+    } catch (x) {
+      $("joinErr").textContent = x.message;
+      $("codeBoxes").classList.add("bad"); setTimeout(() => $("codeBoxes").classList.remove("bad"), 450);
+      boxes.forEach(b => b.value = ""); boxes[0].focus(); BD.buzz(60);
+    }
+    BD.busy($("joinBtn"), false); joining = false;
+  }
+
+  // ---------------------------------------------------------------- tabs
+  function setTab(t) {
+    tab = t;
+    document.querySelectorAll(".g-tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === t));
+    $("tabMenu").classList.toggle("hidden", t !== "menu");
+    $("tabOrders").classList.toggle("hidden", t !== "orders");
+    $("tabBill").classList.toggle("hidden", t !== "bill");
+    scrollTo({ top: 0, behavior: "smooth" });
+    updateCartBar();
+  }
+  document.querySelectorAll(".g-tabs button").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+
+  // ---------------------------------------------------------------- main render
+  function renderMain() {
+    $("mRest").textContent = info.restaurant.name;
+    $("mTable").textContent = info.table.number;
+    $("mGuests").textContent = sess.guests > 1 ? `· ${sess.guests} phones` : "";
+    $("mCode").textContent = sess.join_code || "····";
+    $("waiterBtn").classList.toggle("called", sess.waiter_called);
+    $("waiterBtn").title = sess.waiter_called ? "A waiter is coming" : "Call waiter";
+    const active = sess.orders.filter(o => o.status !== "REJECTED" && o.status !== "SERVED").length;
+    $("ordersN").textContent = active; $("ordersN").classList.toggle("hidden", !active);
+    $("billN").textContent = sess.status === "PAID" ? "✓" : "₹"; $("billN").classList.toggle("hidden", !(sess.status === "BILL_REQUESTED" || sess.status === "PAID"));
+    notifyOrderChanges();
+    renderOrders(); renderBill(); updateCartBar();
+    $("micFab").classList.toggle("hidden", !(info.features.voice_order && sess.status === "OPEN"));
+  }
+
+  function notifyOrderChanges() {
+    const first = prevOrders.size === 0;
+    sess.orders.forEach(o => {
+      const before = prevOrders.get(o.id);
+      if (!first && before && before !== o.status) {
+        const msg = { ACCEPTED: "Your order was accepted 👍", PREPARING: "The kitchen is preparing your food 🔥", SERVED: "Served. Enjoy! 😋", REJECTED: "An order was declined" + (o.reject_reason ? ": " + o.reject_reason : "") }[o.status];
+        if (msg) { BD.toast(msg, o.status === "REJECTED" ? "bad" : "ok", 4500); BD.buzz(30); }
+      }
+      prevOrders.set(o.id, o.status);
+    });
+  }
+
+  // ---------------------------------------------------------------- menu
+  function renderMenu() {
+    const cats = [...new Set(info.menu.map(m => m.category))];
+    $("cats").innerHTML = [`<button class="pill ${cat ? "" : "active"}" data-cat="">All</button>`].concat(cats.map(c => `<button class="pill ${cat === c ? "active" : ""}" data-cat="${BD.esc(c)}">${BD.esc(c)}</button>`)).join("");
+    const q = query.trim().toLowerCase();
+    const list = info.menu.filter(m => (!cat || m.category === cat) && (!q || (m.name + " " + m.name_local + " " + m.category).toLowerCase().includes(q)));
+    if (!info.menu.length) { $("menuList").innerHTML = `<div class="glass card center" style="margin-top:20px"><p class="muted">The menu isn't ready yet. Please ask the staff.</p></div>`; return; }
+    if (!list.length) { $("menuList").innerHTML = `<p class="muted center" style="margin:40px 0">Nothing matches “${BD.esc(query)}”.</p>`; return; }
+    let html = "", i = 0;
+    [...new Set(list.map(m => m.category))].forEach(c => {
+      const group = list.filter(m => m.category === c);
+      html += `<div class="cat-title">${BD.esc(c)} <small>${group.length}</small></div><div class="items">`;
+      group.forEach(m => { html += itemHtml(m, i++); });
+      html += `</div>`;
+    });
+    $("menuList").innerHTML = html;
+    BD.tilt($("menuList"));
+  }
+  function itemHtml(m, i) {
+    const qty = cart.get(m.id) || 0;
+    const pic = m.photo_url ? `<img src="${BD.esc(m.photo_url)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'e',textContent:'${BD.foodEmoji(m.name, m.category)}'}))">` : `<span class="e">${BD.foodEmoji(m.name, m.category)}</span>`;
+    const ctl = qty
+      ? `<div class="stepper"><button data-dec="${m.id}" aria-label="One less">−</button><span class="val">${qty}</span><button data-inc="${m.id}" aria-label="One more">+</button></div>`
+      : `<button class="add-btn" data-inc="${m.id}" aria-label="Add ${BD.esc(m.name)}">+</button>`;
+    return `<div class="glass item ${qty ? "in-cart" : ""}" data-tilt="5" data-item="${m.id}" style="--h:${BD.hueFor(m.category + m.name)};animation-delay:${Math.min(i, 14) * 0.03}s">
+      <div class="pic">${pic}</div>
+      <div style="min-width:0"><div class="nm">${BD.esc(m.name)}</div>${m.name_local ? `<div class="lc">${BD.esc(m.name_local)}</div>` : ""}<div class="pr">${BD.rupees(m.price_paise)}</div></div>
+      <div class="ctl">${ctl}</div></div>`;
+  }
+  function refreshItem(id) {
+    const el = document.querySelector(`[data-item="${id}"]`); if (!el) return;
+    const m = menuById.get(id), qty = cart.get(id) || 0;
+    el.classList.toggle("in-cart", !!qty);
+    el.querySelector(".ctl").innerHTML = qty
+      ? `<div class="stepper"><button data-dec="${id}" aria-label="One less">−</button><span class="val bump">${qty}</span><button data-inc="${id}" aria-label="One more">+</button></div>`
+      : `<button class="add-btn" data-inc="${id}" aria-label="Add ${BD.esc(m.name)}">+</button>`;
+  }
+  $("cats").addEventListener("click", e => { const p = e.target.closest("[data-cat]"); if (!p) return; cat = p.dataset.cat; renderMenu(); });
+  let searchT; $("search").addEventListener("input", e => { clearTimeout(searchT); searchT = setTimeout(() => { query = e.target.value; renderMenu(); }, 120); });
+
+  function changeQty(id, delta) {
+    if (!sess || sess.status !== "OPEN") { BD.toast(sess && sess.status === "BILL_REQUESTED" ? "The bill is requested, so ordering is closed." : "Ordering is closed.", "bad"); return; }
+    const q = Math.max(0, Math.min(20, (cart.get(id) || 0) + delta));
+    q ? cart.set(id, q) : cart.delete(id);
+    saveCart(); refreshItem(id); updateCartBar(); renderCartSheet(); BD.buzz(8);
+    if (delta > 0) { const c = $("cartCount"); c.classList.remove("bump"); void c.offsetWidth; c.classList.add("bump"); }
+  }
+  document.addEventListener("click", e => {
+    const inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]");
+    if (inc) changeQty(Number(inc.dataset.inc), 1);
+    if (dec) changeQty(Number(dec.dataset.dec), -1);
+  });
+
+  // ---------------------------------------------------------------- cart
+  function cartTotals() { let n = 0, sum = 0; cart.forEach((q, id) => { const m = menuById.get(id); if (m) { n += q; sum += q * m.price_paise; } }); return { n, sum }; }
+  function updateCartBar() {
+    const { n, sum } = cartTotals();
+    $("cartCount").textContent = n; $("cartTotal").textContent = BD.rupees(sum);
+    const showBar = n > 0 && sess && sess.status === "OPEN";
+    $("cartBar").classList.toggle("show", showBar);
+    $("micFab").classList.toggle("low", !showBar);
+  }
+  function renderCartSheet() {
+    const { sum } = cartTotals();
+    $("cartSum").textContent = BD.rupees(sum);
+    if (!cart.size) { $("cartItems").innerHTML = `<p class="muted center">Your cart is empty.</p>`; $("placeBtn").disabled = true; return; }
+    $("placeBtn").disabled = false;
+    $("cartItems").innerHTML = [...cart].map(([id, q]) => { const m = menuById.get(id); return m ? `<div class="cart-line"><span class="e">${BD.foodEmoji(m.name, m.category)}</span>
+      <div><div style="font-weight:700">${BD.esc(m.name)}</div><div class="muted small">${BD.rupees(m.price_paise)} × ${q} = <b>${BD.rupees(m.price_paise * q)}</b></div></div>
+      <div class="stepper"><button data-dec="${id}" aria-label="One less">−</button><span class="val">${q}</span><button data-inc="${id}" aria-label="One more">+</button></div></div>` : ""; }).join("");
+  }
+  $("cartOpen").onclick = () => { renderCartSheet(); openSheet("cartSheet"); };
+  $("placeBtn").onclick = async () => {
+    const items = [...cart].map(([menu_item_id, qty]) => ({ menu_item_id, qty }));
+    if (!items.length) return;
+    const b = $("placeBtn"); BD.busy(b, true, "Sending to the kitchen…");
+    try {
+      const r = await guestApi(`/api/session/${me.sid}/orders`, { body: { items } });
+      cart.clear(); saveCart(); sess = r.session; prevOrders.set(r.order_id, "PENDING");
+      closeSheets(); renderMenu(); renderMain(); setTab("orders");
+      BD.toast("Order sent! The cashier will confirm it.", "ok"); BD.buzz([15, 30, 15]);
+    } catch (x) { BD.toast(x.message, "bad", 5000); if (x.status === 400) { info = await BD.api("/api/t/" + encodeURIComponent(TOKEN)); menuById = new Map(info.menu.map(m => [m.id, m])); loadCart(); renderMenu(); renderCartSheet(); } }
+    BD.busy(b, false);
+  };
+
+  // ---------------------------------------------------------------- orders
+  const STEPS = ["PENDING", "ACCEPTED", "PREPARING", "SERVED"];
+  function renderOrders() {
+    if (!sess.orders.length) { setHtml("tabOrders", `<div class="glass card center" style="margin-top:16px"><div style="font-size:2.4rem" class="float">🧑‍🍳</div><p class="muted">No orders yet. Pick something from the menu${info.features.voice_order ? " or tap the mic and say it" : ""}.</p><button class="btn" data-goto="menu">Open the menu</button></div>`); return; }
+    const html = sess.orders.slice().reverse().map((o, i) => {
+      const n = sess.orders.length - i;
+      const idx = STEPS.indexOf(o.status);
+      const track = o.status === "REJECTED"
+        ? `<div class="notice bad" style="margin-top:12px">Declined${o.reject_reason ? ": " + BD.esc(o.reject_reason) : ""}. It's not on your bill.</div>`
+        : `<div class="track" style="--p:${Math.max(0, idx) / 3}"><span class="bar"></span>${["Sent", "Accepted", "Cooking", "Served"].map((l, k) => `<div class="st ${k <= idx ? "done" : ""} ${k === idx && k < 3 ? "now" : ""}"><i>${k <= idx ? "✓" : k + 1}</i>${l}</div>`).join("")}</div>`;
+      return `<div class="glass round"><div class="row spread"><strong>Round ${n}</strong><span class="faint small">${BD.ago(o.created_at)}</span></div>
+        <div style="margin-top:8px">${o.items.map(it => `<div class="oi"><span>${BD.foodEmoji(it.name)} ${it.qty} × ${BD.esc(it.name)}</span><span class="mono">${BD.rupees(it.qty * it.unit_price_paise)}</span></div>`).join("")}</div>${track}</div>`;
+    }).join("");
+    const cooking = sess.orders.some(o => ["PENDING", "ACCEPTED", "PREPARING"].includes(o.status));
+    const games = cooking ? `<button class="glass round open-games" style="width:100%;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;color:var(--text)">
+        <span style="font-size:2rem">🎮</span><span class="grow"><b>Food's cooking</b><br><span class="muted small">Play Dosa Flip, Chai Catch or Spice Match and top today's board</span></span><span>→</span></button>` : "";
+    setHtml("tabOrders", games + html);
+  }
+  function setHtml(id, html) { const el = $(id); if (el._h !== html) { el._h = html; el.innerHTML = html; } }
+  document.addEventListener("click", e => {
+    const g = e.target.closest("[data-goto]"); if (g) setTab(g.dataset.goto);
+    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
+  });
+
+  // ---------------------------------------------------------------- bill
+  function renderBill() {
+    const lines = new Map();
+    sess.orders.filter(o => ["ACCEPTED", "PREPARING", "SERVED"].includes(o.status)).forEach(o => o.items.forEach(it => {
+      const k = it.name + "|" + it.unit_price_paise; const l = lines.get(k) || { name: it.name, price: it.unit_price_paise, qty: 0 }; l.qty += it.qty; lines.set(k, l);
+    }));
+    const pending = sess.orders.filter(o => o.status === "PENDING").length;
+    let html = `<div class="bill"><div class="row spread"><h3>${BD.esc(info.restaurant.name)}</h3><span style="font-weight:800;opacity:.6">TABLE ${info.table.number}</span></div><div style="margin-top:12px">`;
+    if (!lines.size) html += `<p style="opacity:.6">Nothing on the bill yet. Only orders the cashier accepted show here.</p>`;
+    lines.forEach(l => html += `<div class="ln"><span>${l.qty} × ${BD.esc(l.name)}</span><span class="mono">${BD.rupees(l.qty * l.price)}</span></div>`);
+    html += `</div><div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise)}</b></div>`;
+    if (sess.status === "PAID") html += `<div style="margin-top:14px;text-align:center;font-weight:900;font-size:1.3rem;color:#0d8a5f;letter-spacing:.2em;border:3px solid #0d8a5f;border-radius:12px;padding:6px;transform:rotate(-4deg)">PAID ✓</div>`;
+    html += `</div>`;
+    if (pending) html += `<div class="notice" style="margin-top:26px">${pending} order${pending > 1 ? "s are" : " is"} waiting for the cashier. ${pending > 1 ? "They'll" : "It'll"} appear on the bill once accepted.</div>`;
+
+    html += `<div class="pay-box">`;
+    if (sess.status === "OPEN") {
+      html += `<button class="btn lg block violet" id="reqBill" ${sess.bill_paise > 0 && !pending ? "" : "disabled"}>Request the bill</button><p class="faint small center" style="margin-top:10px">After this, no new orders can be added.</p>`;
+    } else if (sess.status === "BILL_REQUESTED") {
+      if (info.features.online_payment) {
+        const phone = BD.store.get("bd_phone") || "";
+        html += `<h3 style="margin-bottom:6px">Pay by UPI</h3><p class="muted small" style="margin:0 0 12px">Cashfree needs a phone number for the receipt.</p>
+          <form id="payForm" class="stack" novalidate><input class="input" id="payPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" value="${BD.esc(phone)}" maxlength="14">
+          <button class="btn lg block mint" id="payBtn">Pay ${BD.rupees(sess.bill_paise)} →</button></form>
+          <button class="btn-ghost block" id="checkPay" style="margin-top:10px">I've paid · check status</button>
+          <p class="faint small center" style="margin-top:10px">Or pay at the counter in cash. The cashier will close the table.</p>`;
+      } else {
+        html += `<div class="glass card center"><div style="font-size:2rem">💵</div><p style="margin:8px 0 0"><b>Please pay ${BD.rupees(sess.bill_paise)} at the counter.</b></p><p class="muted small">The cashier will mark your table as paid.</p></div>`;
+      }
+    } else if (sess.status === "PAID") {
+      html += `<div class="glass card center"><div class="thanks-orb" style="width:80px;height:80px;font-size:2.2rem">✓</div><h3 style="margin:14px 0 4px">Paid. Thank you!</h3><p class="muted small">Payment confirmed by Cashfree. You can leave whenever you like.</p></div>`;
+    }
+    html += `</div>`;
+    setHtml("tabBill", html);
+    wireBill();
+  }
+  function wireBill() {
+    const rb = $("reqBill");
+    if (rb && !rb._w) { rb._w = 1; rb.onclick = requestBill; }
+    const pf = $("payForm");
+    if (pf && !pf._w) { pf._w = 1; pf.onsubmit = pay; }
+    const cp = $("checkPay");
+    if (cp && !cp._w) { cp._w = 1; cp.onclick = checkPay; }
+  }
+  async function requestBill() {
+    if (!confirm("Request the bill now? You won't be able to add more orders.")) return;
+    const b = $("reqBill"); if (b) BD.busy(b, true, "Requesting…");
+    try { const r = await guestApi(`/api/session/${me.sid}/request-bill`, { method: "POST", body: {} }); sess = r.session; prevStatus = "BILL_REQUESTED"; renderMain(); setTab("bill"); BD.toast("Bill requested", "ok"); }
+    catch (x) { BD.toast(x.message, "bad", 5000); if (b) BD.busy(b, false); }
+  }
+  async function pay(e) {
+    e.preventDefault();
+    const phone = $("payPhone").value.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
+    if (!/^[6-9]\d{9}$/.test(phone)) { BD.toast("Please enter a valid 10-digit mobile number", "bad"); $("payPhone").focus(); return; }
+    BD.store.set("bd_phone", phone);
+    const b = $("payBtn"); BD.busy(b, true, "Opening UPI…");
+    try {
+      const r = await guestApi(`/api/session/${me.sid}/pay`, { body: { phone } });
+      BD.store.set("bd_g_" + me.sid, me.token);
+      location.href = r.link_url;
+    } catch (x) { BD.toast(x.message, "bad", 6000); BD.busy(b, false); }
+  }
+  async function checkPay() {
+    const b = $("checkPay"); BD.busy(b, true, "Checking with Cashfree…");
+    try { sess = await guestApi(`/api/session/${me.sid}/payment-status`); route(); if (sess.status !== "PAID") BD.toast("Not paid yet. If you just paid, wait a few seconds.", "info"); }
+    catch (x) { BD.toast(x.message, "bad"); }
+    BD.busy(b, false);
+  }
+
+  // ---------------------------------------------------------------- waiter & code
+  $("waiterBtn").onclick = callWaiter;
+  async function callWaiter() {
+    if (sess.waiter_called) return BD.toast("A waiter is already on the way 🙂");
+    try { await guestApi(`/api/session/${me.sid}/call-waiter`, { body: { reason: "" } }); sess.waiter_called = true; renderMain(); BD.toast("A waiter is on the way", "ok"); BD.buzz(20); }
+    catch (x) { BD.toast(x.message, "bad"); }
+  }
+  $("codeChip").onclick = async () => {
+    if (!sess || !sess.join_code) return;
+    const text = `Join our table at ${info.restaurant.name}: scan the QR on table ${info.table.number} and enter code ${sess.join_code}`;
+    try { if (navigator.share) await navigator.share({ text, url: location.href }); else { await navigator.clipboard.writeText(`${text}\n${location.href}`); BD.toast("Copied. Send it to your friends", "ok"); } }
+    catch (e) { BD.toast(`Code: ${sess.join_code}`); }
+  };
+
+  // ---------------------------------------------------------------- voice
+  const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && window.isSecureContext);
+  let rec = null, stream = null, chunks = [], meterRAF = 0, autoStop = 0, cancelled = false, thinking = false;
+  $("micFab").onclick = () => {
+    $("vResult").innerHTML = ""; $("vText").value = "";
+    setVState("idle");
+    if (!canRecord) { $("vOrb").classList.add("hidden"); $("vState").textContent = window.isSecureContext ? "This browser can't record. Type your order below." : "Voice needs the HTTPS link (ngrok). Type your order below."; }
+    if (!info.features.budget_order) $("vHint").textContent = "Try “2 masala dosa and 1 filter coffee” or “ಎರಡು ಇಡ್ಲಿ ವಡೆ”.";
+    openSheet("voiceSheet");
+  };
+  function setVState(s, text) {
+    const orb = $("vOrb");
+    orb.classList.toggle("rec", s === "rec"); orb.classList.toggle("think", s === "think");
+    $("vState").textContent = text || { idle: "Tap to talk", rec: "Listening… tap to stop", think: "Understanding…" }[s] || "";
+    orb.setAttribute("aria-label", s === "rec" ? "Stop recording" : "Start recording");
+  }
+  $("vOrb").onclick = () => { if (thinking) return; rec && rec.state === "recording" ? stopRecording(false) : startRecording(); };
+  async function startRecording() {
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } }); }
+    catch (e) { setVState("idle", "Microphone blocked. Allow it in the browser, or type below."); return; }
+    chunks = []; cancelled = false;
+    rec = new MediaRecorder(stream);
+    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    rec.onstop = onRecorded;
+    rec.start(250);
+    setVState("rec"); BD.buzz(15);
+    try {
+      const actx = new (window.AudioContext || window.webkitAudioContext)(), src = actx.createMediaStreamSource(stream), an = actx.createAnalyser();
+      an.fftSize = 512; src.connect(an); const buf = new Uint8Array(an.fftSize);
+      const loop = () => { an.getByteTimeDomainData(buf); let s = 0; for (const v of buf) s += ((v - 128) / 128) ** 2; $("vOrb").style.setProperty("--lvl", Math.min(1, Math.sqrt(s / buf.length) * 4).toFixed(3)); meterRAF = requestAnimationFrame(loop); };
+      loop(); rec._actx = actx;
+    } catch (e) {}
+    autoStop = setTimeout(() => stopRecording(false), 15000);
+  }
+  function stopRecording(cancel) {
+    clearTimeout(autoStop); cancelAnimationFrame(meterRAF); $("vOrb").style.setProperty("--lvl", 0);
+    if (rec && rec.state === "recording") { cancelled = cancel; rec.stop(); }
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    if (rec && rec._actx) { rec._actx.close().catch(() => {}); rec._actx = null; }
+  }
+  async function onRecorded() {
+    if (cancelled || !chunks.length) { setVState("idle"); return; }
+    const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
+    setVState("think"); thinking = true;
+    try {
+      const wav = await toWav(blob);
+      if (wav.byteLength < 8000) { setVState("idle", "That was very short. Tap and try again."); thinking = false; return; }
+      const fd = new FormData(); fd.append("audio", new Blob([wav], { type: "audio/wav" }), "voice.wav");
+      showResult(await guestApi(`/api/session/${me.sid}/assistant`, { form: fd }));
+    } catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+    thinking = false;
+  }
+  $("vForm").onsubmit = async e => {
+    e.preventDefault();
+    const text = $("vText").value.trim(); if (!text || thinking) return;
+    thinking = true; setVState("think"); BD.busy($("vSend"), true);
+    try { const fd = new FormData(); fd.append("text", text); showResult(await guestApi(`/api/session/${me.sid}/assistant`, { form: fd })); $("vText").value = ""; }
+    catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+    BD.busy($("vSend"), false); thinking = false;
+  };
+  async function toWav(blob) {
+    // Gemini reads WAV everywhere; convert whatever the browser recorded to 16 kHz mono 16-bit.
+    const Ctx = window.AudioContext || window.webkitAudioContext, ctx = new Ctx();
+    const audio = await ctx.decodeAudioData(await blob.arrayBuffer());
+    ctx.close().catch(() => {});
+    const rate = 16000, off = new OfflineAudioContext(1, Math.max(1, Math.ceil(audio.duration * rate)), rate);
+    const src = off.createBufferSource(); src.buffer = audio; src.connect(off.destination); src.start();
+    const pcm = (await off.startRendering()).getChannelData(0);
+    const out = new DataView(new ArrayBuffer(44 + pcm.length * 2));
+    const w = (o, s) => [...s].forEach((c, i) => out.setUint8(o + i, c.charCodeAt(0)));
+    w(0, "RIFF"); out.setUint32(4, 36 + pcm.length * 2, true); w(8, "WAVE"); w(12, "fmt "); out.setUint32(16, 16, true);
+    out.setUint16(20, 1, true); out.setUint16(22, 1, true); out.setUint32(24, rate, true); out.setUint32(28, rate * 2, true);
+    out.setUint16(32, 2, true); out.setUint16(34, 16, true); w(36, "data"); out.setUint32(40, pcm.length * 2, true);
+    for (let i = 0; i < pcm.length; i++) { const s = Math.max(-1, Math.min(1, pcm[i])); out.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+    return out.buffer;
+  }
+  function showResult(r) {
+    setVState("idle", "Tap to say more");
+    let html = r.transcript ? `<div class="v-said"><small>You said</small>${BD.esc(r.transcript)}</div>` : "";
+    if (r.reply) html += `<p class="v-reply">${BD.esc(r.reply)}</p>`;
+    if ((r.intent === "order" || r.intent === "budget") && r.items.length) {
+      html += `<div class="glass" style="padding:6px 14px;border-radius:16px">${r.items.map(i => `<div class="cart-line" style="grid-template-columns:34px 1fr auto"><span class="e" style="font-size:1.3rem">${BD.foodEmoji(i.name, i.category)}</span><div><b>${i.qty} × ${BD.esc(i.name)}</b>${i.name_local ? `<div class="muted small">${BD.esc(i.name_local)}</div>` : ""}</div><span class="mono">${BD.rupees(i.qty * i.price_paise)}</span></div>`).join("")}
+        <div class="row spread" style="padding:10px 0"><span class="muted">${r.intent === "budget" && r.budget_paise ? `Within your ${BD.rupees(r.budget_paise)}` : "Total"}</span><b>${BD.rupees(r.total_paise)}</b></div></div>
+        <div class="row" style="margin-top:12px"><button class="btn mint grow" id="vAdd">Add to cart</button><button class="btn-ghost" id="vRetry">Try again</button></div>`;
+    } else if (r.intent === "bill") {
+      html += `<div class="row"><button class="btn violet grow" id="vBill">Yes, request the bill</button><button class="btn-ghost" id="vRetry">No</button></div>`;
+    } else if (r.intent === "waiter") {
+      html += `<div class="row"><button class="btn grow" id="vWaiter">Yes, call a waiter</button><button class="btn-ghost" id="vRetry">No</button></div>`;
+    } else {
+      html += `<div class="notice">Sorry, I couldn't match that to the menu. Try again, or say the dish names a bit slower.</div>`;
+    }
+    $("vResult").innerHTML = html;
+    const add = $("vAdd"), retry = $("vRetry"), vb = $("vBill"), vw = $("vWaiter");
+    if (add) add.onclick = () => {
+      r.items.forEach(i => { if (menuById.has(i.id)) cart.set(i.id, Math.min(20, (cart.get(i.id) || 0) + i.qty)); });
+      saveCart(); renderMenu(); updateCartBar(); closeSheets(); setTab("menu");
+      renderCartSheet(); openSheet("cartSheet"); BD.toast("Added. Check and place the order", "ok");
+    };
+    if (retry) retry.onclick = () => { $("vResult").innerHTML = ""; setVState("idle"); };
+    if (vb) vb.onclick = () => { closeSheets(); setTab("bill"); requestBill(); };
+    if (vw) vw.onclick = () => { closeSheets(); callWaiter(); };
+  }
+
+  boot();
+})();

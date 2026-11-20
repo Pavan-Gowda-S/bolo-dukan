@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Payment Status</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/table.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app center-screen">
+  <div class="narrow center glass card-lg" id="box" style="max-width:460px">
+    <div class="loader-orb" id="orb"><i></i><i></i><i></i><b></b></div>
+    <h2 style="margin:24px 0 8px" id="title">Checking your payment…</h2>
+    <p class="muted" id="text">We confirm every payment directly with Cashfree. This takes a few seconds.</p>
+    <div id="acts" style="margin-top:20px"></div>
+  </div>
+</div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const sid = BD.qs("session"), token = sid ? BD.store.get("bd_g_" + sid) : null;
+  let tries = 0, tableUrl = null, done = false;
+  function finish(state, s) {
+    done = true;
+    const back = tableUrl ? `<a class="btn block" href="${tableUrl}">Back to my table</a>` : "";
+    if (state === "paid") {
+      $("orb").outerHTML = `<div class="thanks-orb">✓</div>`;
+      $("title").innerHTML = `Paid <span class="hot-text serif-i">${BD.rupees(s.payment ? s.payment.amount_paise : s.bill_paise)}</span>`;
+      $("text").textContent = "Payment confirmed by Cashfree. Thank you for eating with us!";
+      $("acts").innerHTML = back; BD.confetti(); BD.buzz([20, 40, 20]);
+    } else if (state === "pending") {
+      $("orb").outerHTML = `<div style="font-size:3rem">⏳</div>`;
+      $("title").textContent = "Not confirmed yet";
+      $("text").textContent = "If you paid, it can take a minute to show. If you cancelled, go back and tap Pay again for a fresh link.";
+      $("acts").innerHTML = `<button class="btn-ghost block" onclick="location.reload()" style="margin-bottom:10px">Check again</button>${back}`;
+    } else {
+      $("orb").outerHTML = `<div style="font-size:3rem">🧾</div>`;
+      $("title").textContent = "Open this from your table's page";
+      $("text").textContent = "We couldn't find your table on this phone. Scan the table QR again. Your payment, if made, is safe with Cashfree.";
+    }
+  }
+  async function check() {
+    if (done) return;
+    if (!sid || !token) return finish("unknown");
+    try {
+      const s = await BD.api(`/api/session/${encodeURIComponent(sid)}/payment-status`, { headers: { "X-Guest-Token": token } });
+      if (s.table_token) tableUrl = "/t/" + encodeURIComponent(s.table_token);
+      if (["PAID", "CLOSED", "PAID_CASH"].includes(s.status) && (s.status !== "CLOSED" || (s.payment && s.payment.status === "PAID"))) return finish("paid", s);
+      if (!s.payment || ["EXPIRED", "CANCELLED", "REPLACED"].includes(s.payment.status)) return finish("pending", s);
+    } catch (x) { if (x.status === 401) return finish("unknown"); }
+    if (++tries >= 30) return finish("pending", {});
+    setTimeout(check, 3000);
+  }
+  check();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+/* Cashier dashboard: polls every 2 s, colours tables, plays + speaks alerts, runs all cashier actions. */
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const C = { empty: "#6b6584", waiting: "#facc15", open: "#3b82f6", order: "#fb923c", bill: "#a855f7", paid: "#22c55e", alert: "#ef4444" };
+  let data = null, prev = null, openTable = null, polling = false, view = BD.store.get("bd_view") || "grid";
+  let floorLoaded = false, rejectTarget = null, failures = 0;
+  const cards = new Map();
+
+  BD.ownerNav("/dashboard");
+
+  // ---------------------------------------------------------------- view model
+  function viewOf(t) {
+    const s = t.session;
+    const v = { id: t.id, number: t.number, waiter: !!(s && s.waiter_calls.length), flash: false };
+    if (!s) return Object.assign(v, { state: "empty", stateLabel: "Empty", color: C.empty });
+    switch (s.status) {
+      case "WAITING_APPROVAL": return Object.assign(v, { state: "waiting", stateLabel: "Wants to order", color: C.waiting, flash: true });
+      case "OPEN": return s.pending_count
+        ? Object.assign(v, { state: "order", stateLabel: s.pending_count > 1 ? `${s.pending_count} new orders` : "New order", color: C.order, flash: true })
+        : Object.assign(v, { state: "open", stateLabel: "Ordering", color: C.open });
+      case "BILL_REQUESTED": return Object.assign(v, { state: "bill", stateLabel: "Bill requested", color: C.bill });
+      case "PAID": return Object.assign(v, { state: "paid", stateLabel: "Paid", color: C.paid });
+      default: return Object.assign(v, { state: "empty", stateLabel: s.status, color: C.empty });
+    }
+  }
+
+  // ---------------------------------------------------------------- alerts
+  const queue = []; let speaking = false;
+  function lang() { return (data && data.restaurant.language) || "kn-IN"; }
+  function phrase(kind, n) { const p = BD.phrases[lang()] || BD.phrases["en-IN"]; return p[kind](n); }
+  function alertEvent(kind, n) {
+    const text = phrase(kind, n), en = BD.phrases["en-IN"][kind](n);
+    const color = { start: C.waiting, order: C.order, waiter: C.alert, bill: C.bill, paid: C.paid }[kind];
+    const ev = document.createElement("div"); ev.className = "ev"; ev.style.setProperty("--c", color);
+    ev.innerHTML = `<b>●</b><span>${BD.esc(text)}</span>${lang() !== "en-IN" ? `<span class="t">${BD.esc(en)}</span>` : ""}<span class="t">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>`;
+    const feed = $("feed"); feed.prepend(ev); while (feed.children.length > 8) feed.lastChild.remove();
+    BD.toast(text, "say", 4500);
+    BD.sound.chime(kind === "paid" ? "paid" : kind === "waiter" ? "waiter" : kind === "start" ? "start" : "order");
+    if (data && data.features.kannada_alerts) { queue.push(text); setTimeout(drain, 700); }
+  }
+  async function drain() {
+    if (speaking || !queue.length || !BD.sound.ready) { if (!BD.sound.ready) queue.length = 0; return; }
+    speaking = true;
+    const text = queue.shift();
+    try { await speak(text); } catch (e) {}
+    speaking = false;
+    if (queue.length) setTimeout(drain, 250);
+  }
+  const ttsBroken = { gemini: false };
+  async function speak(text) {
+    if (data.features.gemini_tts && !ttsBroken.gemini) {
+      try {
+        const res = await fetch("/api/announce?text=" + encodeURIComponent(text), { credentials: "same-origin" });
+        if (!res.ok) throw new Error("tts " + res.status);
+        const url = URL.createObjectURL(await res.blob());
+        await new Promise((ok, bad) => { const a = new Audio(url); a.onended = ok; a.onerror = bad; a.play().catch(bad); });
+        URL.revokeObjectURL(url);
+        return;
+      } catch (e) { console.warn("Gemini voice failed, using browser voice", e); ttsBroken.gemini = true; setTimeout(() => ttsBroken.gemini = false, 60000); }
+    }
+    if ("speechSynthesis" in window) {
+      await new Promise(ok => {
+        const u = new SpeechSynthesisUtterance(text); u.lang = lang(); u.rate = 0.95;
+        const voice = speechSynthesis.getVoices().find(v => v.lang && v.lang.replace("_", "-").toLowerCase().startsWith(lang().slice(0, 2)));
+        if (voice) u.voice = voice;
+        u.onend = ok; u.onerror = ok; speechSynthesis.speak(u); setTimeout(ok, 6000);
+      });
+    }
+  }
+  function detectEvents(next) {
+    if (!prev) return;
+    const before = new Map(prev.tables.map(t => [t.id, t.session]));
+    next.tables.forEach(t => {
+      const s = t.session, p = before.get(t.id);
+      if (!s) return;
+      const same = p && p.id === s.id;
+      if (s.status === "WAITING_APPROVAL" && !same) alertEvent("start", t.number);
+      const oldPending = new Set(same ? p.orders.filter(o => o.status === "PENDING").map(o => o.id) : []);
+      if (s.orders.some(o => o.status === "PENDING" && !oldPending.has(o.id))) alertEvent("order", t.number);
+      const oldCalls = new Set(same ? p.waiter_calls.map(c => c.id) : []);
+      if (s.waiter_calls.some(c => !oldCalls.has(c.id))) alertEvent("waiter", t.number);
+      if (s.status === "BILL_REQUESTED" && (!same || p.status !== "BILL_REQUESTED")) alertEvent("bill", t.number);
+      if (s.status === "PAID" && (!same || p.status !== "PAID")) alertEvent("paid", t.number);
+    });
+  }
+
+  // ---------------------------------------------------------------- grid
+  function cardHtml(t, v) {
+    const s = t.session;
+    let body;
+    if (!s) body = `<div class="idle">Free · waiting for guests</div>`;
+    else {
+      const info = [`👥 ${s.guests}`, `🍽 ${s.item_count} item${s.item_count === 1 ? "" : "s"}`, `⏱ ${BD.ago(s.started_at)}`];
+      let acts = "";
+      if (s.status === "WAITING_APPROVAL") acts = `<button class="btn sm mint" data-a="approve" data-s="${s.id}">Approve</button><button class="btn-ghost sm" data-a="reject" data-s="${s.id}">Reject</button>`;
+      else if (s.pending_count) { const o = s.orders.find(x => x.status === "PENDING"); acts = `<button class="btn sm mint" data-a="accept" data-o="${o.id}">Accept ${BD.rupees(o.total_paise)}</button><button class="btn-ghost sm" data-a="rejorder" data-o="${o.id}">Reject</button>`; }
+      else if (s.status === "BILL_REQUESTED") acts = `<button class="btn sm violet" data-a="cash" data-s="${s.id}">Paid in cash</button>`;
+      else if (s.status === "PAID") acts = `<button class="btn sm mint" data-a="free" data-s="${s.id}">Free table</button>`;
+      body = `<div class="info">${info.map(i => `<span>${i}</span>`).join("")}</div>
+        <div class="total">${BD.rupees(s.bill_paise)}</div>
+        ${acts ? `<div class="acts">${acts}</div>` : ""}`;
+    }
+    return `${v.waiter ? `<span class="bell" title="Waiter called">🔔</span>` : ""}
+      <div class="top"><div class="num"><small>TABLE</small>${t.number}</div><span class="st">${BD.esc(v.stateLabel)}</span></div>${body}`;
+  }
+  function renderGrid() {
+    const grid = $("gridView"), seen = new Set();
+    data.tables.forEach((t, i) => {
+      const v = viewOf(t); seen.add(t.id);
+      let el = cards.get(t.id);
+      if (!el) {
+        el = document.createElement("article"); el.className = "tcard"; el.tabIndex = 0; el.dataset.tilt = "7"; el.dataset.tid = t.id;
+        el.style.animationDelay = (i * 0.035) + "s"; el.setAttribute("role", "button");
+        cards.set(t.id, el); grid.appendChild(el);
+      }
+      const html = cardHtml(t, v), sig = html + v.color + v.flash;
+      if (el._sig !== sig) {
+        el._sig = sig; el.innerHTML = html;
+        el.style.setProperty("--c", v.color);
+        el.classList.toggle("flash", v.flash); el.classList.toggle("empty", v.state === "empty");
+        el.setAttribute("aria-label", `Table ${t.number}: ${v.stateLabel}`);
+      }
+      if (grid.children[i] !== el) grid.insertBefore(el, grid.children[i] || null);
+    });
+    cards.forEach((el, id) => { if (!seen.has(id)) { el.remove(); cards.delete(id); } });
+    BD.tilt(grid);
+  }
+
+  function renderStats() {
+    const ts = data.tables, active = ts.filter(t => t.session);
+    const needs = active.reduce((n, t) => n + (t.session.status === "WAITING_APPROVAL" ? 1 : 0) + t.session.pending_count + t.session.waiter_calls.length, 0);
+    const open = active.filter(t => ["OPEN", "BILL_REQUESTED"].includes(t.session.status));
+    const set = (id, val) => { const el = $(id); if (el.textContent !== String(val)) { el.textContent = val; el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); } };
+    set("stBusy", active.length); $("stBusyOf").textContent = `of ${ts.length} tables`;
+    set("stNeeds", needs);
+    set("stBills", BD.rupees(open.reduce((n, t) => n + t.session.bill_paise, 0))); $("stBillsN").textContent = `${open.length} table${open.length === 1 ? "" : "s"}`;
+    set("stRev", BD.rupees(data.stats.revenue_today_paise)); $("stRevN").textContent = `${data.stats.bills_today} bill${data.stats.bills_today === 1 ? "" : "s"}`;
+    document.title = needs ? `(${needs}) Cashier Dashboard` : "Cashier Dashboard";
+  }
+
+  // ---------------------------------------------------------------- drawer
+  function renderDrawer() {
+    if (openTable == null) return;
+    const t = data.tables.find(x => x.id === openTable);
+    if (!t) return closeDrawer();
+    const v = viewOf(t), s = t.session, d = $("drawer");
+    let html = `<div class="d-head"><div><div class="eyebrow" style="color:${v.color}">${BD.esc(v.stateLabel)}</div><div class="d-num">Table ${t.number}</div></div><button class="btn-ghost sm" id="dClose" aria-label="Close">✕</button></div>`;
+    if (!s) {
+      html += `<div class="glass card center" style="margin-top:20px"><div style="font-size:2.6rem" class="float">🪑</div><p class="muted">This table is free. When guests scan its QR code and tap “Start ordering”, it lights up yellow here.</p></div>`;
+    } else {
+      html += `<div class="d-meta"><div><span>Bill</span><b>${BD.rupees(s.bill_paise)}</b></div><div><span>Guests</span><b>${s.guests}</b></div><div><span>Join code</span><b class="code-big">${s.status === "WAITING_APPROVAL" ? "····" : BD.esc(s.join_code)}</b></div></div>`;
+      s.waiter_calls.forEach(c => html += `<div class="waiter-row"><span>🔔 Needs help${c.reason ? " · " + BD.esc(c.reason) : ""} <span class="faint small">${BD.ago(c.created_at)}</span></span><button class="btn sm" data-a="wdone" data-c="${c.id}">Done</button></div>`);
+      if (s.status === "WAITING_APPROVAL") {
+        html += `<div class="notice" style="margin-bottom:14px">Someone at table ${t.number} wants to start ordering. Glance at the table: if nobody is sitting there, reject it.</div>
+          <div class="row"><button class="btn mint grow" data-a="approve" data-s="${s.id}">Approve table</button><button class="btn-ghost" data-a="reject" data-s="${s.id}">Reject</button></div>`;
+      }
+      if (s.payment && s.payment.status === "ACTIVE" && s.status === "BILL_REQUESTED") html += `<div class="notice" style="margin-bottom:12px">💳 Guest opened a UPI payment link for ${BD.rupees(s.payment.amount_paise)}. Waiting for Cashfree to confirm…</div>`;
+      if (s.status === "PAID") html += `<div class="notice" style="border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1);color:#bbf7d0;margin-bottom:12px">✓ Paid online · ${BD.rupees(s.payment ? s.payment.amount_paise : s.bill_paise)} · confirmed by Cashfree</div>`;
+      if (!s.orders.length && s.status !== "WAITING_APPROVAL") html += `<p class="muted center" style="margin:30px 0">No orders yet.</p>`;
+      s.orders.slice().reverse().forEach((o, i) => {
+        const n = s.orders.length - i;
+        let acts = "";
+        if (o.status === "PENDING") acts = `<button class="btn sm mint" data-a="accept" data-o="${o.id}">Accept</button><button class="btn-ghost sm" data-a="rejorder" data-o="${o.id}">Reject</button>`;
+        else if (o.status === "ACCEPTED") acts = `<button class="btn sm" data-a="preparing" data-o="${o.id}">Preparing</button><button class="btn-ghost sm" data-a="served" data-o="${o.id}">Served</button>`;
+        else if (o.status === "PREPARING") acts = `<button class="btn sm mint" data-a="served" data-o="${o.id}">Mark served</button>`;
+        html += `<div class="order ${o.status}"><div class="row spread"><strong>Round ${n} <span class="faint small">· ${BD.ago(o.created_at)}</span></strong><span class="status-tag s-${o.status}">${o.status.toLowerCase()}</span></div>
+          <div style="margin-top:8px">${o.items.map(it => `<div class="oi"><span>${BD.foodEmoji(it.name)} ${it.qty} × ${BD.esc(it.name)}</span><span class="mono">${BD.rupees(it.qty * it.unit_price_paise)}</span></div>`).join("")}</div>
+          <div class="oi" style="border-top:1px dashed var(--line-2);margin-top:6px;padding-top:8px"><span class="muted">Total</span><strong class="mono">${BD.rupees(o.total_paise)}</strong></div>
+          ${o.status === "REJECTED" && o.reject_reason ? `<div class="small" style="color:#ff8fa3">Reason: ${BD.esc(o.reject_reason)}</div>` : ""}
+          ${acts ? `<div class="acts">${acts}</div>` : ""}</div>`;
+      });
+      const foot = [];
+      if (["OPEN", "BILL_REQUESTED"].includes(s.status)) foot.push(`<button class="btn violet block" data-a="cash" data-s="${s.id}">💵 Paid in cash · ${BD.rupees(s.bill_paise)}</button>`);
+      if (s.status !== "WAITING_APPROVAL") foot.push(`<button class="${s.status === "PAID" ? "btn mint" : "btn-ghost"} block" data-a="free" data-s="${s.id}">Free table${s.status === "PAID" ? "" : " (end session)"}</button>`);
+      if (foot.length) html += `<div class="d-foot">${foot.join("")}</div>`;
+    }
+    const scroll = d.scrollTop;
+    if (d._html !== html) { d._html = html; d.innerHTML = html; d.scrollTop = scroll; $("dClose").onclick = closeDrawer; }
+  }
+  function openDrawer(id) { openTable = id; $("drawer")._html = ""; renderDrawer(); $("ov").classList.add("show"); $("drawer").classList.add("show"); }
+  function closeDrawer() { openTable = null; $("ov").classList.remove("show"); $("drawer").classList.remove("show"); }
+  $("ov").onclick = () => { closeDrawer(); closeReason(); };
+  addEventListener("keydown", e => { if (e.key === "Escape") { closeDrawer(); closeReason(); } });
+
+  // ---------------------------------------------------------------- actions
+  async function act(btn) {
+    const a = btn.dataset.a, sid = btn.dataset.s, oid = btn.dataset.o;
+    const tbl = data.tables.find(t => t.session && (String(t.session.id) === sid || t.session.orders.some(o => String(o.id) === oid)));
+    try {
+      if (a === "rejorder") return openReason(oid);
+      if (a === "cash") {
+        const amt = tbl ? BD.rupees(tbl.session.bill_paise) : "";
+        if (!confirm(`Mark ${amt} as paid in CASH and close table ${tbl ? tbl.number : ""}?`)) return;
+      }
+      if (a === "free" && tbl && tbl.session.status !== "PAID" && tbl.session.bill_paise > 0) {
+        if (!confirm(`Table ${tbl.number} has an unpaid bill of ${BD.rupees(tbl.session.bill_paise)}.\n\nFree the table anyway? (Use “Paid in cash” if they paid cash.)`)) return;
+      }
+      BD.busy(btn, true);
+      const map = {
+        approve: [`/api/session/${sid}/approve`], reject: [`/api/session/${sid}/reject`],
+        accept: [`/api/orders/${oid}/status`, { status: "ACCEPTED" }], preparing: [`/api/orders/${oid}/status`, { status: "PREPARING" }],
+        served: [`/api/orders/${oid}/status`, { status: "SERVED" }], cash: [`/api/session/${sid}/cash`],
+        free: [`/api/session/${sid}/free${tbl && tbl.session.status !== "PAID" ? "?force=1" : ""}`],
+        wdone: [`/api/waiter-calls/${btn.dataset.c}/done`],
+      };
+      const [url, body] = map[a];
+      await BD.api(url, { method: "POST", body: body || {} });
+      BD.sound.chime("tap"); BD.buzz();
+      const msg = { approve: "Table approved", reject: "Request rejected", accept: "Order accepted", preparing: "Marked preparing", served: "Marked served", cash: "Paid in cash. Table closed", free: "Table is free", wdone: "Done" }[a];
+      BD.toast(msg, "ok", 2200);
+      if (a === "free" || a === "cash") closeDrawer();
+      await poll(true);
+    } catch (x) { BD.toast(x.message, "bad"); BD.busy(btn, false); await poll(true); }
+  }
+  document.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-a]");
+    if (btn) { e.stopPropagation(); unlockSound(); act(btn); return; }
+    const card = e.target.closest(".tcard");
+    if (card) openDrawer(Number(card.dataset.tid));
+  });
+  document.addEventListener("keydown", e => {
+    const card = e.target.closest && e.target.closest(".tcard");
+    if (card && (e.key === "Enter" || e.key === " ") && !e.target.closest("button")) { e.preventDefault(); openDrawer(Number(card.dataset.tid)); }
+  });
+
+  // reject-with-reason modal
+  function openReason(oid) { rejectTarget = oid; $("reasonText").value = ""; $("ov").classList.add("show"); $("reasonModal").classList.add("show"); }
+  function closeReason() { rejectTarget = null; $("reasonModal").classList.remove("show"); if (openTable == null) $("ov").classList.remove("show"); }
+  $("reasons").addEventListener("click", e => { const p = e.target.closest("[data-r]"); if (p) $("reasonText").value = p.dataset.r; });
+  $("reasonCancel").onclick = closeReason;
+  $("reasonGo").onclick = async () => {
+    const oid = rejectTarget; if (!oid) return;
+    BD.busy($("reasonGo"), true);
+    try { await BD.api(`/api/orders/${oid}/status`, { body: { status: "REJECTED", reason: $("reasonText").value.trim() } }); BD.toast("Order rejected", "ok"); }
+    catch (x) { BD.toast(x.message, "bad"); }
+    BD.busy($("reasonGo"), false); closeReason(); poll(true);
+  };
+
+  // ---------------------------------------------------------------- sound
+  function unlockSound() {
+    if (BD.sound.ready) return;
+    BD.sound.unlock();
+    try { speechSynthesis && speechSynthesis.getVoices(); } catch (e) {}
+    setTimeout(updateSoundBtn, 60);
+  }
+  function updateSoundBtn() {
+    const b = $("soundBtn");
+    if (BD.sound.ready) { b.textContent = data && data.features.kannada_alerts ? "🔊 Sound + voice on" : "🔊 Sound on"; b.classList.remove("need"); b.classList.add("active"); }
+    else { b.textContent = "🔔 Turn on sound"; b.classList.add("need"); b.classList.remove("active"); }
+  }
+  $("soundBtn").onclick = () => {
+    unlockSound();
+    setTimeout(() => { BD.sound.chime("order"); if (data && data.features.kannada_alerts) { queue.push(phrase("order", 1)); drain(); } }, 120);
+  };
+  document.addEventListener("pointerdown", unlockSound, { once: true });
+
+  // ---------------------------------------------------------------- 3D floor
+  function setView(v) {
+    view = v; BD.store.set("bd_view", v);
+    document.querySelectorAll(".seg button").forEach(b => { const on = b.dataset.view === v; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
+    $("gridView").classList.toggle("hidden", v !== "grid");
+    $("floorView").classList.toggle("hidden", v !== "floor");
+    if (v === "floor") loadFloor();
+    if (window.Floor3D) window.Floor3D.visible = v === "floor";
+  }
+  function loadFloor() {
+    if (floorLoaded) { if (window.Floor3D && window.Floor3D.ready) { window.Floor3D.resize(); pushFloor(); } return; }
+    floorLoaded = true;
+    import("/static/js/floor3d.js?v=3").then(() => {
+      window.Floor3D.mount($("floorMount"), id => openDrawer(id));
+      window.Floor3D.visible = view === "floor";
+      pushFloor();
+    }).catch(e => {
+      console.error(e);
+      $("floorMount").innerHTML = `<div class="center muted" style="padding:80px 20px">The 3D view needs an internet connection (it loads Three.js). The grid view works offline.</div>`;
+    });
+  }
+  function pushFloor() { if (window.Floor3D && window.Floor3D.ready && data) window.Floor3D.update(data.tables.map(viewOf)); }
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => setView(b.dataset.view));
+
+  // ---------------------------------------------------------------- polling
+  async function poll(force) {
+    if (polling && !force) return;
+    polling = true;
+    try {
+      const next = await BD.api("/api/dashboard");
+      detectEvents(next);
+      prev = next; data = next; failures = 0;
+      $("live").classList.remove("off"); $("live").lastChild.textContent = "Live";
+      $("rname").textContent = data.restaurant.name;
+      if (!data.tables.length) {
+        cards.clear();
+        $("gridView").innerHTML = `<div class="glass card center" style="grid-column:1/-1"><p>No tables yet. <a href="/owner/setup">Set up your tables</a> to get QR codes.</p></div>`;
+      } else renderGrid();
+      renderStats(); renderDrawer(); pushFloor(); updateSoundBtn();
+    } catch (x) {
+      if (x.status === 401) { location.href = "/owner/login?next=/dashboard"; return; }
+      failures++;
+      if (failures > 1) { $("live").classList.add("off"); $("live").lastChild.textContent = "Reconnecting"; }
+    } finally { polling = false; }
+  }
+  function tickClock() { $("clock").textContent = new Date().toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }); }
+  tickClock(); setInterval(tickClock, 15000);
+  setView(view);
+  poll(true);
+  setInterval(() => { if (!document.hidden) poll(); }, 2000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) poll(true); });
+})();

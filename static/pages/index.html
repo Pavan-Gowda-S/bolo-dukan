@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Bolo Dukaan</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+<style>
+  .hero { min-height: calc(100dvh - 66px); display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; padding: 40px 0 80px; }
+  .hero h1 { font-size: clamp(2.6rem, 6.4vw, 5.4rem); }
+  .hero p.lead { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--muted); max-width: 34ch; margin: 22px 0 30px; }
+  .kn { font-family: "Noto Sans Kannada", var(--font); font-weight: 700; }
+  .stage { position: relative; height: 560px; perspective: 1400px; }
+  .rig { position: absolute; inset: 0; transform-style: preserve-3d; animation: rig 14s ease-in-out infinite; }
+  @keyframes rig { 0%,100% { transform: rotateY(-16deg) rotateX(8deg); } 50% { transform: rotateY(12deg) rotateX(4deg); } }
+  .float-card { position: absolute; border-radius: 26px; padding: 22px; transform-style: preserve-3d; }
+  .qr-card { width: 270px; left: 8%; top: 40px; transform: translateZ(40px) rotate(-5deg); background: linear-gradient(160deg, #fff7ea, #ffe7c7); color: #1a0b07; box-shadow: 0 50px 80px -30px rgba(0,0,0,.8); }
+  .qr-card .qr { width: 100%; aspect-ratio: 1; border-radius: 16px; background: #fff; margin: 14px 0 12px; padding: 12px; }
+  .qr-card .qr svg { width: 100%; height: 100%; display: block; }
+  .ticket { width: 290px; right: 0; top: 190px; transform: translateZ(120px) rotate(4deg); }
+  .ticket .line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line-2); font-weight: 600; }
+  .paid-badge { left: 22%; bottom: 30px; transform: translateZ(200px) rotate(-3deg); display: flex; gap: 14px; align-items: center; padding: 16px 20px; }
+  .paid-badge .tick { width: 46px; height: 46px; border-radius: 50%; background: var(--grad-mint); display: grid; place-items: center; color: #032019; font-weight: 900; font-size: 1.4rem; box-shadow: 0 0 30px rgba(46,230,166,.6); }
+  .mic-orb { right: 14%; top: 10px; width: 92px; height: 92px; border-radius: 50%; padding: 0; display: grid; place-items: center; font-size: 2.2rem; background: var(--grad-cool); transform: translateZ(160px); box-shadow: 0 0 0 10px rgba(155,92,255,.15), 0 0 0 22px rgba(155,92,255,.07), 0 30px 60px -20px rgba(80,40,200,.8); animation: micPulse 2.4s ease-in-out infinite; }
+  @keyframes micPulse { 50% { box-shadow: 0 0 0 16px rgba(155,92,255,.2), 0 0 0 34px rgba(155,92,255,.06), 0 30px 60px -20px rgba(80,40,200,.8); } }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 30px 0 90px; }
+  .feature { padding: 26px; min-height: 210px; }
+  .feature .ico { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; font-size: 1.6rem; margin-bottom: 18px; background: rgba(255,255,255,.07); border: 1px solid var(--line); transform: translateZ(40px); }
+  .feature h3 { margin-bottom: 8px; }
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; counter-reset: step; margin: 30px 0 80px; }
+  .flow .step { padding: 20px 16px; text-align: center; position: relative; }
+  .flow .step::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 34px; height: 34px; margin: 0 auto 12px; border-radius: 50%; background: var(--grad-hot); color: #1a0b07; font-weight: 800; }
+  .cta { text-align: center; padding: clamp(30px, 6vw, 60px); margin-bottom: 80px; }
+  footer { padding: 30px 0 50px; color: var(--faint); font-size: .86rem; text-align: center; }
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; padding-top: 24px; }
+    .stage { height: 470px; margin-top: -10px; }
+    .features { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 520px) {
+    .stage { height: 420px; transform: scale(.82); transform-origin: top center; margin-bottom: -60px; }
+    .qr-card { left: 0; } .ticket { right: -20px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar"><div class="container">
+    <a class="brand" href="/"><span class="brand-mark" id="mark"></span><span class="word">Bolo Dukaan</span></a>
+    <nav class="nav-links"><a href="/owner/login">Log in</a><a href="/owner/signup" class="active">Get started</a></nav>
+  </div></header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="eyebrow reveal">For restaurants · ಹೋಟೆಲ್‌ಗಳಿಗೆ</div>
+        <h1 class="reveal" style="--d:.08s; margin-top:16px">Every table,<br><span class="hot-text serif-i">talking</span> to you.</h1>
+        <p class="lead reveal" style="--d:.16s">Set up in minutes. A QR code on every table. Guests order and pay from their phones, by tapping or just by saying <span class="kn">“ಎರಡು ಮಸಾಲೆ ದೋಸೆ”</span>. You run it all from one screen.</p>
+        <div class="row wrap reveal" style="--d:.24s">
+          <a class="btn lg" href="/owner/signup">Create my restaurant →</a>
+          <a class="btn-ghost" href="/owner/login">I already have one</a>
+        </div>
+        <div class="row wrap reveal" style="--d:.32s; margin-top:26px; gap:8px">
+          <span class="chip"><span class="dot" style="color:var(--mint)"></span>Voice ordering in Kannada, Hindi, English</span>
+          <span class="chip"><span class="dot" style="color:var(--marigold)"></span>UPI via Cashfree</span>
+        </div>
+      </div>
+      <div class="stage reveal" style="--d:.2s" aria-hidden="true">
+        <div class="rig">
+          <div class="float-card qr-card">
+            <div class="row spread"><strong style="font-family:var(--font-display);font-size:1.3rem">Table 5</strong><span style="font-weight:800;font-size:.8rem;opacity:.6">SCAN TO ORDER</span></div>
+            <div class="qr" id="fakeqr"></div>
+            <div style="font-size:.82rem;font-weight:700;opacity:.7">Wi-Fi · Dosa-Corner · ****</div>
+          </div>
+          <div class="float-card glass ticket">
+            <div class="row spread" style="margin-bottom:8px"><strong>Table 5 · Order #12</strong><span class="status-tag s-PENDING">New</span></div>
+            <div class="line"><span>🥞 2 × Masala Dosa</span><span>₹180</span></div>
+            <div class="line"><span>☕ 1 × Filter Coffee</span><span>₹40</span></div>
+            <div class="line" style="border:0"><span class="muted">Total</span><span style="font-size:1.2rem" class="hot-text">₹220</span></div>
+            <div class="row" style="margin-top:10px"><span class="btn sm mint grow">Accept</span><span class="btn-ghost sm">Reject</span></div>
+          </div>
+          <div class="float-card glass paid-badge"><div class="tick">✓</div><div><strong>Paid ₹220</strong><div class="small muted">UPI · verified with Cashfree</div></div></div>
+          <div class="float-card mic-orb">🎙️</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow reveal">What you get</div>
+      <h2 class="reveal" style="--d:.06s;margin-top:10px">A waiter at every table.<br><span class="muted serif-i">Without hiring one.</span></h2>
+      <div class="features">
+        <article class="glass feature reveal" data-tilt style="--d:.05s"><div class="ico">📸</div><h3>Menu from a photo</h3><p class="muted">Snap your paper menu. Gemini reads every dish and price. You check it, tap save.</p></article>
+        <article class="glass feature reveal" data-tilt style="--d:.12s"><div class="ico">🎙️</div><h3>Order by talking</h3><p class="muted">“₹800, dinner for 4.” Guests speak in their language and the cart fills itself.</p></article>
+        <article class="glass feature reveal" data-tilt style="--d:.19s"><div class="ico">🧾</div><h3>One bill, many phones</h3><p class="muted">Friends join with a 4-digit code. Every round lands on the same bill.</p></article>
+        <article class="glass feature reveal" data-tilt style="--d:.05s"><div class="ico">🔔</div><h3>Alerts in Kannada</h3><p class="muted">“ಟೇಬಲ್ 5, ಹೊಸ ಆರ್ಡರ್.” The dashboard tells the kitchen out loud.</p></article>
+        <article class="glass feature reveal" data-tilt style="--d:.12s"><div class="ico">💸</div><h3>Pay by UPI</h3><p class="muted">Cashfree payment links. Marked paid only after Cashfree confirms it.</p></article>
+        <article class="glass feature reveal" data-tilt style="--d:.19s"><div class="ico">🛡️</div><h3>No prank orders</h3><p class="muted">The cashier approves each table. Codes die when the table is freed.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow reveal">How a table works</div>
+      <div class="flow">
+        <div class="glass step reveal" style="--d:.0s"><strong>Scan</strong><div class="small muted">QR on the table</div></div>
+        <div class="glass step reveal" style="--d:.06s"><strong>Approve</strong><div class="small muted">Cashier taps once</div></div>
+        <div class="glass step reveal" style="--d:.12s"><strong>Order</strong><div class="small muted">Tap or talk</div></div>
+        <div class="glass step reveal" style="--d:.18s"><strong>Bill</strong><div class="small muted">Totalled by the server</div></div>
+        <div class="glass step reveal" style="--d:.24s"><strong>Pay</strong><div class="small muted">UPI, then table freed</div></div>
+      </div>
+    </section>
+
+    <section class="glass cta card-lg reveal">
+      <h2>From a paper menu to a voice-ordering restaurant <span class="hot-text serif-i">in 2 minutes.</span></h2>
+      <div class="row wrap" style="justify-content:center;margin-top:26px"><a class="btn lg" href="/owner/signup">Start free →</a><a class="btn-ghost" href="/dashboard">Open dashboard</a></div>
+    </section>
+  </main>
+  <footer>Bolo Dukaan for Restaurants · built for the counter, the kitchen and the table</footer>
+</div>
+<script>
+document.getElementById("mark").innerHTML = BD.logoSvg;
+// decorative QR-style pattern for the hero card
+(function () {
+  const n = 25; let seed = 7, out = "";
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const finder = (x, y) => x >= 0 && x < 7 && y >= 0 && y < 7;
+  const inFinder = (x, y) => finder(x, y) || finder(x - (n - 7), y) || finder(x, y - (n - 7));
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (!inFinder(x, y) && rnd() > 0.52) out += `<rect x="${x}" y="${y}" width="1" height="1" rx=".25"/>`;
+  const f = (x, y) => `<rect x="${x + .5}" y="${y + .5}" width="6" height="6" rx="1.6" fill="none" stroke="#1a0b07" stroke-width="1"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" rx=".8"/>`;
+  document.getElementById("fakeqr").innerHTML = `<svg viewBox="0 0 ${n} ${n}" fill="#1a0b07">${out}${f(0, 0)}${f(n - 7, 0)}${f(0, n - 7)}</svg>`;
+})();
+</script>
+</body>
+</html>

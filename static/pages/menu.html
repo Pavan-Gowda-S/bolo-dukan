@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Menu Editor</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+<style>
+  .head { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between; padding: 34px 0 22px; }
+  .methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 26px; }
+  .method { padding: 22px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; }
+  .method .ico { font-size: 1.9rem; width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; background: rgba(255,255,255,.07); border: 1px solid var(--line); }
+  .method .act { margin-top: auto; }
+  .method.ai { background: linear-gradient(160deg, rgba(155,92,255,.18), rgba(255,61,154,.08)); border-color: rgba(155,92,255,.35); }
+  .method.off { opacity: .55; }
+  .drop { border: 2px dashed var(--line-2); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all .2s; color: var(--muted); font-weight: 600; font-size: .9rem; }
+  .drop.over { border-color: var(--marigold); background: rgba(255,193,69,.08); color: var(--marigold); }
+  .cat { margin: 22px 0 10px; display: flex; align-items: center; gap: 10px; }
+  .cat h3 { font-size: 1.1rem; }
+  .cat .n { color: var(--faint); font-weight: 700; font-size: .85rem; }
+  .dish { display: grid; grid-template-columns: 50px 1fr auto auto auto; gap: 14px; align-items: center; padding: 12px 16px; margin-bottom: 8px; border-radius: 16px; animation: slideIn .45s var(--ease) both; }
+  .dish .em { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; background: radial-gradient(circle at 30% 30%, hsla(var(--h), 90%, 70%, .35), hsla(var(--h), 80%, 40%, .12)); border: 1px solid hsla(var(--h), 80%, 70%, .3); }
+  .dish .nm { font-weight: 700; } .dish .lc { color: var(--muted); font-size: .88rem; }
+  .dish .pr { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .dish.unavail .nm, .dish.unavail .pr { opacity: .45; text-decoration: line-through; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-14px); } }
+  .review-row td { padding: 6px 4px; }
+  .review-row input.input-sm { min-width: 0; }
+  .empty { text-align: center; padding: 50px 20px; }
+  .empty .big { font-size: 3rem; }
+  .scan-anim { position: relative; height: 160px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,.04); border: 1px solid var(--line); margin: 10px 0; }
+  .scan-anim::before { content: ""; position: absolute; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, transparent, rgba(155,92,255,.45), transparent); animation: scan 1.6s ease-in-out infinite; }
+  .scan-anim img { width: 100%; height: 100%; object-fit: cover; opacity: .6; }
+  @keyframes scan { 0% { top: -40%; } 100% { top: 100%; } }
+  @media (max-width: 900px) { .methods { grid-template-columns: 1fr; } .dish { grid-template-columns: 44px 1fr auto; } .dish .sw { grid-column: 2; } .dish .acts { grid-column: 3; } .dish .em { width: 44px; height: 44px; } }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding-bottom:80px">
+    <div class="head reveal">
+      <div><div class="eyebrow" id="stepLbl">Menu</div><h2 style="margin-top:8px">Your <span class="hot-text serif-i">menu</span></h2><p class="muted" style="margin:6px 0 0" id="summary">Loading…</p></div>
+      <a class="btn" href="/owner/qr" id="doneBtn">Done · show my QR codes →</a>
+    </div>
+
+    <section class="methods">
+      <article class="glass method ai reveal" data-tilt="5" id="photoCard">
+        <div class="ico">📸</div>
+        <div><h3>Snap the paper menu</h3><p class="muted small" style="margin:6px 0 0">Gemini reads every dish and price. You check before saving.</p></div>
+        <div class="act"><label class="drop" id="photoDrop"><input type="file" accept="image/*" capture="environment" id="photoInput" hidden>Tap to take or choose a photo</label></div>
+      </article>
+      <article class="glass method reveal" data-tilt="5" style="--d:.06s">
+        <div class="ico">📄</div>
+        <div><h3>Upload a CSV</h3><p class="muted small" style="margin:6px 0 0">Columns: <span class="kbd">name</span> <span class="kbd">category</span> <span class="kbd">price</span> <span class="kbd">name_local</span>. Excel “Save as CSV” works. <a href="/static/sample_menu.csv" download>Sample file</a></p></div>
+        <div class="act"><label class="drop" id="csvDrop"><input type="file" accept=".csv,text/csv" id="csvInput" hidden><span id="csvTxt">Choose a .csv file</span></label></div>
+      </article>
+      <form class="glass method reveal" style="--d:.12s" id="addForm" novalidate>
+        <div class="row" style="gap:12px"><div class="ico">✍️</div><h3>Add one dish</h3></div>
+        <div class="row" style="gap:8px"><input class="input input-sm grow" name="name" placeholder="Masala Dosa" required><input class="input input-sm" name="price" placeholder="₹ 90" inputmode="decimal" style="width:90px"></div>
+        <div class="row" style="gap:8px"><input class="input input-sm grow" name="category" placeholder="Category (Dosa)" list="cats"><input class="input input-sm grow" name="name_local" placeholder="ಮಸಾಲೆ ದೋಸೆ (optional)"></div>
+        <button class="btn sm act" id="addBtn">+ Add dish</button>
+      </form>
+    </section>
+    <datalist id="cats"></datalist>
+
+    <section id="list"></section>
+  </main>
+</div>
+
+<div class="overlay" id="ov"></div>
+<div class="modal" id="review" role="dialog" aria-modal="true" aria-labelledby="rvTitle">
+  <div class="row spread"><h3 id="rvTitle">Check what Gemini found</h3><button class="btn-ghost sm" data-close>Close</button></div>
+  <div id="rvBody" style="margin-top:14px"></div>
+</div>
+<div class="modal" id="edit" role="dialog" aria-modal="true" aria-labelledby="edTitle" style="width:min(480px, calc(100% - 24px))">
+  <h3 id="edTitle">Edit dish</h3>
+  <form class="stack" id="editForm" style="margin-top:16px" novalidate>
+    <label class="field"><span>Name</span><input class="input" name="name" required></label>
+    <label class="field"><span>Local name</span><input class="input" name="name_local"></label>
+    <div class="row" style="gap:12px"><label class="field grow"><span>Category</span><input class="input" name="category" list="cats"></label><label class="field" style="width:130px"><span>Price (₹)</span><input class="input" name="price" inputmode="decimal"></label></div>
+    <label class="field"><span>Photo URL (optional)</span><input class="input" name="photo_url" placeholder="https://…"></label>
+    <div class="err" id="edErr"></div>
+    <div class="row"><button class="btn grow" id="edSave">Save</button><button type="button" class="btn-ghost" data-close>Cancel</button></div>
+  </form>
+</div>
+
+<script>
+BD.ownerNav("/owner/menu");
+const $ = id => document.getElementById(id);
+let items = [], features = {}, editing = null, reviewItems = [];
+if (BD.qs("onboarding")) $("stepLbl").textContent = "Step 3 of 3";
+
+const toPaise = v => { const n = parseFloat(String(v || "").replace(/[^\d.]/g, "")); return isFinite(n) ? Math.round(n * 100) : 0; };
+function openM(id) { $("ov").classList.add("show"); $(id).classList.add("show"); }
+function closeM() { $("ov").classList.remove("show"); document.querySelectorAll(".modal.show").forEach(m => m.classList.remove("show")); }
+$("ov").onclick = closeM;
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = closeM);
+addEventListener("keydown", e => { if (e.key === "Escape") closeM(); });
+
+async function load() {
+  const r = await BD.api("/api/owner/menu");
+  items = r.items; features = r.features; render();
+}
+function render() {
+  const n = items.length, cats = [...new Set(items.map(i => i.category))];
+  $("summary").textContent = n ? `${n} dish${n === 1 ? "" : "es"} in ${cats.length} categor${cats.length === 1 ? "y" : "ies"}` : "No dishes yet. Add some below.";
+  $("doneBtn").classList.toggle("hidden", !n);
+  $("cats").innerHTML = cats.map(c => `<option value="${BD.esc(c)}">`).join("");
+  if (!features.menu_photo) {
+    $("photoCard").classList.add("off");
+    $("photoDrop").innerHTML = `Needs <span class="kbd">GEMINI_API_KEY</span> in .env (or FEATURE_MENU_PHOTO is off)`;
+    $("photoDrop").style.cursor = "default";
+  }
+  if (!n) { $("list").innerHTML = `<div class="glass empty reveal in"><div class="big float">🍽️</div><h3 style="margin:10px 0 6px">An empty kitchen</h3><p class="muted">Snap your paper menu, upload a CSV, or add dishes one by one.</p></div>`; return; }
+  let html = "";
+  cats.forEach(c => {
+    const list = items.filter(i => i.category === c);
+    html += `<div class="cat"><h3>${BD.esc(c)}</h3><span class="n">${list.length}</span></div>`;
+    list.forEach((i, k) => {
+      html += `<div class="glass dish ${i.available ? "" : "unavail"}" style="--h:${BD.hueFor(i.category)};animation-delay:${k * 0.03}s">
+        <div class="em">${BD.foodEmoji(i.name, i.category)}</div>
+        <div><div class="nm">${BD.esc(i.name)}</div>${i.name_local ? `<div class="lc">${BD.esc(i.name_local)}</div>` : ""}</div>
+        <div class="pr">${BD.rupees(i.price_paise)}</div>
+        <label class="switch sw" title="Available today"><input type="checkbox" data-av="${i.id}" ${i.available ? "checked" : ""} aria-label="Available"><span></span></label>
+        <div class="row acts" style="gap:6px"><button class="btn-ghost sm" data-ed="${i.id}">Edit</button><button class="btn-ghost sm" data-del="${i.id}" aria-label="Delete">🗑</button></div>
+      </div>`;
+    });
+  });
+  $("list").innerHTML = html;
+}
+
+$("list").addEventListener("click", async e => {
+  const ed = e.target.closest("[data-ed]"), del = e.target.closest("[data-del]");
+  if (ed) {
+    editing = items.find(i => i.id == ed.dataset.ed);
+    const f = $("editForm");
+    f.name.value = editing.name; f.name_local.value = editing.name_local; f.category.value = editing.category;
+    f.price.value = editing.price_paise / 100; f.photo_url.value = editing.photo_url || ""; $("edErr").textContent = "";
+    openM("edit"); setTimeout(() => f.name.focus(), 50);
+  }
+  if (del) {
+    const it = items.find(i => i.id == del.dataset.del);
+    if (!confirm(`Remove “${it.name}” from the menu?`)) return;
+    try { await BD.api("/api/owner/menu/" + it.id, { method: "DELETE" }); items = items.filter(i => i !== it); render(); BD.toast("Removed " + it.name, "ok"); }
+    catch (x) { BD.toast(x.message, "bad"); }
+  }
+});
+$("list").addEventListener("change", async e => {
+  const av = e.target.closest("[data-av]"); if (!av) return;
+  const it = items.find(i => i.id == av.dataset.av);
+  try { await BD.api("/api/owner/menu/" + it.id, { method: "PUT", body: { ...it, available: av.checked } }); it.available = av.checked ? 1 : 0; render(); }
+  catch (x) { BD.toast(x.message, "bad"); av.checked = !av.checked; }
+});
+$("editForm").addEventListener("submit", async e => {
+  e.preventDefault(); const f = e.target;
+  const body = { name: f.name.value, name_local: f.name_local.value, category: f.category.value, price_paise: toPaise(f.price.value), photo_url: f.photo_url.value, available: !!editing.available };
+  BD.busy($("edSave"), true);
+  try { await BD.api("/api/owner/menu/" + editing.id, { method: "PUT", body }); closeM(); await load(); BD.toast("Saved", "ok"); }
+  catch (x) { $("edErr").textContent = x.message; }
+  BD.busy($("edSave"), false);
+});
+
+$("addForm").addEventListener("submit", async e => {
+  e.preventDefault(); const f = e.target;
+  const body = { name: f.name.value, category: f.category.value || "Menu", name_local: f.name_local.value, price_paise: toPaise(f.price.value) };
+  if (!body.name.trim()) return BD.toast("Enter a dish name", "bad");
+  if (body.price_paise < 100) return BD.toast("Enter a price (at least ₹1)", "bad");
+  BD.busy($("addBtn"), true);
+  try { await BD.api("/api/owner/menu", { body }); f.name.value = ""; f.price.value = ""; f.name_local.value = ""; f.name.focus(); await load(); BD.toast("Added " + body.name, "ok"); }
+  catch (x) { BD.toast(x.message, "bad"); }
+  BD.busy($("addBtn"), false);
+});
+
+// CSV
+function wireDrop(drop, input, handler) {
+  drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer.files[0]) handler(e.dataTransfer.files[0]); });
+  input.addEventListener("change", () => { if (input.files[0]) handler(input.files[0]); input.value = ""; });
+}
+wireDrop($("csvDrop"), $("csvInput"), async file => {
+  const fd = new FormData(); fd.append("file", file);
+  const txt = $("csvTxt"), old = txt.innerHTML;
+  txt.innerHTML = `<span class="spinner" style="display:inline-block;vertical-align:middle"></span> Reading ${BD.esc(file.name)}…`;
+  try { const r = await BD.api("/api/owner/menu/csv", { form: fd }); BD.toast(`Added ${r.added} dishes${r.skipped ? `, skipped ${r.skipped} rows without a name or price` : ""}`, "ok", 5000); await load(); }
+  catch (x) { BD.toast(x.message, "bad", 6000); }
+  txt.innerHTML = old;
+});
+
+// Photo → Gemini
+async function shrink(file) {
+  // Phone photos can be 10 MB; send a 2000px JPEG instead (faster, still sharp enough to read).
+  try {
+    const img = await createImageBitmap(file);
+    const scale = Math.min(1, 2000 / Math.max(img.width, img.height));
+    const c = document.createElement("canvas"); c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise(r => c.toBlob(b => r(b || file), "image/jpeg", 0.88));
+  } catch (e) { return file; }
+}
+wireDrop($("photoDrop"), $("photoInput"), async file => {
+  if (!features.menu_photo) return;
+  const url = URL.createObjectURL(file);
+  $("rvTitle").textContent = "Reading your menu…";
+  $("rvBody").innerHTML = `<div class="scan-anim"><img src="${url}" alt=""></div><p class="muted center">Gemini is reading dishes and prices. This takes 5–20 seconds.</p>`;
+  openM("review");
+  try {
+    const fd = new FormData(); fd.append("file", await shrink(file), "menu.jpg");
+    const r = await BD.api("/api/owner/menu/photo", { form: fd });
+    reviewItems = r.items.map(i => ({ ...i, keep: true }));
+    drawReview();
+  } catch (x) {
+    $("rvTitle").textContent = "Couldn't read that photo";
+    $("rvBody").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div><p class="muted small">Tip: lay the menu flat, fill the frame, avoid glare. Or upload a CSV instead.</p>`;
+  }
+});
+function drawReview() {
+  $("rvTitle").textContent = `Found ${reviewItems.length} dishes. Check them`;
+  $("rvBody").innerHTML = `<div style="overflow-x:auto"><table class="table-list"><thead><tr><th></th><th>Name</th><th>Local name</th><th>Category</th><th>₹</th></tr></thead><tbody>
+    ${reviewItems.map((i, k) => `<tr class="review-row"><td><input type="checkbox" data-k="${k}" data-f="keep" ${i.keep ? "checked" : ""} aria-label="Keep"></td>
+      <td><input class="input input-sm" data-k="${k}" data-f="name" value="${BD.esc(i.name)}"></td>
+      <td><input class="input input-sm" data-k="${k}" data-f="name_local" value="${BD.esc(i.name_local)}"></td>
+      <td><input class="input input-sm" data-k="${k}" data-f="category" value="${BD.esc(i.category)}" list="cats"></td>
+      <td><input class="input input-sm" data-k="${k}" data-f="price" value="${i.price_paise / 100}" inputmode="decimal" style="width:80px"></td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="row spread" style="margin-top:16px"><span class="muted small">Untick anything wrong. Fix names or prices right here.</span><button class="btn" id="rvSave">Save ${reviewItems.length} dishes</button></div>`;
+  $("rvBody").querySelectorAll("[data-k]").forEach(inp => inp.addEventListener("input", () => {
+    const it = reviewItems[inp.dataset.k], f = inp.dataset.f;
+    if (f === "keep") it.keep = inp.checked; else if (f === "price") it.price_paise = toPaise(inp.value); else it[f] = inp.value;
+    $("rvSave").textContent = `Save ${reviewItems.filter(i => i.keep).length} dishes`;
+  }));
+  $("rvSave").onclick = async () => {
+    const keep = reviewItems.filter(i => i.keep);
+    if (!keep.length) return BD.toast("Nothing ticked", "bad");
+    const bad = keep.find(i => !i.name.trim() || i.price_paise < 100);
+    if (bad) return BD.toast(`Check “${bad.name || "a dish"}”: it needs a name and a price`, "bad");
+    BD.busy($("rvSave"), true, "Saving…");
+    try { const r = await BD.api("/api/owner/menu/bulk", { body: { items: keep } }); closeM(); BD.toast(`Added ${r.added} dishes`, "ok"); BD.confetti(90); await load(); }
+    catch (x) { BD.toast(x.message, "bad"); BD.busy($("rvSave"), false); }
+  };
+}
+
+BD.requireOwner().then(load).catch(() => {});
+</script>
+</body>
+</html>

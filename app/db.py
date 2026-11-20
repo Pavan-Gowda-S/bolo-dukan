@@ -1,0 +1,181 @@
+"""SQLite storage. One small file in data/, no server needed."""
+import sqlite3
+from contextlib import contextmanager
+from datetime import datetime, timezone
+
+from .config import DB_PATH
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS restaurants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    language TEXT NOT NULL DEFAULT 'kn-IN',
+    wifi_name TEXT NOT NULL DEFAULT '',
+    wifi_password TEXT NOT NULL DEFAULT '',
+    table_count INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS owners (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS menu_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    name TEXT NOT NULL,
+    name_local TEXT NOT NULL DEFAULT '',
+    category TEXT NOT NULL DEFAULT 'Menu',
+    price_paise INTEGER NOT NULL,
+    available INTEGER NOT NULL DEFAULT 1,
+    photo_url TEXT NOT NULL DEFAULT '',
+    deleted INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS tables (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    number INTEGER NOT NULL,
+    token TEXT NOT NULL UNIQUE,
+    active INTEGER NOT NULL DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS table_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    table_id INTEGER NOT NULL REFERENCES tables(id),
+    join_code TEXT NOT NULL,
+    status TEXT NOT NULL,
+    guest_phone TEXT NOT NULL DEFAULT '',
+    started_at TEXT NOT NULL,
+    closed_at TEXT,
+    settled_paise INTEGER NOT NULL DEFAULT 0,
+    settled_at TEXT,
+    pay_method TEXT NOT NULL DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS session_guests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    token TEXT NOT NULL UNIQUE,
+    device_id TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    status TEXT NOT NULL,
+    reject_reason TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL REFERENCES orders(id),
+    menu_item_id INTEGER NOT NULL REFERENCES menu_items(id),
+    name TEXT NOT NULL,
+    qty INTEGER NOT NULL,
+    unit_price_paise INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    link_id TEXT NOT NULL UNIQUE,
+    link_url TEXT NOT NULL,
+    amount_paise INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL DEFAULT '',
+    paid_at TEXT
+);
+CREATE TABLE IF NOT EXISTS waiter_calls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    reason TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    done INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS game_scores (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    game TEXT NOT NULL,
+    player TEXT NOT NULL,
+    table_number INTEGER NOT NULL,
+    score INTEGER NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_scores ON game_scores(restaurant_id, game, score);
+CREATE TABLE IF NOT EXISTS join_attempts (
+    device_key TEXT PRIMARY KEY,
+    fails INTEGER NOT NULL DEFAULT 0,
+    blocked_until REAL NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_table ON table_sessions(table_id, status);
+CREATE INDEX IF NOT EXISTS idx_orders_session ON orders(session_id);
+CREATE INDEX IF NOT EXISTS idx_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_menu_rest ON menu_items(restaurant_id);
+"""
+
+# Session statuses
+WAITING_APPROVAL = "WAITING_APPROVAL"
+OPEN = "OPEN"
+BILL_REQUESTED = "BILL_REQUESTED"
+PAID = "PAID"
+CLOSED = "CLOSED"
+REJECTED = "REJECTED"
+PAID_CASH = "PAID_CASH"
+ACTIVE_SESSION_STATUSES = (WAITING_APPROVAL, OPEN, BILL_REQUESTED, PAID)
+
+# Order statuses
+PENDING = "PENDING"
+ACCEPTED = "ACCEPTED"
+PREPARING = "PREPARING"
+SERVED = "SERVED"
+ORDER_REJECTED = "REJECTED"
+BILLABLE_ORDER_STATUSES = (ACCEPTED, PREPARING, SERVED)
+
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def connect() -> sqlite3.Connection:
+    conn = sqlite3.connect(DB_PATH, timeout=15, check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+
+@contextmanager
+def db():
+    conn = connect()
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def init_db() -> None:
+    conn = connect()
+    try:
+        conn.execute("PRAGMA journal_mode = WAL")
+        conn.executescript(SCHEMA)
+        # Small migrations for databases made by older versions.
+        owner_cols = {r[1] for r in conn.execute("PRAGMA table_info(owners)")}
+        if "google_sub" not in owner_cols:
+            conn.execute("ALTER TABLE owners ADD COLUMN google_sub TEXT NOT NULL DEFAULT ''")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_owners_google ON owners(google_sub)")
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def row(r):
+    return dict(r) if r is not None else None
+
+
+def rows(rs):
+    return [dict(r) for r in rs]

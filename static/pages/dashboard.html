@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Cashier Dashboard</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body data-bg="calm">
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding-bottom:60px">
+    <section class="dash-head">
+      <div>
+        <div class="row" style="gap:10px"><span class="live" id="live"><i></i>Live</span><span class="muted small" id="clock"></span></div>
+        <h2 id="rname" style="margin-top:6px">Dashboard</h2>
+      </div>
+      <div class="row wrap" style="gap:10px">
+        <div class="seg" role="tablist" aria-label="View">
+          <button class="active" data-view="grid" role="tab" aria-selected="true">▦ Grid</button>
+          <button data-view="floor" role="tab" aria-selected="false">◈ 3D floor</button>
+        </div>
+        <button class="btn-ghost" id="soundBtn">🔔 Turn on sound</button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="glass stat" data-tilt="6"><span class="k">Tables busy</span><span class="v mono" id="stBusy">0</span><span class="s" id="stBusyOf">of 0</span></div>
+      <div class="glass stat hot" data-tilt="6"><span class="k">Needs you now</span><span class="v mono" id="stNeeds">0</span><span class="s">approvals · orders · help</span></div>
+      <div class="glass stat" data-tilt="6"><span class="k">Bills open</span><span class="v mono" id="stBills">₹0</span><span class="s" id="stBillsN">0 tables</span></div>
+      <div class="glass stat good" data-tilt="6"><span class="k">Collected today</span><span class="v mono" id="stRev">₹0</span><span class="s" id="stRevN">0 bills</span></div>
+    </section>
+
+    <section class="legend">
+      <span><i style="--c:var(--st-empty)"></i>Empty</span><span><i style="--c:var(--st-waiting)" class="fl"></i>Wants to start</span><span><i style="--c:var(--st-open)"></i>Ordering</span>
+      <span><i style="--c:var(--st-order)" class="fl"></i>New order</span><span><i style="--c:var(--st-bill)"></i>Bill requested</span><span><i style="--c:var(--st-paid)"></i>Paid</span><span><i style="--c:var(--st-alert)"></i>Waiter called</span>
+    </section>
+
+    <div id="feed" class="feed" aria-live="polite"></div>
+
+    <section id="gridView" class="tgrid"></section>
+    <section id="floorView" class="floor3d glass hidden"><div class="floor-hint">Drag to orbit · Ctrl + scroll to zoom · tap a table</div><div id="floorMount" class="floor-mount"></div></section>
+  </main>
+</div>
+
+<div class="overlay" id="ov"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
+<div class="modal" id="reasonModal" role="dialog" aria-modal="true" style="width:min(420px, calc(100% - 24px))">
+  <h3>Reject this order?</h3>
+  <p class="muted small" style="margin:6px 0 14px">The guest will see the reason.</p>
+  <div class="row wrap" id="reasons" style="gap:8px">
+    <button class="pill" data-r="Out of stock">Out of stock</button><button class="pill" data-r="Kitchen is closing">Kitchen closing</button><button class="pill" data-r="Please order at the counter">Order at counter</button><button class="pill" data-r="Duplicate order">Duplicate</button>
+  </div>
+  <input class="input" id="reasonText" placeholder="Or type a reason" style="margin-top:12px" maxlength="160">
+  <div class="row" style="margin-top:16px"><button class="btn danger grow" id="reasonGo">Reject order</button><button class="btn-ghost" id="reasonCancel">Cancel</button></div>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

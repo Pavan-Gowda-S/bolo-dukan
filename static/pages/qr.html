@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Table QR Codes</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+<style>
+  .head { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between; padding: 34px 0 22px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; padding-bottom: 80px; }
+  .qcard { border-radius: 26px; padding: 22px 22px 18px; background: linear-gradient(165deg, #fffaf1, #ffe9cc); color: #1a0b07; box-shadow: 0 40px 60px -30px rgba(0,0,0,.8), inset 0 1px 0 #fff; animation: rise .6s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: perspective(800px) rotateX(30deg) translateY(30px); } }
+  .qcard .top { display: flex; justify-content: space-between; align-items: center; }
+  .qcard .rname { font-weight: 800; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; opacity: .65; }
+  .qcard .tno { font-family: var(--font-display); font-weight: 700; font-size: 2.1rem; line-height: 1; margin: 10px 0 12px; }
+  .qcard .tno small { font-size: .9rem; font-family: var(--font); font-weight: 700; opacity: .55; margin-right: 6px; }
+  .qcard .qr { background: #fff; border-radius: 18px; padding: 12px; box-shadow: inset 0 0 0 2px #f2dcc0; }
+  .qcard .qr img { width: 100%; aspect-ratio: 1; }
+  .qcard .scan { text-align: center; font-weight: 800; margin: 12px 0 2px; font-size: 1.05rem; }
+  .qcard .kn { text-align: center; font-size: .86rem; opacity: .7; font-weight: 600; }
+  .qcard .wifi { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2c49e; font-size: .8rem; font-weight: 700; text-align: center; opacity: .75; }
+  .qcard .tools { display: flex; gap: 8px; margin-top: 12px; }
+  .qcard .tools a, .qcard .tools button { flex: 1; text-align: center; font-size: .78rem; font-weight: 800; padding: 8px; border-radius: 10px; background: rgba(26,11,7,.08); color: #1a0b07; border: 0; cursor: pointer; text-decoration: none; }
+  @media print {
+    @page { margin: 10mm; }
+    body { background: #fff !important; }
+    #bg3d, .grain, .topbar, .head, .notice, .no-print, .tools { display: none !important; }
+    .container { width: 100%; }
+    .cards { grid-template-columns: repeat(2, 1fr); gap: 10mm; padding: 0; }
+    .qcard { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container">
+    <div class="head reveal">
+      <div><div class="eyebrow">Print & stick on tables</div><h2 style="margin-top:8px"><span id="count">…</span> table <span class="hot-text serif-i">QR codes</span></h2></div>
+      <div class="row wrap"><button class="btn-ghost" onclick="location.reload()">↻ Refresh links</button><button class="btn" onclick="print()">🖨 Print cards</button><a class="btn cool" href="/dashboard">Open dashboard →</a></div>
+    </div>
+    <div id="warn"></div>
+    <div class="cards" id="cards"></div>
+  </main>
+</div>
+<script>
+BD.ownerNav("/owner/qr");
+const $ = id => document.getElementById(id);
+(async () => {
+  await BD.requireOwner();
+  const r = await BD.api("/api/owner/qr");
+  $("count").textContent = r.tables.length;
+  if (!r.tables.length) { $("cards").innerHTML = `<div class="glass card"><p>No tables yet. <a href="/owner/setup">Set up your tables</a>.</p></div>`; return; }
+  if (r.local_only) {
+    $("warn").innerHTML = `<div class="notice bad" style="margin-bottom:20px"><b>Phones can't open these codes yet.</b> They point to <span class="kbd">${BD.esc(r.base_url)}</span>, which only works on this computer.
+      Start ngrok in another window (<span class="kbd">ngrok http 8000</span>), then tap <b>Refresh links</b>. The codes switch to the HTTPS link automatically.</div>`;
+  } else if (!r.https) {
+    $("warn").innerHTML = `<div class="notice" style="margin-bottom:20px">These codes use <span class="kbd">${BD.esc(r.base_url)}</span>. Phones on the same Wi-Fi can open them, but the microphone (voice ordering) and Cashfree need HTTPS. Use ngrok for the demo.</div>`;
+  }
+  const rest = r.restaurant;
+  $("cards").innerHTML = r.tables.map((t, i) => `<article class="qcard" style="animation-delay:${i * 0.05}s">
+    <div class="top"><span class="rname">${BD.esc(rest.name)}</span><span style="font-size:1.2rem">🍽️</span></div>
+    <div class="tno"><small>TABLE</small>${t.number}</div>
+    <div class="qr"><img src="${t.svg}?v=${Date.now()}" alt="QR code for table ${t.number}" loading="lazy"></div>
+    <div class="scan">Scan to order & pay</div>
+    <div class="kn">ಆರ್ಡರ್ ಮಾಡಲು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ · बोलकर ऑर्डर करें</div>
+    ${rest.wifi_name ? `<div class="wifi">Wi-Fi: ${BD.esc(rest.wifi_name)}${rest.wifi_password ? " · " + BD.esc(rest.wifi_password) : ""}</div>` : ""}
+    <div class="tools"><a href="${BD.esc(t.url)}" target="_blank" rel="noopener">Open as guest</a><button data-copy="${BD.esc(t.url)}">Copy link</button></div>
+  </article>`).join("");
+  $("cards").addEventListener("click", async e => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    try { await navigator.clipboard.writeText(b.dataset.copy); BD.toast("Link copied", "ok"); } catch (_) { prompt("Copy this link:", b.dataset.copy); }
+  });
+})();
+</script>
+</body>
+</html>
