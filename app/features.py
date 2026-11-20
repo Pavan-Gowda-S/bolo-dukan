@@ -124,11 +124,12 @@ def claim_announcement(req: Request, ann_id: int):
 
 INTENT_PROMPT = """You extract structured data from what a restaurant guest said. They may speak Kannada, Hindi, Tamil, Telugu, English or a mix.
 Reply with ONE JSON object only, no other text:
-{"intent": "add_items" | "budget_order" | "call_waiter" | "request_bill" | "unknown",
+{"intent": "add_items" | "budget_order" | "call_waiter" | "request_bill" | "split_bill" | "unknown",
  "items": [{"name": string, "qty": integer}],
  "budget_rupees": number | null,
  "people": integer | null,
  "meal": "breakfast" | "lunch" | "dinner" | "snacks" | null,
+ "split_mode": "equal" | "items" | null,
  "note": string | null}
 Rules:
 - Use item names from this menu, written exactly as in the menu: {MENU_NAMES}
@@ -136,7 +137,9 @@ Rules:
 - "two", "do", "eradu", "rendu" etc. are quantities. Default qty is 1.
 - Never invent prices. Never add items they didn't ask for.
 - "waiter", "help", "someone come" -> call_waiter. "bill", "check", "pay" -> request_bill.
-- A budget with a number of people ("800 rupees for 4 people") -> budget_order."""
+- A budget with a number of people ("800 rupees for 4 people") -> budget_order.
+- "split equally among 3", "divide the bill by 4" -> split_bill, split_mode "equal", people = that number.
+- "I'll pay for my items", "separate bills" -> split_bill, split_mode "items"."""
 
 LANG_NAMES = {"kn-IN": "Kannada", "hi-IN": "Hindi", "ta-IN": "Tamil", "te-IN": "Telugu", "ml-IN": "Malayalam",
               "mr-IN": "Marathi", "bn-IN": "Bengali", "gu-IN": "Gujarati", "pa-IN": "Punjabi", "od-IN": "Odia",
@@ -317,6 +320,30 @@ def voice(req: Request, session_id: int):
         reply_en = res["reply_text"] + (" Add to your order?" if res["ok"] else "")
         if s["status"] != OPEN:
             out["ok"], reply_en = False, "Your bill is already requested, so new orders can't be added."
+    elif intent == "split_bill" and f.get("split_bill") and f["voice_actions"]:
+        out = _proposal("split_bill", [])
+        mode = "items" if data.get("split_mode") == "items" else "equal"
+        try:
+            people = int(data.get("people") or 0)
+        except (TypeError, ValueError):
+            people = 0
+        from . import upgrades
+        try:
+            with db() as conn:
+                conn.execute("BEGIN IMMEDIATE")
+                s2 = m._guest_session(conn, session_id, req)
+                if s2["status"] == OPEN:
+                    m._request_bill(conn, s2)  # same rules as the Request bill button
+                me = conn.execute("SELECT id FROM session_guests WHERE token = ?", (req.header("X-Guest-Token"),)).fetchone()
+                upgrades.make_split(conn, s2, mode, people if mode == "equal" else None, [], me["id"] if me else None)
+                bill = m._bill_paise(conn, session_id)
+            reply_en = (f"Done. The bill of ₹{_rs(bill)} is split {'equally between ' + str(people) + ' people' if mode == 'equal' else 'by what each phone ordered'}. "
+                        "Each person can pay their share from the Bill tab.")
+            out["action"] = {"type": "split", "ok": True}
+            out["total_paise"] = bill
+        except HTTPError as e:
+            out["ok"], out["action"] = False, {"type": "split", "ok": False}
+            reply_en = e.detail if not (mode == "equal" and not 2 <= people <= 20) else "How many people should share the bill? Say a number from 2 to 20."
     elif intent in ("call_waiter", "request_bill") and f["voice_actions"]:
         out = _proposal(intent, [])
         try:

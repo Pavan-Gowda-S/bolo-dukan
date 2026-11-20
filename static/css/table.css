@@ -188,3 +188,19 @@ html.gx-open, html.gx-open body { overflow: hidden; }
 .play-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; }
 
 @media (max-width: 380px) { .items { grid-template-columns: 1fr; } .item { grid-template-columns: 64px 1fr auto; } .item .pic { width: 64px; height: 64px; } .code-boxes input { width: 52px; height: 62px; } }
+
+/* ---------- A2 split the bill ---------- */
+.split-offer { padding: 16px; border-radius: 20px; margin: 0 0 18px; background: linear-gradient(140deg, rgba(76,201,240,.16), rgba(155,92,255,.08)); border: 1px solid rgba(76,201,240,.35); animation: itemIn .5s var(--ease) both; }
+.split-ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; background: var(--grad-cool); box-shadow: 0 10px 24px -10px rgba(120,90,255,.8); }
+.split-box { margin-top: 4px; }
+.split-bar { height: 8px; border-radius: 8px; background: rgba(255,255,255,.1); overflow: hidden; margin-top: 10px; }
+.split-bar i { display: block; height: 100%; background: var(--grad-mint); transition: width .9s var(--spring); }
+.shares { display: grid; gap: 10px; perspective: 900px; }
+.share-card { border-radius: 18px; padding: 14px 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); animation: shareIn .6s var(--spring) both; transform-style: preserve-3d; transition: transform .5s var(--ease), border-color .3s; }
+.share-card.mine { border-color: rgba(255,193,69,.6); background: linear-gradient(140deg, rgba(255,193,69,.14), rgba(255,255,255,.03)); }
+.share-card.done { border-color: rgba(46,230,166,.5); transform: rotateX(8deg) scale(.98); opacity: .85; }
+.share-flip { display: flex; align-items: center; gap: 12px; }
+.share-amt { font-size: 1.3rem; font-weight: 800; }
+.share-paid { color: var(--mint); font-weight: 800; }
+.share-line { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer; }
+@keyframes shareIn { from { opacity: 0; transform: rotateX(-50deg) translateY(16px); } }

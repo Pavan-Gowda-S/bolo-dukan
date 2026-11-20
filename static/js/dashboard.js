@@ -117,8 +117,10 @@
       else if (s.pending_count) { const o = s.orders.find(x => x.status === "PENDING"); acts = `<button class="btn sm mint" data-a="accept" data-o="${o.id}">Accept ${BD.rupees(o.total_paise)}</button><button class="btn-ghost sm" data-a="rejorder" data-o="${o.id}">Reject</button>`; }
       else if (s.status === "BILL_REQUESTED") acts = `<button class="btn sm violet" data-a="cash" data-s="${s.id}">Paid in cash</button>`;
       else if (s.status === "PAID") acts = `<button class="btn sm mint" data-a="free" data-s="${s.id}">Free table</button>`;
+      const sp = data.splits && data.splits[String(s.id)];
       body = `<div class="info">${info.map(i => `<span>${i}</span>`).join("")}</div>
         <div class="total">${BD.rupees(s.bill_paise)}</div>
+        ${sp ? `<div class="split-pill"><span class="sp-bar"><i style="width:${Math.round(sp.paid / sp.total * 100)}%"></i></span>${sp.paid} of ${sp.total} paid${sp.pending_paise ? ` · ${BD.rupees(sp.pending_paise)} pending` : ""}</div>` : ""}
         ${acts ? `<div class="acts">${acts}</div>` : ""}`;
     }
     const say = cardSay.get(t.number);
@@ -179,6 +181,12 @@
       }
       if (s.payment && s.payment.status === "ACTIVE" && s.status === "BILL_REQUESTED") html += `<div class="notice" style="margin-bottom:12px">💳 Guest opened a UPI payment link for ${BD.rupees(s.payment.amount_paise)}. Waiting for Cashfree to confirm…</div>`;
       if (s.status === "PAID") html += `<div class="notice" style="border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.1);color:#bbf7d0;margin-bottom:12px">✓ Paid online · ${BD.rupees(s.payment ? s.payment.amount_paise : s.bill_paise)} · confirmed by Cashfree</div>`;
+      const sp = data.splits && data.splits[String(s.id)];
+      if (sp) {
+        html += `<div class="glass" style="padding:12px 14px;border-radius:16px;margin-bottom:12px"><div class="row spread"><b>Split bill</b><span class="small muted">${sp.paid} of ${sp.total} paid</span></div>
+          ${sp.shares.map(x => `<div class="row spread" style="padding:8px 0;border-top:1px solid var(--line)"><span>${BD.esc(x.label)} · <b class="mono">${BD.rupees(x.amount_paise)}</b></span>
+            ${["PAID", "CASH", "ZERO"].includes(x.status) ? `<span class="status-tag s-SERVED">${x.status === "CASH" ? "cash" : x.status === "ZERO" ? "nothing due" : "paid"}</span>` : `<button class="btn-ghost sm" data-a="sharecash" data-x="${x.id}">Paid in cash</button>`}</div>`).join("")}</div>`;
+      }
       if (!s.orders.length && s.status !== "WAITING_APPROVAL") html += `<p class="muted center" style="margin:30px 0">No orders yet.</p>`;
       s.orders.slice().reverse().forEach((o, i) => {
         const n = s.orders.length - i;
@@ -211,6 +219,7 @@
     const tbl = data.tables.find(t => t.session && (String(t.session.id) === sid || t.session.orders.some(o => String(o.id) === oid)));
     try {
       if (a === "rejorder") return openReason(oid);
+      if (a === "sharecash" && !confirm("Mark this share as paid in cash?")) return;
       if (a === "reward") {
         BD.busy(btn, true);
         const r = await BD.api(`/api/quiz/${btn.dataset.r}/reward`, { method: "POST", body: {} });
@@ -231,11 +240,12 @@
         served: [`/api/orders/${oid}/status`, { status: "SERVED" }], cash: [`/api/session/${sid}/cash`],
         free: [`/api/session/${sid}/free${tbl && tbl.session.status !== "PAID" ? "?force=1" : ""}`],
         wdone: [`/api/waiter-calls/${btn.dataset.c}/done`],
+        sharecash: [`/api/shares/${btn.dataset.x}/cash`],
       };
       const [url, body] = map[a];
       await BD.api(url, { method: "POST", body: body || {} });
       BD.sound.chime("tap"); BD.buzz();
-      const msg = { approve: "Table approved", reject: "Request rejected", accept: "Order accepted", preparing: "Marked preparing", served: "Marked served", cash: "Paid in cash. Table closed", free: "Table is free", wdone: "Done" }[a];
+      const msg = { approve: "Table approved", reject: "Request rejected", accept: "Order accepted", preparing: "Marked preparing", served: "Marked served", cash: "Paid in cash. Table closed", free: "Table is free", wdone: "Done", sharecash: "Share marked as paid in cash" }[a];
       BD.toast(msg, "ok", 2200);
       if (a === "free" || a === "cash") closeDrawer();
       await poll(true);
@@ -328,6 +338,7 @@
       prev = next; data = next; failures = 0;
       processAnnouncements(data.announcements);
       renderPrizes(data.quiz_prizes || []);
+      if (window.BDDash) window.BDDash.emit(data);  // sales strip + owner voice (dashboard_plus.js)
       $("live").classList.remove("off"); $("live").lastChild.textContent = "Live";
       $("rname").textContent = data.restaurant.name;
       if (!data.tables.length) {

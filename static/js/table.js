@@ -325,7 +325,17 @@
     html += `<div class="pay-box">`;
     if (sess.status === "OPEN") {
       html += `<button class="btn lg block violet" id="reqBill" ${sess.bill_paise > 0 && !pending ? "" : "disabled"}>Request the bill</button><p class="faint small center" style="margin-top:10px">After this, no new orders can be added.</p>`;
+    } else if (sess.status === "BILL_REQUESTED" && sess.split && info.features.split_bill) {
+      html += `<div id="splitBox" class="split-box"><div class="loader-orb" style="width:60px;height:60px"><i></i><i></i><i></i><b></b></div></div>`;
     } else if (sess.status === "BILL_REQUESTED") {
+      if (info.features.split_bill && info.features.online_payment) {
+        html += `<div class="glass split-offer"><div class="row" style="gap:12px"><span class="split-ic">➗</span><div class="grow"><b>Split the bill</b><div class="muted small">Each person pays their part by UPI on their own phone</div></div></div>
+          <div class="row wrap" style="gap:10px;margin-top:12px">
+            <div class="stepper"><button type="button" data-splitn="-1" aria-label="Fewer people">−</button><span class="val" id="splitN">${Math.max(2, Math.min(20, sess.guests || 2))}</span><button type="button" data-splitn="1" aria-label="More people">+</button></div>
+            <button class="btn sm cool grow" id="splitEqual">Split equally</button>
+            ${sess.guests > 1 ? `<button class="btn-ghost sm grow" id="splitItems">Pay for my items</button>` : ""}
+          </div></div>`;
+      }
       if (info.features.online_payment) {
         const phone = BD.store.get("bd_phone") || "";
         html += `<h3 style="margin-bottom:6px">Pay by UPI</h3><p class="muted small" style="margin:0 0 12px">Cashfree needs a phone number for the receipt.</p>
@@ -342,7 +352,69 @@
     html += `</div>`;
     setHtml("tabBill", html);
     wireBill();
+    if ($("splitBox")) loadSplit();
   }
+
+  // ---------------------------------------------------------------- split the bill
+  let splitLoading = false, splitPicking = false;
+  async function loadSplit() {
+    if (splitLoading || splitPicking) return;
+    splitLoading = true;
+    try { drawSplit(await guestApi(`/api/session/${me.sid}/split`)); }
+    catch (x) { const b = $("splitBox"); if (b) b.innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+    splitLoading = false;
+  }
+  function drawSplit(v) {
+    const box = $("splitBox"); if (!box) return;
+    const phone = BD.store.get("bd_phone") || "";
+    const sum = v.summary || { paid: 0, total: v.shares.length, pending_paise: 0 };
+    const html = `<div class="row spread"><h3>Split bill</h3><span class="chip">${sum.paid} of ${sum.total} paid</span></div>
+      <div class="split-bar"><i style="width:${sum.total ? Math.round(sum.paid / sum.total * 100) : 0}%"></i></div>
+      <input class="input" id="sharePhone" type="tel" inputmode="numeric" placeholder="Your 10-digit mobile (for the UPI receipt)" value="${BD.esc(phone)}" maxlength="14" style="margin:12px 0">
+      <div class="shares">${v.shares.map((x, i) => {
+        const done = ["PAID", "CASH", "ZERO"].includes(x.status);
+        return `<div class="share-card ${x.mine ? "mine" : ""} ${done ? "done" : ""}" style="animation-delay:${i * 0.06}s">
+          <div class="share-flip"><div class="grow"><b>${BD.esc(x.label)}</b><div class="mono share-amt">${BD.rupees(x.amount_paise)}</div></div>
+          ${done ? `<span class="share-paid">✓ ${x.status === "CASH" ? "cash" : x.status === "ZERO" ? "nothing due" : "paid"}</span>` : `<button class="btn sm mint" data-sharepay="${x.id}">Pay ${BD.rupees(x.amount_paise)}</button>`}</div></div>`;
+      }).join("")}</div>
+      ${sum.pending_paise ? `<p class="faint small center" style="margin-top:8px">${BD.rupees(sum.pending_paise)} still to pay. The table is marked paid when every share is paid.</p>` : ""}
+      <div class="row" style="margin-top:10px">${v.can_change ? `<button class="btn-ghost sm" id="splitUndo">Undo split</button>` : ""}<button class="btn-ghost sm" id="splitCheck">Check payments</button></div>`;
+    if (box._h !== html) { box._h = html; box.innerHTML = html; }
+    box.querySelectorAll("[data-sharepay]").forEach(b => b.onclick = async () => {
+      const ph = $("sharePhone").value.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
+      if (!/^[6-9]\d{9}$/.test(ph)) { BD.toast("Enter a valid 10-digit mobile number first", "bad"); $("sharePhone").focus(); return; }
+      BD.store.set("bd_phone", ph); BD.busy(b, true, "Opening UPI…");
+      try { const r = await guestApi(`/api/session/${me.sid}/shares/${b.dataset.sharepay}/pay`, { body: { phone: ph } }); BD.store.set("bd_g_" + me.sid, me.token); location.href = r.link_url; }
+      catch (x) { BD.toast(x.message, "bad", 5000); BD.busy(b, false); }
+    });
+    if ($("splitUndo")) $("splitUndo").onclick = async () => {
+      try { await guestApi(`/api/session/${me.sid}/split/cancel`, { method: "POST", body: {} }); await fetchSession(); renderMain(); BD.toast("Split undone", "ok"); }
+      catch (x) { BD.toast(x.message, "bad"); }
+    };
+    $("splitCheck").onclick = async () => { await checkPay(); loadSplit(); };
+  }
+  async function createSplit(body) {
+    try {
+      await guestApi(`/api/session/${me.sid}/split`, { body });
+      await fetchSession(); renderMain(); BD.toast("Bill split. Everyone can pay their share now.", "ok"); BD.buzz([10, 30, 10]);
+    } catch (x) { BD.toast(x.message, "bad", 5000); }
+  }
+  document.addEventListener("click", async e => {
+    const step = e.target.closest("[data-splitn]");
+    if (step) { const el = $("splitN"); el.textContent = Math.max(2, Math.min(20, Number(el.textContent) + Number(step.dataset.splitn))); return; }
+    if (e.target.closest("#splitEqual")) return createSplit({ mode: "equal", n: Number($("splitN").textContent) });
+    if (e.target.closest("#splitItems")) {
+      // let the guest tick items to share equally, then split by who ordered what
+      splitPicking = true;
+      let v; try { v = await guestApi(`/api/session/${me.sid}/split`); } catch (x) { splitPicking = false; return BD.toast(x.message, "bad"); }
+      const offer = document.querySelector(".split-offer");
+      offer.innerHTML = `<b>Tick anything you all shared</b><p class="muted small" style="margin:4px 0 10px">Ticked items are split equally. The rest is paid by whoever ordered it.</p>
+        ${v.lines.map(l => `<label class="share-line"><input type="checkbox" value="${l.id}"><span class="grow">${l.qty} × ${BD.esc(l.name)}${l.mine ? ' <span class="chip" style="padding:2px 8px">yours</span>' : ""}</span><b class="mono">${BD.rupees(l.amount_paise)}</b></label>`).join("")}
+        <div class="row" style="margin-top:12px"><button class="btn sm cool grow" id="splitItemsGo">Split by items</button><button class="btn-ghost sm" id="splitItemsBack">Back</button></div>`;
+      $("splitItemsGo").onclick = async () => { const ids = [...offer.querySelectorAll("input:checked")].map(i => Number(i.value)); splitPicking = false; await createSplit({ mode: "items", shared_item_ids: ids }); };
+      $("splitItemsBack").onclick = () => { splitPicking = false; $("tabBill")._h = ""; renderBill(); };
+    }
+  });
   function wireBill() {
     const rb = $("reqBill");
     if (rb && !rb._w) { rb._w = 1; rb.onclick = requestBill; }
@@ -524,7 +596,7 @@
     };
     draw();
     if (r.action && r.action.ok) {  // voice "bill" / "waiter" already happened, just like the buttons
-      fetchSession().then(() => { renderMain(); if (r.action.type === "bill") setTimeout(() => { closeSheets(); setTab("bill"); }, 1800); });
+      fetchSession().then(() => { renderMain(); if (r.action.type === "bill" || r.action.type === "split") setTimeout(() => { closeSheets(); setTab("bill"); }, 1800); });
     }
   }
 

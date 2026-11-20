@@ -90,3 +90,46 @@
 
 @media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .tgrid { grid-template-columns: 1fr 1fr; gap: 10px; } .tcard { min-height: 170px; padding: 14px; } .tcard .num { font-size: 2.2rem; } .tcard .acts { flex-direction: column; } .stat .v { font-size: 1.6rem; } }
+
+/* ---------- A1 sales strip ---------- */
+.sales-strip { margin-bottom: 16px; animation: evIn .6s var(--ease) both; }
+.ss-grid { display: grid; grid-template-columns: 1.2fr .8fr 1fr 1.3fr; gap: 14px; perspective: 1200px; }
+.ss-card { padding: 16px 18px; border-radius: 20px; display: grid; gap: 4px; align-content: start; background: linear-gradient(150deg, rgba(46,230,166,.12), rgba(255,255,255,.03) 60%); }
+.ss-card .k { font-size: .74rem; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); font-weight: 800; }
+.ss-card .v { font-family: var(--font-display); font-size: 1.9rem; transform: translateZ(30px); }
+.ss-card .s { font-size: .8rem; color: var(--muted); }
+.ss-donut { --p: 0; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; margin: 4px 0; transform: translateZ(26px);
+  background: conic-gradient(var(--mint) calc(var(--p) * 1%), rgba(255,193,69,.85) 0); box-shadow: 0 10px 24px -10px rgba(46,230,166,.6); }
+.ss-donut span { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--bg-2); font-weight: 800; font-size: .8rem; }
+.ss-top { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: t; }
+.ss-top li { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; font-size: .9rem; }
+.ss-toggle { margin-top: 10px; }
+.ss-bills { margin-top: 10px; padding: 8px 14px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid var(--line); overflow-x: auto; animation: evIn .4s var(--ease) both; }
+.sales-loading { color: var(--faint); font-size: .9rem; padding: 8px 0; }
+@media (max-width: 900px) { .ss-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- A2 split progress ---------- */
+.split-pill { display: flex; align-items: center; gap: 8px; font-size: .8rem; font-weight: 700; color: var(--mint); }
+.sp-bar { flex: 1; height: 6px; border-radius: 6px; background: rgba(255,255,255,.1); overflow: hidden; }
+.sp-bar i { display: block; height: 100%; background: var(--grad-mint); transition: width .8s var(--spring); }
+
+/* ---------- A3 owner voice ---------- */
+.owner-fab { position: fixed; z-index: 45; right: 22px; bottom: 22px; width: 64px; height: 64px; border-radius: 50%; border: 0; cursor: pointer; font-size: 1.7rem; background: var(--grad-cool); color: #fff;
+  box-shadow: 0 6px 0 rgba(50,30,120,.7), 0 20px 40px -10px rgba(120,90,255,.8); transition: transform .2s var(--spring); }
+.owner-fab:hover { transform: translateY(-3px) rotate(-6deg); }
+.owner-fab:active { transform: scale(.92); }
+.mic-rings { position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(155,92,255,.5); animation: micRing 2.2s ease-out infinite; pointer-events: none; }
+@keyframes micRing { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+.voice-stage { display: grid; justify-items: center; gap: 14px; padding: 22px 0 8px; }
+.voice-orb { --lvl: 0; position: relative; width: 120px; height: 120px; border-radius: 50%; border: 0; cursor: pointer; background: transparent; touch-action: none; }
+.voice-orb .core { position: absolute; inset: 12px; border-radius: 50%; display: grid; place-items: center; font-size: 2.4rem; background: var(--grad-cool); box-shadow: 0 20px 50px -14px rgba(120,90,255,.9), inset 0 2px 0 rgba(255,255,255,.35); transition: transform .12s; transform: scale(calc(1 + var(--lvl) * .25)); }
+.voice-orb .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(155,92,255,.45); opacity: 0; }
+.voice-orb.rec .core { background: linear-gradient(135deg, #ff6b6b, #e11d48); }
+.voice-orb.rec .ring { border-color: rgba(255,80,110,.55); animation: micRing 1.6s ease-out infinite; }
+.voice-orb.rec .r2 { animation-delay: .5s; } .voice-orb.rec .r3 { animation-delay: 1s; }
+.voice-orb.think .core { animation: spinGlow 1.2s linear infinite; }
+@keyframes spinGlow { to { filter: hue-rotate(360deg); } }
+.v-state { font-weight: 700; color: var(--muted); text-align: center; }
+.v-said { padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid var(--line); margin-bottom: 10px; font-weight: 600; }
+.v-said small { display: block; color: var(--faint); font-weight: 700; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2px; }
+.o-answer { font-size: 1.15rem; font-weight: 700; color: var(--marigold); line-height: 1.4; animation: evIn .4s var(--spring) both; }

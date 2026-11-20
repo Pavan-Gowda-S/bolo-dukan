@@ -54,8 +54,17 @@
     try {
       const s = await BD.api(`/api/session/${encodeURIComponent(sid)}/payment-status`, { headers: { "X-Guest-Token": token } });
       if (s.table_token) tableUrl = "/t/" + encodeURIComponent(s.table_token);
-      if (["PAID", "CLOSED", "PAID_CASH"].includes(s.status) && (s.status !== "CLOSED" || (s.payment && s.payment.status === "PAID"))) return finish("paid", s);
-      if (!s.payment || ["EXPIRED", "CANCELLED", "REPLACED"].includes(s.payment.status)) return finish("pending", s);
+      const shareId = Number(BD.qs("share") || 0);
+      if (shareId && s.split) {  // a split share: only this person's part
+        const x = s.split.shares.find(y => y.id === shareId);
+        if (x && ["PAID", "CASH", "ZERO"].includes(x.status)) {
+          finish("paid", { payment: { amount_paise: x.amount_paise } });
+          $("text").textContent = `Your share is confirmed by Cashfree. ${s.split.paid} of ${s.split.total} shares are paid${s.status === "PAID" ? ", so the whole table is settled. Thank you!" : "."}`;
+          return;
+        }
+        if (x && x.status === "EXPIRED") return finish("pending", s);
+      } else if (["PAID", "CLOSED", "PAID_CASH"].includes(s.status) && (s.status !== "CLOSED" || (s.payment && s.payment.status === "PAID"))) return finish("paid", s);
+      if (!shareId && (!s.payment || ["EXPIRED", "CANCELLED", "REPLACED"].includes(s.payment.status))) return finish("pending", s);
     } catch (x) { if (x.status === 401) return finish("unknown"); }
     if (++tries >= 30) return finish("pending", {});
     setTimeout(check, 3000);

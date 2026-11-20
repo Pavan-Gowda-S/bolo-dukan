@@ -224,6 +224,59 @@
     catch (e) { if (e.status === 401) location.href = "/owner/login?next=" + encodeURIComponent(location.pathname); throw e; }
   };
 
+  // ---------- voice recorder (mic -> 16 kHz mono WAV), shared by the owner mic and the store pages ----------
+  BD.canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && window.isSecureContext);
+  BD.recorder = function (onLevel) {
+    let rec = null, stream = null, chunks = [], raf = 0, actx = null, timer = 0;
+    const api = {
+      get recording() { return !!rec && rec.state === "recording"; },
+      async start(maxMs = 15000) {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } });
+        chunks = []; rec = new MediaRecorder(stream);
+        rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+        rec.start(250);
+        try {
+          actx = new (window.AudioContext || window.webkitAudioContext)();
+          const an = actx.createAnalyser(); an.fftSize = 512; actx.createMediaStreamSource(stream).connect(an);
+          const buf = new Uint8Array(an.fftSize);
+          const loop = () => { an.getByteTimeDomainData(buf); let s = 0; for (const v of buf) s += ((v - 128) / 128) ** 2; onLevel && onLevel(Math.min(1, Math.sqrt(s / buf.length) * 4)); raf = requestAnimationFrame(loop); };
+          loop();
+        } catch (e) {}
+        return new Promise(resolve => { timer = setTimeout(() => resolve(api.stop()), maxMs); api._resolveAuto = resolve; });
+      },
+      stop() {
+        clearTimeout(timer); cancelAnimationFrame(raf); onLevel && onLevel(0);
+        if (actx) { actx.close().catch(() => {}); actx = null; }
+        return new Promise(resolve => {
+          if (!rec || rec.state !== "recording") return resolve(null);
+          rec.onstop = async () => {
+            if (stream) stream.getTracks().forEach(t => t.stop());
+            const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
+            try { resolve(await BD.toWav(blob)); } catch (e) { resolve(blob); }
+          };
+          rec.stop();
+        });
+      },
+    };
+    return api;
+  };
+  BD.toWav = async function (blob) {
+    const Ctx = window.AudioContext || window.webkitAudioContext, ctx = new Ctx();
+    const audio = await ctx.decodeAudioData(await blob.arrayBuffer());
+    ctx.close().catch(() => {});
+    const rate = 16000, off = new OfflineAudioContext(1, Math.max(1, Math.ceil(audio.duration * rate)), rate);
+    const src = off.createBufferSource(); src.buffer = audio; src.connect(off.destination); src.start();
+    const pcm = (await off.startRendering()).getChannelData(0);
+    const out = new DataView(new ArrayBuffer(44 + pcm.length * 2));
+    const w = (o, s) => [...s].forEach((c, i) => out.setUint8(o + i, c.charCodeAt(0)));
+    w(0, "RIFF"); out.setUint32(4, 36 + pcm.length * 2, true); w(8, "WAVE"); w(12, "fmt "); out.setUint32(16, 16, true);
+    out.setUint16(20, 1, true); out.setUint16(22, 1, true); out.setUint32(24, rate, true); out.setUint32(28, rate * 2, true);
+    out.setUint16(32, 2, true); out.setUint16(34, 16, true); w(36, "data"); out.setUint32(40, pcm.length * 2, true);
+    for (let i = 0; i < pcm.length; i++) { const s = Math.max(-1, Math.min(1, pcm[i])); out.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+    return new Blob([out.buffer], { type: "audio/wav" });
+  };
+  BD.play = function (dataUrl) { if (!dataUrl) return; try { const a = new Audio(dataUrl); a.play().catch(() => {}); return a; } catch (e) {} };
+
   // ---------- Sign in with Google (owners) ----------
   // Renders Google's official button into `box`. mode: "signup" | "signin". getExtra() adds fields (restaurant name).
   BD.googleButton = async function (box, mode, getExtra, onError) {
