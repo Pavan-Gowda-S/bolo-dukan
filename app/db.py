@@ -104,6 +104,47 @@ CREATE TABLE IF NOT EXISTS game_scores (
     created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_scores ON game_scores(restaurant_id, game, score);
+CREATE TABLE IF NOT EXISTS announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    table_number INTEGER NOT NULL,
+    event_type TEXT NOT NULL,
+    text_kn TEXT NOT NULL,
+    text_en TEXT NOT NULL,
+    claimed INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_announce ON announcements(restaurant_id, id);
+CREATE TABLE IF NOT EXISTS quiz_rounds (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+    starts_at REAL NOT NULL,
+    questions TEXT NOT NULL,
+    finalized INTEGER NOT NULL DEFAULT 0,
+    winner_session_id INTEGER,
+    winner_table INTEGER,
+    winner_score INTEGER NOT NULL DEFAULT 0,
+    reward_status TEXT NOT NULL DEFAULT 'none',
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_quiz_rest ON quiz_rounds(restaurant_id, id);
+CREATE TABLE IF NOT EXISTS quiz_players (
+    round_id INTEGER NOT NULL REFERENCES quiz_rounds(id),
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    table_number INTEGER NOT NULL,
+    joined_at REAL NOT NULL,
+    PRIMARY KEY (round_id, session_id)
+);
+CREATE TABLE IF NOT EXISTS quiz_answers (
+    round_id INTEGER NOT NULL REFERENCES quiz_rounds(id),
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    q_index INTEGER NOT NULL,
+    choice INTEGER NOT NULL,
+    correct INTEGER NOT NULL,
+    points INTEGER NOT NULL,
+    answered_at REAL NOT NULL,
+    PRIMARY KEY (round_id, session_id, q_index)
+);
 CREATE TABLE IF NOT EXISTS join_attempts (
     device_key TEXT PRIMARY KEY,
     fails INTEGER NOT NULL DEFAULT 0,

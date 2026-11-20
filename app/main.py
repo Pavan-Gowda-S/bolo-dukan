@@ -536,22 +536,7 @@ def owner_menu_csv(req: Request):
 @route("POST", "/api/owner/menu/photo")
 def owner_menu_photo(req: Request):
     require_owner(req)
-    if not config.features()["menu_photo"]:
-        raise HTTPError(503, "Menu photo reading is switched off. Type the menu or upload a CSV.")
-    _, files = req.form()
-    f = files.get("file")
-    if f is None or not f.data:
-        raise HTTPError(400, "Choose a photo of the menu")
-    if len(f.data) > 15_000_000:
-        raise HTTPError(400, "Photo is too big (max 15 MB)")
-    mime = f.content_type if f.content_type.startswith("image/") else "image/jpeg"
-    try:
-        items = gemini.read_menu_photo(f.data, mime)
-    except gemini.GeminiError as e:
-        raise HTTPError(502, str(e))
-    if not items:
-        raise HTTPError(422, "No dishes with prices were found in that photo. Try a clearer, straight-on photo.")
-    return {"items": items}
+    return features.menu_photo(req)  # Sarvam Doc AI (Gemini backup) -> draft menu for the owner to review
 
 
 @route("GET", "/api/owner/qr")
@@ -624,6 +609,7 @@ def guest_start(req: Request, token: str):
             (t["id"], code, WAITING_APPROVAL, now_iso()),
         ).lastrowid
         guest_token = _new_guest(conn, sid, device_id)
+        features.announce(conn, t["restaurant_id"], t["number"], "start")
     return {"session_id": sid, "guest_token": guest_token}
 
 
@@ -707,6 +693,8 @@ def guest_order(req: Request, session_id: int):
                 "INSERT INTO order_items (order_id, menu_item_id, name, qty, unit_price_paise) VALUES (?, ?, ?, ?, ?)",
                 (oid, mid, menu[mid]["name"], qty, menu[mid]["price_paise"]),  # price copied at order time
             )
+        features.announce(conn, s["restaurant_id"], s["table_number"], "order",
+                          items=[(qty, menu[mid]) for mid, qty in merged.items()])
         return {"ok": True, "order_id": oid, "session": _session_view(conn, s)}
 
 
@@ -715,12 +703,34 @@ def guest_call_waiter(req: Request, session_id: int):
     reason = _str(req.json(), "reason", 0, 120)
     with db() as conn:
         s = _guest_session(conn, session_id, req)
-        if s["status"] not in (OPEN, BILL_REQUESTED, PAID):
-            raise HTTPError(409, "The table is not open.")
-        if not conn.execute("SELECT 1 FROM waiter_calls WHERE session_id = ? AND done = 0", (session_id,)).fetchone():
-            conn.execute("INSERT INTO waiter_calls (session_id, reason, created_at) VALUES (?, ?, ?)",
-                         (session_id, reason, now_iso()))
+        _call_waiter(conn, s, reason)
     return {"ok": True}
+
+
+def _call_waiter(conn, s: dict, reason: str = "") -> bool:
+    """Shared by the button and voice. Returns True if a new call was made (False if one is already open)."""
+    if s["status"] not in (OPEN, BILL_REQUESTED, PAID):
+        raise HTTPError(409, "The table is not open.")
+    if conn.execute("SELECT 1 FROM waiter_calls WHERE session_id = ? AND done = 0", (s["id"],)).fetchone():
+        return False
+    conn.execute("INSERT INTO waiter_calls (session_id, reason, created_at) VALUES (?, ?, ?)", (s["id"], reason, now_iso()))
+    features.announce(conn, s["restaurant_id"], s["table_number"], "waiter")
+    return True
+
+
+def _request_bill(conn, s: dict) -> None:
+    """Shared by the button and voice. Blocks new orders; the bill is summed from accepted items."""
+    if s["status"] == BILL_REQUESTED:
+        return
+    if s["status"] != OPEN:
+        raise HTTPError(409, "The bill can't be requested right now.")
+    if conn.execute("SELECT 1 FROM orders WHERE session_id = ? AND status = ?", (s["id"], PENDING)).fetchone():
+        raise HTTPError(409, "Your last order is still waiting for the cashier. Try again in a moment.")
+    if _bill_paise(conn, s["id"]) <= 0:
+        raise HTTPError(409, "Nothing has been ordered yet.")
+    conn.execute("UPDATE table_sessions SET status = ? WHERE id = ?", (BILL_REQUESTED, s["id"]))
+    s["status"] = BILL_REQUESTED
+    features.announce(conn, s["restaurant_id"], s["table_number"], "bill")
 
 
 @route("POST", "/api/session/{session_id:int}/request-bill")
@@ -728,16 +738,7 @@ def guest_request_bill(req: Request, session_id: int):
     with db() as conn:
         conn.execute("BEGIN IMMEDIATE")
         s = _guest_session(conn, session_id, req)
-        if s["status"] == BILL_REQUESTED:
-            return {"ok": True, "session": _session_view(conn, s)}
-        if s["status"] != OPEN:
-            raise HTTPError(409, "The bill can't be requested right now.")
-        if conn.execute("SELECT 1 FROM orders WHERE session_id = ? AND status = ?", (session_id, PENDING)).fetchone():
-            raise HTTPError(409, "Your last order is still waiting for the cashier. Try again in a moment.")
-        if _bill_paise(conn, session_id) <= 0:
-            raise HTTPError(409, "Nothing has been ordered yet.")
-        conn.execute("UPDATE table_sessions SET status = ? WHERE id = ?", (BILL_REQUESTED, session_id))
-        s["status"] = BILL_REQUESTED
+        _request_bill(conn, s)
         return {"ok": True, "session": _session_view(conn, s)}
 
 
@@ -820,6 +821,10 @@ def _check_payment(link_id: str) -> str:
                     "WHERE id = ? AND status IN (?, ?)",
                     (PAID, pay["amount_paise"], ts, pay["session_id"], OPEN, BILL_REQUESTED),
                 )
+                where = conn.execute("SELECT t.restaurant_id, t.number FROM table_sessions s JOIN tables t "
+                                     "ON t.id = s.table_id WHERE s.id = ?", (pay["session_id"],)).fetchone()
+                if where:  # only after Cashfree confirmed it
+                    features.announce(conn, where["restaurant_id"], where["number"], "paid", amount_paise=pay["amount_paise"])
         return "PAID"
     status = str(link.get("link_status", "")).upper()
     if status in ("EXPIRED", "CANCELLED") and pay["status"] == "ACTIVE":
@@ -829,7 +834,7 @@ def _check_payment(link_id: str) -> str:
     return pay["status"]
 
 
-GAMES = {"dosa": 20000, "chai": 50000, "memory": 1000}  # game id -> highest believable score
+GAMES = {"dosa": 20000, "chai": 50000, "memory": 1000, "runner": 500000}  # game id -> highest believable score
 
 
 @route("POST", "/api/session/{session_id:int}/score")
@@ -900,7 +905,7 @@ def cashfree_webhook(req: Request):
 def guest_assistant(req: Request, session_id: int):
     f = config.features()
     if not f["voice_order"]:
-        raise HTTPError(503, "Voice ordering is switched off. Tap to order instead.")
+        raise HTTPError(404, "Not found")
     fields, files = req.form()
     with db() as conn:
         s = _guest_session(conn, session_id, req)
@@ -1017,12 +1022,14 @@ def dashboard(req: Request):
             "WHERE t.restaurant_id = ? AND s.settled_at >= ? AND s.status IN (?, ?, ?)",
             (rid, _ist_today_start_utc(), PAID, PAID_CASH, CLOSED),
         ).fetchone()
+        extras = features.dashboard_extras(conn, rid)
     return {
         "restaurant": r,
         "tables": tables,
         "stats": {"revenue_today_paise": int(revenue[0]), "bills_today": int(revenue[1])},
         "features": config.features(),
         "server_time": now_iso(),
+        **extras,  # announcements (Kannada alerts) and quiz prizes
     }
 
 
@@ -1144,3 +1151,8 @@ def announce(req: Request):
 @route("GET", "/api/health")
 def health(req: Request):
     return {"ok": True, "features": config.features()}
+
+
+# Sarvam features, budget order and the table quiz live in features.py. Imported last so it can use the
+# helpers above; its routes register on the same app.
+from . import features  # noqa: E402

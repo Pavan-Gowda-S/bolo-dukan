@@ -81,6 +81,39 @@ def _json_call(parts: list, schema: dict, temperature: float = 0.2):
     return _parse_json(_text_of(_generate(config.GEMINI_MODEL, body)))
 
 
+# ---------------------------------------------------------------- generic helpers (backup for Sarvam)
+
+def transcribe(audio: bytes, mime: str = "audio/wav") -> str:
+    parts = [{"text": "Transcribe this restaurant guest's speech exactly, in the script they spoke "
+                      "(Kannada, Hindi, Tamil, Telugu, English or mixed). Reply with the transcript only."},
+             {"inline_data": {"mime_type": mime, "data": base64.b64encode(audio).decode()}}]
+    body = {"contents": [{"role": "user", "parts": parts}],
+            "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}}}
+    return _text_of(_generate(config.GEMINI_MODEL, body)).strip()
+
+
+def chat_text(messages: list[dict], json_mode: bool = False) -> str:
+    system = "\n".join(m["content"] for m in messages if m["role"] == "system")
+    user = "\n".join(m["content"] for m in messages if m["role"] != "system")
+    gen = {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}}
+    if json_mode:
+        gen["responseMimeType"] = "application/json"
+    body = {"contents": [{"role": "user", "parts": [{"text": user}]}], "generationConfig": gen}
+    if system:
+        body["systemInstruction"] = {"parts": [{"text": system}]}
+    return _text_of(_generate(config.GEMINI_MODEL, body))
+
+
+def read_document_text(data: bytes, mime: str) -> str:
+    """Photo or PDF of a menu -> plain text (Gemini reads images and PDFs inline)."""
+    parts = [{"text": "Write out all the text on this restaurant menu as markdown, keeping each dish on its own line "
+                      "with its price. Keep local-script names as they appear."},
+             {"inline_data": {"mime_type": mime, "data": base64.b64encode(data).decode()}}]
+    body = {"contents": [{"role": "user", "parts": parts}],
+            "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}}}
+    return _text_of(_generate(config.GEMINI_MODEL, body, timeout=60)).strip()
+
+
 # ---------------------------------------------------------------- ordering
 
 ORDER_SCHEMA = {
