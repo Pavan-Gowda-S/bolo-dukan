@@ -259,6 +259,8 @@ def favicon(req: Request):
 # ===================================================================== owner
 
 def _login_response(owner_id: int, payload: dict) -> Response:
+    with db() as conn:  # supermarket owners go to their store dashboard
+        payload["next"] = store.next_page(conn, owner_id, payload.get("next", "/dashboard"))
     resp = json_response(payload)
     resp.set_cookie(COOKIE_NAME, make_owner_cookie(owner_id), max_age=COOKIE_MAX_AGE)
     return resp
@@ -283,6 +285,7 @@ def owner_signup(req: Request):
         rid = conn.execute(
             "INSERT INTO restaurants (name, slug, created_at) VALUES (?, ?, ?)", (name, slug, now_iso())
         ).lastrowid
+        store.apply_business_type(conn, rid, d.get("business_type"))
         owner_id = conn.execute(
             "INSERT INTO owners (restaurant_id, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
             (rid, email, hash_password(password), now_iso()),
@@ -366,6 +369,7 @@ def owner_google(req: Request):
                 slug = f"{base}-{n}"
             rid = conn.execute("INSERT INTO restaurants (name, slug, created_at) VALUES (?, ?, ?)",
                                (name, slug, now_iso())).lastrowid
+            store.apply_business_type(conn, rid, d.get("business_type"))
             owner_id = conn.execute(
                 "INSERT INTO owners (restaurant_id, email, password_hash, google_sub, created_at) VALUES (?, ?, '', ?, ?)",
                 (rid, email, sub, now_iso()),
@@ -583,6 +587,7 @@ def guest_table(req: Request, token: str):
         t = _table_by_token(conn, token)
         active = _active_session(conn, t["id"])
         menu = _menu(conn, t["restaurant_id"], only_available=True)
+    store.menu_extras(menu)  # approx. calories/protein and real photos, when switched on
     return {
         "table": {"number": t["number"]},
         "restaurant": {"name": t["restaurant_name"], "language": t["language"],
