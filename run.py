@@ -55,9 +55,10 @@ def main() -> None:
     if ip:
         print(f"   Same Wi-Fi:     http://{ip}:{args.port}")
     print(f"   Public (ngrok): {config.PUBLIC_URL or 'auto-detected when ngrok runs'}")
-    print(f"   Gemini:         {'ON (' + config.GEMINI_MODEL + ')' if config.gemini_ready() else 'OFF - add GEMINI_API_KEY to .env'}")
+    print(f"   Sarvam AI:      {'ON (main AI)' if config.sarvam_ready() else 'OFF - add SARVAM_API_KEY to .env'}")
+    print(f"   Gemini:         {('ON (' + config.GEMINI_MODEL + ')' + (' - backup' if config.sarvam_ready() else '')) if config.gemini_ready() else 'OFF'}")
     print(f"   Cashfree:       {'ON (' + config.CASHFREE_ENV + ')' if config.cashfree_ready() else 'OFF - add Cashfree keys to .env'}")
-    print(f"   Features on:    {', '.join(k for k, v in f.items() if v) or 'none'}")
+    print(f"   Features on:    {', '.join(k for k, v in f.items() if v is True) or 'none (see .env)'}")
     print("   Press Ctrl+C to stop.")
     print()
 
