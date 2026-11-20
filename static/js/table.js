@@ -304,7 +304,7 @@
   function setHtml(id, html) { const el = $(id); if (el._h !== html) { el._h = html; el.innerHTML = html; } }
   document.addEventListener("click", e => {
     const g = e.target.closest("[data-goto]"); if (g) setTab(g.dataset.goto);
-    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
+    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, quizEnabled: !!(info && info.features.table_quiz), session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
   });
 
   // ---------------------------------------------------------------- bill
@@ -502,7 +502,7 @@
         if ((r.unavailable || []).length) html += `<p class="faint small" style="margin:4px 0 0">Not available today: ${BD.esc(r.unavailable.join(", "))}</p>`;
         html += `<div class="row" style="margin-top:12px"><button class="btn mint grow" data-add>Add to order · ${BD.rupees(total)}</button><button class="btn-ghost" data-retry>Try again</button></div>`;
       } else if (r.action) {
-        html += r.action.ok ? "" : `<div class="notice bad">${BD.esc(r.reply_text_en || "")}</div>`;
+        // the reply above already says what happened (or why it couldn't)
       } else if (r.min_budget_paise) {
         html += `<div class="notice">Try a budget of at least ${BD.rupees(r.min_budget_paise)}.</div>`;
       } else if (!r.ok) {

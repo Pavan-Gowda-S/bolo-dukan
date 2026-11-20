@@ -56,12 +56,15 @@ The cashier runs everything from one screen.
 - **Printable QR cards** for every table with Wi-Fi details, captions in Kannada and Hindi
 
 **For guests**
-- **Voice ordering**: "2 masala dosa and 1 filter coffee", "ಎರಡು ಇಡ್ಲಿ ವಡೆ", "do chai aur ek samosa"
-- **Budget ordering**: "₹800, dinner for 4" builds a balanced cart; the server enforces the budget
-- Voice "get the bill" / "call a waiter"
+- **Voice ordering with Sarvam AI**: hold the mic and say "eradu masala dose, ondu coffee", "ಎರಡು ಇಡ್ಲಿ ವಡೆ" or "do chai aur ek samosa". You get a proposed cart at menu prices, and a reply in your language.
+- **Order by budget**: "₹800, dinner for 4" builds a cart in code (no AI) that never goes over budget
+- Voice "bill kodi" / "waiter ko bulao" does exactly what the buttons do
 - **Shared table**: friends join with a 4-digit code, so all phones share one bill
 - Live order tracker (Sent → Accepted → Cooking → Served), call-waiter button, UPI payment
-- **3 mini-games** while waiting: **Dosa Flip** (timing), **Chai Catch** (arcade), **Spice Match** (3D memory), with a **today's top players** board per restaurant
+- **Table Quiz (live)**: tables race through 8 questions, and the winning table gets a **free tea** added at ₹0
+- **Games** while waiting: **Rickshaw Rush** (3-lane runner), **Dosa Flip** (timing), **Chai Catch** (arcade), **Spice Match** (3D memory), with a **today's top players** board per restaurant
+
+> Every AI feature has an on/off switch, never decides money, and falls back to taps and forms. See [SARVAM_FEATURES.md](SARVAM_FEATURES.md).
 
 **For the cashier**
 - Live **grid** and an interactive **3D restaurant floor** (Three.js) with glowing status rings and beams
@@ -105,7 +108,8 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 
 | Variable | Purpose |
 |---|---|
-| `GEMINI_API_KEY` | Voice ordering, menu photo OCR, spoken alerts. Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `SARVAM_API_KEY` | **Preferred AI**: speech-to-text (saaras), Kannada voice (bulbul), order understanding (sarvam-105b), menu photo/PDF reading (Doc AI). Get one at [dashboard.sarvam.ai](https://dashboard.sarvam.ai). Test with `scripts\check_sarvam.py` |
+| `GEMINI_API_KEY` | Backup AI if Sarvam is missing or fails. Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
 | `GEMINI_MODEL` | Default `gemini-2.5-flash` |
 | `GEMINI_TTS_MODEL` / `GEMINI_TTS_VOICE` | Default `gemini-2.5-flash-preview-tts` / `Kore` |
 | `GOOGLE_CLIENT_ID` | Sign in with Google. Create an OAuth **Web application** client in [Google Cloud Console](https://console.cloud.google.com/apis/credentials); add `http://localhost:8001` and your ngrok URL as **Authorized JavaScript origins** |
@@ -113,16 +117,17 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 | `PUBLIC_URL` | Optional fixed public URL; leave empty to auto-detect ngrok |
 | `FEATURE_*` | On/off switches for each AI feature (below) |
 
-**Feature switches.** If one misbehaves during a demo, set it to `false` and restart; the core app keeps working.
+**Feature switches.** All are **off** unless set to `true`. With all of them off the site behaves like the `working-v1` tag. If one misbehaves during a demo, set it to `false` and restart.
 
 | Switch | Feature | Fallback |
 |---|---|---|
-| `FEATURE_KANNADA_ALERTS` | Spoken dashboard alerts | Text + chime |
-| `FEATURE_GEMINI_TTS` | Gemini voice for alerts | Browser voice |
-| `FEATURE_VOICE_ORDER` | Mic ordering at the table | Tap to order |
-| `FEATURE_MENU_PHOTO` | Menu photo OCR | CSV / typed menu |
-| `FEATURE_BUDGET_ORDER` | "₹800 for 4" | Skip |
+| `FEATURE_KANNADA_ALERTS` | Spoken Kannada dashboard alerts (one dashboard speaks each) | Text on the table card + chime |
+| `FEATURE_GEMINI_TTS` | Allow Gemini's voice if Sarvam is missing | Text only |
+| `FEATURE_VOICE_ORDER` | Mic ordering at the table | Type it, or tap to order |
+| `FEATURE_MENU_PHOTO` | Menu photo / PDF → draft menu | CSV / typed menu |
+| `FEATURE_BUDGET_ORDER` | "₹800 for 4" basket (pure code) | Order normally |
 | `FEATURE_VOICE_ACTIONS` | Voice "bill" / "waiter" | Buttons |
+| `FEATURE_TABLE_QUIZ` | Live quiz between tables, free tea prize | Other games |
 
 ## How a table works
 

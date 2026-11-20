@@ -93,7 +93,7 @@ FEATURE_VOICE_ORDER = _flag("FEATURE_VOICE_ORDER", False)        # mic button at
 FEATURE_MENU_PHOTO = _flag("FEATURE_MENU_PHOTO", False)          # menu photo / PDF during setup
 FEATURE_BUDGET_ORDER = _flag("FEATURE_BUDGET_ORDER", False)      # "Rs 800, dinner for 4" (no AI needed)
 FEATURE_VOICE_ACTIONS = _flag("FEATURE_VOICE_ACTIONS", False)    # voice "bill" / "waiter"
-FEATURE_TABLE_QUIZ = _flag("FEATURE_TABLE_QUIZ", True)           # live quiz between tables (no AI)
+FEATURE_TABLE_QUIZ = _flag("FEATURE_TABLE_QUIZ", False)          # live quiz between tables (no AI)
 
 
 def gemini_ready() -> bool:
