@@ -145,6 +145,77 @@ CREATE TABLE IF NOT EXISTS quiz_answers (
     answered_at REAL NOT NULL,
     PRIMARY KEY (round_id, session_id, q_index)
 );
+CREATE TABLE IF NOT EXISTS bill_shares (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+    label TEXT NOT NULL,
+    guest_id INTEGER,
+    amount_paise INTEGER NOT NULL,
+    phone TEXT NOT NULL DEFAULT '',
+    link_id TEXT,
+    link_url TEXT,
+    link_count INTEGER NOT NULL DEFAULT 0,
+    expires_at TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'PENDING',
+    mode TEXT NOT NULL DEFAULT 'equal',
+    cancelled INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL,
+    paid_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_shares_session ON bill_shares(session_id);
+CREATE INDEX IF NOT EXISTS idx_shares_link ON bill_shares(link_id);
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id INTEGER NOT NULL REFERENCES restaurants(id),
+    name TEXT NOT NULL,
+    brand TEXT NOT NULL DEFAULT '',
+    category TEXT NOT NULL DEFAULT 'Other',
+    pack_size REAL NOT NULL,
+    pack_unit TEXT NOT NULL,
+    price_paise INTEGER NOT NULL,
+    stock INTEGER NOT NULL DEFAULT 100,
+    available INTEGER NOT NULL DEFAULT 1,
+    ingredient_id TEXT,
+    image_url TEXT NOT NULL DEFAULT '',
+    topup INTEGER NOT NULL DEFAULT 0,
+    diet TEXT NOT NULL DEFAULT 'veg',
+    deleted INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_products_store ON products(store_id, deleted);
+CREATE TABLE IF NOT EXISTS store_orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id INTEGER NOT NULL REFERENCES restaurants(id),
+    status TEXT NOT NULL,
+    customer_name TEXT NOT NULL DEFAULT '',
+    phone TEXT NOT NULL DEFAULT '',
+    total_paise INTEGER NOT NULL,
+    source TEXT NOT NULL DEFAULT 'direct',
+    plan TEXT NOT NULL DEFAULT '',
+    token TEXT NOT NULL,
+    link_id TEXT,
+    link_url TEXT,
+    link_count INTEGER NOT NULL DEFAULT 0,
+    expires_at TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    paid_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_store_orders ON store_orders(store_id, status);
+CREATE TABLE IF NOT EXISTS store_order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL REFERENCES store_orders(id),
+    product_id INTEGER NOT NULL REFERENCES products(id),
+    name TEXT NOT NULL,
+    packs INTEGER NOT NULL,
+    pack_size REAL NOT NULL,
+    pack_unit TEXT NOT NULL,
+    unit_price_paise INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS translations (
+    lang TEXT NOT NULL,
+    src TEXT NOT NULL,
+    text TEXT NOT NULL,
+    PRIMARY KEY (lang, src)
+);
 CREATE TABLE IF NOT EXISTS join_attempts (
     device_key TEXT PRIMARY KEY,
     fails INTEGER NOT NULL DEFAULT 0,
@@ -209,6 +280,12 @@ def init_db() -> None:
         if "google_sub" not in owner_cols:
             conn.execute("ALTER TABLE owners ADD COLUMN google_sub TEXT NOT NULL DEFAULT ''")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_owners_google ON owners(google_sub)")
+        order_cols = {r[1] for r in conn.execute("PRAGMA table_info(orders)")}
+        if "guest_id" not in order_cols:  # which phone placed the order (for "pay for my items")
+            conn.execute("ALTER TABLE orders ADD COLUMN guest_id INTEGER")
+        rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}
+        if "business_type" not in rest_cols:
+            conn.execute("ALTER TABLE restaurants ADD COLUMN business_type TEXT NOT NULL DEFAULT 'restaurant'")
         conn.commit()
     finally:
         conn.close()

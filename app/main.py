@@ -218,6 +218,7 @@ def _session_view(conn, s: dict) -> dict:
         "guests": guests,
         "waiter_called": calls > 0,
         "payment": {"status": pay["status"], "amount_paise": pay["amount_paise"]} if pay else None,
+        "split": upgrades.split_summary(conn, s["id"]),
     }
 
 
@@ -693,6 +694,9 @@ def guest_order(req: Request, session_id: int):
                 "INSERT INTO order_items (order_id, menu_item_id, name, qty, unit_price_paise) VALUES (?, ?, ?, ?, ?)",
                 (oid, mid, menu[mid]["name"], qty, menu[mid]["price_paise"]),  # price copied at order time
             )
+        guest = conn.execute("SELECT id FROM session_guests WHERE token = ?", (req.header("X-Guest-Token"),)).fetchone()
+        if guest:  # remember which phone ordered (used by "pay for my items")
+            conn.execute("UPDATE orders SET guest_id = ? WHERE id = ?", (guest["id"], oid))
         features.announce(conn, s["restaurant_id"], s["table_number"], "order",
                           items=[(qty, menu[mid]) for mid, qty in merged.items()])
         return {"ok": True, "order_id": oid, "session": _session_view(conn, s)}
@@ -762,6 +766,8 @@ def guest_pay(req: Request, session_id: int):
             raise HTTPError(409, "This bill is already paid.")
         if s["status"] != BILL_REQUESTED:
             raise HTTPError(409, "Please request the bill first.")
+        if upgrades.split_active(conn, session_id):
+            raise HTTPError(409, "This bill is split. Pay your share from the split list.")
         amount = _bill_paise(conn, session_id)  # always from the database, never from the phone
         if amount <= 0:
             raise HTTPError(409, "Nothing to pay.")
@@ -883,6 +889,7 @@ def guest_payment_status(req: Request, session_id: int):
         pay = _latest_payment(conn, session_id)
     if pay and pay["status"] == "ACTIVE":
         _check_payment(pay["link_id"])
+    upgrades.refresh_shares(session_id)  # split bills: ask Cashfree about each share's link
     with db() as conn:
         return _session_view(conn, _guest_session(conn, session_id, req))
 
@@ -897,7 +904,9 @@ def cashfree_webhook(req: Request):
         return {"ok": True}
     link_id = cashfree.find_link_id(payload) if isinstance(payload, dict) else None
     if link_id:
-        _check_payment(link_id)  # never trust the webhook alone: confirm with Cashfree
+        # never trust the webhook alone: confirm with Cashfree (bill link, else a split share or a store order)
+        if _check_payment(link_id) == "UNKNOWN":
+            upgrades.check_other_link(link_id)
     return {"ok": True}
 
 
@@ -1023,6 +1032,7 @@ def dashboard(req: Request):
             (rid, _ist_today_start_utc(), PAID, PAID_CASH, CLOSED),
         ).fetchone()
         extras = features.dashboard_extras(conn, rid)
+        more = upgrades.dashboard_extras(conn, rid)
     return {
         "restaurant": r,
         "tables": tables,
@@ -1030,6 +1040,7 @@ def dashboard(req: Request):
         "features": config.features(),
         "server_time": now_iso(),
         **extras,  # announcements (Kannada alerts) and quiz prizes
+        **more,    # split-bill progress per table
     }
 
 
@@ -1088,8 +1099,10 @@ def cashier_cash(req: Request, session_id: int):
     for link_id in links:  # if the guest just paid online, don't take cash too
         if _check_payment(link_id) == "PAID":
             raise HTTPError(409, "This bill was just paid online. No cash needed.")
+    upgrades.refresh_shares(session_id)
     ts = now_iso()
     with db() as conn:
+        upgrades.cash_remaining_shares(conn, session_id)  # split bill: unpaid shares are settled in cash
         amount = _bill_paise(conn, session_id)
         conn.execute("UPDATE orders SET status = ?, reject_reason = 'Table closed', updated_at = ? "
                      "WHERE session_id = ? AND status = ?", (ORDER_REJECTED, ts, session_id, PENDING))
@@ -1156,3 +1169,5 @@ def health(req: Request):
 # Sarvam features, budget order and the table quiz live in features.py. Imported last so it can use the
 # helpers above; its routes register on the same app.
 from . import features  # noqa: E402
+from . import upgrades  # noqa: E402  (sales summary, split bill, owner voice)
+from . import store  # noqa: E402  (supermarket mode and meal planner)

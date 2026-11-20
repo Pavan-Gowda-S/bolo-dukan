@@ -82,6 +82,30 @@ def cancel_link(link_id: str) -> None:
         pass
 
 
+def latest_settlement() -> dict | None:
+    """Most recent settlement in the last 30 days, or None if the account/API doesn't provide it (often in sandbox)."""
+    if not config.cashfree_ready():
+        return None
+    end = datetime.now(IST)
+    body = {"pagination": {"limit": 5},
+            "filters": {"start_date": (end - timedelta(days=30)).replace(microsecond=0).isoformat(),
+                        "end_date": end.replace(microsecond=0).isoformat()}}
+    try:
+        status, data = request("POST", f"{config.CASHFREE_BASE}/settlements", body, _headers(), timeout=10)
+    except NetError:
+        return None
+    items = data.get("data") if isinstance(data, dict) else None
+    if status >= 300 or not items:
+        return None
+    first = items[0]
+    try:
+        amount = int(round(float(first.get("amount_settled") or first.get("settlement_amount") or 0) * 100))
+    except (TypeError, ValueError):
+        return None
+    date = str(first.get("settlement_date") or first.get("settled_on") or "")[:10]
+    return {"amount_paise": amount, "date": date} if amount and date else None
+
+
 def verify_signature(raw_body: bytes, timestamp: str | None, signature: str | None) -> bool:
     """signature = base64(HMAC_SHA256(secret_key, timestamp + raw_body))"""
     if not (timestamp and signature and config.CASHFREE_SECRET_KEY):

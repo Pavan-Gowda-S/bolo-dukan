@@ -62,6 +62,12 @@ def announce(conn, restaurant_id: int, table_number: int, event: str, items=None
         kn, en = f"ಟೇಬಲ್ {n}, ಬಿಲ್ ಕೇಳುತ್ತಿದ್ದಾರೆ.", f"Table {n} wants the bill."
     elif event == "quiz":
         kn, en = f"ಟೇಬಲ್ {n}, ಕ್ವಿಜ್ ಗೆದ್ದಿದ್ದಾರೆ. ಉಚಿತ ಚಹಾ ಕೊಡಿ.", f"Table {n} won the quiz. Give them a free tea."
+    elif event == "share_paid":
+        kn, en = (f"ಟೇಬಲ್ {n}, ಒಬ್ಬರ ಪಾಲು ಪಾವತಿಯಾಗಿದೆ. {_rs(amount_paise or 0)} ರೂಪಾಯಿ.",
+                  f"Table {n}: one share paid, {_rs(amount_paise or 0)} rupees.")
+    elif event == "store_order":  # table_number carries the store order number here
+        kn, en = (f"ಹೊಸ ಆನ್‌ಲೈನ್ ಆರ್ಡರ್ ಸಂಖ್ಯೆ {n}, ಪಾವತಿಯಾಗಿದೆ. {_rs(amount_paise or 0)} ರೂಪಾಯಿ.",
+                  f"New paid order number {n}, {_rs(amount_paise or 0)} rupees.")
     else:
         return
     conn.execute(
@@ -210,6 +216,16 @@ def match_items(raw_items: list, menu: list[dict]) -> tuple[list[dict], list[str
               "qty": merged[i], "unit_price_paise": by_id[i]["price_paise"],
               "line_total_paise": by_id[i]["price_paise"] * merged[i]} for i in order]
     return lines, sorted(set(not_found)), sorted(set(unavailable))
+
+
+def find_menu_item(said: str, menu: list[dict]):
+    """One dish by name (available or not), using the same matching as voice ordering."""
+    if not said.strip():
+        return None
+    by_id = {it["id"]: it for it in menu}
+    probe = [dict(it, available=1) for it in menu]  # match even finished dishes
+    lines, _, _ = match_items([{"name": said, "qty": 1}], probe)
+    return by_id.get(lines[0]["menu_item_id"]) if lines else None
 
 
 def _localise(text_en: str, lang: str) -> tuple[str, str | None]:

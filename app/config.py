@@ -94,6 +94,13 @@ FEATURE_MENU_PHOTO = _flag("FEATURE_MENU_PHOTO", False)          # menu photo / 
 FEATURE_BUDGET_ORDER = _flag("FEATURE_BUDGET_ORDER", False)      # "Rs 800, dinner for 4" (no AI needed)
 FEATURE_VOICE_ACTIONS = _flag("FEATURE_VOICE_ACTIONS", False)    # voice "bill" / "waiter"
 FEATURE_TABLE_QUIZ = _flag("FEATURE_TABLE_QUIZ", False)          # live quiz between tables (no AI)
+FEATURE_SALES_SUMMARY = _flag("FEATURE_SALES_SUMMARY", False)    # A1: today's sales strip + bills list
+FEATURE_SPLIT_BILL = _flag("FEATURE_SPLIT_BILL", False)          # A2: split the bill, one Cashfree link per share
+FEATURE_OWNER_VOICE = _flag("FEATURE_OWNER_VOICE", False)        # A3: owner asks "today's sales?" by voice
+FEATURE_SUPERMARKET = _flag("FEATURE_SUPERMARKET", False)        # B0/B1: supermarket business type
+FEATURE_MEAL_PLANNER = _flag("FEATURE_MEAL_PLANNER", False)      # B2: AI meal planner for supermarket customers
+FEATURE_NUTRITION = _flag("FEATURE_NUTRITION", False)            # calories/protein on menu dishes (computed)
+FEATURE_PHOTOS = _flag("FEATURE_PHOTOS", False)                  # real food/grocery photos (Wikimedia Commons)
 
 
 def gemini_ready() -> bool:
@@ -127,6 +134,13 @@ def features() -> dict:
         "budget_order": FEATURE_BUDGET_ORDER,
         "voice_actions": FEATURE_VOICE_ACTIONS and FEATURE_VOICE_ORDER and ai,
         "table_quiz": FEATURE_TABLE_QUIZ,
+        "sales_summary": FEATURE_SALES_SUMMARY,
+        "split_bill": FEATURE_SPLIT_BILL and cashfree_ready(),
+        "owner_voice": FEATURE_OWNER_VOICE and ai,
+        "supermarket": FEATURE_SUPERMARKET,
+        "meal_planner": FEATURE_SUPERMARKET and FEATURE_MEAL_PLANNER,
+        "nutrition": FEATURE_NUTRITION,
+        "photos": FEATURE_PHOTOS,
         "online_payment": cashfree_ready(),
         "ai_provider": ai_provider(),
     }
