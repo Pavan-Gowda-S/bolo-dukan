@@ -63,6 +63,17 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
 GEMINI_TTS_MODEL = os.getenv("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts").strip()
 GEMINI_TTS_VOICE = os.getenv("GEMINI_TTS_VOICE", "Kore").strip()
 
+# Sarvam AI (preferred for speech, chat and menu reading when a key is set; Gemini is the backup)
+SARVAM_API_KEY = os.getenv("SARVAM_API_KEY", "").strip()
+SARVAM_STT_MODEL = os.getenv("SARVAM_STT_MODEL", "saaras:v4").strip()
+SARVAM_TTS_MODEL = os.getenv("SARVAM_TTS_MODEL", "bulbul:v3").strip()
+SARVAM_TTS_SPEAKER = os.getenv("SARVAM_TTS_SPEAKER", "kavya").strip()
+SARVAM_LLM_MODEL = os.getenv("SARVAM_LLM_MODEL", "sarvam-105b").strip()
+try:
+    SARVAM_TIMEOUT = float(os.getenv("SARVAM_TIMEOUT", "15"))
+except ValueError:
+    SARVAM_TIMEOUT = 15.0
+
 # Google sign-in (OAuth "Web application" client ID from Google Cloud Console)
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "").strip()
 
@@ -75,17 +86,30 @@ CASHFREE_BASE = (
 )
 CASHFREE_API_VERSION = "2023-08-01"
 
-# Phase 2 switches. Each one needs GEMINI_API_KEY too.
-FEATURE_KANNADA_ALERTS = _flag("FEATURE_KANNADA_ALERTS", True)   # spoken alerts on the dashboard
-FEATURE_GEMINI_TTS = _flag("FEATURE_GEMINI_TTS", True)           # use Gemini voice (else browser voice)
-FEATURE_VOICE_ORDER = _flag("FEATURE_VOICE_ORDER", True)         # mic button at the table
-FEATURE_MENU_PHOTO = _flag("FEATURE_MENU_PHOTO", True)           # menu photo during setup
-FEATURE_BUDGET_ORDER = _flag("FEATURE_BUDGET_ORDER", True)       # "Rs 800, dinner for 4"
-FEATURE_VOICE_ACTIONS = _flag("FEATURE_VOICE_ACTIONS", True)     # voice "bill" / "waiter"
+# Phase 2 switches: all OFF unless .env turns them on. With every switch off the site works as working-v1.
+FEATURE_KANNADA_ALERTS = _flag("FEATURE_KANNADA_ALERTS", False)  # spoken alerts on the dashboard
+FEATURE_GEMINI_TTS = _flag("FEATURE_GEMINI_TTS", True)           # allow Gemini voice if Sarvam is missing
+FEATURE_VOICE_ORDER = _flag("FEATURE_VOICE_ORDER", False)        # mic button at the table
+FEATURE_MENU_PHOTO = _flag("FEATURE_MENU_PHOTO", False)          # menu photo / PDF during setup
+FEATURE_BUDGET_ORDER = _flag("FEATURE_BUDGET_ORDER", False)      # "Rs 800, dinner for 4" (no AI needed)
+FEATURE_VOICE_ACTIONS = _flag("FEATURE_VOICE_ACTIONS", False)    # voice "bill" / "waiter"
+FEATURE_TABLE_QUIZ = _flag("FEATURE_TABLE_QUIZ", True)           # live quiz between tables (no AI)
 
 
 def gemini_ready() -> bool:
     return bool(GEMINI_API_KEY)
+
+
+def sarvam_ready() -> bool:
+    return bool(SARVAM_API_KEY)
+
+
+def ai_ready() -> bool:
+    return sarvam_ready() or gemini_ready()
+
+
+def ai_provider() -> str:
+    return "sarvam" if sarvam_ready() else ("gemini" if gemini_ready() else "none")
 
 
 def cashfree_ready() -> bool:
@@ -93,13 +117,16 @@ def cashfree_ready() -> bool:
 
 
 def features() -> dict:
-    g = gemini_ready()
+    ai = ai_ready()
     return {
         "kannada_alerts": FEATURE_KANNADA_ALERTS,
-        "gemini_tts": FEATURE_KANNADA_ALERTS and FEATURE_GEMINI_TTS and g,
-        "voice_order": FEATURE_VOICE_ORDER and g,
-        "menu_photo": FEATURE_MENU_PHOTO and g,
-        "budget_order": FEATURE_BUDGET_ORDER and g,
-        "voice_actions": FEATURE_VOICE_ACTIONS and g,
+        "server_tts": FEATURE_KANNADA_ALERTS and (sarvam_ready() or (FEATURE_GEMINI_TTS and gemini_ready())),
+        "gemini_tts": FEATURE_KANNADA_ALERTS and (sarvam_ready() or (FEATURE_GEMINI_TTS and gemini_ready())),
+        "voice_order": FEATURE_VOICE_ORDER and ai,
+        "menu_photo": FEATURE_MENU_PHOTO and ai,
+        "budget_order": FEATURE_BUDGET_ORDER,
+        "voice_actions": FEATURE_VOICE_ACTIONS and FEATURE_VOICE_ORDER and ai,
+        "table_quiz": FEATURE_TABLE_QUIZ,
         "online_payment": cashfree_ready(),
+        "ai_provider": ai_provider(),
     }
