@@ -33,6 +33,10 @@
 .feed .ev .t { color: var(--faint); font-size: .76rem; }
 @keyframes evIn { from { opacity: 0; transform: translateY(-10px) scale(.9); } }
 
+.prizes { display: grid; gap: 10px; margin-bottom: 14px; }
+.prize { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 18px; background: linear-gradient(120deg, rgba(255,193,69,.18), rgba(255,77,109,.1)); border: 1px solid rgba(255,193,69,.5); animation: evIn .5s var(--spring) both; }
+.prize .gift { font-size: 1.8rem; animation: float 2.4s ease-in-out infinite; }
+.kn-say { font-family: "Noto Sans Kannada", var(--font); font-size: .86rem; font-weight: 700; color: var(--marigold); padding: 6px 10px; border-radius: 10px; background: rgba(255,193,69,.1); border: 1px solid rgba(255,193,69,.3); animation: evIn .4s var(--spring) both; }
 .tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; perspective: 1400px; }
 .tcard {
   --c: var(--st-empty);

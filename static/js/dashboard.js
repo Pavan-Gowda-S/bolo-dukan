@@ -29,21 +29,41 @@
   const queue = []; let speaking = false;
   function lang() { return (data && data.restaurant.language) || "kn-IN"; }
   function phrase(kind, n) { const p = BD.phrases[lang()] || BD.phrases["en-IN"]; return p[kind](n); }
-  function alertEvent(kind, n) {
-    const text = phrase(kind, n), en = BD.phrases["en-IN"][kind](n);
-    const color = { start: C.waiting, order: C.order, waiter: C.alert, bill: C.bill, paid: C.paid }[kind];
-    const ev = document.createElement("div"); ev.className = "ev"; ev.style.setProperty("--c", color);
-    ev.innerHTML = `<b>●</b><span>${BD.esc(text)}</span>${lang() !== "en-IN" ? `<span class="t">${BD.esc(en)}</span>` : ""}<span class="t">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>`;
+  const EV_COLOR = { start: C.waiting, order: C.order, waiter: C.alert, bill: C.bill, paid: C.paid, quiz: "#ffc145" };
+  function feedItem(kind, text, en) {
+    const ev = document.createElement("div"); ev.className = "ev"; ev.style.setProperty("--c", EV_COLOR[kind] || C.order);
+    ev.innerHTML = `<b>●</b><span>${BD.esc(text)}</span>${en && en !== text ? `<span class="t">${BD.esc(en)}</span>` : ""}<span class="t">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>`;
     const feed = $("feed"); feed.prepend(ev); while (feed.children.length > 8) feed.lastChild.remove();
     BD.toast(text, "say", 4500);
+  }
+  function alertEvent(kind, n) {
     BD.sound.chime(kind === "paid" ? "paid" : kind === "waiter" ? "waiter" : kind === "start" ? "start" : "order");
-    if (data && data.features.kannada_alerts) { queue.push(text); setTimeout(drain, 700); }
+    // With Kannada alerts on, the server's announcements drive the feed, the card text and the voice.
+    if (data && data.features.kannada_alerts) return;
+    feedItem(kind, phrase(kind, n), lang() !== "en-IN" ? BD.phrases["en-IN"][kind](n) : "");
+  }
+
+  // Kannada alerts: each announcement is spoken once across all open dashboards (the server's claim decides).
+  const seenAnn = new Set(), cardSay = new Map(); let firstAnn = true;
+  function processAnnouncements(list) {
+    (list || []).forEach(a => {
+      if (seenAnn.has(a.id)) return;
+      seenAnn.add(a.id);
+      cardSay.set(a.table_number, { text: a.text_kn, until: Date.now() + 60000 });
+      if (firstAnn) return;  // don't replay old alerts when the page opens
+      feedItem(a.event_type, a.text_kn, a.text_en);
+      if (!a.claimed && BD.sound.ready) { queue.push(a.id); setTimeout(drain, 150); }
+    });
+    firstAnn = false;
   }
   async function drain() {
-    if (speaking || !queue.length || !BD.sound.ready) { if (!BD.sound.ready) queue.length = 0; return; }
+    if (speaking || !queue.length || !BD.sound.ready) return;
     speaking = true;
-    const text = queue.shift();
-    try { await speak(text); } catch (e) {}
+    const id = queue.shift();
+    try {
+      const r = await BD.api(`/api/announcements/${id}/claim`, { method: "POST", body: {} });
+      if (r.audio) await new Promise(ok => { const au = new Audio(r.audio); au.onended = ok; au.onerror = ok; au.play().catch(ok); setTimeout(ok, 15000); });
+    } catch (e) {}
     speaking = false;
     if (queue.length) setTimeout(drain, 250);
   }
@@ -101,8 +121,10 @@
         <div class="total">${BD.rupees(s.bill_paise)}</div>
         ${acts ? `<div class="acts">${acts}</div>` : ""}`;
     }
+    const say = cardSay.get(t.number);
+    const sayHtml = say && say.until > Date.now() ? `<div class="kn-say">🔊 ${BD.esc(say.text)}</div>` : "";
     return `${v.waiter ? `<span class="bell" title="Waiter called">🔔</span>` : ""}
-      <div class="top"><div class="num"><small>TABLE</small>${t.number}</div><span class="st">${BD.esc(v.stateLabel)}</span></div>${body}`;
+      <div class="top"><div class="num"><small>TABLE</small>${t.number}</div><span class="st">${BD.esc(v.stateLabel)}</span></div>${sayHtml}${body}`;
   }
   function renderGrid() {
     const grid = $("gridView"), seen = new Set();
@@ -189,6 +211,12 @@
     const tbl = data.tables.find(t => t.session && (String(t.session.id) === sid || t.session.orders.some(o => String(o.id) === oid)));
     try {
       if (a === "rejorder") return openReason(oid);
+      if (a === "reward") {
+        BD.busy(btn, true);
+        const r = await BD.api(`/api/quiz/${btn.dataset.r}/reward`, { method: "POST", body: {} });
+        BD.toast(r.message, "ok", 5000); BD.sound.chime("paid");
+        return poll(true);
+      }
       if (a === "cash") {
         const amt = tbl ? BD.rupees(tbl.session.bill_paise) : "";
         if (!confirm(`Mark ${amt} as paid in CASH and close table ${tbl ? tbl.number : ""}?`)) return;
@@ -251,7 +279,10 @@
   }
   $("soundBtn").onclick = () => {
     unlockSound();
-    setTimeout(() => { BD.sound.chime("order"); if (data && data.features.kannada_alerts) { queue.push(phrase("order", 1)); drain(); } }, 120);
+    setTimeout(() => {
+      BD.sound.chime("order");
+      if (data && data.features.kannada_alerts) BD.toast("Sound is on. New alerts will be spoken in Kannada here.", "ok");
+    }, 120);
   };
   document.addEventListener("pointerdown", unlockSound, { once: true });
 
@@ -279,6 +310,14 @@
   function pushFloor() { if (window.Floor3D && window.Floor3D.ready && data) window.Floor3D.update(data.tables.map(viewOf)); }
   document.querySelectorAll(".seg button").forEach(b => b.onclick = () => setView(b.dataset.view));
 
+  // ---------------------------------------------------------------- quiz prizes
+  function renderPrizes(list) {
+    const html = list.map(p => `<div class="prize"><span class="gift">🎁</span><span class="grow"><b>Table ${p.table_number} won the Table Quiz</b><br><span class="small muted">${p.score} points · their free tea is added to the bill at ₹0</span></span>
+      <button class="btn sm" data-a="reward" data-r="${p.round_id}">Give free tea</button></div>`).join("");
+    const box = $("prizes");
+    if (box._h !== html) { box._h = html; box.innerHTML = html; }
+  }
+
   // ---------------------------------------------------------------- polling
   async function poll(force) {
     if (polling && !force) return;
@@ -287,6 +326,8 @@
       const next = await BD.api("/api/dashboard");
       detectEvents(next);
       prev = next; data = next; failures = 0;
+      processAnnouncements(data.announcements);
+      renderPrizes(data.quiz_prizes || []);
       $("live").classList.remove("off"); $("live").lastChild.textContent = "Live";
       $("rname").textContent = data.restaurant.name;
       if (!data.tables.length) {

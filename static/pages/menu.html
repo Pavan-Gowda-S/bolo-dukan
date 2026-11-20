@@ -32,6 +32,8 @@
   .dish.unavail .nm, .dish.unavail .pr { opacity: .45; text-decoration: line-through; }
   @keyframes slideIn { from { opacity: 0; transform: translateX(-14px); } }
   .review-row td { padding: 6px 4px; }
+  .review-row.no-price td { background: rgba(255, 80, 110, .1); }
+  .review-row.no-price input[data-f="price"] { border-color: #ff8fa3; }
   .review-row input.input-sm { min-width: 0; }
   .empty { text-align: center; padding: 50px 20px; }
   .empty .big { font-size: 3rem; }
@@ -55,8 +57,11 @@
     <section class="methods">
       <article class="glass method ai reveal" data-tilt="5" id="photoCard">
         <div class="ico">📸</div>
-        <div><h3>Snap the paper menu</h3><p class="muted small" style="margin:6px 0 0">Gemini reads every dish and price. You check before saving.</p></div>
-        <div class="act"><label class="drop" id="photoDrop"><input type="file" accept="image/*" capture="environment" id="photoInput" hidden>Tap to take or choose a photo</label></div>
+        <div><h3>Snap the paper menu</h3><p class="muted small" style="margin:6px 0 0">Photo (JPG/PNG) or PDF. Sarvam AI reads every dish and price. You check before saving.</p></div>
+        <div class="act stack" style="gap:8px">
+          <select class="input input-sm" id="photoLang" aria-label="Menu language"><option value="en-IN">Menu language: English</option><option value="kn-IN">Kannada</option><option value="hi-IN">Hindi</option><option value="ta-IN">Tamil</option><option value="te-IN">Telugu</option><option value="ml-IN">Malayalam</option><option value="mr-IN">Marathi</option></select>
+          <label class="drop" id="photoDrop"><input type="file" accept="image/jpeg,image/png,application/pdf,.pdf" id="photoInput" hidden><span id="photoTxt">📷 Upload menu photo or PDF</span></label>
+        </div>
       </article>
       <article class="glass method reveal" data-tilt="5" style="--d:.06s">
         <div class="ico">📄</div>
@@ -117,7 +122,8 @@ function render() {
   $("cats").innerHTML = cats.map(c => `<option value="${BD.esc(c)}">`).join("");
   if (!features.menu_photo) {
     $("photoCard").classList.add("off");
-    $("photoDrop").innerHTML = `Needs <span class="kbd">GEMINI_API_KEY</span> in .env (or FEATURE_MENU_PHOTO is off)`;
+    $("photoDrop").innerHTML = `Turn on with <span class="kbd">FEATURE_MENU_PHOTO=true</span> and <span class="kbd">SARVAM_API_KEY</span> in .env`;
+    $("photoLang").classList.add("hidden");
     $("photoDrop").style.cursor = "default";
   }
   if (!n) { $("list").innerHTML = `<div class="glass empty reveal in"><div class="big float">🍽️</div><h3 style="margin:10px 0 6px">An empty kitchen</h3><p class="muted">Snap your paper menu, upload a CSV, or add dishes one by one.</p></div>`; return; }
@@ -207,41 +213,60 @@ async function shrink(file) {
     return await new Promise(r => c.toBlob(b => r(b || file), "image/jpeg", 0.88));
   } catch (e) { return file; }
 }
+let draftCategories = ["Main Course", "Starters", "Breakfast", "Beverages", "Desserts", "Snacks", "Other"], draftWarnings = [];
 wireDrop($("photoDrop"), $("photoInput"), async file => {
   if (!features.menu_photo) return;
-  const url = URL.createObjectURL(file);
+  const isPdf = /pdf$/i.test(file.type) || /\.pdf$/i.test(file.name);
+  if (!isPdf && !/^image\/(jpeg|png)$/i.test(file.type) && !/\.(jpe?g|png)$/i.test(file.name)) return BD.toast("Please choose a JPG, PNG or PDF", "bad");
   $("rvTitle").textContent = "Reading your menu…";
-  $("rvBody").innerHTML = `<div class="scan-anim"><img src="${url}" alt=""></div><p class="muted center">Gemini is reading dishes and prices. This takes 5–20 seconds.</p>`;
+  $("rvBody").innerHTML = `<div class="scan-anim">${isPdf ? `<div style="display:grid;place-items:center;height:100%;font-size:3rem">📄</div>` : `<img src="${URL.createObjectURL(file)}" alt="">`}</div>
+    <p class="muted center">Reading your menu… This takes 10–40 seconds.</p>`;
   openM("review");
   try {
-    const fd = new FormData(); fd.append("file", await shrink(file), "menu.jpg");
+    const fd = new FormData();
+    if (isPdf) fd.append("file", file, file.name || "menu.pdf"); else fd.append("file", await shrink(file), "menu.jpg");
+    fd.append("language", $("photoLang").value);
     const r = await BD.api("/api/owner/menu/photo", { form: fd });
-    reviewItems = r.items.map(i => ({ ...i, keep: true }));
+    reviewItems = (r.draft_items || r.items).map(i => ({ ...i, keep: i.include !== false }));
+    draftCategories = [...new Set([...(r.categories || draftCategories), ...items.map(i => i.category)])];
+    draftWarnings = r.warnings || [];
     drawReview();
   } catch (x) {
-    $("rvTitle").textContent = "Couldn't read that photo";
-    $("rvBody").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div><p class="muted small">Tip: lay the menu flat, fill the frame, avoid glare. Or upload a CSV instead.</p>`;
+    $("rvTitle").textContent = "Couldn't read the photo";
+    $("rvBody").innerHTML = `<div class="notice bad">${BD.esc(x.message || "Couldn't read the photo. Please add items manually.")}</div><p class="muted small">Tip: lay the menu flat, fill the frame, avoid glare. You can still add dishes by hand or upload a CSV.</p>`;
   }
 });
 function drawReview() {
+  const noPrice = i => !(i.price_paise >= 100);
   $("rvTitle").textContent = `Found ${reviewItems.length} dishes. Check them`;
-  $("rvBody").innerHTML = `<div style="overflow-x:auto"><table class="table-list"><thead><tr><th></th><th>Name</th><th>Local name</th><th>Category</th><th>₹</th></tr></thead><tbody>
-    ${reviewItems.map((i, k) => `<tr class="review-row"><td><input type="checkbox" data-k="${k}" data-f="keep" ${i.keep ? "checked" : ""} aria-label="Keep"></td>
+  const opts = c => draftCategories.map(x => `<option ${x === c ? "selected" : ""}>${BD.esc(x)}</option>`).join("");
+  $("rvBody").innerHTML = `${draftWarnings.map(w => `<div class="notice" style="margin-bottom:10px">${BD.esc(w)}</div>`).join("")}
+    <div style="overflow-x:auto"><table class="table-list"><thead><tr><th>Include</th><th>Name</th><th>Local name</th><th>Category</th><th>₹</th></tr></thead><tbody>
+    ${reviewItems.map((i, k) => `<tr class="review-row ${noPrice(i) ? "no-price" : ""}" data-row="${k}"><td><input type="checkbox" data-k="${k}" data-f="keep" ${i.keep ? "checked" : ""} aria-label="Include"></td>
       <td><input class="input input-sm" data-k="${k}" data-f="name" value="${BD.esc(i.name)}"></td>
       <td><input class="input input-sm" data-k="${k}" data-f="name_local" value="${BD.esc(i.name_local)}"></td>
-      <td><input class="input input-sm" data-k="${k}" data-f="category" value="${BD.esc(i.category)}" list="cats"></td>
-      <td><input class="input input-sm" data-k="${k}" data-f="price" value="${i.price_paise / 100}" inputmode="decimal" style="width:80px"></td></tr>`).join("")}
+      <td><select class="input input-sm" data-k="${k}" data-f="category">${opts(i.category)}</select></td>
+      <td><input class="input input-sm" data-k="${k}" data-f="price" value="${i.price_paise ? i.price_paise / 100 : ""}" placeholder="Price?" inputmode="decimal" style="width:84px"></td></tr>`).join("")}
     </tbody></table></div>
-    <div class="row spread" style="margin-top:16px"><span class="muted small">Untick anything wrong. Fix names or prices right here.</span><button class="btn" id="rvSave">Save ${reviewItems.length} dishes</button></div>`;
-  $("rvBody").querySelectorAll("[data-k]").forEach(inp => inp.addEventListener("input", () => {
+    <div class="row spread wrap" style="margin-top:16px"><span class="muted small">Untick anything wrong. Rows in red need a price.</span>
+      <div class="row"><button class="btn-ghost" id="rvCancel">Cancel</button><button class="btn" id="rvSave">Save menu</button></div></div>`;
+  const refresh = () => {
+    const keep = reviewItems.filter(i => i.keep), missing = keep.filter(noPrice).length;
+    $("rvSave").textContent = missing ? `${missing} need a price` : `Save ${keep.length} dishes`;
+    $("rvSave").disabled = !keep.length || missing > 0;
+    $("rvBody").querySelectorAll("[data-row]").forEach(tr => tr.classList.toggle("no-price", noPrice(reviewItems[tr.dataset.row])));
+  };
+  $("rvBody").querySelectorAll("[data-k]").forEach(inp => inp.addEventListener(inp.tagName === "SELECT" ? "change" : "input", () => {
     const it = reviewItems[inp.dataset.k], f = inp.dataset.f;
     if (f === "keep") it.keep = inp.checked; else if (f === "price") it.price_paise = toPaise(inp.value); else it[f] = inp.value;
-    $("rvSave").textContent = `Save ${reviewItems.filter(i => i.keep).length} dishes`;
+    refresh();
   }));
+  $("rvCancel").onclick = closeM;
+  refresh();
   $("rvSave").onclick = async () => {
     const keep = reviewItems.filter(i => i.keep);
     if (!keep.length) return BD.toast("Nothing ticked", "bad");
-    const bad = keep.find(i => !i.name.trim() || i.price_paise < 100);
+    const bad = keep.find(i => !i.name.trim() || noPrice(i));
     if (bad) return BD.toast(`Check “${bad.name || "a dish"}”: it needs a name and a price`, "bad");
     BD.busy($("rvSave"), true, "Saving…");
     try { const r = await BD.api("/api/owner/menu/bulk", { body: { items: keep } }); closeM(); BD.toast(`Added ${r.added} dishes`, "ok"); BD.confetti(90); await load(); }

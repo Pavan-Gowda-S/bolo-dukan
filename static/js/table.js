@@ -182,7 +182,8 @@
     $("billN").textContent = sess.status === "PAID" ? "✓" : "₹"; $("billN").classList.toggle("hidden", !(sess.status === "BILL_REQUESTED" || sess.status === "PAID"));
     notifyOrderChanges();
     renderOrders(); renderBill(); updateCartBar();
-    $("micFab").classList.toggle("hidden", !(info.features.voice_order && sess.status === "OPEN"));
+    $("micFab").classList.toggle("hidden", !(info.features.voice_order && (sess.status === "OPEN" || (sess.status === "BILL_REQUESTED" && info.features.voice_actions))));
+    $("budgetBtn").classList.toggle("hidden", !(info.features.budget_order && sess.status === "OPEN"));
   }
 
   function notifyOrderChanges() {
@@ -402,10 +403,21 @@
   function setVState(s, text) {
     const orb = $("vOrb");
     orb.classList.toggle("rec", s === "rec"); orb.classList.toggle("think", s === "think");
-    $("vState").textContent = text || { idle: "Tap to talk", rec: "Listening… tap to stop", think: "Understanding…" }[s] || "";
+    $("vState").textContent = text || { idle: "Hold to talk (or tap)", rec: "Listening… let go when done", think: "Understanding…" }[s] || "";
     orb.setAttribute("aria-label", s === "rec" ? "Stop recording" : "Start recording");
   }
-  $("vOrb").onclick = () => { if (thinking) return; rec && rec.state === "recording" ? stopRecording(false) : startRecording(); };
+  // Hold to record, release to send. A quick tap also works: tap to start, tap again to send.
+  let pressAt = 0, startedByThisPress = false;
+  $("vOrb").addEventListener("pointerdown", e => {
+    e.preventDefault();
+    if (thinking) return;
+    if (rec && rec.state === "recording") { stopRecording(false); startedByThisPress = false; return; }
+    pressAt = Date.now(); startedByThisPress = true; startRecording();
+  });
+  const release = () => { if (startedByThisPress && Date.now() - pressAt > 450 && rec && rec.state === "recording") stopRecording(false); startedByThisPress = false; };
+  $("vOrb").addEventListener("pointerup", release);
+  $("vOrb").addEventListener("pointerleave", release);
+  $("vOrb").addEventListener("contextmenu", e => e.preventDefault());
   async function startRecording() {
     try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } }); }
     catch (e) { setVState("idle", "Microphone blocked. Allow it in the browser, or type below."); return; }
@@ -437,16 +449,16 @@
       const wav = await toWav(blob);
       if (wav.byteLength < 8000) { setVState("idle", "That was very short. Tap and try again."); thinking = false; return; }
       const fd = new FormData(); fd.append("audio", new Blob([wav], { type: "audio/wav" }), "voice.wav");
-      showResult(await guestApi(`/api/session/${me.sid}/assistant`, { form: fd }));
-    } catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+      showResult(await guestApi(`/api/session/${me.sid}/voice`, { form: fd }));
+    } catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)} You can also tap dishes on the menu.</div>`; }
     thinking = false;
   }
   $("vForm").onsubmit = async e => {
     e.preventDefault();
     const text = $("vText").value.trim(); if (!text || thinking) return;
     thinking = true; setVState("think"); BD.busy($("vSend"), true);
-    try { const fd = new FormData(); fd.append("text", text); showResult(await guestApi(`/api/session/${me.sid}/assistant`, { form: fd })); $("vText").value = ""; }
-    catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+    try { const fd = new FormData(); fd.append("text", text); showResult(await guestApi(`/api/session/${me.sid}/voice`, { form: fd })); $("vText").value = ""; }
+    catch (x) { setVState("idle", ""); $("vResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)} You can also tap dishes on the menu.</div>`; }
     BD.busy($("vSend"), false); thinking = false;
   };
   async function toWav(blob) {
@@ -466,31 +478,67 @@
     return out.buffer;
   }
   function showResult(r) {
-    setVState("idle", "Tap to say more");
-    let html = r.transcript ? `<div class="v-said"><small>You said</small>${BD.esc(r.transcript)}</div>` : "";
-    if (r.reply) html += `<p class="v-reply">${BD.esc(r.reply)}</p>`;
-    if ((r.intent === "order" || r.intent === "budget") && r.items.length) {
-      html += `<div class="glass" style="padding:6px 14px;border-radius:16px">${r.items.map(i => `<div class="cart-line" style="grid-template-columns:34px 1fr auto"><span class="e" style="font-size:1.3rem">${BD.foodEmoji(i.name, i.category)}</span><div><b>${i.qty} × ${BD.esc(i.name)}</b>${i.name_local ? `<div class="muted small">${BD.esc(i.name_local)}</div>` : ""}</div><span class="mono">${BD.rupees(i.qty * i.price_paise)}</span></div>`).join("")}
-        <div class="row spread" style="padding:10px 0"><span class="muted">${r.intent === "budget" && r.budget_paise ? `Within your ${BD.rupees(r.budget_paise)}` : "Total"}</span><b>${BD.rupees(r.total_paise)}</b></div></div>
-        <div class="row" style="margin-top:12px"><button class="btn mint grow" id="vAdd">Add to cart</button><button class="btn-ghost" id="vRetry">Try again</button></div>`;
-    } else if (r.intent === "bill") {
-      html += `<div class="row"><button class="btn violet grow" id="vBill">Yes, request the bill</button><button class="btn-ghost" id="vRetry">No</button></div>`;
-    } else if (r.intent === "waiter") {
-      html += `<div class="row"><button class="btn grow" id="vWaiter">Yes, call a waiter</button><button class="btn-ghost" id="vRetry">No</button></div>`;
-    } else {
-      html += `<div class="notice">Sorry, I couldn't match that to the menu. Try again, or say the dish names a bit slower.</div>`;
-    }
-    $("vResult").innerHTML = html;
-    const add = $("vAdd"), retry = $("vRetry"), vb = $("vBill"), vw = $("vWaiter");
-    if (add) add.onclick = () => {
-      r.items.forEach(i => { if (menuById.has(i.id)) cart.set(i.id, Math.min(20, (cart.get(i.id) || 0) + i.qty)); });
-      saveCart(); renderMenu(); updateCartBar(); closeSheets(); setTab("menu");
-      renderCartSheet(); openSheet("cartSheet"); BD.toast("Added. Check and place the order", "ok");
-    };
-    if (retry) retry.onclick = () => { $("vResult").innerHTML = ""; setVState("idle"); };
-    if (vb) vb.onclick = () => { closeSheets(); setTab("bill"); requestBill(); };
-    if (vw) vw.onclick = () => { closeSheets(); callWaiter(); };
+    setVState("idle", "Hold to say more");
+    renderProposal($("vResult"), r, () => setVState("idle"));
   }
+
+  // Shared by voice and "Order by budget": shows the proposed cart; nothing is ordered until "Add to order".
+  let replyAudio = null;
+  function renderProposal(box, r, onRetry) {
+    if (replyAudio) { try { replyAudio.pause(); } catch (e) {} }
+    if (r.reply_audio) { replyAudio = new Audio(r.reply_audio); replyAudio.play().catch(() => {}); }
+    let lines = (r.proposed_items || []).map(l => Object.assign({}, l));
+    const draw = () => {
+      const total = lines.reduce((n, l) => n + l.line_total_paise, 0);
+      let html = r.transcript ? `<div class="v-said"><small>You said</small>${BD.esc(r.transcript)}</div>` : "";
+      if (r.reply_text) html += `<p class="v-reply">${BD.esc(r.reply_text)}</p>`;
+      if (r.ok && lines.length && (r.intent === "add_items" || r.intent === "budget_order")) {
+        html += `<div class="glass" style="padding:6px 14px;border-radius:16px">${lines.map(l => `<div class="cart-line" style="grid-template-columns:34px 1fr auto"><span class="e" style="font-size:1.3rem">${BD.foodEmoji(l.name)}</span><div><b>${l.qty} × ${BD.esc(l.name)}</b>${l.name_local ? `<div class="muted small">${BD.esc(l.name_local)}</div>` : ""}<div class="faint small">${BD.rupees(l.unit_price_paise)} each</div></div><span class="mono">${BD.rupees(l.line_total_paise)}</span></div>`).join("")}
+          <div class="row spread" style="padding:10px 0"><span class="muted">${r.budget_paise ? `Total (budget ${BD.rupees(r.budget_paise)})` : "Total"}</span><b>${BD.rupees(total)}</b></div></div>`;
+        if (r.suggestion && !lines.some(l => l.menu_item_id === r.suggestion.menu_item_id)) {
+          html += `<div class="notice" style="margin-top:10px">${BD.esc(r.suggestion.text)} <button class="btn sm" data-sugg style="margin-left:6px">Add suggestion</button></div>`;
+        }
+        if ((r.not_found || []).length) html += `<p class="faint small" style="margin:8px 0 0">Not on the menu: ${BD.esc(r.not_found.join(", "))}</p>`;
+        if ((r.unavailable || []).length) html += `<p class="faint small" style="margin:4px 0 0">Not available today: ${BD.esc(r.unavailable.join(", "))}</p>`;
+        html += `<div class="row" style="margin-top:12px"><button class="btn mint grow" data-add>Add to order · ${BD.rupees(total)}</button><button class="btn-ghost" data-retry>Try again</button></div>`;
+      } else if (r.action) {
+        html += r.action.ok ? "" : `<div class="notice bad">${BD.esc(r.reply_text_en || "")}</div>`;
+      } else if (r.min_budget_paise) {
+        html += `<div class="notice">Try a budget of at least ${BD.rupees(r.min_budget_paise)}.</div>`;
+      } else if (!r.ok) {
+        html += `<div class="notice">You can also tap dishes on the menu.</div><div class="row" style="margin-top:10px"><button class="btn-ghost" data-retry>Try again</button></div>`;
+      }
+      box.innerHTML = html;
+      const add = box.querySelector("[data-add]"), retry = box.querySelector("[data-retry]"), sugg = box.querySelector("[data-sugg]");
+      if (sugg) sugg.onclick = () => { lines.push(Object.assign({}, r.suggestion)); r.suggestion = null; draw(); };
+      if (retry) retry.onclick = () => { box.innerHTML = ""; if (onRetry) onRetry(); };
+      if (add) add.onclick = async () => {
+        BD.busy(add, true, "Sending to the kitchen…");
+        try {  // the normal order route: the cashier still accepts it as usual
+          const res = await guestApi(`/api/session/${me.sid}/orders`, { body: { items: lines.map(l => ({ menu_item_id: l.menu_item_id, qty: Math.min(20, l.qty) })) } });
+          sess = res.session; prevOrders.set(res.order_id, "PENDING");
+          closeSheets(); renderMain(); setTab("orders");
+          BD.toast("Order sent! The cashier will confirm it.", "ok"); BD.buzz([15, 30, 15]);
+        } catch (x) { BD.toast(x.message, "bad", 5000); BD.busy(add, false); }
+      };
+    };
+    draw();
+    if (r.action && r.action.ok) {  // voice "bill" / "waiter" already happened, just like the buttons
+      fetchSession().then(() => { renderMain(); if (r.action.type === "bill") setTimeout(() => { closeSheets(); setTab("bill"); }, 1800); });
+    }
+  }
+
+  // "Order by budget": no AI, the server builds the basket from real prices.
+  $("budgetBtn").onclick = () => { $("bResult").innerHTML = ""; openSheet("budgetSheet"); };
+  $("bForm").onsubmit = async e => {
+    e.preventDefault();
+    const btn = $("bGo"); BD.busy(btn, true, "Building…");
+    try {
+      const r = await guestApi(`/api/session/${me.sid}/budget`, { body: { budget_rupees: Number($("bBudget").value), people: Number($("bPeople").value), meal: $("bMeal").value } });
+      renderProposal($("bResult"), r);
+    } catch (x) { $("bResult").innerHTML = `<div class="notice bad">${BD.esc(x.message)}</div>`; }
+    BD.busy(btn, false);
+  };
 
   boot();
 })();

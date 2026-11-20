@@ -1,0 +1,41 @@
+name,category,price,name_local
+Masala Dosa,Dosa,90,ಮಸಾಲೆ ದೋಸೆ
+Plain Dosa,Dosa,70,ಸಾದಾ ದೋಸೆ
+Set Dosa,Dosa,80,ಸೆಟ್ ದೋಸೆ
+Rava Dosa,Dosa,100,ರವೆ ದೋಸೆ
+Onion Rava Dosa,Dosa,110,ಈರುಳ್ಳಿ ರವೆ ದೋಸೆ
+Benne Masala Dosa,Dosa,120,ಬೆಣ್ಣೆ ಮಸಾಲೆ ದೋಸೆ
+Mysore Masala Dosa,Dosa,110,ಮೈಸೂರು ಮಸಾಲೆ ದೋಸೆ
+Ghee Roast Dosa,Dosa,130,ತುಪ್ಪದ ರೋಸ್ಟ್ ದೋಸೆ
+Neer Dosa,Dosa,80,ನೀರ್ ದೋಸೆ
+Paper Masala Dosa,Dosa,140,ಪೇಪರ್ ಮಸಾಲೆ ದೋಸೆ
+Idli (2 pcs),Breakfast,40,ಇಡ್ಲಿ
+Idli Vada,Breakfast,60,ಇಡ್ಲಿ ವಡೆ
+Medu Vada (2 pcs),Breakfast,50,ಉದ್ದಿನ ವಡೆ
+Rava Idli,Breakfast,60,ರವೆ ಇಡ್ಲಿ
+Khara Bath,Breakfast,50,ಖಾರಾ ಬಾತ್
+Kesari Bath,Breakfast,50,ಕೇಸರಿ ಬಾತ್
+Chow Chow Bath,Breakfast,90,ಚೌ ಚೌ ಬಾತ್
+Pongal,Breakfast,70,ಪೊಂಗಲ್
+Poori Sagu,Breakfast,80,ಪೂರಿ ಸಾಗು
+Akki Rotti,Breakfast,70,ಅಕ್ಕಿ ರೊಟ್ಟಿ
+Bisi Bele Bath,Rice & Meals,90,ಬಿಸಿ ಬೇಳೆ ಬಾತ್
+South Indian Meals,Rice & Meals,150,ದಕ್ಷಿಣ ಭಾರತೀಯ ಊಟ
+Curd Rice,Rice & Meals,70,ಮೊಸರನ್ನ
+Lemon Rice,Rice & Meals,70,ಚಿತ್ರಾನ್ನ
+Vangi Bath,Rice & Meals,80,ವಾಂಗಿ ಬಾತ್
+Puliyogare,Rice & Meals,80,ಪುಳಿಯೊಗರೆ
+Mangalore Buns,Snacks,60,ಮಂಗಳೂರು ಬನ್ಸ್
+Goli Baje,Snacks,60,ಗೋಳಿ ಬಜೆ
+Masala Vada,Snacks,40,ಮಸಾಲೆ ವಡೆ
+Mirchi Bajji,Snacks,50,ಮೆಣಸಿನಕಾಯಿ ಬಜ್ಜಿ
+Masala Puri,Snacks,60,ಮಸಾಲೆ ಪುರಿ
+Pani Puri,Snacks,50,ಪಾನಿ ಪುರಿ
+Filter Coffee,Beverages,40,ಫಿಲ್ಟರ್ ಕಾಫಿ
+Masala Chai,Beverages,30,ಮಸಾಲಾ ಚಹಾ
+Badam Milk,Beverages,60,ಬಾದಾಮಿ ಹಾಲು
+Buttermilk,Beverages,30,ಮಜ್ಜಿಗೆ
+Sweet Lassi,Beverages,60,ಸಿಹಿ ಲಸ್ಸಿ
+Fresh Lime Soda,Beverages,50,ನಿಂಬೆ ಸೋಡಾ
+Gulab Jamun (2 pcs),Desserts,50,ಗುಲಾಬ್ ಜಾಮೂನು
+Mysore Pak,Desserts,40,ಮೈಸೂರು ಪಾಕ್

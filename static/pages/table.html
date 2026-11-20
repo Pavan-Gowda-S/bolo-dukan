@@ -91,6 +91,7 @@
 
     <div class="container g-body">
       <div id="tabMenu">
+        <button class="glass budget-btn hidden" id="budgetBtn"><span class="b-ic">₹</span><span class="grow"><b>Order by budget</b><br><span class="muted small">“₹800, dinner for 4”: we'll build the cart</span></span><span>→</span></button>
         <div class="search-row"><input class="input" id="search" type="search" placeholder="Search dosa, coffee, ಕಾಫಿ…" autocomplete="off"></div>
         <div class="pill-scroller" id="cats"></div>
         <div id="menuList"></div>
@@ -125,6 +126,21 @@
   </div>
   <div id="vResult"></div>
   <form class="row" id="vForm" style="gap:8px;margin-top:10px"><input class="input grow" id="vText" placeholder="…or type it here" autocomplete="off" maxlength="300"><button class="btn" id="vSend" aria-label="Send">→</button></form>
+</div>
+
+<div class="sheet" id="budgetSheet" role="dialog" aria-modal="true" aria-labelledby="bTitle">
+  <div class="grab"></div>
+  <div class="row spread"><h3 id="bTitle">Order by budget</h3><button class="btn-ghost sm" data-close>Close</button></div>
+  <p class="muted small" style="margin:4px 0 14px">We pick a main for everyone, then a drink, dessert or starter, all within your budget at menu prices.</p>
+  <form id="bForm" class="stack" novalidate>
+    <div class="row" style="gap:10px">
+      <label class="field grow"><span>Budget (₹)</span><input class="input" id="bBudget" type="number" inputmode="numeric" min="1" max="100000" value="800" required></label>
+      <label class="field" style="width:96px"><span>People</span><input class="input" id="bPeople" type="number" inputmode="numeric" min="1" max="20" value="4" required></label>
+    </div>
+    <label class="field"><span>Meal</span><select class="input" id="bMeal"><option value="dinner">Dinner</option><option value="lunch">Lunch</option><option value="breakfast">Breakfast</option><option value="snacks">Snacks</option></select></label>
+    <button class="btn block" id="bGo">Build my order</button>
+  </form>
+  <div id="bResult" style="margin-top:14px"></div>
 </div>
 
 <script src="/static/js/games.js"></script>
