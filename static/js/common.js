@@ -19,6 +19,27 @@
     return id;
   };
 
+  // ---------- reload after a server update ----------
+  // The server sends its build id on every API response. If it changes, the page is running old code:
+  // reload as soon as nobody is typing, recording, or looking at a sheet, game or dialog.
+  let firstBuild = null, reloadWanted = false;
+  BD.noteBuild = function (b) {
+    if (!b) return;
+    if (!firstBuild) { firstBuild = b; return; }
+    if (b !== firstBuild && !reloadWanted) { reloadWanted = true; tryReload(); }
+  };
+  function busyNow() {
+    const a = document.activeElement;
+    if (a && (a.tagName === "INPUT" || a.tagName === "TEXTAREA" || a.tagName === "SELECT")) return true;
+    return !!document.querySelector(".sheet.show, .modal.show, .drawer.show, .gx.show, .voice-orb.rec, .voice-orb.think");
+  }
+  function tryReload() {
+    if (!busyNow()) {
+      BD.toast("The app was updated. Refreshing…", "info", 1500);
+      setTimeout(() => location.reload(), 900);
+    } else setTimeout(tryReload, 3000);
+  }
+
   // ---------- API ----------
   BD.api = async function (path, opts = {}) {
     const init = { method: opts.method || (opts.body || opts.form ? "POST" : "GET"), headers: Object.assign({}, opts.headers), credentials: "same-origin" };
@@ -27,6 +48,7 @@
     let res;
     try { res = await fetch(path, init); }
     catch (e) { const err = new Error("No connection. Check your internet."); err.status = 0; throw err; }
+    BD.noteBuild(res.headers.get("X-App-Build"));
     let data = null;
     const type = res.headers.get("content-type") || "";
     if (type.includes("application/json")) { try { data = await res.json(); } catch (e) {} }

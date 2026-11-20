@@ -7,6 +7,7 @@ import json
 import mimetypes
 import re
 import sys
+import time
 import traceback
 from email import policy
 from email.parser import BytesParser
@@ -144,9 +145,13 @@ class Response:
         self.cookies.append(f"{name}=; Path=/; Max-Age=0; SameSite=Lax")
 
 
+# Changes every time the server starts, so open pages can notice new code and reload themselves.
+BUILD = format(time.time_ns(), "x")
+
+
 def json_response(data, status: int = 200) -> Response:
     return Response(json.dumps(data, ensure_ascii=False, default=str), status, "application/json; charset=utf-8",
-                    {"Cache-Control": "no-store"})
+                    {"Cache-Control": "no-store", "X-App-Build": BUILD})
 
 
 class App:
