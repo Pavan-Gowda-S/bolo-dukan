@@ -780,7 +780,12 @@ EXTRA_PACKS = {  # more brands and sizes so the store feels real (~150 SKUs)
 EXTRA_TOPUPS = [("Glucose Biscuits", "biscuits", 100, 10, "veg"), ("Buttermilk Pack", "curd", 200, 15, "veg"),
                 ("Lemons (2)", "lemon", 2, 10, "vegan"), ("Banana (2)", "banana", 2, 16, "vegan"),
                 ("Salted Peanuts Snack Pack", "peanuts", 50, 20, "vegan"), ("Curd Cup", "curd", 100, 12, "veg"),
-                ("Guava (Fresh)", "apple", 250, 30, "vegan"), ("Oats Single Pack", "oats", 40, 15, "vegan")]
+                ("Oats Single Pack", "oats", 40, 15, "vegan")]
+# top-ups that aren't recipe ingredients (fruit, drinks, healthy snacks)
+PLAIN_TOPUPS = [("Guava 250 g", "Fresh Fruits", 250, "g", 30, "vegan"), ("Papaya (1 medium)", "Fresh Fruits", 1, "pcs", 65, "vegan"),
+                ("Pomegranate 500 g", "Fresh Fruits", 500, "g", 120, "vegan"), ("Real Mixed Fruit Juice 1 L", "Beverages", 1000, "ml", 110, "vegan"),
+                ("Peanut Chikki 100 g", "Snacks", 100, "g", 25, "vegan"), ("Amul Lassi Cup 200 ml", "Dairy, Eggs & Tofu", 200, "ml", 25, "veg"),
+                ("Sprouts Mix 200 g", "Fresh Vegetables", 200, "g", 35, "vegan"), ("Roasted Makhana 100 g", "Snacks", 100, "g", 85, "vegan")]
 for _iid, _extra in EXTRA_PACKS.items():
     PACKS[_iid] = PACKS[_iid] + _extra
 
@@ -836,6 +841,10 @@ def build():
         products.append({"id": pid, "name": f"{name}", "brand": "", "category": CATEGORY[iid], "pack_size": size, "pack_unit": unit,
                          "price_paise": rupees * 100, "stock": 100, "available": 1, "ingredient_id": iid, "topup": 1, "diet": diet})
         pid += 1
+    for (name, cat, size, unit, rupees, diet) in PLAIN_TOPUPS:
+        products.append({"id": pid, "name": name, "brand": "", "category": cat, "pack_size": size, "pack_unit": unit,
+                         "price_paise": rupees * 100, "stock": 100, "available": 1, "ingredient_id": None, "topup": 1, "diet": diet})
+        pid += 1
     return ingredients, recipes, products
 
 
@@ -874,6 +883,10 @@ def validate(ingredients, recipes, products) -> list[str]:
         if r["vegan_ok"] and kinds - {"vegan", "veg"}:
             errors.append(f"{r['id']}: vegan_ok but has egg/meat")
     for p in products:
+        if p["ingredient_id"] is None:
+            if not p["topup"]:
+                errors.append(f"product {p['name']}: no ingredient and not a top-up")
+            continue
         if p["ingredient_id"] not in ings:
             errors.append(f"product {p['name']}: unknown ingredient")
         elif p["pack_unit"] != ings[p["ingredient_id"]]["unit"]:

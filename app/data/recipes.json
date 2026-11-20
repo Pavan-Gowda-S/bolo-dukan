@@ -1,0 +1,9527 @@
+[
+ {
+  "id": "sambar",
+  "name": "Sambar",
+  "name_local": {
+   "kn": "ಸಾಂಬಾರ್",
+   "hi": "सांबर"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "toor_dal",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "beans",
+    "qty": 80
+   },
+   {
+    "id": "tamarind",
+    "qty": 20
+   },
+   {
+    "id": "sambar_powder",
+    "qty": 20
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "hing",
+    "qty": 1
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Pressure cook toor dal with turmeric and 2 cups water for 3 whistles; mash well.",
+   "Soak tamarind in 1 cup warm water for 10 minutes and squeeze out the juice.",
+   "Boil chopped carrot, beans, onion and tomato in the tamarind water with salt for 10 minutes.",
+   "Add sambar powder and the mashed dal; simmer for 8 minutes.",
+   "Heat oil, crackle mustard seeds, add hing and curry leaves, and pour this tempering over the sambar."
+  ],
+  "youtube_query": "Sambar recipe"
+ },
+ {
+  "id": "rasam",
+  "name": "Tomato Rasam",
+  "name_local": {
+   "kn": "ಟೊಮೆಟೊ ಸಾರು",
+   "hi": "टमाटर रसम"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "toor_dal",
+    "qty": 50
+   },
+   {
+    "id": "tomato",
+    "qty": 250
+   },
+   {
+    "id": "tamarind",
+    "qty": 10
+   },
+   {
+    "id": "rasam_powder",
+    "qty": 12
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "cumin",
+    "qty": 2
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 2
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Pressure cook toor dal for 3 whistles and mash.",
+   "Boil chopped tomatoes with tamarind water, crushed garlic, pepper and salt for 8 minutes.",
+   "Add rasam powder and the dal with 2 cups water; bring to a froth but do not boil hard.",
+   "Temper mustard, cumin and curry leaves in oil; add to the rasam.",
+   "Finish with chopped coriander and serve hot with rice."
+  ],
+  "youtube_query": "Tomato Rasam recipe"
+ },
+ {
+  "id": "bisi_bele_bath",
+  "name": "Bisi Bele Bath",
+  "name_local": {
+   "kn": "ಬಿಸಿ ಬೇಳೆ ಬಾತ್",
+   "hi": "बिसी बेले भात"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 200
+   },
+   {
+    "id": "toor_dal",
+    "qty": 120
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "beans",
+    "qty": 80
+   },
+   {
+    "id": "green_peas",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tamarind",
+    "qty": 20
+   },
+   {
+    "id": "sambar_powder",
+    "qty": 25
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Wash rice and dal together and pressure cook with turmeric and 5 cups water for 4 whistles.",
+   "Cook chopped vegetables in tamarind water with salt until soft.",
+   "Mix vegetables, sambar powder and the rice-dal; simmer for 5 minutes, adding hot water to keep it loose.",
+   "Fry mustard seeds, curry leaves and cashews in ghee.",
+   "Pour the tempering on top and serve hot."
+  ],
+  "youtube_query": "Bisi Bele Bath recipe"
+ },
+ {
+  "id": "curd_rice",
+  "name": "Curd Rice",
+  "name_local": {
+   "kn": "ಮೊಸರನ್ನ",
+   "hi": "दही चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "curd",
+    "qty": 400
+   },
+   {
+    "id": "milk",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice soft with 3 cups water (3 whistles or rice cooker) and let it cool.",
+   "Mash the rice lightly and mix in curd, milk and salt.",
+   "Heat oil; add mustard seeds, chopped ginger, green chilli and curry leaves.",
+   "Pour the tempering over the rice, mix and top with coriander."
+  ],
+  "youtube_query": "Curd Rice recipe"
+ },
+ {
+  "id": "lemon_rice",
+  "name": "Lemon Rice (Chitranna)",
+  "name_local": {
+   "kn": "ಚಿತ್ರಾನ್ನ",
+   "hi": "नींबू चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "lemon",
+    "qty": 2
+   },
+   {
+    "id": "peanuts",
+    "qty": 40
+   },
+   {
+    "id": "chana_dal",
+    "qty": 15
+   },
+   {
+    "id": "green_chilli",
+    "qty": 8
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Cook rice so the grains stay separate and spread it out to cool.",
+   "Heat oil; fry peanuts, chana dal and mustard seeds until golden.",
+   "Add green chilli, curry leaves and turmeric, then switch off the heat.",
+   "Add the rice, salt and lemon juice and mix gently."
+  ],
+  "youtube_query": "Lemon Rice (Chitranna) recipe"
+ },
+ {
+  "id": "tomato_rice",
+  "name": "Tomato Rice",
+  "name_local": {
+   "kn": "ಟೊಮೆಟೊ ಬಾತ್",
+   "hi": "टमाटर चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "tomato",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "mint",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Wash and soak rice for 15 minutes.",
+   "Sauté onion, ginger, garlic and green chilli in oil until golden.",
+   "Add chopped tomatoes, chilli powder and garam masala; cook until mushy.",
+   "Add rice, mint, salt and 2 1/2 cups water; pressure cook for 2 whistles."
+  ],
+  "youtube_query": "Tomato Rice recipe"
+ },
+ {
+  "id": "vangi_bath",
+  "name": "Vangi Bath",
+  "name_local": {
+   "kn": "ವಾಂಗಿ ಬಾತ್",
+   "hi": "वांगी भात"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "brinjal",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tamarind",
+    "qty": 10
+   },
+   {
+    "id": "sambar_powder",
+    "qty": 20
+   },
+   {
+    "id": "peanuts",
+    "qty": 30
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Cook rice and keep aside to cool.",
+   "Fry mustard seeds, peanuts and curry leaves in oil, then add sliced onion.",
+   "Add brinjal strips with salt; cover and cook for 8 minutes until soft.",
+   "Stir in tamarind water and sambar powder; cook for 3 minutes.",
+   "Fold in the rice and mix well."
+  ],
+  "youtube_query": "Vangi Bath recipe"
+ },
+ {
+  "id": "puliyogare",
+  "name": "Puliyogare",
+  "name_local": {
+   "kn": "ಪುಳಿಯೋಗರೆ",
+   "hi": "पुलियोगरे"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "tamarind",
+    "qty": 40
+   },
+   {
+    "id": "jaggery",
+    "qty": 15
+   },
+   {
+    "id": "peanuts",
+    "qty": 40
+   },
+   {
+    "id": "chana_dal",
+    "qty": 15
+   },
+   {
+    "id": "sambar_powder",
+    "qty": 15
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 4
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 35
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Cook rice and cool it on a plate.",
+   "Boil thick tamarind extract with jaggery, salt and sambar powder until it thickens like a paste.",
+   "Fry peanuts, chana dal, mustard seeds, red chilli and curry leaves in oil.",
+   "Mix the paste and the tempering into the rice and rest for 10 minutes."
+  ],
+  "youtube_query": "Puliyogare recipe"
+ },
+ {
+  "id": "coconut_rice",
+  "name": "Coconut Rice",
+  "name_local": {
+   "kn": "ತೆಂಗಿನಕಾಯಿ ಅನ್ನ",
+   "hi": "नारियल चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "coconut",
+    "qty": 100
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "chana_dal",
+    "qty": 15
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Cook rice and cool it.",
+   "Fry mustard seeds, chana dal and cashews in oil; add green chilli and curry leaves.",
+   "Add grated coconut and roast for 2 minutes.",
+   "Add rice and salt, mix gently and serve."
+  ],
+  "youtube_query": "Coconut Rice recipe"
+ },
+ {
+  "id": "jeera_rice",
+  "name": "Jeera Rice",
+  "name_local": {
+   "kn": "ಜೀರಿಗೆ ಅನ್ನ",
+   "hi": "जीरा राइस"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 250
+   },
+   {
+    "id": "cumin",
+    "qty": 5
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak basmati rice for 20 minutes.",
+   "Heat ghee and crackle the cumin.",
+   "Add the drained rice, salt and 2 cups water.",
+   "Cook covered on low heat for 12 minutes (or 1 whistle), then fluff and add coriander."
+  ],
+  "youtube_query": "Jeera Rice recipe"
+ },
+ {
+  "id": "veg_pulao",
+  "name": "Veg Pulao",
+  "name_local": {
+   "kn": "ತರಕಾರಿ ಪುಲಾವ್",
+   "hi": "वेज पुलाव"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 250
+   },
+   {
+    "id": "carrot",
+    "qty": 80
+   },
+   {
+    "id": "beans",
+    "qty": 60
+   },
+   {
+    "id": "green_peas",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "ghee",
+    "qty": 25
+   },
+   {
+    "id": "mint",
+    "qty": 8
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak rice for 20 minutes.",
+   "Fry sliced onion in ghee until golden; add ginger-garlic.",
+   "Add chopped vegetables and garam masala; sauté for 3 minutes.",
+   "Add rice, mint, salt and 2 cups water; pressure cook for 2 whistles."
+  ],
+  "youtube_query": "Veg Pulao recipe"
+ },
+ {
+  "id": "kootu",
+  "name": "Cabbage Moong Kootu",
+  "name_local": {
+   "kn": "ಕೂಟು",
+   "hi": "कूटू"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "moong_dal",
+    "qty": 100
+   },
+   {
+    "id": "cabbage",
+    "qty": 250
+   },
+   {
+    "id": "coconut",
+    "qty": 40
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Pressure cook moong dal with turmeric for 2 whistles.",
+   "Boil shredded cabbage with salt until just soft.",
+   "Grind coconut, cumin and green chilli to a paste.",
+   "Mix dal, cabbage and paste; simmer 5 minutes.",
+   "Temper mustard seeds and curry leaves in oil and add."
+  ],
+  "youtube_query": "Cabbage Moong Kootu recipe"
+ },
+ {
+  "id": "avial",
+  "name": "Avial",
+  "name_local": {
+   "kn": "ಅವಿಯಲ್",
+   "hi": "अवियल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "carrot",
+    "qty": 120
+   },
+   {
+    "id": "beans",
+    "qty": 100
+   },
+   {
+    "id": "potato",
+    "qty": 120
+   },
+   {
+    "id": "coconut",
+    "qty": 80
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Cut vegetables into long batons.",
+   "Cook them with turmeric, salt and a little water until tender.",
+   "Grind coconut, cumin and green chilli coarsely and add to the vegetables.",
+   "Stir in whisked curd and warm through without boiling.",
+   "Finish with coconut oil and curry leaves."
+  ],
+  "youtube_query": "Avial recipe"
+ },
+ {
+  "id": "beans_palya",
+  "name": "Beans Palya",
+  "name_local": {
+   "kn": "ಹುರುಳಿಕಾಯಿ ಪಲ್ಯ",
+   "hi": "बीन्स पोरियल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "beans",
+    "qty": 400
+   },
+   {
+    "id": "coconut",
+    "qty": 50
+   },
+   {
+    "id": "urad_dal",
+    "qty": 10
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Chop beans finely.",
+   "Fry mustard seeds, urad dal, red chilli and curry leaves in oil.",
+   "Add beans, salt and a splash of water; cover and cook for 8 minutes.",
+   "Add grated coconut and mix for 1 minute."
+  ],
+  "youtube_query": "Beans Palya recipe"
+ },
+ {
+  "id": "cabbage_palya",
+  "name": "Cabbage Palya",
+  "name_local": {
+   "kn": "ಎಲೆಕೋಸು ಪಲ್ಯ",
+   "hi": "पत्ता गोभी सब्ज़ी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "cabbage",
+    "qty": 500
+   },
+   {
+    "id": "coconut",
+    "qty": 40
+   },
+   {
+    "id": "chana_dal",
+    "qty": 10
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Shred the cabbage finely.",
+   "Temper mustard seeds, chana dal, green chilli and curry leaves in oil.",
+   "Add cabbage, turmeric and salt; cook uncovered for 8 minutes.",
+   "Add coconut, mix and serve."
+  ],
+  "youtube_query": "Cabbage Palya recipe"
+ },
+ {
+  "id": "potato_palya",
+  "name": "Potato Palya",
+  "name_local": {
+   "kn": "ಆಲೂಗಡ್ಡೆ ಪಲ್ಯ",
+   "hi": "आलू की सूखी सब्ज़ी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "potato",
+    "qty": 500
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Pressure cook potatoes for 3 whistles, peel and crumble.",
+   "Fry mustard seeds, onion, green chilli and curry leaves in oil.",
+   "Add turmeric, potatoes and salt; mix and cook for 4 minutes.",
+   "Finish with coriander."
+  ],
+  "youtube_query": "Potato Palya recipe"
+ },
+ {
+  "id": "bhindi_fry",
+  "name": "Bhindi Fry",
+  "name_local": {
+   "kn": "ಬೆಂಡೆಕಾಯಿ ಪಲ್ಯ",
+   "hi": "भिंडी फ्राई"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "bhindi",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 4
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Wash and dry the bhindi completely, then slice.",
+   "Fry in hot oil on medium heat for 10 minutes, stirring gently.",
+   "Add sliced onion and cook for 4 minutes.",
+   "Add spice powders and salt; cook 2 more minutes."
+  ],
+  "youtube_query": "Bhindi Fry recipe"
+ },
+ {
+  "id": "palak_dal",
+  "name": "Palak Dal",
+  "name_local": {
+   "kn": "ಪಾಲಕ್ ತೊವ್ವೆ",
+   "hi": "पालक दाल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "toor_dal",
+    "qty": 150
+   },
+   {
+    "id": "spinach",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Pressure cook dal with turmeric for 3 whistles.",
+   "Fry cumin, garlic and onion in oil until golden.",
+   "Add tomato and chilli powder; cook soft.",
+   "Add chopped spinach and cook 3 minutes.",
+   "Add the dal and salt; simmer 5 minutes."
+  ],
+  "youtube_query": "Palak Dal recipe"
+ },
+ {
+  "id": "majjige_huli",
+  "name": "Majjige Huli",
+  "name_local": {
+   "kn": "ಮಜ್ಜಿಗೆ ಹುಳಿ",
+   "hi": "मोर कुलंबु"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "bottle_gourd",
+    "qty": 300
+   },
+   {
+    "id": "curd",
+    "qty": 400
+   },
+   {
+    "id": "coconut",
+    "qty": 50
+   },
+   {
+    "id": "chana_dal",
+    "qty": 15
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "ginger",
+    "qty": 5
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Soak chana dal for 20 minutes.",
+   "Cook diced bottle gourd in salted water until tender.",
+   "Grind coconut, chana dal, ginger and chilli to a paste.",
+   "Add paste and whisked curd to the vegetable and heat gently without boiling.",
+   "Temper mustard seeds and curry leaves and pour over."
+  ],
+  "youtube_query": "Majjige Huli recipe"
+ },
+ {
+  "id": "ragi_mudde",
+  "name": "Ragi Mudde",
+  "name_local": {
+   "kn": "ರಾಗಿ ಮುದ್ದೆ",
+   "hi": "रागी मुद्दे"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "ragi_flour",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Boil 3 cups water with salt.",
+   "Add ragi flour in a heap without stirring and cook covered for 3 minutes.",
+   "Stir vigorously with a wooden stick until no lumps remain.",
+   "Cook on low for 5 minutes, then shape into balls with wet hands.",
+   "Serve with sambar or soppu saaru."
+  ],
+  "youtube_query": "Ragi Mudde recipe"
+ },
+ {
+  "id": "south_indian_meals",
+  "name": "South Indian Meals",
+  "name_local": {
+   "kn": "ಊಟ",
+   "hi": "साउथ इंडियन थाली"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 60,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 400
+   },
+   {
+    "id": "toor_dal",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "beans",
+    "qty": 100
+   },
+   {
+    "id": "cabbage",
+    "qty": 200
+   },
+   {
+    "id": "tamarind",
+    "qty": 20
+   },
+   {
+    "id": "sambar_powder",
+    "qty": 20
+   },
+   {
+    "id": "rasam_powder",
+    "qty": 10
+   },
+   {
+    "id": "coconut",
+    "qty": 40
+   },
+   {
+    "id": "curd",
+    "qty": 300
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 15
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 4
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice and pressure cook toor dal.",
+   "Make sambar with half the dal, carrot, beans, tamarind and sambar powder.",
+   "Make rasam with the rest of the dal, tomatoes and rasam powder.",
+   "Make cabbage palya with coconut.",
+   "Serve rice with sambar, rasam, palya and curd."
+  ],
+  "youtube_query": "South Indian Meals recipe"
+ },
+ {
+  "id": "dal_tadka",
+  "name": "Dal Tadka",
+  "name_local": {
+   "kn": "ದಾಲ್ ತಡ್ಕಾ",
+   "hi": "दाल तड़का"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "toor_dal",
+    "qty": 200
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Wash dal and pressure cook with turmeric and 3 cups water for 3 whistles.",
+   "Heat ghee; add cumin, garlic, ginger and green chilli.",
+   "Add onion and cook until golden, then tomato until soft.",
+   "Add the dal, salt and chilli powder; simmer 5 minutes.",
+   "Garnish with coriander."
+  ],
+  "youtube_query": "Dal Tadka recipe"
+ },
+ {
+  "id": "dal_fry",
+  "name": "Dal Fry",
+  "name_local": {
+   "kn": "ದಾಲ್ ಫ್ರೈ",
+   "hi": "दाल फ्राई"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "toor_dal",
+    "qty": 120
+   },
+   {
+    "id": "masoor_dal",
+    "qty": 80
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 2
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Pressure cook both dals with turmeric for 3 whistles.",
+   "Fry cumin, ginger, garlic and onion until golden.",
+   "Add tomato and spices; cook until oil separates.",
+   "Add the dal and salt; boil 5 minutes."
+  ],
+  "youtube_query": "Dal Fry recipe"
+ },
+ {
+  "id": "masoor_dal",
+  "name": "Masoor Dal",
+  "name_local": {
+   "kn": "ಮಸೂರ್ ದಾಲ್",
+   "hi": "मसूर दाल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "masoor_dal",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Rinse masoor dal and boil with turmeric and 3 cups water for 15 minutes.",
+   "Fry cumin, garlic and onion in oil.",
+   "Add tomato and chilli powder; cook soft.",
+   "Mix into the dal with salt and simmer 3 minutes."
+  ],
+  "youtube_query": "Masoor Dal recipe"
+ },
+ {
+  "id": "chana_masala",
+  "name": "Chana Masala",
+  "name_local": {
+   "kn": "ಚನಾ ಮಸಾಲ",
+   "hi": "छोले मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 50,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "kabuli_chana",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "chole_masala",
+    "qty": 15
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Soak chana overnight; pressure cook with salt for 5 whistles.",
+   "Fry onion, ginger and garlic until brown.",
+   "Add tomato and chole masala; cook until thick.",
+   "Add chana with some cooking water; simmer 10 minutes and mash a few.",
+   "Garnish with coriander."
+  ],
+  "youtube_query": "Chana Masala recipe"
+ },
+ {
+  "id": "rajma_masala",
+  "name": "Rajma Masala",
+  "name_local": {
+   "kn": "ರಾಜ್ಮಾ",
+   "hi": "राजमा मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 50,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rajma",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 250
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Soak rajma overnight; pressure cook for 6 whistles until very soft.",
+   "Fry cumin, onion, ginger and garlic until golden.",
+   "Add tomato puree and spices; cook 8 minutes.",
+   "Add rajma and 1 cup of its water; simmer 15 minutes."
+  ],
+  "youtube_query": "Rajma Masala recipe"
+ },
+ {
+  "id": "dal_makhani",
+  "name": "Dal Makhani",
+  "name_local": {
+   "kn": "ದಾಲ್ ಮಖನಿ",
+   "hi": "दाल मखनी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 60,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "urad_dal",
+    "qty": 200
+   },
+   {
+    "id": "rajma",
+    "qty": 50
+   },
+   {
+    "id": "butter",
+    "qty": 40
+   },
+   {
+    "id": "milk",
+    "qty": 100
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Soak urad dal and rajma overnight; pressure cook for 8 whistles.",
+   "Cook onion, ginger, garlic and tomato puree in butter.",
+   "Add dal and spices and simmer on low for 20 minutes, stirring.",
+   "Stir in milk and a little more butter before serving."
+  ],
+  "youtube_query": "Dal Makhani recipe"
+ },
+ {
+  "id": "moong_khichdi",
+  "name": "Moong Dal Khichdi",
+  "name_local": {
+   "kn": "ಹೆಸರುಬೇಳೆ ಕಿಚಡಿ",
+   "hi": "मूंग दाल खिचड़ी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 150
+   },
+   {
+    "id": "moong_dal",
+    "qty": 120
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "hing",
+    "qty": 1
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "green_peas",
+    "qty": 50
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Wash rice and dal together.",
+   "Heat ghee; add cumin, hing and ginger.",
+   "Add vegetables, rice, dal, turmeric, salt and 5 cups water.",
+   "Pressure cook for 4 whistles and serve with curd."
+  ],
+  "youtube_query": "Moong Dal Khichdi recipe"
+ },
+ {
+  "id": "palak_paneer",
+  "name": "Palak Paneer",
+  "name_local": {
+   "kn": "ಪಾಲಕ್ ಪನೀರ್",
+   "hi": "पालक पनीर"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 250
+   },
+   {
+    "id": "spinach",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Blanch spinach for 2 minutes, cool and blend to a puree.",
+   "Fry cumin, onion, ginger, garlic and chilli in oil.",
+   "Add tomato and cook soft, then the spinach puree and salt; simmer 5 minutes.",
+   "Add paneer cubes and garam masala; cook 3 minutes."
+  ],
+  "youtube_query": "Palak Paneer recipe"
+ },
+ {
+  "id": "paneer_butter_masala",
+  "name": "Paneer Butter Masala",
+  "name_local": {
+   "kn": "ಪನೀರ್ ಬಟರ್ ಮಸಾಲ",
+   "hi": "पनीर बटर मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 250
+   },
+   {
+    "id": "tomato",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "butter",
+    "qty": 30
+   },
+   {
+    "id": "cashews",
+    "qty": 30
+   },
+   {
+    "id": "milk",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "sugar",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Cook tomato, onion, cashews, ginger and garlic with a little water for 10 minutes; blend smooth.",
+   "Melt butter, add the puree and spices; cook 8 minutes.",
+   "Add milk, sugar and salt; simmer 3 minutes.",
+   "Add paneer cubes and simmer 3 more minutes."
+  ],
+  "youtube_query": "Paneer Butter Masala recipe"
+ },
+ {
+  "id": "matar_paneer",
+  "name": "Matar Paneer",
+  "name_local": {
+   "kn": "ಮಟರ್ ಪನೀರ್",
+   "hi": "मटर पनीर"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 200
+   },
+   {
+    "id": "green_peas",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Fry onion, ginger and garlic until golden.",
+   "Add tomato and spices; cook until oil separates.",
+   "Add peas and 1 cup water; cook 8 minutes.",
+   "Add paneer cubes and simmer 4 minutes."
+  ],
+  "youtube_query": "Matar Paneer recipe"
+ },
+ {
+  "id": "kadai_paneer",
+  "name": "Kadai Paneer",
+  "name_local": {
+   "kn": "ಕಡಾಯಿ ಪನೀರ್",
+   "hi": "कड़ाही पनीर"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "kadai"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 250
+   },
+   {
+    "id": "capsicum",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 5
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Fry capsicum and onion chunks in a hot kadai for 3 minutes and set aside.",
+   "In the same oil cook ginger, garlic and tomato with the spices.",
+   "Add paneer and the fried vegetables; toss on high heat for 3 minutes."
+  ],
+  "youtube_query": "Kadai Paneer recipe"
+ },
+ {
+  "id": "paneer_bhurji",
+  "name": "Paneer Bhurji",
+  "name_local": {
+   "kn": "ಪನೀರ್ ಬುರ್ಜಿ",
+   "hi": "पनीर भुर्जी"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "capsicum",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "garam_masala",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Fry onion and green chilli until soft.",
+   "Add tomato, capsicum and spices; cook 4 minutes.",
+   "Crumble in the paneer, add salt and cook 3 minutes.",
+   "Finish with coriander."
+  ],
+  "youtube_query": "Paneer Bhurji recipe"
+ },
+ {
+  "id": "aloo_gobi",
+  "name": "Aloo Gobi",
+  "name_local": {
+   "kn": "ಆಲೂ ಗೋಬಿ",
+   "hi": "आलू गोभी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "potato",
+    "qty": 300
+   },
+   {
+    "id": "cauliflower",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Fry cumin and ginger in oil, then onion until soft.",
+   "Add potato cubes and spices; cook 5 minutes.",
+   "Add cauliflower, tomato and salt; cover and cook on low for 15 minutes, stirring now and then."
+  ],
+  "youtube_query": "Aloo Gobi recipe"
+ },
+ {
+  "id": "aloo_matar",
+  "name": "Aloo Matar",
+  "name_local": {
+   "kn": "ಆಲೂ ಮಟರ್",
+   "hi": "आलू मटर"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "potato",
+    "qty": 400
+   },
+   {
+    "id": "green_peas",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Fry cumin, ginger and onion.",
+   "Add tomato and spices; cook soft.",
+   "Add diced potato, peas, salt and 2 cups water.",
+   "Pressure cook for 2 whistles and garnish."
+  ],
+  "youtube_query": "Aloo Matar recipe"
+ },
+ {
+  "id": "jeera_aloo",
+  "name": "Jeera Aloo",
+  "name_local": {
+   "kn": "ಜೀರಾ ಆಲೂ",
+   "hi": "जीरा आलू"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "potato",
+    "qty": 600
+   },
+   {
+    "id": "cumin",
+    "qty": 5
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Boil potatoes for 3 whistles, peel and cube.",
+   "Crackle cumin in hot oil and add green chilli.",
+   "Add potatoes, spices and salt; toss on medium heat for 6 minutes.",
+   "Finish with coriander."
+  ],
+  "youtube_query": "Jeera Aloo recipe"
+ },
+ {
+  "id": "baingan_bharta",
+  "name": "Baingan Bharta",
+  "name_local": {
+   "kn": "ಬದನೆಕಾಯಿ ಭರ್ತ",
+   "hi": "बैंगन भरता"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "brinjal",
+    "qty": 600
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Roast the brinjals directly on the gas flame until the skin chars and the inside is soft.",
+   "Cool, peel and mash the flesh.",
+   "Fry cumin, garlic, onion and chilli in oil; add tomato and cook soft.",
+   "Add the mash, chilli powder and salt; cook 5 minutes."
+  ],
+  "youtube_query": "Baingan Bharta recipe"
+ },
+ {
+  "id": "mix_veg_curry",
+  "name": "Mixed Veg Curry",
+  "name_local": {
+   "kn": "ಮಿಶ್ರ ತರಕಾರಿ ಕರಿ",
+   "hi": "मिक्स वेज"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "carrot",
+    "qty": 120
+   },
+   {
+    "id": "beans",
+    "qty": 100
+   },
+   {
+    "id": "potato",
+    "qty": 150
+   },
+   {
+    "id": "green_peas",
+    "qty": 80
+   },
+   {
+    "id": "cauliflower",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Fry onion, ginger and garlic until golden.",
+   "Add tomato and spices; cook until the oil separates.",
+   "Add chopped vegetables, salt and 1 cup water.",
+   "Cover and cook for 15 minutes until tender."
+  ],
+  "youtube_query": "Mixed Veg Curry recipe"
+ },
+ {
+  "id": "bhindi_masala",
+  "name": "Bhindi Masala",
+  "name_local": {
+   "kn": "ಬೆಂಡೆಕಾಯಿ ಮಸಾಲ",
+   "hi": "भिंडी मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "bhindi",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 4
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Fry sliced bhindi in half the oil until not slimy; set aside.",
+   "Fry cumin, garlic and onion in the rest of the oil.",
+   "Add tomato and spices; cook soft.",
+   "Add bhindi and salt; cook 4 minutes."
+  ],
+  "youtube_query": "Bhindi Masala recipe"
+ },
+ {
+  "id": "lauki_chana_dal",
+  "name": "Lauki Chana Dal",
+  "name_local": {
+   "kn": "ಸೋರೆಕಾಯಿ ಕಡಲೆಬೇಳೆ",
+   "hi": "लौकी चना दाल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chana_dal",
+    "qty": 150
+   },
+   {
+    "id": "bottle_gourd",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak chana dal for 30 minutes.",
+   "Fry cumin, ginger and onion; add tomato and spices.",
+   "Add dal, diced lauki, salt and 3 cups water.",
+   "Pressure cook for 4 whistles."
+  ],
+  "youtube_query": "Lauki Chana Dal recipe"
+ },
+ {
+  "id": "soya_curry",
+  "name": "Soya Chunks Curry",
+  "name_local": {
+   "kn": "ಸೋಯಾ ಕರಿ",
+   "hi": "सोया चंक्स करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "soya_chunks",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Boil soya chunks in salted water for 5 minutes; squeeze out the water.",
+   "Fry onion, ginger and garlic until brown.",
+   "Add tomato and spices; cook until thick.",
+   "Add soya chunks and 1 1/2 cups water; simmer 10 minutes."
+  ],
+  "youtube_query": "Soya Chunks Curry recipe"
+ },
+ {
+  "id": "mushroom_masala",
+  "name": "Mushroom Masala",
+  "name_local": {
+   "kn": "ಅಣಬೆ ಮಸಾಲ",
+   "hi": "मशरूम मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "mushroom",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "capsicum",
+    "qty": 80
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Fry onion, ginger and garlic.",
+   "Add tomato and spices; cook 6 minutes.",
+   "Add sliced mushrooms and capsicum; cook on high for 6 minutes until the water dries."
+  ],
+  "youtube_query": "Mushroom Masala recipe"
+ },
+ {
+  "id": "veg_biryani",
+  "name": "Veg Biryani",
+  "name_local": {
+   "kn": "ತರಕಾರಿ ಬಿರಿಯಾನಿ",
+   "hi": "वेज बिरयानी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 50,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 300
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "beans",
+    "qty": 80
+   },
+   {
+    "id": "green_peas",
+    "qty": 80
+   },
+   {
+    "id": "potato",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 200
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "mint",
+    "qty": 15
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "biryani_masala",
+    "qty": 12
+   },
+   {
+    "id": "ghee",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Soak rice for 20 minutes.",
+   "Fry sliced onion in ghee until brown; add ginger and garlic.",
+   "Add vegetables, curd, biryani masala, mint and salt; cook 5 minutes.",
+   "Add rice and 2 1/2 cups water; pressure cook for 2 whistles and rest 10 minutes."
+  ],
+  "youtube_query": "Veg Biryani recipe"
+ },
+ {
+  "id": "sprouts_curry",
+  "name": "Moong Sprouts Curry",
+  "name_local": {
+   "kn": "ಮೊಳಕೆ ಕಾಳು ಸಾರು",
+   "hi": "अंकुरित मूंग करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "green_moong",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "coconut",
+    "qty": 30
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak moong overnight and sprout for a day.",
+   "Fry cumin, garlic and onion; add tomato and spices.",
+   "Add sprouts, coconut, salt and 2 cups water.",
+   "Pressure cook for 2 whistles."
+  ],
+  "youtube_query": "Moong Sprouts Curry recipe"
+ },
+ {
+  "id": "kadhi",
+  "name": "Kadhi",
+  "name_local": {
+   "kn": "ಕಢಿ",
+   "hi": "कढ़ी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "curd",
+    "qty": 400
+   },
+   {
+    "id": "besan",
+    "qty": 50
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 2
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Whisk curd, besan, turmeric and 3 cups water smoothly.",
+   "Bring to a boil while stirring, then simmer for 15 minutes.",
+   "Temper cumin, mustard, curry leaves, onion, ginger and chilli in oil.",
+   "Pour into the kadhi and add salt."
+  ],
+  "youtube_query": "Kadhi recipe"
+ },
+ {
+  "id": "tofu_bhurji",
+  "name": "Tofu Bhurji",
+  "name_local": {
+   "kn": "ಟೋಫು ಬುರ್ಜಿ",
+   "hi": "टोफू भुर्जी"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "tofu",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "capsicum",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Press water out of the tofu and crumble it.",
+   "Fry cumin, onion and chilli; add tomato and capsicum.",
+   "Add tofu, turmeric and salt; cook 5 minutes.",
+   "Finish with coriander."
+  ],
+  "youtube_query": "Tofu Bhurji recipe"
+ },
+ {
+  "id": "peas_pulao",
+  "name": "Matar Pulao",
+  "name_local": {
+   "kn": "ಬಟಾಣಿ ಪುಲಾವ್",
+   "hi": "मटर पुलाव"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 250
+   },
+   {
+    "id": "green_peas",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Soak rice 20 minutes.",
+   "Fry cumin and onion in ghee.",
+   "Add peas, garam masala, rice, salt and 2 cups water.",
+   "Pressure cook for 2 whistles."
+  ],
+  "youtube_query": "Matar Pulao recipe"
+ },
+ {
+  "id": "egg_curry",
+  "name": "Egg Curry",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಸಾರು",
+   "hi": "अंडा करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 8
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Boil eggs for 10 minutes (or 1 whistle), peel and slit lightly.",
+   "Fry onion, ginger and garlic until golden.",
+   "Add tomato and spices; cook until thick.",
+   "Add 1 1/2 cups water and the eggs; simmer 8 minutes."
+  ],
+  "youtube_query": "Egg Curry recipe"
+ },
+ {
+  "id": "egg_bhurji",
+  "name": "Egg Bhurji",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಬುರ್ಜಿ",
+   "hi": "अंडा भुर्जी"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 8
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 120
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Fry onion and green chilli until soft.",
+   "Add tomato and spices; cook 3 minutes.",
+   "Pour in beaten eggs and scramble on medium heat until set.",
+   "Add salt and coriander."
+  ],
+  "youtube_query": "Egg Bhurji recipe"
+ },
+ {
+  "id": "egg_fried_rice",
+  "name": "Egg Fried Rice",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಫ್ರೈಡ್ ರೈಸ್",
+   "hi": "अंडा फ्राइड राइस"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "egg",
+    "qty": 4
+   },
+   {
+    "id": "carrot",
+    "qty": 80
+   },
+   {
+    "id": "beans",
+    "qty": 60
+   },
+   {
+    "id": "capsicum",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 20
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice and cool it completely.",
+   "Scramble the eggs in a little oil and set aside.",
+   "Stir-fry garlic, onion and vegetables on high heat for 3 minutes.",
+   "Add rice, eggs, soy sauce, pepper and salt; toss for 2 minutes."
+  ],
+  "youtube_query": "Egg Fried Rice recipe"
+ },
+ {
+  "id": "masala_omelette",
+  "name": "Masala Omelette",
+  "name_local": {
+   "kn": "ಮಸಾಲ ಆಮ್ಲೆಟ್",
+   "hi": "मसाला ऑमलेट"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "tawa",
+    "kadai"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 4
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "tomato",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Beat eggs with salt.",
+   "Mix in finely chopped onion, tomato, chilli and coriander.",
+   "Pour onto a hot oiled tawa and cook 2 minutes per side."
+  ],
+  "youtube_query": "Masala Omelette recipe"
+ },
+ {
+  "id": "bread_omelette",
+  "name": "Bread Omelette",
+  "name_local": {
+   "kn": "ಬ್ರೆಡ್ ಆಮ್ಲೆಟ್",
+   "hi": "ब्रेड ऑमलेट"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "tawa"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 4
+   },
+   {
+    "id": "bread",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 3
+   },
+   {
+    "id": "butter",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Beat eggs with onion, chilli and salt.",
+   "Pour onto a buttered tawa and place 2 bread slices on top while it is wet.",
+   "Flip, fold the edges over the bread and toast both sides."
+  ],
+  "youtube_query": "Bread Omelette recipe"
+ },
+ {
+  "id": "egg_sandwich",
+  "name": "Egg Sandwich",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಸ್ಯಾಂಡ್‌ವಿಚ್",
+   "hi": "अंडा सैंडविच"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "toaster"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 4
+   },
+   {
+    "id": "bread",
+    "qty": 160
+   },
+   {
+    "id": "onion",
+    "qty": 40
+   },
+   {
+    "id": "butter",
+    "qty": 15
+   },
+   {
+    "id": "black_pepper",
+    "qty": 1
+   },
+   {
+    "id": "salt",
+    "qty": 2
+   }
+  ],
+  "steps": [
+   "Boil eggs for 10 minutes, peel and chop.",
+   "Mix with onion, pepper and salt.",
+   "Spread on buttered bread and toast in the sandwich maker."
+  ],
+  "youtube_query": "Egg Sandwich recipe"
+ },
+ {
+  "id": "egg_rice_bowl",
+  "name": "Egg Pepper Masala",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಪೆಪ್ಪರ್ ಫ್ರೈ",
+   "hi": "अंडा पेपर फ्राई"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 8
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "black_pepper",
+    "qty": 6
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "garlic",
+    "qty": 6
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Boil and halve the eggs.",
+   "Fry onion, ginger, garlic and curry leaves.",
+   "Add pepper, turmeric and salt.",
+   "Toss in the eggs gently for 2 minutes."
+  ],
+  "youtube_query": "Egg Pepper Masala recipe"
+ },
+ {
+  "id": "chicken_curry",
+  "name": "Chicken Curry",
+  "name_local": {
+   "kn": "ಕೋಳಿ ಸಾರು",
+   "hi": "चिकन करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 750
+   },
+   {
+    "id": "onion",
+    "qty": 250
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 15
+   },
+   {
+    "id": "garlic",
+    "qty": 15
+   },
+   {
+    "id": "garam_masala",
+    "qty": 5
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 6
+   },
+   {
+    "id": "oil",
+    "qty": 35
+   },
+   {
+    "id": "salt",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Marinate chicken with curd, turmeric, chilli and salt for 20 minutes.",
+   "Fry onion until deep brown, then ginger and garlic.",
+   "Add tomato and spice powders; cook until oil separates.",
+   "Add chicken and cook covered for 25 minutes, adding water as needed."
+  ],
+  "youtube_query": "Chicken Curry recipe"
+ },
+ {
+  "id": "chicken_biryani",
+  "name": "Chicken Biryani",
+  "name_local": {
+   "kn": "ಚಿಕನ್ ಬಿರಿಯಾನಿ",
+   "hi": "चिकन बिरयानी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 60,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 600
+   },
+   {
+    "id": "basmati_rice",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 250
+   },
+   {
+    "id": "curd",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "mint",
+    "qty": 15
+   },
+   {
+    "id": "ginger",
+    "qty": 15
+   },
+   {
+    "id": "garlic",
+    "qty": 15
+   },
+   {
+    "id": "biryani_masala",
+    "qty": 15
+   },
+   {
+    "id": "ghee",
+    "qty": 30
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 12
+   }
+  ],
+  "steps": [
+   "Marinate chicken with curd, biryani masala, ginger, garlic and salt for 30 minutes.",
+   "Soak rice for 20 minutes.",
+   "Fry onions brown in ghee and oil; add tomato and the chicken and cook 10 minutes.",
+   "Add rice, mint and 3 cups water.",
+   "Pressure cook for 2 whistles and rest 10 minutes before opening."
+  ],
+  "youtube_query": "Chicken Biryani recipe"
+ },
+ {
+  "id": "pepper_chicken",
+  "name": "Pepper Chicken",
+  "name_local": {
+   "kn": "ಪೆಪ್ಪರ್ ಚಿಕನ್",
+   "hi": "पेपर चिकन"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 700
+   },
+   {
+    "id": "onion",
+    "qty": 200
+   },
+   {
+    "id": "black_pepper",
+    "qty": 10
+   },
+   {
+    "id": "ginger",
+    "qty": 12
+   },
+   {
+    "id": "garlic",
+    "qty": 12
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 8
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Marinate chicken with turmeric and salt.",
+   "Fry onion, ginger, garlic and curry leaves.",
+   "Add chicken and coriander powder; cook covered for 20 minutes.",
+   "Add plenty of crushed pepper and roast dry for 5 minutes."
+  ],
+  "youtube_query": "Pepper Chicken recipe"
+ },
+ {
+  "id": "chicken_tikka",
+  "name": "Chicken Tikka",
+  "name_local": {
+   "kn": "ಚಿಕನ್ ಟಿಕ್ಕಾ",
+   "hi": "चिकन टिक्का"
+  },
+  "meal": [
+   "lunch",
+   "dinner",
+   "snacks"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "air_fryer",
+    "otg_oven"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 700
+   },
+   {
+    "id": "curd",
+    "qty": 150
+   },
+   {
+    "id": "tandoori_masala",
+    "qty": 20
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "capsicum",
+    "qty": 100
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Mix curd, tandoori masala, ginger, garlic, lemon juice and salt.",
+   "Coat boneless chicken, capsicum and onion and marinate for 1 hour.",
+   "Air fry at 200°C for 14 minutes (or bake at 220°C for 20 minutes), turning halfway.",
+   "Brush with oil and cook 2 more minutes."
+  ],
+  "youtube_query": "Chicken Tikka recipe"
+ },
+ {
+  "id": "fish_curry",
+  "name": "Mangalore Fish Curry",
+  "name_local": {
+   "kn": "ಮೀನು ಸಾರು",
+   "hi": "मछली करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "fish",
+    "qty": 600
+   },
+   {
+    "id": "coconut",
+    "qty": 150
+   },
+   {
+    "id": "tamarind",
+    "qty": 20
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 8
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 6
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Grind coconut, red chillies, coriander powder, turmeric, garlic and tamarind to a smooth paste.",
+   "Fry onion and curry leaves in oil.",
+   "Add the paste and 2 cups water; boil 8 minutes.",
+   "Add fish pieces and salt; simmer gently for 8 minutes."
+  ],
+  "youtube_query": "Mangalore Fish Curry recipe"
+ },
+ {
+  "id": "fish_fry",
+  "name": "Tawa Fish Fry",
+  "name_local": {
+   "kn": "ಮೀನು ಫ್ರೈ",
+   "hi": "तवा फिश फ्राई"
+  },
+  "meal": [
+   "lunch",
+   "dinner",
+   "snacks"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "tawa"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "fish",
+    "qty": 600
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 8
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "rava",
+    "qty": 40
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Marinate fish with chilli, turmeric, garlic, lemon and salt for 20 minutes.",
+   "Coat each piece in rava.",
+   "Shallow fry on a hot tawa for 4 minutes per side until crisp."
+  ],
+  "youtube_query": "Tawa Fish Fry recipe"
+ },
+ {
+  "id": "mutton_curry",
+  "name": "Mutton Curry",
+  "name_local": {
+   "kn": "ಮಟನ್ ಸಾರು",
+   "hi": "मटन करी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 60,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "mutton",
+    "qty": 750
+   },
+   {
+    "id": "onion",
+    "qty": 250
+   },
+   {
+    "id": "tomato",
+    "qty": 200
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 15
+   },
+   {
+    "id": "garlic",
+    "qty": 15
+   },
+   {
+    "id": "garam_masala",
+    "qty": 6
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 6
+   },
+   {
+    "id": "oil",
+    "qty": 35
+   },
+   {
+    "id": "salt",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Marinate mutton with curd, turmeric and salt.",
+   "Fry onion until brown, then ginger and garlic.",
+   "Add tomato and spices; cook 5 minutes.",
+   "Add mutton and 2 cups water; pressure cook for 6 whistles."
+  ],
+  "youtube_query": "Mutton Curry recipe"
+ },
+ {
+  "id": "prawn_masala",
+  "name": "Prawn Masala",
+  "name_local": {
+   "kn": "ಸಿಗಡಿ ಮಸಾಲ",
+   "hi": "झींगा मसाला"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "prawns",
+    "qty": 500
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "coconut",
+    "qty": 40
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Clean prawns and marinate with turmeric and salt.",
+   "Fry onion, ginger, garlic and curry leaves.",
+   "Add tomato, chilli and coconut; cook 5 minutes.",
+   "Add prawns and cook 6 minutes until pink."
+  ],
+  "youtube_query": "Prawn Masala recipe"
+ },
+ {
+  "id": "butter_chicken",
+  "name": "Butter Chicken",
+  "name_local": {
+   "kn": "ಬಟರ್ ಚಿಕನ್",
+   "hi": "बटर चिकन"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 50,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 700
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "tomato",
+    "qty": 400
+   },
+   {
+    "id": "butter",
+    "qty": 50
+   },
+   {
+    "id": "cashews",
+    "qty": 30
+   },
+   {
+    "id": "milk",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "tandoori_masala",
+    "qty": 15
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 4
+   },
+   {
+    "id": "sugar",
+    "qty": 8
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Marinate chicken in curd and tandoori masala; pan-sear until cooked.",
+   "Cook tomato, cashews, ginger and garlic for 10 minutes and blend.",
+   "Simmer the sauce with butter, chilli, sugar and salt for 10 minutes.",
+   "Add chicken and milk; simmer 5 minutes."
+  ],
+  "youtube_query": "Butter Chicken recipe"
+ },
+ {
+  "id": "chicken_sukka",
+  "name": "Chicken Sukka",
+  "name_local": {
+   "kn": "ಕೋಳಿ ಸುಕ್ಕ",
+   "hi": "चिकन सुक्का"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chicken",
+    "qty": 700
+   },
+   {
+    "id": "coconut",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 8
+   },
+   {
+    "id": "coriander_powder",
+    "qty": 6
+   },
+   {
+    "id": "black_pepper",
+    "qty": 4
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "ghee",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Dry-roast coconut until brown and grind coarsely with red chillies, pepper and coriander.",
+   "Fry onion and garlic in ghee.",
+   "Add chicken, turmeric and salt; cook covered 20 minutes.",
+   "Add the coconut masala and roast dry for 8 minutes."
+  ],
+  "youtube_query": "Chicken Sukka recipe"
+ },
+ {
+  "id": "idli",
+  "name": "Idli",
+  "name_local": {
+   "kn": "ಇಡ್ಲಿ",
+   "hi": "इडली"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "urad_dal",
+    "qty": 100
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak rice and urad dal separately for 5 hours.",
+   "Grind into a smooth batter, mix with salt and ferment overnight.",
+   "Pour into greased idli plates.",
+   "Steam in the pressure cooker without the whistle for 12 minutes."
+  ],
+  "youtube_query": "Idli recipe"
+ },
+ {
+  "id": "masala_dosa",
+  "name": "Masala Dosa",
+  "name_local": {
+   "kn": "ಮಸಾಲೆ ದೋಸೆ",
+   "hi": "मसाला डोसा"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "urad_dal",
+    "qty": 80
+   },
+   {
+    "id": "potato",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "ghee",
+    "qty": 30
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Make dosa batter: soak rice and urad dal 5 hours, grind and ferment overnight with salt.",
+   "Boil and crumble potatoes.",
+   "Fry mustard seeds, onion, chilli and curry leaves; add turmeric, potatoes and salt for the palya.",
+   "Spread batter thin on a hot tawa, drizzle ghee and cook until crisp.",
+   "Fill with the potato palya and fold."
+  ],
+  "youtube_query": "Masala Dosa recipe"
+ },
+ {
+  "id": "plain_dosa",
+  "name": "Plain Dosa",
+  "name_local": {
+   "kn": "ಸಾದಾ ದೋಸೆ",
+   "hi": "सादा डोसा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "urad_dal",
+    "qty": 80
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak rice and urad dal 5 hours and grind to a batter.",
+   "Add salt and ferment overnight.",
+   "Spread a ladle of batter thin on a hot tawa.",
+   "Drizzle oil and cook until golden and crisp."
+  ],
+  "youtube_query": "Plain Dosa recipe"
+ },
+ {
+  "id": "set_dosa",
+  "name": "Set Dosa",
+  "name_local": {
+   "kn": "ಸೆಟ್ ದೋಸೆ",
+   "hi": "सेट डोसा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "urad_dal",
+    "qty": 60
+   },
+   {
+    "id": "poha",
+    "qty": 40
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak rice, urad dal and poha for 5 hours; grind and ferment overnight.",
+   "Pour thick small dosas on the tawa.",
+   "Cover and cook on one side until spongy.",
+   "Serve in sets of three with chutney and sagu."
+  ],
+  "youtube_query": "Set Dosa recipe"
+ },
+ {
+  "id": "rava_dosa",
+  "name": "Rava Dosa",
+  "name_local": {
+   "kn": "ರವೆ ದೋಸೆ",
+   "hi": "रवा डोसा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 150
+   },
+   {
+    "id": "rice_flour",
+    "qty": 100
+   },
+   {
+    "id": "maida",
+    "qty": 30
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Mix rava, rice flour and maida with 3 cups water into a thin batter; rest 20 minutes.",
+   "Add onion, chilli, cumin, pepper and salt.",
+   "Pour the batter from a height onto a very hot tawa to make a lacy dosa.",
+   "Drizzle oil and cook until crisp."
+  ],
+  "youtube_query": "Rava Dosa recipe"
+ },
+ {
+  "id": "neer_dosa",
+  "name": "Neer Dosa",
+  "name_local": {
+   "kn": "ನೀರ್ ದೋಸೆ",
+   "hi": "नीर डोसा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "coconut",
+    "qty": 50
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak rice 3 hours and grind with coconut into a very thin, watery batter.",
+   "Add salt; no fermentation is needed.",
+   "Pour onto a hot tawa, swirl, cover and cook 1 minute.",
+   "Fold into triangles without flipping."
+  ],
+  "youtube_query": "Neer Dosa recipe"
+ },
+ {
+  "id": "rava_idli",
+  "name": "Rava Idli",
+  "name_local": {
+   "kn": "ರವೆ ಇಡ್ಲಿ",
+   "hi": "रवा इडली"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 250
+   },
+   {
+    "id": "curd",
+    "qty": 250
+   },
+   {
+    "id": "carrot",
+    "qty": 50
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "chana_dal",
+    "qty": 10
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Roast rava in ghee with mustard seeds, chana dal, cashews and curry leaves.",
+   "Cool, then mix with curd, grated carrot, salt and water; rest 15 minutes.",
+   "Pour into greased idli plates.",
+   "Steam for 12 minutes."
+  ],
+  "youtube_query": "Rava Idli recipe"
+ },
+ {
+  "id": "upma",
+  "name": "Upma",
+  "name_local": {
+   "kn": "ಉಪ್ಪಿಟ್ಟು",
+   "hi": "उपमा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "urad_dal",
+    "qty": 5
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Dry-roast rava until fragrant.",
+   "Fry mustard seeds, urad dal, ginger, chilli, curry leaves and onion in oil.",
+   "Add 2 1/2 cups water and salt; bring to a boil.",
+   "Stir in the rava slowly to avoid lumps; cover and cook 3 minutes."
+  ],
+  "youtube_query": "Upma recipe"
+ },
+ {
+  "id": "khara_bath",
+  "name": "Khara Bath",
+  "name_local": {
+   "kn": "ಖಾರಾ ಬಾತ್",
+   "hi": "खारा भात"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "carrot",
+    "qty": 50
+   },
+   {
+    "id": "green_peas",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "ghee",
+    "qty": 25
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Roast rava in a little ghee.",
+   "Fry mustard seeds, curry leaves, onion and chilli; add tomato and vegetables.",
+   "Add 3 cups water and salt and boil.",
+   "Stir in rava and cook covered for 3 minutes; finish with ghee."
+  ],
+  "youtube_query": "Khara Bath recipe"
+ },
+ {
+  "id": "kesari_bath",
+  "name": "Kesari Bath",
+  "name_local": {
+   "kn": "ಕೇಸರಿ ಬಾತ್",
+   "hi": "केसरी भात"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 150
+   },
+   {
+    "id": "sugar",
+    "qty": 180
+   },
+   {
+    "id": "ghee",
+    "qty": 60
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "raisins",
+    "qty": 15
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   },
+   {
+    "id": "milk",
+    "qty": 100
+   }
+  ],
+  "steps": [
+   "Roast rava in ghee until golden; fry cashews and raisins.",
+   "Boil 2 cups water with milk.",
+   "Add rava slowly while stirring, then sugar and cardamom.",
+   "Cook until it leaves the sides of the pan; add the nuts."
+  ],
+  "youtube_query": "Kesari Bath recipe"
+ },
+ {
+  "id": "chow_chow_bath",
+  "name": "Chow Chow Bath",
+  "name_local": {
+   "kn": "ಚೌ ಚೌ ಬಾತ್",
+   "hi": "चौ चौ भात"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rava",
+    "qty": 300
+   },
+   {
+    "id": "sugar",
+    "qty": 150
+   },
+   {
+    "id": "ghee",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "tomato",
+    "qty": 60
+   },
+   {
+    "id": "carrot",
+    "qty": 40
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Make a half batch of khara bath with rava, vegetables and tempering.",
+   "Make a half batch of kesari bath with rava, ghee, sugar and cashews.",
+   "Serve both side by side on one plate."
+  ],
+  "youtube_query": "Chow Chow Bath recipe"
+ },
+ {
+  "id": "poha",
+  "name": "Poha",
+  "name_local": {
+   "kn": "ಅವಲಕ್ಕಿ ಒಗ್ಗರಣೆ",
+   "hi": "पोहा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "poha",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "potato",
+    "qty": 100
+   },
+   {
+    "id": "peanuts",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Rinse poha and let it soften for 5 minutes.",
+   "Fry peanuts, mustard seeds, curry leaves, onion, chilli and diced potato until cooked.",
+   "Add turmeric, salt and the poha; mix on low heat for 3 minutes.",
+   "Squeeze lemon on top."
+  ],
+  "youtube_query": "Poha recipe"
+ },
+ {
+  "id": "pongal",
+  "name": "Ven Pongal",
+  "name_local": {
+   "kn": "ಖಾರಾ ಪೊಂಗಲ್",
+   "hi": "वेन पोंगल"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 200
+   },
+   {
+    "id": "moong_dal",
+    "qty": 80
+   },
+   {
+    "id": "ghee",
+    "qty": 40
+   },
+   {
+    "id": "black_pepper",
+    "qty": 4
+   },
+   {
+    "id": "cumin",
+    "qty": 4
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Roast moong dal lightly and wash with rice.",
+   "Pressure cook with 5 cups water for 4 whistles until mushy.",
+   "Fry pepper, cumin, ginger, cashews and curry leaves in ghee.",
+   "Mix the tempering and salt into the pongal."
+  ],
+  "youtube_query": "Ven Pongal recipe"
+ },
+ {
+  "id": "akki_rotti",
+  "name": "Akki Rotti",
+  "name_local": {
+   "kn": "ಅಕ್ಕಿ ರೊಟ್ಟಿ",
+   "hi": "अक्की रोटी"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice_flour",
+    "qty": 300
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "coconut",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Mix rice flour with onion, carrot, coconut, chilli, coriander, cumin and salt.",
+   "Add warm water to make a soft dough.",
+   "Pat thin rounds directly on a greased cold tawa.",
+   "Cook covered on medium heat until golden on both sides."
+  ],
+  "youtube_query": "Akki Rotti recipe"
+ },
+ {
+  "id": "ragi_dosa",
+  "name": "Ragi Dosa",
+  "name_local": {
+   "kn": "ರಾಗಿ ದೋಸೆ",
+   "hi": "रागी डोसा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "ragi_flour",
+    "qty": 200
+   },
+   {
+    "id": "rava",
+    "qty": 50
+   },
+   {
+    "id": "rice_flour",
+    "qty": 50
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Mix the flours with water into a thin batter; rest 15 minutes.",
+   "Add onion, chilli, cumin and salt.",
+   "Pour onto a hot tawa like a rava dosa.",
+   "Drizzle oil and cook until crisp."
+  ],
+  "youtube_query": "Ragi Dosa recipe"
+ },
+ {
+  "id": "oats_upma",
+  "name": "Oats Upma",
+  "name_local": {
+   "kn": "ಓಟ್ಸ್ ಉಪ್ಪಿಟ್ಟು",
+   "hi": "ओट्स उपमा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "oats",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "green_peas",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Dry-roast oats for 3 minutes.",
+   "Fry mustard seeds, curry leaves, onion, chilli and vegetables.",
+   "Add 1 1/2 cups water and salt and boil.",
+   "Add oats and cook 3 minutes until soft."
+  ],
+  "youtube_query": "Oats Upma recipe"
+ },
+ {
+  "id": "oats_porridge",
+  "name": "Oats Porridge",
+  "name_local": {
+   "kn": "ಓಟ್ಸ್ ಗಂಜಿ",
+   "hi": "ओट्स दलिया"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction",
+    "microwave"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "oats",
+    "qty": 80
+   },
+   {
+    "id": "milk",
+    "qty": 400
+   },
+   {
+    "id": "banana",
+    "qty": 1
+   },
+   {
+    "id": "sugar",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Cook oats in milk for 5 minutes, stirring (or microwave 3 minutes).",
+   "Sweeten with sugar.",
+   "Top with sliced banana."
+  ],
+  "youtube_query": "Oats Porridge recipe"
+ },
+ {
+  "id": "semiya_upma",
+  "name": "Semiya Upma",
+  "name_local": {
+   "kn": "ಶಾವಿಗೆ ಉಪ್ಪಿಟ್ಟು",
+   "hi": "सेवई उपमा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "vermicelli",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "carrot",
+    "qty": 50
+   },
+   {
+    "id": "green_peas",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Roast vermicelli until golden.",
+   "Fry tempering, onion and vegetables.",
+   "Add 2 cups water and salt; boil.",
+   "Add vermicelli and cook until the water is absorbed."
+  ],
+  "youtube_query": "Semiya Upma recipe"
+ },
+ {
+  "id": "aloo_paratha",
+  "name": "Aloo Paratha",
+  "name_local": {
+   "kn": "ಆಲೂ ಪರಾಠ",
+   "hi": "आलू पराठा"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 300
+   },
+   {
+    "id": "potato",
+    "qty": 400
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "green_chilli",
+    "qty": 5
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "ghee",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Knead atta with water into a soft dough.",
+   "Mash boiled potatoes with onion, chilli, coriander, garam masala and salt.",
+   "Stuff dough balls with the filling and roll out.",
+   "Cook on a hot tawa with ghee until golden spots appear on both sides."
+  ],
+  "youtube_query": "Aloo Paratha recipe"
+ },
+ {
+  "id": "methi_thepla",
+  "name": "Methi Thepla",
+  "name_local": {
+   "kn": "ಮೆಂತ್ಯ ಥೆಪ್ಲಾ",
+   "hi": "मेथी थेपला"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 300
+   },
+   {
+    "id": "methi_leaves",
+    "qty": 100
+   },
+   {
+    "id": "curd",
+    "qty": 60
+   },
+   {
+    "id": "besan",
+    "qty": 30
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Knead atta, besan, chopped methi, curd, spices and salt into a firm dough.",
+   "Rest for 15 minutes.",
+   "Roll thin rounds.",
+   "Cook on a hot tawa with a little oil on both sides."
+  ],
+  "youtube_query": "Methi Thepla recipe"
+ },
+ {
+  "id": "poori_sagu",
+  "name": "Poori Sagu",
+  "name_local": {
+   "kn": "ಪೂರಿ ಸಾಗು",
+   "hi": "पूरी भाजी"
+  },
+  "meal": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 300
+   },
+   {
+    "id": "potato",
+    "qty": 300
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "green_peas",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "coconut",
+    "qty": 30
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 250
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Knead a stiff atta dough with salt and rest 15 minutes.",
+   "Cook potato, carrot and peas; simmer with ground coconut-chilli and onion for the sagu.",
+   "Roll small rounds and deep fry in hot oil until they puff.",
+   "Serve hot with the sagu."
+  ],
+  "youtube_query": "Poori Sagu recipe"
+ },
+ {
+  "id": "besan_chilla",
+  "name": "Besan Chilla",
+  "name_local": {
+   "kn": "ಕಡಲೆಹಿಟ್ಟು ದೋಸೆ",
+   "hi": "बेसन चीला"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "besan",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "turmeric",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Whisk besan with water into a smooth pancake batter.",
+   "Mix in onion, tomato, chilli, coriander, turmeric and salt.",
+   "Spread on a hot oiled tawa and cook 2 minutes per side."
+  ],
+  "youtube_query": "Besan Chilla recipe"
+ },
+ {
+  "id": "moong_chilla",
+  "name": "Moong Dal Chilla",
+  "name_local": {
+   "kn": "ಹೆಸರುಬೇಳೆ ದೋಸೆ",
+   "hi": "मूंग दाल चीला"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "moong_dal",
+    "qty": 250
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak moong dal for 3 hours.",
+   "Grind with ginger and chilli into a smooth batter; add salt.",
+   "Spread on a hot tawa, sprinkle onion and coriander.",
+   "Cook with oil on both sides."
+  ],
+  "youtube_query": "Moong Dal Chilla recipe"
+ },
+ {
+  "id": "pesarattu",
+  "name": "Pesarattu",
+  "name_local": {
+   "kn": "ಪೆಸರಟ್ಟು",
+   "hi": "पेसरट्टू"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "green_moong",
+    "qty": 250
+   },
+   {
+    "id": "rice",
+    "qty": 30
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak green moong and rice for 6 hours.",
+   "Grind with ginger, chilli and cumin into a batter; add salt.",
+   "Spread thin on a hot tawa and top with onion.",
+   "Cook with oil until crisp."
+  ],
+  "youtube_query": "Pesarattu recipe"
+ },
+ {
+  "id": "adai",
+  "name": "Adai",
+  "name_local": {
+   "kn": "ಅಡೈ",
+   "hi": "अडई"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 150
+   },
+   {
+    "id": "toor_dal",
+    "qty": 60
+   },
+   {
+    "id": "chana_dal",
+    "qty": 60
+   },
+   {
+    "id": "urad_dal",
+    "qty": 30
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 4
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Soak rice and the three dals for 4 hours.",
+   "Grind coarsely with red chillies; add onion, curry leaves and salt.",
+   "Spread a thick dosa on a hot tawa, make a hole in the middle and add oil.",
+   "Cook on both sides until crisp."
+  ],
+  "youtube_query": "Adai recipe"
+ },
+ {
+  "id": "uttapam",
+  "name": "Onion Uttapam",
+  "name_local": {
+   "kn": "ಈರುಳ್ಳಿ ಉತ್ತಪ್ಪ",
+   "hi": "प्याज़ उत्तपम"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   },
+   {
+    "id": "urad_dal",
+    "qty": 80
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Make and ferment dosa batter.",
+   "Pour a thick round on the tawa.",
+   "Top with onion, tomato, chilli and coriander and press lightly.",
+   "Cook with oil on both sides."
+  ],
+  "youtube_query": "Onion Uttapam recipe"
+ },
+ {
+  "id": "veg_sandwich",
+  "name": "Veg Sandwich",
+  "name_local": {
+   "kn": "ತರಕಾರಿ ಸ್ಯಾಂಡ್‌ವಿಚ್",
+   "hi": "वेज सैंडविच"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "toaster"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "bread",
+    "qty": 160
+   },
+   {
+    "id": "cucumber",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "potato",
+    "qty": 100
+   },
+   {
+    "id": "butter",
+    "qty": 15
+   },
+   {
+    "id": "black_pepper",
+    "qty": 1
+   },
+   {
+    "id": "salt",
+    "qty": 2
+   }
+  ],
+  "steps": [
+   "Boil and slice the potato.",
+   "Butter the bread.",
+   "Layer cucumber, tomato and potato with salt and pepper.",
+   "Toast in the sandwich maker for 4 minutes."
+  ],
+  "youtube_query": "Veg Sandwich recipe"
+ },
+ {
+  "id": "paneer_paratha",
+  "name": "Paneer Paratha",
+  "name_local": {
+   "kn": "ಪನೀರ್ ಪರಾಠ",
+   "hi": "पनीर पराठा"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 300
+   },
+   {
+    "id": "paneer",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 50
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "garam_masala",
+    "qty": 2
+   },
+   {
+    "id": "ghee",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Knead a soft atta dough.",
+   "Mix grated paneer with onion, chilli, coriander, garam masala and salt.",
+   "Stuff, roll and cook on a hot tawa with ghee on both sides."
+  ],
+  "youtube_query": "Paneer Paratha recipe"
+ },
+ {
+  "id": "idli_vada",
+  "name": "Idli Vada",
+  "name_local": {
+   "kn": "ಇಡ್ಲಿ ವಡೆ",
+   "hi": "इडली वड़ा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "pressure_cooker",
+   "kadai"
+  ],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "urad_dal",
+    "qty": 180
+   },
+   {
+    "id": "onion",
+    "qty": 40
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 200
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Steam idlis from fermented rice-urad batter.",
+   "Grind soaked urad dal into a fluffy batter for vadas; add onion, chilli and curry leaves.",
+   "Shape into rings and deep fry until golden.",
+   "Serve two idlis and one vada with sambar."
+  ],
+  "youtube_query": "Idli Vada recipe"
+ },
+ {
+  "id": "medu_vada",
+  "name": "Medu Vada",
+  "name_local": {
+   "kn": "ಉದ್ದಿನ ವಡೆ",
+   "hi": "मेदू वड़ा"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "kadai"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "urad_dal",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 50
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak urad dal for 4 hours and grind with very little water until fluffy.",
+   "Mix in onion, chilli, ginger, curry leaves, pepper and salt.",
+   "Shape into rings with wet hands.",
+   "Deep fry in hot oil until golden and crisp."
+  ],
+  "youtube_query": "Medu Vada recipe"
+ },
+ {
+  "id": "chapati",
+  "name": "Chapati",
+  "name_local": {
+   "kn": "ಚಪಾತಿ",
+   "hi": "चपाती"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 300
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Knead atta, salt and water into a soft dough; rest 15 minutes.",
+   "Roll thin rounds.",
+   "Cook on a hot tawa, flipping until puffed, and brush with oil."
+  ],
+  "youtube_query": "Chapati recipe"
+ },
+ {
+  "id": "plain_rice",
+  "name": "Steamed Rice",
+  "name_local": {
+   "kn": "ಅನ್ನ",
+   "hi": "सादा चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 300
+   }
+  ],
+  "steps": [
+   "Wash rice two or three times.",
+   "Cook with 3 times the water in a pressure cooker (3 whistles), a pot, or a rice cooker.",
+   "Rest 5 minutes and fluff."
+  ],
+  "youtube_query": "Steamed Rice recipe"
+ },
+ {
+  "id": "phulka_dal_combo",
+  "name": "Phulka & Moong Dal",
+  "name_local": {
+   "kn": "ಫುಲ್ಕಾ ದಾಲ್",
+   "hi": "फुल्का मूंग दाल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "tawa"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "atta",
+    "qty": 250
+   },
+   {
+    "id": "moong_dal",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Boil moong dal with turmeric until soft; temper with cumin, onion and tomato.",
+   "Knead atta into a soft dough.",
+   "Roll and cook phulkas on the tawa, then puff them over the flame.",
+   "Serve hot with the dal."
+  ],
+  "youtube_query": "Phulka & Moong Dal recipe"
+ },
+ {
+  "id": "pav_bhaji",
+  "name": "Pav Bhaji",
+  "name_local": {
+   "kn": "ಪಾವ್ ಭಾಜಿ",
+   "hi": "पाव भाजी"
+  },
+  "meal": [
+   "dinner",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "pav",
+    "qty": 400
+   },
+   {
+    "id": "potato",
+    "qty": 400
+   },
+   {
+    "id": "cauliflower",
+    "qty": 150
+   },
+   {
+    "id": "green_peas",
+    "qty": 100
+   },
+   {
+    "id": "capsicum",
+    "qty": 100
+   },
+   {
+    "id": "onion",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 300
+   },
+   {
+    "id": "butter",
+    "qty": 50
+   },
+   {
+    "id": "pav_bhaji_masala",
+    "qty": 15
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "salt",
+    "qty": 9
+   }
+  ],
+  "steps": [
+   "Pressure cook potato, cauliflower and peas; mash.",
+   "Cook onion, capsicum and tomato in butter until soft.",
+   "Add the mash, pav bhaji masala, salt and a little water; mash and simmer 10 minutes.",
+   "Toast pav in butter and serve with lemon and onion."
+  ],
+  "youtube_query": "Pav Bhaji recipe"
+ },
+ {
+  "id": "masala_vada",
+  "name": "Masala Vada",
+  "name_local": {
+   "kn": "ಮಸಾಲೆ ವಡೆ",
+   "hi": "मसाला वड़ा"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder",
+   "kadai"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "chana_dal",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Soak chana dal for 3 hours.",
+   "Grind coarsely without water.",
+   "Mix in onion, chilli, ginger, curry leaves and salt.",
+   "Shape flat patties and deep fry until crisp."
+  ],
+  "youtube_query": "Masala Vada recipe"
+ },
+ {
+  "id": "onion_pakoda",
+  "name": "Onion Pakoda",
+  "name_local": {
+   "kn": "ಈರುಳ್ಳಿ ಪಕೋಡ",
+   "hi": "प्याज़ पकोड़ा"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "onion",
+    "qty": 300
+   },
+   {
+    "id": "besan",
+    "qty": 150
+   },
+   {
+    "id": "rice_flour",
+    "qty": 30
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Slice onions thinly and rub with salt for 5 minutes.",
+   "Add besan, rice flour, chilli, curry leaves and chilli powder; sprinkle water to bind.",
+   "Drop small clumps into hot oil.",
+   "Fry until crisp and golden."
+  ],
+  "youtube_query": "Onion Pakoda recipe"
+ },
+ {
+  "id": "mirchi_bajji",
+  "name": "Mirchi Bajji",
+  "name_local": {
+   "kn": "ಮೆಣಸಿನಕಾಯಿ ಬಜ್ಜಿ",
+   "hi": "मिर्ची भजिया"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "green_chilli",
+    "qty": 200
+   },
+   {
+    "id": "besan",
+    "qty": 150
+   },
+   {
+    "id": "rice_flour",
+    "qty": 30
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "hing",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Use large mild bajji chillies; slit and deseed.",
+   "Make a thick batter of besan, rice flour, chilli powder, hing, salt and water.",
+   "Dip the chillies and deep fry until golden."
+  ],
+  "youtube_query": "Mirchi Bajji recipe"
+ },
+ {
+  "id": "mangalore_buns",
+  "name": "Mangalore Buns",
+  "name_local": {
+   "kn": "ಮಂಗಳೂರು ಬನ್ಸ್",
+   "hi": "मैंगलोर बन्स"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "maida",
+    "qty": 300
+   },
+   {
+    "id": "banana",
+    "qty": 2
+   },
+   {
+    "id": "sugar",
+    "qty": 60
+   },
+   {
+    "id": "curd",
+    "qty": 60
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 250
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Mash bananas with sugar, curd, cumin and salt.",
+   "Knead in maida to a soft dough and rest 4 hours.",
+   "Roll thick small rounds.",
+   "Deep fry until they puff up and turn golden."
+  ],
+  "youtube_query": "Mangalore Buns recipe"
+ },
+ {
+  "id": "goli_baje",
+  "name": "Goli Baje",
+  "name_local": {
+   "kn": "ಗೋಳಿ ಬಜೆ",
+   "hi": "गोली बजे"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "maida",
+    "qty": 250
+   },
+   {
+    "id": "curd",
+    "qty": 150
+   },
+   {
+    "id": "coconut",
+    "qty": 30
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 300
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Mix maida, curd, coconut, chilli, ginger, curry leaves and salt into a thick batter.",
+   "Rest for 2 hours.",
+   "Drop small balls into medium-hot oil.",
+   "Fry until golden and cooked through."
+  ],
+  "youtube_query": "Goli Baje recipe"
+ },
+ {
+  "id": "masala_puri",
+  "name": "Masala Puri",
+  "name_local": {
+   "kn": "ಮಸಾಲೆ ಪುರಿ",
+   "hi": "मसाला पूरी"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "maida",
+    "qty": 150
+   },
+   {
+    "id": "green_peas",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 120
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "carrot",
+    "qty": 50
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 120
+   },
+   {
+    "id": "salt",
+    "qty": 7
+   }
+  ],
+  "steps": [
+   "Make small crisp puris from maida dough (or use store-bought).",
+   "Pressure cook dried peas until soft and mash half.",
+   "Simmer the peas with chilli powder, garam masala and salt into a thick masala.",
+   "Crush puris in a plate, pour the hot masala over and top with onion, tomato, carrot and coriander."
+  ],
+  "youtube_query": "Masala Puri recipe"
+ },
+ {
+  "id": "pani_puri",
+  "name": "Pani Puri",
+  "name_local": {
+   "kn": "ಪಾನಿ ಪುರಿ",
+   "hi": "पानी पूरी"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 40,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "maida",
+    "qty": 150
+   },
+   {
+    "id": "potato",
+    "qty": 200
+   },
+   {
+    "id": "kabuli_chana",
+    "qty": 80
+   },
+   {
+    "id": "mint",
+    "qty": 30
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 30
+   },
+   {
+    "id": "tamarind",
+    "qty": 30
+   },
+   {
+    "id": "jaggery",
+    "qty": 30
+   },
+   {
+    "id": "green_chilli",
+    "qty": 6
+   },
+   {
+    "id": "cumin",
+    "qty": 4
+   },
+   {
+    "id": "oil",
+    "qty": 150
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Make puris (or buy ready ones).",
+   "Blend mint, coriander, chilli, cumin and salt with cold water for the pani.",
+   "Boil tamarind with jaggery for the sweet chutney.",
+   "Fill puris with potato and chana, then pani and chutney."
+  ],
+  "youtube_query": "Pani Puri recipe"
+ },
+ {
+  "id": "sweet_corn_chaat",
+  "name": "Sweet Corn Chaat",
+  "name_local": {
+   "kn": "ಸ್ವೀಟ್ ಕಾರ್ನ್ ಚಾಟ್",
+   "hi": "स्वीट कॉर्न चाट"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction",
+    "microwave"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "sweet_corn",
+    "qty": 400
+   },
+   {
+    "id": "butter",
+    "qty": 20
+   },
+   {
+    "id": "onion",
+    "qty": 50
+   },
+   {
+    "id": "tomato",
+    "qty": 50
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 2
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Boil or microwave the corn for 5 minutes.",
+   "Toss with butter, onion, tomato, chilli powder and salt.",
+   "Squeeze lemon and serve warm."
+  ],
+  "youtube_query": "Sweet Corn Chaat recipe"
+ },
+ {
+  "id": "peanut_chaat",
+  "name": "Boiled Peanut Chaat",
+  "name_local": {
+   "kn": "ಕಡಲೆಕಾಯಿ ಚಾಟ್",
+   "hi": "मूंगफली चाट"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "peanuts",
+    "qty": 250
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "cucumber",
+    "qty": 80
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 2
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Pressure cook peanuts with salt for 4 whistles and drain.",
+   "Mix with chopped onion, tomato and cucumber.",
+   "Add chilli powder, lemon juice and coriander."
+  ],
+  "youtube_query": "Boiled Peanut Chaat recipe"
+ },
+ {
+  "id": "sprouts_salad",
+  "name": "Sprouts Salad",
+  "name_local": {
+   "kn": "ಮೊಳಕೆ ಕಾಳು ಸಲಾಡ್",
+   "hi": "स्प्राउट्स सलाद"
+  },
+  "meal": [
+   "breakfast",
+   "lunch",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "green_moong",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "cucumber",
+    "qty": 100
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Soak moong overnight and sprout for a day.",
+   "Mix the sprouts with chopped onion, tomato and cucumber.",
+   "Season with salt, lemon and coriander."
+  ],
+  "youtube_query": "Sprouts Salad recipe"
+ },
+ {
+  "id": "kosambari",
+  "name": "Kosambari",
+  "name_local": {
+   "kn": "ಕೋಸಂಬರಿ",
+   "hi": "कोसंबरी"
+  },
+  "meal": [
+   "lunch",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "moong_dal",
+    "qty": 120
+   },
+   {
+    "id": "cucumber",
+    "qty": 150
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "coconut",
+    "qty": 30
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "green_chilli",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Soak moong dal for 2 hours and drain.",
+   "Mix with grated cucumber, carrot and coconut.",
+   "Add green chilli, salt and lemon juice.",
+   "Pour a small mustard seed tempering on top."
+  ],
+  "youtube_query": "Kosambari recipe"
+ },
+ {
+  "id": "cucumber_raita",
+  "name": "Cucumber Raita",
+  "name_local": {
+   "kn": "ಸೌತೆಕಾಯಿ ರಾಯಿತ",
+   "hi": "खीरा रायता"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "curd",
+    "qty": 400
+   },
+   {
+    "id": "cucumber",
+    "qty": 200
+   },
+   {
+    "id": "cumin",
+    "qty": 2
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Whisk curd until smooth.",
+   "Add grated cucumber and salt.",
+   "Sprinkle roasted cumin and coriander."
+  ],
+  "youtube_query": "Cucumber Raita recipe"
+ },
+ {
+  "id": "aloo_tikki",
+  "name": "Air Fryer Aloo Tikki",
+  "name_local": {
+   "kn": "ಆಲೂ ಟಿಕ್ಕಿ",
+   "hi": "आलू टिक्की"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "air_fryer"
+   ],
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "potato",
+    "qty": 500
+   },
+   {
+    "id": "green_peas",
+    "qty": 80
+   },
+   {
+    "id": "poha",
+    "qty": 50
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Boil and mash potatoes and peas; rinse the poha and squeeze it dry.",
+   "Mix with the poha, chilli, garam masala, coriander and salt.",
+   "Shape patties and brush with oil.",
+   "Air fry at 190°C for 14 minutes, flipping halfway."
+  ],
+  "youtube_query": "Air Fryer Aloo Tikki recipe"
+ },
+ {
+  "id": "paneer_tikka",
+  "name": "Paneer Tikka",
+  "name_local": {
+   "kn": "ಪನೀರ್ ಟಿಕ್ಕಾ",
+   "hi": "पनीर टिक्का"
+  },
+  "meal": [
+   "dinner",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "air_fryer",
+    "otg_oven"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "paneer",
+    "qty": 400
+   },
+   {
+    "id": "curd",
+    "qty": 120
+   },
+   {
+    "id": "capsicum",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "tandoori_masala",
+    "qty": 15
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Mix curd, tandoori masala, lemon juice, oil and salt.",
+   "Coat paneer, capsicum and onion cubes and rest 30 minutes.",
+   "Air fry at 200°C for 10 minutes (or bake at 220°C for 15 minutes)."
+  ],
+  "youtube_query": "Paneer Tikka recipe"
+ },
+ {
+  "id": "veg_noodles",
+  "name": "Veg Hakka Noodles",
+  "name_local": {
+   "kn": "ತರಕಾರಿ ನೂಡಲ್ಸ್",
+   "hi": "वेज हक्का नूडल्स"
+  },
+  "meal": [
+   "dinner",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "noodles",
+    "qty": 300
+   },
+   {
+    "id": "cabbage",
+    "qty": 150
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "capsicum",
+    "qty": 100
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 25
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Boil noodles until just cooked, rinse in cold water and toss with a little oil.",
+   "Stir-fry garlic and sliced vegetables on very high heat for 3 minutes.",
+   "Add noodles, soy sauce, pepper and salt.",
+   "Toss for 2 minutes and serve."
+  ],
+  "youtube_query": "Veg Hakka Noodles recipe"
+ },
+ {
+  "id": "veg_fried_rice",
+  "name": "Veg Fried Rice",
+  "name_local": {
+   "kn": "ತರಕಾರಿ ಫ್ರೈಡ್ ರೈಸ್",
+   "hi": "वेज फ्राइड राइस"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "carrot",
+    "qty": 80
+   },
+   {
+    "id": "beans",
+    "qty": 60
+   },
+   {
+    "id": "capsicum",
+    "qty": 60
+   },
+   {
+    "id": "cabbage",
+    "qty": 80
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 20
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice and cool completely.",
+   "Stir-fry garlic and vegetables on high heat.",
+   "Add rice, soy sauce, pepper and salt and toss for 3 minutes."
+  ],
+  "youtube_query": "Veg Fried Rice recipe"
+ },
+ {
+  "id": "dhokla",
+  "name": "Microwave Dhokla",
+  "name_local": {
+   "kn": "ಡೋಕ್ಲಾ",
+   "hi": "ढोकला"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "microwave"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "besan",
+    "qty": 200
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "green_chilli",
+    "qty": 3
+   },
+   {
+    "id": "sugar",
+    "qty": 10
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Whisk besan, curd, water, ginger, chilli, sugar and salt into a batter; rest 10 minutes.",
+   "Add lemon juice and a pinch of fruit salt or soda and mix.",
+   "Microwave in a greased bowl for 4-5 minutes until set.",
+   "Pour a mustard seed tempering on top and cut into squares."
+  ],
+  "youtube_query": "Microwave Dhokla recipe"
+ },
+ {
+  "id": "filter_coffee",
+  "name": "Filter Coffee",
+  "name_local": {
+   "kn": "ಫಿಲ್ಟರ್ ಕಾಫಿ",
+   "hi": "फ़िल्टर कॉफ़ी"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "coffee_powder",
+    "qty": 20
+   },
+   {
+    "id": "milk",
+    "qty": 300
+   },
+   {
+    "id": "sugar",
+    "qty": 15
+   }
+  ],
+  "steps": [
+   "Brew the coffee powder with hot water in a filter for 10 minutes to get decoction.",
+   "Boil the milk.",
+   "Mix 1 part decoction with 3 parts milk and sugar.",
+   "Froth by pouring between the tumbler and dabara."
+  ],
+  "youtube_query": "Filter Coffee recipe"
+ },
+ {
+  "id": "masala_chai",
+  "name": "Masala Chai",
+  "name_local": {
+   "kn": "ಮಸಾಲಾ ಚಹಾ",
+   "hi": "मसाला चाय"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "tea_powder",
+    "qty": 8
+   },
+   {
+    "id": "milk",
+    "qty": 200
+   },
+   {
+    "id": "ginger",
+    "qty": 6
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   },
+   {
+    "id": "sugar",
+    "qty": 15
+   }
+  ],
+  "steps": [
+   "Boil 1 cup water with crushed ginger and cardamom.",
+   "Add tea powder and boil 2 minutes.",
+   "Add milk and sugar and boil again.",
+   "Strain and serve hot."
+  ],
+  "youtube_query": "Masala Chai recipe"
+ },
+ {
+  "id": "badam_milk",
+  "name": "Badam Milk",
+  "name_local": {
+   "kn": "ಬಾದಾಮಿ ಹಾಲು",
+   "hi": "बादाम दूध"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "mixer_grinder"
+  ],
+  "time_min": 15,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "milk",
+    "qty": 400
+   },
+   {
+    "id": "almonds",
+    "qty": 30
+   },
+   {
+    "id": "sugar",
+    "qty": 25
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   }
+  ],
+  "steps": [
+   "Soak almonds and peel them.",
+   "Grind to a paste with a little milk.",
+   "Boil the rest of the milk with the paste, sugar and cardamom for 5 minutes.",
+   "Serve warm or chilled."
+  ],
+  "youtube_query": "Badam Milk recipe"
+ },
+ {
+  "id": "buttermilk",
+  "name": "Buttermilk (Majjige)",
+  "name_local": {
+   "kn": "ಮಜ್ಜಿಗೆ",
+   "hi": "छाछ"
+  },
+  "meal": [
+   "lunch",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 5,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "curd",
+    "qty": 300
+   },
+   {
+    "id": "ginger",
+    "qty": 5
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 3
+   },
+   {
+    "id": "coriander_leaves",
+    "qty": 5
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Whisk curd with 3 cups cold water.",
+   "Add crushed ginger, curry leaves, coriander and salt.",
+   "Serve chilled."
+  ],
+  "youtube_query": "Buttermilk (Majjige) recipe"
+ },
+ {
+  "id": "sweet_lassi",
+  "name": "Sweet Lassi",
+  "name_local": {
+   "kn": "ಲಸ್ಸಿ",
+   "hi": "मीठी लस्सी"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 5,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "curd",
+    "qty": 400
+   },
+   {
+    "id": "sugar",
+    "qty": 40
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   }
+  ],
+  "steps": [
+   "Whisk curd with sugar and cardamom until frothy.",
+   "Add a little chilled water if thick.",
+   "Serve cold."
+  ],
+  "youtube_query": "Sweet Lassi recipe"
+ },
+ {
+  "id": "lime_soda",
+  "name": "Fresh Lime Soda",
+  "name_local": {
+   "kn": "ಲೈಮ್ ಸೋಡಾ",
+   "hi": "नींबू सोडा"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 5,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "lemon",
+    "qty": 2
+   },
+   {
+    "id": "sugar",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 2
+   }
+  ],
+  "steps": [
+   "Squeeze lemons into two glasses.",
+   "Add sugar and a pinch of salt.",
+   "Top up with chilled soda water and stir."
+  ],
+  "youtube_query": "Fresh Lime Soda recipe"
+ },
+ {
+  "id": "gulab_jamun",
+  "name": "Gulab Jamun",
+  "name_local": {
+   "kn": "ಗುಲಾಬ್ ಜಾಮೂನು",
+   "hi": "गुलाब जामुन"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "kadai"
+  ],
+  "time_min": 40,
+  "base_servings": 6,
+  "ingredients": [
+   {
+    "id": "gulab_jamun_mix",
+    "qty": 200
+   },
+   {
+    "id": "milk",
+    "qty": 80
+   },
+   {
+    "id": "sugar",
+    "qty": 300
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 250
+   }
+  ],
+  "steps": [
+   "Knead the mix with milk into a soft dough and rest 5 minutes.",
+   "Make sugar syrup with 300 g sugar, 1 1/2 cups water and cardamom.",
+   "Roll smooth balls and fry on low heat until dark golden.",
+   "Soak in warm syrup for 1 hour."
+  ],
+  "youtube_query": "Gulab Jamun recipe"
+ },
+ {
+  "id": "mysore_pak",
+  "name": "Mysore Pak",
+  "name_local": {
+   "kn": "ಮೈಸೂರು ಪಾಕ್",
+   "hi": "मैसूर पाक"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 8,
+  "ingredients": [
+   {
+    "id": "besan",
+    "qty": 150
+   },
+   {
+    "id": "sugar",
+    "qty": 300
+   },
+   {
+    "id": "ghee",
+    "qty": 300
+   }
+  ],
+  "steps": [
+   "Sieve besan and mix with a little melted ghee.",
+   "Make a one-string sugar syrup.",
+   "Add the besan to the syrup and keep stirring, adding hot ghee a little at a time.",
+   "When it froths and leaves the pan, pour into a greased tray and cut while warm."
+  ],
+  "youtube_query": "Mysore Pak recipe"
+ },
+ {
+  "id": "semiya_payasa",
+  "name": "Semiya Payasa",
+  "name_local": {
+   "kn": "ಶಾವಿಗೆ ಪಾಯಸ",
+   "hi": "सेवई खीर"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "vermicelli",
+    "qty": 80
+   },
+   {
+    "id": "milk",
+    "qty": 750
+   },
+   {
+    "id": "sugar",
+    "qty": 100
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "raisins",
+    "qty": 15
+   },
+   {
+    "id": "ghee",
+    "qty": 15
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   }
+  ],
+  "steps": [
+   "Fry cashews and raisins in ghee; roast the vermicelli in the same ghee.",
+   "Boil the milk and add the vermicelli.",
+   "Cook 8 minutes, then add sugar and cardamom.",
+   "Stir in the nuts."
+  ],
+  "youtube_query": "Semiya Payasa recipe"
+ },
+ {
+  "id": "rice_kheer",
+  "name": "Rice Kheer",
+  "name_local": {
+   "kn": "ಅಕ್ಕಿ ಪಾಯಸ",
+   "hi": "चावल की खीर"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 60
+   },
+   {
+    "id": "milk",
+    "qty": 1000
+   },
+   {
+    "id": "sugar",
+    "qty": 100
+   },
+   {
+    "id": "cashews",
+    "qty": 15
+   },
+   {
+    "id": "cardamom",
+    "qty": 1
+   }
+  ],
+  "steps": [
+   "Wash rice and boil in milk on low heat for 35 minutes, stirring often.",
+   "Add sugar and cardamom.",
+   "Garnish with cashews."
+  ],
+  "youtube_query": "Rice Kheer recipe"
+ },
+ {
+  "id": "banana_shake",
+  "name": "Banana Shake",
+  "name_local": {
+   "kn": "ಬಾಳೆಹಣ್ಣಿನ ಶೇಕ್",
+   "hi": "केला शेक"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "mixer_grinder"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 5,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "banana",
+    "qty": 2
+   },
+   {
+    "id": "milk",
+    "qty": 400
+   },
+   {
+    "id": "sugar",
+    "qty": 15
+   },
+   {
+    "id": "almonds",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Peel and chop the bananas.",
+   "Blend with milk, sugar and almonds until smooth.",
+   "Serve chilled."
+  ],
+  "youtube_query": "Banana Shake recipe"
+ },
+ {
+  "id": "fruit_bowl",
+  "name": "Fruit Bowl",
+  "name_local": {
+   "kn": "ಹಣ್ಣಿನ ಬಟ್ಟಲು",
+   "hi": "फ्रूट बाउल"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "apple",
+    "qty": 300
+   },
+   {
+    "id": "banana",
+    "qty": 2
+   },
+   {
+    "id": "orange",
+    "qty": 300
+   },
+   {
+    "id": "dates",
+    "qty": 40
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   }
+  ],
+  "steps": [
+   "Peel and chop the fruit into bite-size pieces.",
+   "Add chopped dates.",
+   "Toss with a squeeze of lemon."
+  ],
+  "youtube_query": "Fruit Bowl recipe"
+ },
+ {
+  "id": "curd_oats_bowl",
+  "name": "Curd Oats Bowl",
+  "name_local": {
+   "kn": "ಮೊಸರು ಓಟ್ಸ್",
+   "hi": "दही ओट्स"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "oats",
+    "qty": 80
+   },
+   {
+    "id": "curd",
+    "qty": 300
+   },
+   {
+    "id": "banana",
+    "qty": 1
+   },
+   {
+    "id": "peanuts",
+    "qty": 20
+   },
+   {
+    "id": "jaggery",
+    "qty": 15
+   }
+  ],
+  "steps": [
+   "Soak oats in curd for 10 minutes.",
+   "Top with sliced banana and peanuts.",
+   "Drizzle with melted jaggery."
+  ],
+  "youtube_query": "Curd Oats Bowl recipe"
+ },
+ {
+  "id": "peanut_poha_chivda",
+  "name": "Roasted Poha Chivda",
+  "name_local": {
+   "kn": "ಅವಲಕ್ಕಿ ಚಿವಡ",
+   "hi": "पोहा चिवड़ा"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 6,
+  "ingredients": [
+   {
+    "id": "poha",
+    "qty": 200
+   },
+   {
+    "id": "peanuts",
+    "qty": 80
+   },
+   {
+    "id": "roasted_chana",
+    "qty": 50
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "green_chilli",
+    "qty": 4
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "sugar",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Dry-roast thin poha until crisp.",
+   "Fry peanuts, roasted chana, curry leaves and chilli in oil.",
+   "Add turmeric, salt and sugar.",
+   "Toss in the poha and cool before storing."
+  ],
+  "youtube_query": "Roasted Poha Chivda recipe"
+ },
+ {
+  "id": "air_fryer_chana",
+  "name": "Air Fryer Masala Chana",
+  "name_local": {
+   "kn": "ಮಸಾಲ ಕಡಲೆ",
+   "hi": "मसाला चना"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "air_fryer"
+   ],
+   [
+    "pressure_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "kabuli_chana",
+    "qty": 200
+   },
+   {
+    "id": "chilli_powder",
+    "qty": 3
+   },
+   {
+    "id": "chole_masala",
+    "qty": 5
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 4
+   }
+  ],
+  "steps": [
+   "Soak and pressure cook chana until just tender; dry well.",
+   "Toss with oil, chole masala, chilli powder and salt.",
+   "Air fry at 200°C for 15 minutes, shaking twice, until crunchy."
+  ],
+  "youtube_query": "Air Fryer Masala Chana recipe"
+ },
+ {
+  "id": "baked_veg_pasta",
+  "name": "Oven Masala Mushroom Toast",
+  "name_local": {
+   "kn": "ಮಶ್ರೂಮ್ ಟೋಸ್ಟ್",
+   "hi": "मशरूम टोस्ट"
+  },
+  "meal": [
+   "breakfast",
+   "snacks"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "otg_oven",
+    "air_fryer"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "bread",
+    "qty": 240
+   },
+   {
+    "id": "mushroom",
+    "qty": 200
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "capsicum",
+    "qty": 60
+   },
+   {
+    "id": "butter",
+    "qty": 30
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Sauté chopped mushroom, onion and capsicum in butter with salt and pepper (or toss raw with butter).",
+   "Butter the bread slices.",
+   "Top with the mushroom mix.",
+   "Bake at 200°C for 8 minutes until the edges are crisp."
+  ],
+  "youtube_query": "Oven Masala Mushroom Toast recipe"
+ },
+ {
+  "id": "kettle_poha",
+  "name": "Instant Kettle Poha",
+  "name_local": {
+   "kn": "ಕೆಟಲ್ ಅವಲಕ್ಕಿ",
+   "hi": "केतली पोहा"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "kettle"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 10,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "poha",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 40
+   },
+   {
+    "id": "peanuts",
+    "qty": 30
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   },
+   {
+    "id": "sugar",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Boil water in the electric kettle.",
+   "Pour over poha in a bowl, cover for 2 minutes and drain.",
+   "Mix with chopped onion, peanuts, salt, sugar and lemon juice."
+  ],
+  "youtube_query": "Instant Kettle Poha recipe"
+ },
+ {
+  "id": "rice_cooker_khichdi",
+  "name": "Rice Cooker Masoor Khichdi",
+  "name_local": {
+   "kn": "ಮಸೂರ್ ಕಿಚಡಿ",
+   "hi": "मसूर खिचड़ी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 150
+   },
+   {
+    "id": "masoor_dal",
+    "qty": 120
+   },
+   {
+    "id": "onion",
+    "qty": 60
+   },
+   {
+    "id": "tomato",
+    "qty": 80
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "turmeric",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Wash rice and masoor dal.",
+   "Put everything in the rice cooker with 5 cups water.",
+   "Cook on the normal setting and rest 10 minutes."
+  ],
+  "youtube_query": "Rice Cooker Masoor Khichdi recipe"
+ },
+ {
+  "id": "toast_egg_bhurji",
+  "name": "Bhurji Toast",
+  "name_local": {
+   "kn": "ಬುರ್ಜಿ ಟೋಸ್ಟ್",
+   "hi": "भुर्जी टोस्ट"
+  },
+  "meal": [
+   "breakfast"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "toaster"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 15,
+  "base_servings": 2,
+  "ingredients": [
+   {
+    "id": "egg",
+    "qty": 4
+   },
+   {
+    "id": "bread",
+    "qty": 160
+   },
+   {
+    "id": "onion",
+    "qty": 40
+   },
+   {
+    "id": "tomato",
+    "qty": 40
+   },
+   {
+    "id": "butter",
+    "qty": 15
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Scramble eggs with onion, tomato and salt.",
+   "Toast the buttered bread.",
+   "Pile the bhurji on the toast."
+  ],
+  "youtube_query": "Bhurji Toast recipe"
+ },
+ {
+  "id": "chicken_fried_rice",
+  "name": "Chicken Fried Rice",
+  "name_local": {
+   "kn": "ಚಿಕನ್ ಫ್ರೈಡ್ ರೈಸ್",
+   "hi": "चिकन फ्राइड राइस"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "chicken",
+    "qty": 300
+   },
+   {
+    "id": "egg",
+    "qty": 2
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "capsicum",
+    "qty": 60
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 25
+   },
+   {
+    "id": "black_pepper",
+    "qty": 2
+   },
+   {
+    "id": "oil",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice and cool.",
+   "Stir-fry small chicken pieces until cooked; scramble the eggs.",
+   "Stir-fry garlic and vegetables on high heat.",
+   "Add rice, chicken, egg, soy sauce, pepper and salt and toss."
+  ],
+  "youtube_query": "Chicken Fried Rice recipe"
+ },
+ {
+  "id": "fish_tikka",
+  "name": "Air Fryer Fish Tikka",
+  "name_local": {
+   "kn": "ಫಿಶ್ ಟಿಕ್ಕಾ",
+   "hi": "फिश टिक्का"
+  },
+  "meal": [
+   "dinner",
+   "snacks"
+  ],
+  "diet": "nonveg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "air_fryer",
+    "otg_oven"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "fish",
+    "qty": 600
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "tandoori_masala",
+    "qty": 15
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cut fish into cubes.",
+   "Marinate in curd, tandoori masala, garlic, lemon and salt for 30 minutes.",
+   "Air fry at 200°C for 10 minutes."
+  ],
+  "youtube_query": "Air Fryer Fish Tikka recipe"
+ },
+ {
+  "id": "egg_curry_rice",
+  "name": "Egg Biryani",
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ ಬಿರಿಯಾನಿ",
+   "hi": "अंडा बिरयानी"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "egg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 45,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 300
+   },
+   {
+    "id": "egg",
+    "qty": 6
+   },
+   {
+    "id": "onion",
+    "qty": 200
+   },
+   {
+    "id": "tomato",
+    "qty": 100
+   },
+   {
+    "id": "curd",
+    "qty": 100
+   },
+   {
+    "id": "mint",
+    "qty": 15
+   },
+   {
+    "id": "ginger",
+    "qty": 10
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "biryani_masala",
+    "qty": 12
+   },
+   {
+    "id": "ghee",
+    "qty": 30
+   },
+   {
+    "id": "salt",
+    "qty": 10
+   }
+  ],
+  "steps": [
+   "Boil and peel the eggs; prick them.",
+   "Fry onion brown in ghee; add ginger, garlic, tomato, curd, masala and mint.",
+   "Add the eggs, soaked rice, salt and 2 1/2 cups water.",
+   "Pressure cook for 2 whistles and rest 10 minutes."
+  ],
+  "youtube_query": "Egg Biryani recipe"
+ },
+ {
+  "id": "tofu_stir_fry",
+  "name": "Tofu Veg Stir Fry",
+  "name_local": {
+   "kn": "ಟೋಫು ಸ್ಟಿರ್ ಫ್ರೈ",
+   "hi": "टोफू स्टर फ्राई"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 20,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "tofu",
+    "qty": 400
+   },
+   {
+    "id": "capsicum",
+    "qty": 150
+   },
+   {
+    "id": "carrot",
+    "qty": 100
+   },
+   {
+    "id": "cabbage",
+    "qty": 150
+   },
+   {
+    "id": "garlic",
+    "qty": 10
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 25
+   },
+   {
+    "id": "corn_flour",
+    "qty": 10
+   },
+   {
+    "id": "oil",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 3
+   }
+  ],
+  "steps": [
+   "Cube tofu and pan-fry until golden.",
+   "Stir-fry garlic and vegetables on high heat.",
+   "Add soy sauce and corn flour mixed with water.",
+   "Toss in the tofu until glazed."
+  ],
+  "youtube_query": "Tofu Veg Stir Fry recipe"
+ },
+ {
+  "id": "soya_pulao",
+  "name": "Soya Pulao",
+  "name_local": {
+   "kn": "ಸೋಯಾ ಪುಲಾವ್",
+   "hi": "सोया पुलाव"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 35,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "basmati_rice",
+    "qty": 250
+   },
+   {
+    "id": "soya_chunks",
+    "qty": 80
+   },
+   {
+    "id": "onion",
+    "qty": 100
+   },
+   {
+    "id": "green_peas",
+    "qty": 60
+   },
+   {
+    "id": "carrot",
+    "qty": 60
+   },
+   {
+    "id": "garam_masala",
+    "qty": 4
+   },
+   {
+    "id": "ginger",
+    "qty": 8
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "oil",
+    "qty": 25
+   },
+   {
+    "id": "salt",
+    "qty": 8
+   }
+  ],
+  "steps": [
+   "Soak rice; boil and squeeze the soya chunks.",
+   "Fry onion, ginger and garlic, then vegetables, soya and garam masala.",
+   "Add rice, salt and 2 cups water; pressure cook for 2 whistles."
+  ],
+  "youtube_query": "Soya Pulao recipe"
+ },
+ {
+  "id": "chana_sundal",
+  "name": "Chana Sundal",
+  "name_local": {
+   "kn": "ಕಡಲೆ ಉಸಳಿ",
+   "hi": "चना सुंडल"
+  },
+  "meal": [
+   "snacks"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "kabuli_chana",
+    "qty": 200
+   },
+   {
+    "id": "coconut",
+    "qty": 30
+   },
+   {
+    "id": "mustard_seeds",
+    "qty": 3
+   },
+   {
+    "id": "curry_leaves",
+    "qty": 5
+   },
+   {
+    "id": "dry_red_chilli",
+    "qty": 3
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 5
+   }
+  ],
+  "steps": [
+   "Soak and pressure cook chana until soft; drain.",
+   "Temper mustard seeds, red chilli and curry leaves in oil.",
+   "Add chana, coconut and salt and toss."
+  ],
+  "youtube_query": "Chana Sundal recipe"
+ },
+ {
+  "id": "paneer_rice_bowl",
+  "name": "Paneer Capsicum Rice",
+  "name_local": {
+   "kn": "ಪನೀರ್ ಕ್ಯಾಪ್ಸಿಕಂ ರೈಸ್",
+   "hi": "पनीर शिमला चावल"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "veg",
+  "vegan_ok": false,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ],
+   [
+    "pressure_cooker",
+    "rice_cooker"
+   ]
+  ],
+  "appliances_all": [],
+  "time_min": 30,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "rice",
+    "qty": 250
+   },
+   {
+    "id": "paneer",
+    "qty": 200
+   },
+   {
+    "id": "capsicum",
+    "qty": 150
+   },
+   {
+    "id": "onion",
+    "qty": 80
+   },
+   {
+    "id": "garam_masala",
+    "qty": 3
+   },
+   {
+    "id": "soy_sauce",
+    "qty": 10
+   },
+   {
+    "id": "ghee",
+    "qty": 20
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Cook rice and cool.",
+   "Sauté onion and capsicum in ghee.",
+   "Add paneer cubes, garam masala, soy sauce and salt.",
+   "Fold in the rice."
+  ],
+  "youtube_query": "Paneer Capsicum Rice recipe"
+ },
+ {
+  "id": "moong_soup",
+  "name": "Moong Dal Soup",
+  "name_local": {
+   "kn": "ಹೆಸರುಬೇಳೆ ಸೂಪ್",
+   "hi": "मूंग दाल सूप"
+  },
+  "meal": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "vegan_ok": true,
+  "appliances_any": [
+   [
+    "gas_stove",
+    "induction"
+   ]
+  ],
+  "appliances_all": [
+   "pressure_cooker"
+  ],
+  "time_min": 25,
+  "base_servings": 4,
+  "ingredients": [
+   {
+    "id": "moong_dal",
+    "qty": 150
+   },
+   {
+    "id": "tomato",
+    "qty": 150
+   },
+   {
+    "id": "carrot",
+    "qty": 80
+   },
+   {
+    "id": "garlic",
+    "qty": 8
+   },
+   {
+    "id": "cumin",
+    "qty": 3
+   },
+   {
+    "id": "black_pepper",
+    "qty": 3
+   },
+   {
+    "id": "lemon",
+    "qty": 1
+   },
+   {
+    "id": "oil",
+    "qty": 10
+   },
+   {
+    "id": "salt",
+    "qty": 6
+   }
+  ],
+  "steps": [
+   "Pressure cook moong dal with tomato and carrot for 3 whistles.",
+   "Blend smooth with 2 cups water.",
+   "Temper garlic and cumin in oil and add.",
+   "Season with pepper, salt and lemon."
+  ],
+  "youtube_query": "Moong Dal Soup recipe"
+ }
+]

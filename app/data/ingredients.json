@@ -1,0 +1,1882 @@
+[
+ {
+  "id": "rice",
+  "name": "Rice (raw, sona masoori)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 356,
+   "protein_g": 7.9,
+   "carbs_g": 78.2,
+   "fat_g": 0.5,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಅಕ್ಕಿ",
+   "hi": "चावल"
+  }
+ },
+ {
+  "id": "basmati_rice",
+  "name": "Basmati rice",
+  "unit": "g",
+  "per_100": {
+   "kcal": 349,
+   "protein_g": 8.1,
+   "carbs_g": 77.5,
+   "fat_g": 0.6,
+   "fibre_g": 1.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "rice_flour",
+  "name": "Rice flour",
+  "unit": "g",
+  "per_100": {
+   "kcal": 359,
+   "protein_g": 6.4,
+   "carbs_g": 79.5,
+   "fat_g": 0.8,
+   "fibre_g": 2.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "poha",
+  "name": "Poha (flattened rice)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 346,
+   "protein_g": 6.6,
+   "carbs_g": 77.3,
+   "fat_g": 1.2,
+   "fibre_g": 2.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "rava",
+  "name": "Rava (semolina)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 348,
+   "protein_g": 10.4,
+   "carbs_g": 73.0,
+   "fat_g": 0.8,
+   "fibre_g": 3.9
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "atta",
+  "name": "Whole wheat atta",
+  "unit": "g",
+  "per_100": {
+   "kcal": 320,
+   "protein_g": 10.6,
+   "carbs_g": 64.2,
+   "fat_g": 1.5,
+   "fibre_g": 11.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಗೋಧಿ ಹಿಟ್ಟು",
+   "hi": "आटा"
+  }
+ },
+ {
+  "id": "maida",
+  "name": "Maida (refined flour)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 351,
+   "protein_g": 10.4,
+   "carbs_g": 74.3,
+   "fat_g": 0.8,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "besan",
+  "name": "Besan (gram flour)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 372,
+   "protein_g": 21.5,
+   "carbs_g": 56.6,
+   "fat_g": 5.6,
+   "fibre_g": 10.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "ragi_flour",
+  "name": "Ragi flour",
+  "unit": "g",
+  "per_100": {
+   "kcal": 321,
+   "protein_g": 7.2,
+   "carbs_g": 66.8,
+   "fat_g": 1.9,
+   "fibre_g": 11.2
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "oats",
+  "name": "Rolled oats",
+  "unit": "g",
+  "per_100": {
+   "kcal": 374,
+   "protein_g": 13.6,
+   "carbs_g": 62.8,
+   "fat_g": 7.6,
+   "fibre_g": 10.1
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "vermicelli",
+  "name": "Vermicelli (semiya)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 352,
+   "protein_g": 11.0,
+   "carbs_g": 75.0,
+   "fat_g": 1.5,
+   "fibre_g": 3.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "bread",
+  "name": "Bread",
+  "unit": "g",
+  "per_100": {
+   "kcal": 265,
+   "protein_g": 9.0,
+   "carbs_g": 49.0,
+   "fat_g": 3.2,
+   "fibre_g": 2.7
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "pav",
+  "name": "Pav buns",
+  "unit": "g",
+  "per_100": {
+   "kcal": 290,
+   "protein_g": 9.0,
+   "carbs_g": 52.0,
+   "fat_g": 4.0,
+   "fibre_g": 2.0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "noodles",
+  "name": "Hakka noodles",
+  "unit": "g",
+  "per_100": {
+   "kcal": 380,
+   "protein_g": 12.0,
+   "carbs_g": 75.0,
+   "fat_g": 2.0,
+   "fibre_g": 3.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "gulab_jamun_mix",
+  "name": "Gulab jamun mix",
+  "unit": "g",
+  "per_100": {
+   "kcal": 430,
+   "protein_g": 10.0,
+   "carbs_g": 60.0,
+   "fat_g": 17.0,
+   "fibre_g": 1.0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "Pack label (approx.)"
+ },
+ {
+  "id": "toor_dal",
+  "name": "Toor dal",
+  "unit": "g",
+  "per_100": {
+   "kcal": 343,
+   "protein_g": 22.3,
+   "carbs_g": 57.6,
+   "fat_g": 1.7,
+   "fibre_g": 9.1
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ತೊಗರಿ ಬೇಳೆ",
+   "hi": "अरहर दाल"
+  }
+ },
+ {
+  "id": "moong_dal",
+  "name": "Moong dal (split)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 348,
+   "protein_g": 24.0,
+   "carbs_g": 56.7,
+   "fat_g": 1.3,
+   "fibre_g": 9.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "masoor_dal",
+  "name": "Masoor dal",
+  "unit": "g",
+  "per_100": {
+   "kcal": 343,
+   "protein_g": 24.6,
+   "carbs_g": 59.1,
+   "fat_g": 1.1,
+   "fibre_g": 10.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "chana_dal",
+  "name": "Chana dal",
+  "unit": "g",
+  "per_100": {
+   "kcal": 360,
+   "protein_g": 21.0,
+   "carbs_g": 58.0,
+   "fat_g": 5.3,
+   "fibre_g": 15.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "urad_dal",
+  "name": "Urad dal",
+  "unit": "g",
+  "per_100": {
+   "kcal": 333,
+   "protein_g": 23.1,
+   "carbs_g": 53.0,
+   "fat_g": 1.6,
+   "fibre_g": 11.9
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "rajma",
+  "name": "Rajma (kidney beans)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 333,
+   "protein_g": 22.9,
+   "carbs_g": 60.0,
+   "fat_g": 1.3,
+   "fibre_g": 16.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "kabuli_chana",
+  "name": "Kabuli chana (chickpeas)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 364,
+   "protein_g": 19.3,
+   "carbs_g": 60.6,
+   "fat_g": 6.0,
+   "fibre_g": 17.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "green_moong",
+  "name": "Green moong (whole)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 334,
+   "protein_g": 22.5,
+   "carbs_g": 56.7,
+   "fat_g": 1.2,
+   "fibre_g": 16.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "peanuts",
+  "name": "Peanuts",
+  "unit": "g",
+  "per_100": {
+   "kcal": 567,
+   "protein_g": 25.8,
+   "carbs_g": 16.1,
+   "fat_g": 49.2,
+   "fibre_g": 8.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "roasted_chana",
+  "name": "Roasted chana",
+  "unit": "g",
+  "per_100": {
+   "kcal": 369,
+   "protein_g": 22.5,
+   "carbs_g": 58.8,
+   "fat_g": 5.2,
+   "fibre_g": 16.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "soya_chunks",
+  "name": "Soya chunks",
+  "unit": "g",
+  "per_100": {
+   "kcal": 345,
+   "protein_g": 52.0,
+   "carbs_g": 33.0,
+   "fat_g": 0.5,
+   "fibre_g": 13.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Pack label (approx.)"
+ },
+ {
+  "id": "tofu",
+  "name": "Tofu",
+  "unit": "g",
+  "per_100": {
+   "kcal": 76,
+   "protein_g": 8.0,
+   "carbs_g": 1.9,
+   "fat_g": 4.8,
+   "fibre_g": 0.3
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "milk",
+  "name": "Milk (toned)",
+  "unit": "ml",
+  "per_100": {
+   "kcal": 62,
+   "protein_g": 3.2,
+   "carbs_g": 4.7,
+   "fat_g": 3.4,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಹಾಲು",
+   "hi": "दूध"
+  }
+ },
+ {
+  "id": "curd",
+  "name": "Curd",
+  "unit": "g",
+  "per_100": {
+   "kcal": 60,
+   "protein_g": 3.1,
+   "carbs_g": 4.4,
+   "fat_g": 3.4,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಮೊಸರು",
+   "hi": "दही"
+  }
+ },
+ {
+  "id": "paneer",
+  "name": "Paneer",
+  "unit": "g",
+  "per_100": {
+   "kcal": 265,
+   "protein_g": 18.3,
+   "carbs_g": 1.2,
+   "fat_g": 20.8,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಪನೀರ್",
+   "hi": "पनीर"
+  }
+ },
+ {
+  "id": "ghee",
+  "name": "Ghee",
+  "unit": "g",
+  "per_100": {
+   "kcal": 900,
+   "protein_g": 0,
+   "carbs_g": 0,
+   "fat_g": 99.5,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ತುಪ್ಪ",
+   "hi": "घी"
+  }
+ },
+ {
+  "id": "butter",
+  "name": "Butter",
+  "unit": "g",
+  "per_100": {
+   "kcal": 717,
+   "protein_g": 0.9,
+   "carbs_g": 0.1,
+   "fat_g": 81.0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "egg",
+  "name": "Egg",
+  "unit": "pcs",
+  "per_100": {
+   "kcal": 143,
+   "protein_g": 12.6,
+   "carbs_g": 0.7,
+   "fat_g": 9.5,
+   "fibre_g": 0
+  },
+  "diet": [
+   "egg"
+  ],
+  "kind": "egg",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)",
+  "grams_per_piece": 50,
+  "name_local": {
+   "kn": "ಮೊಟ್ಟೆ",
+   "hi": "अंडा"
+  }
+ },
+ {
+  "id": "chicken",
+  "name": "Chicken (curry cut)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 150,
+   "protein_g": 19.5,
+   "carbs_g": 0,
+   "fat_g": 8.0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "nonveg"
+  ],
+  "kind": "nonveg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "fish",
+  "name": "Fish (seer/rohu)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 100,
+   "protein_g": 17.0,
+   "carbs_g": 0,
+   "fat_g": 3.0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "nonveg"
+  ],
+  "kind": "nonveg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "mutton",
+  "name": "Mutton (curry cut)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 122,
+   "protein_g": 20.5,
+   "carbs_g": 0,
+   "fat_g": 4.0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "nonveg"
+  ],
+  "kind": "nonveg",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "prawns",
+  "name": "Prawns",
+  "unit": "g",
+  "per_100": {
+   "kcal": 85,
+   "protein_g": 20.0,
+   "carbs_g": 0,
+   "fat_g": 0.5,
+   "fibre_g": 0
+  },
+  "diet": [
+   "nonveg"
+  ],
+  "kind": "nonveg",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "onion",
+  "name": "Onion",
+  "unit": "g",
+  "per_100": {
+   "kcal": 47,
+   "protein_g": 1.5,
+   "carbs_g": 9.6,
+   "fat_g": 0.2,
+   "fibre_g": 2.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಈರುಳ್ಳಿ",
+   "hi": "प्याज़"
+  }
+ },
+ {
+  "id": "tomato",
+  "name": "Tomato",
+  "unit": "g",
+  "per_100": {
+   "kcal": 22,
+   "protein_g": 0.9,
+   "carbs_g": 3.6,
+   "fat_g": 0.2,
+   "fibre_g": 1.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)",
+  "name_local": {
+   "kn": "ಟೊಮೆಟೊ",
+   "hi": "टमाटर"
+  }
+ },
+ {
+  "id": "potato",
+  "name": "Potato",
+  "unit": "g",
+  "per_100": {
+   "kcal": 77,
+   "protein_g": 2.0,
+   "carbs_g": 17.0,
+   "fat_g": 0.1,
+   "fibre_g": 2.2
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)",
+  "name_local": {
+   "kn": "ಆಲೂಗಡ್ಡೆ",
+   "hi": "आलू"
+  }
+ },
+ {
+  "id": "carrot",
+  "name": "Carrot",
+  "unit": "g",
+  "per_100": {
+   "kcal": 41,
+   "protein_g": 0.9,
+   "carbs_g": 9.6,
+   "fat_g": 0.2,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "beans",
+  "name": "French beans",
+  "unit": "g",
+  "per_100": {
+   "kcal": 31,
+   "protein_g": 1.8,
+   "carbs_g": 7.0,
+   "fat_g": 0.1,
+   "fibre_g": 3.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "capsicum",
+  "name": "Capsicum",
+  "unit": "g",
+  "per_100": {
+   "kcal": 20,
+   "protein_g": 0.9,
+   "carbs_g": 4.6,
+   "fat_g": 0.2,
+   "fibre_g": 1.7
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cauliflower",
+  "name": "Cauliflower",
+  "unit": "g",
+  "per_100": {
+   "kcal": 25,
+   "protein_g": 1.9,
+   "carbs_g": 5.0,
+   "fat_g": 0.3,
+   "fibre_g": 2.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cabbage",
+  "name": "Cabbage",
+  "unit": "g",
+  "per_100": {
+   "kcal": 25,
+   "protein_g": 1.3,
+   "carbs_g": 5.8,
+   "fat_g": 0.1,
+   "fibre_g": 2.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "green_peas",
+  "name": "Green peas",
+  "unit": "g",
+  "per_100": {
+   "kcal": 81,
+   "protein_g": 5.4,
+   "carbs_g": 14.5,
+   "fat_g": 0.4,
+   "fibre_g": 5.1
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "spinach",
+  "name": "Spinach (palak)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 23,
+   "protein_g": 2.9,
+   "carbs_g": 3.6,
+   "fat_g": 0.4,
+   "fibre_g": 2.2
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "methi_leaves",
+  "name": "Methi leaves",
+  "unit": "g",
+  "per_100": {
+   "kcal": 49,
+   "protein_g": 4.4,
+   "carbs_g": 6.0,
+   "fat_g": 0.9,
+   "fibre_g": 4.9
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "brinjal",
+  "name": "Brinjal",
+  "unit": "g",
+  "per_100": {
+   "kcal": 25,
+   "protein_g": 1.0,
+   "carbs_g": 5.9,
+   "fat_g": 0.2,
+   "fibre_g": 3.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "bhindi",
+  "name": "Bhindi (okra)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 33,
+   "protein_g": 1.9,
+   "carbs_g": 7.5,
+   "fat_g": 0.2,
+   "fibre_g": 3.2
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "bottle_gourd",
+  "name": "Bottle gourd (lauki)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 15,
+   "protein_g": 0.6,
+   "carbs_g": 3.4,
+   "fat_g": 0.1,
+   "fibre_g": 0.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cucumber",
+  "name": "Cucumber",
+  "unit": "g",
+  "per_100": {
+   "kcal": 15,
+   "protein_g": 0.7,
+   "carbs_g": 3.6,
+   "fat_g": 0.1,
+   "fibre_g": 0.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "beetroot",
+  "name": "Beetroot",
+  "unit": "g",
+  "per_100": {
+   "kcal": 43,
+   "protein_g": 1.6,
+   "carbs_g": 9.6,
+   "fat_g": 0.2,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "mushroom",
+  "name": "Mushroom",
+  "unit": "g",
+  "per_100": {
+   "kcal": 22,
+   "protein_g": 3.1,
+   "carbs_g": 3.3,
+   "fat_g": 0.3,
+   "fibre_g": 1.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "sweet_corn",
+  "name": "Sweet corn",
+  "unit": "g",
+  "per_100": {
+   "kcal": 86,
+   "protein_g": 3.3,
+   "carbs_g": 19.0,
+   "fat_g": 1.4,
+   "fibre_g": 2.7
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "coconut",
+  "name": "Coconut (fresh, grated)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 354,
+   "protein_g": 3.3,
+   "carbs_g": 15.2,
+   "fat_g": 33.5,
+   "fibre_g": 9.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)",
+  "name_local": {
+   "kn": "ತೆಂಗಿನಕಾಯಿ",
+   "hi": "नारियल"
+  }
+ },
+ {
+  "id": "ginger",
+  "name": "Ginger",
+  "unit": "g",
+  "per_100": {
+   "kcal": 80,
+   "protein_g": 1.8,
+   "carbs_g": 17.8,
+   "fat_g": 0.8,
+   "fibre_g": 2.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "garlic",
+  "name": "Garlic",
+  "unit": "g",
+  "per_100": {
+   "kcal": 149,
+   "protein_g": 6.4,
+   "carbs_g": 33.0,
+   "fat_g": 0.5,
+   "fibre_g": 2.1
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "green_chilli",
+  "name": "Green chilli",
+  "unit": "g",
+  "per_100": {
+   "kcal": 40,
+   "protein_g": 2.0,
+   "carbs_g": 9.0,
+   "fat_g": 0.2,
+   "fibre_g": 1.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "curry_leaves",
+  "name": "Curry leaves",
+  "unit": "g",
+  "per_100": {
+   "kcal": 108,
+   "protein_g": 6.1,
+   "carbs_g": 18.7,
+   "fat_g": 1.0,
+   "fibre_g": 6.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "coriander_leaves",
+  "name": "Coriander leaves",
+  "unit": "g",
+  "per_100": {
+   "kcal": 23,
+   "protein_g": 2.1,
+   "carbs_g": 3.7,
+   "fat_g": 0.5,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "mint",
+  "name": "Mint leaves",
+  "unit": "g",
+  "per_100": {
+   "kcal": 44,
+   "protein_g": 3.3,
+   "carbs_g": 8.4,
+   "fat_g": 0.7,
+   "fibre_g": 6.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "lemon",
+  "name": "Lemon",
+  "unit": "pcs",
+  "per_100": {
+   "kcal": 29,
+   "protein_g": 1.1,
+   "carbs_g": 9.3,
+   "fat_g": 0.3,
+   "fibre_g": 2.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)",
+  "grams_per_piece": 50
+ },
+ {
+  "id": "tamarind",
+  "name": "Tamarind",
+  "unit": "g",
+  "per_100": {
+   "kcal": 239,
+   "protein_g": 2.8,
+   "carbs_g": 62.5,
+   "fat_g": 0.6,
+   "fibre_g": 5.1
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "banana",
+  "name": "Banana",
+  "unit": "pcs",
+  "per_100": {
+   "kcal": 89,
+   "protein_g": 1.1,
+   "carbs_g": 22.8,
+   "fat_g": 0.3,
+   "fibre_g": 2.6
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)",
+  "grams_per_piece": 120
+ },
+ {
+  "id": "apple",
+  "name": "Apple",
+  "unit": "g",
+  "per_100": {
+   "kcal": 52,
+   "protein_g": 0.3,
+   "carbs_g": 13.8,
+   "fat_g": 0.2,
+   "fibre_g": 2.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "orange",
+  "name": "Orange",
+  "unit": "g",
+  "per_100": {
+   "kcal": 47,
+   "protein_g": 0.9,
+   "carbs_g": 11.8,
+   "fat_g": 0.1,
+   "fibre_g": 2.4
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "dates",
+  "name": "Dates",
+  "unit": "g",
+  "per_100": {
+   "kcal": 282,
+   "protein_g": 2.5,
+   "carbs_g": 75.0,
+   "fat_g": 0.4,
+   "fibre_g": 8.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cashews",
+  "name": "Cashews",
+  "unit": "g",
+  "per_100": {
+   "kcal": 553,
+   "protein_g": 18.2,
+   "carbs_g": 30.2,
+   "fat_g": 43.9,
+   "fibre_g": 3.3
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "raisins",
+  "name": "Raisins",
+  "unit": "g",
+  "per_100": {
+   "kcal": 299,
+   "protein_g": 3.1,
+   "carbs_g": 79.0,
+   "fat_g": 0.5,
+   "fibre_g": 3.7
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "almonds",
+  "name": "Almonds",
+  "unit": "g",
+  "per_100": {
+   "kcal": 579,
+   "protein_g": 21.2,
+   "carbs_g": 21.6,
+   "fat_g": 49.9,
+   "fibre_g": 12.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "biscuits",
+  "name": "Marie biscuits",
+  "unit": "g",
+  "per_100": {
+   "kcal": 440,
+   "protein_g": 7.0,
+   "carbs_g": 75.0,
+   "fat_g": 12.0,
+   "fibre_g": 2.0
+  },
+  "diet": [
+   "veg"
+  ],
+  "kind": "veg",
+  "is_staple": false,
+  "source": "Pack label (approx.)"
+ },
+ {
+  "id": "jaggery",
+  "name": "Jaggery",
+  "unit": "g",
+  "per_100": {
+   "kcal": 383,
+   "protein_g": 0.4,
+   "carbs_g": 95.0,
+   "fat_g": 0.1,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "coconut_milk",
+  "name": "Coconut milk",
+  "unit": "ml",
+  "per_100": {
+   "kcal": 230,
+   "protein_g": 2.3,
+   "carbs_g": 5.5,
+   "fat_g": 24.0,
+   "fibre_g": 2.2
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "corn_flour",
+  "name": "Corn flour",
+  "unit": "g",
+  "per_100": {
+   "kcal": 381,
+   "protein_g": 0.3,
+   "carbs_g": 91.0,
+   "fat_g": 0.1,
+   "fibre_g": 0.9
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "soy_sauce",
+  "name": "Soy sauce",
+  "unit": "ml",
+  "per_100": {
+   "kcal": 53,
+   "protein_g": 8.0,
+   "carbs_g": 4.9,
+   "fat_g": 0.6,
+   "fibre_g": 0.8
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "tea_powder",
+  "name": "Tea powder (brewed, not eaten)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 0,
+   "protein_g": 0,
+   "carbs_g": 0,
+   "fat_g": 0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Infusion: negligible"
+ },
+ {
+  "id": "coffee_powder",
+  "name": "Filter coffee powder (brewed)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 0,
+   "protein_g": 0,
+   "carbs_g": 0,
+   "fat_g": 0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Infusion: negligible"
+ },
+ {
+  "id": "sambar_powder",
+  "name": "Sambar powder",
+  "unit": "g",
+  "per_100": {
+   "kcal": 320,
+   "protein_g": 14.0,
+   "carbs_g": 50.0,
+   "fat_g": 8.0,
+   "fibre_g": 18.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "rasam_powder",
+  "name": "Rasam powder",
+  "unit": "g",
+  "per_100": {
+   "kcal": 320,
+   "protein_g": 13.0,
+   "carbs_g": 50.0,
+   "fat_g": 8.0,
+   "fibre_g": 18.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "chole_masala",
+  "name": "Chole masala",
+  "unit": "g",
+  "per_100": {
+   "kcal": 330,
+   "protein_g": 12.0,
+   "carbs_g": 52.0,
+   "fat_g": 9.0,
+   "fibre_g": 20.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "pav_bhaji_masala",
+  "name": "Pav bhaji masala",
+  "unit": "g",
+  "per_100": {
+   "kcal": 330,
+   "protein_g": 12.0,
+   "carbs_g": 52.0,
+   "fat_g": 9.0,
+   "fibre_g": 20.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "biryani_masala",
+  "name": "Biryani masala",
+  "unit": "g",
+  "per_100": {
+   "kcal": 330,
+   "protein_g": 12.0,
+   "carbs_g": 52.0,
+   "fat_g": 9.0,
+   "fibre_g": 20.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "tandoori_masala",
+  "name": "Tandoori masala",
+  "unit": "g",
+  "per_100": {
+   "kcal": 330,
+   "protein_g": 12.0,
+   "carbs_g": 52.0,
+   "fat_g": 9.0,
+   "fibre_g": 20.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": false,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "salt",
+  "name": "Salt",
+  "unit": "g",
+  "per_100": {
+   "kcal": 0,
+   "protein_g": 0,
+   "carbs_g": 0,
+   "fat_g": 0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "oil",
+  "name": "Cooking oil",
+  "unit": "ml",
+  "per_100": {
+   "kcal": 900,
+   "protein_g": 0,
+   "carbs_g": 0,
+   "fat_g": 100.0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "sugar",
+  "name": "Sugar",
+  "unit": "g",
+  "per_100": {
+   "kcal": 398,
+   "protein_g": 0,
+   "carbs_g": 99.5,
+   "fat_g": 0,
+   "fibre_g": 0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "IFCT 2017 (approx.)"
+ },
+ {
+  "id": "turmeric",
+  "name": "Turmeric powder",
+  "unit": "g",
+  "per_100": {
+   "kcal": 354,
+   "protein_g": 7.8,
+   "carbs_g": 64.9,
+   "fat_g": 9.9,
+   "fibre_g": 21.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "chilli_powder",
+  "name": "Red chilli powder",
+  "unit": "g",
+  "per_100": {
+   "kcal": 282,
+   "protein_g": 12.0,
+   "carbs_g": 50.0,
+   "fat_g": 14.0,
+   "fibre_g": 35.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cumin",
+  "name": "Cumin (jeera)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 375,
+   "protein_g": 17.8,
+   "carbs_g": 44.2,
+   "fat_g": 22.3,
+   "fibre_g": 10.5
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "mustard_seeds",
+  "name": "Mustard seeds",
+  "unit": "g",
+  "per_100": {
+   "kcal": 508,
+   "protein_g": 26.0,
+   "carbs_g": 28.0,
+   "fat_g": 36.0,
+   "fibre_g": 12.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "garam_masala",
+  "name": "Garam masala",
+  "unit": "g",
+  "per_100": {
+   "kcal": 379,
+   "protein_g": 14.0,
+   "carbs_g": 50.0,
+   "fat_g": 15.0,
+   "fibre_g": 22.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "Spice blend (approx.)"
+ },
+ {
+  "id": "coriander_powder",
+  "name": "Coriander powder",
+  "unit": "g",
+  "per_100": {
+   "kcal": 298,
+   "protein_g": 12.4,
+   "carbs_g": 55.0,
+   "fat_g": 17.8,
+   "fibre_g": 41.9
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "hing",
+  "name": "Hing (asafoetida)",
+  "unit": "g",
+  "per_100": {
+   "kcal": 297,
+   "protein_g": 4.0,
+   "carbs_g": 68.0,
+   "fat_g": 1.0,
+   "fibre_g": 4.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "black_pepper",
+  "name": "Black pepper",
+  "unit": "g",
+  "per_100": {
+   "kcal": 251,
+   "protein_g": 10.4,
+   "carbs_g": 64.0,
+   "fat_g": 3.3,
+   "fibre_g": 25.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "dry_red_chilli",
+  "name": "Dry red chilli",
+  "unit": "g",
+  "per_100": {
+   "kcal": 314,
+   "protein_g": 12.0,
+   "carbs_g": 56.0,
+   "fat_g": 6.2,
+   "fibre_g": 27.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ },
+ {
+  "id": "cardamom",
+  "name": "Cardamom",
+  "unit": "g",
+  "per_100": {
+   "kcal": 311,
+   "protein_g": 10.8,
+   "carbs_g": 68.0,
+   "fat_g": 6.7,
+   "fibre_g": 28.0
+  },
+  "diet": [
+   "veg",
+   "vegan"
+  ],
+  "kind": "vegan",
+  "is_staple": true,
+  "source": "USDA FDC (approx.)"
+ }
+]

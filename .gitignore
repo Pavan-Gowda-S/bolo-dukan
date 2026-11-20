@@ -1,8 +1,8 @@
-# Secrets: never commit your keys
+﻿# Secrets: never commit your keys
 .env
 
 # Local data: database, uploads, login-cookie secret, test audio
-data/
+/data/
 
 # Python
 .venv/

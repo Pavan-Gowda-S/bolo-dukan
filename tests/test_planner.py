@@ -184,14 +184,17 @@ class RealDataTests(unittest.TestCase):
         self.assertGreaterEqual(len(f), 30)
         ranked = P.rank_recipes(f, self.I, "high_protein")
         for n in range(1, 9):  # whatever the shopper picks, the cart never exceeds the budget after fitting
-            cart = P.build_cart([x["recipe"] for x in ranked[:n]], 4, self.PR, self.I, True)
+            sel = [x["recipe"] for x in ranked[:n]]
+            cart = P.build_cart(sel, 4, self.PR, self.I, True)
             self.assertEqual(cart["missing"], [])
-            res = P.fit_to_budget(cart, 150000, self.PR, "veg")
+            res = P.fit_to_budget(cart, 150000, self.PR, "veg", {"selected": sel, "people": 4, "ingredients": self.I, "pantry": True})
             if cart["total_paise"] <= 150000:
                 self.assertLessEqual(res["total_paise"], 150000)
-                self.assertTrue(res["in_window"], (n, cart["total_paise"], res))
+                if cart["total_paise"] >= 150000 - 50000:  # a gap that 6 top-ups can fill: must land Rs 20-30 under
+                    self.assertTrue(res["in_window"], (n, cart["total_paise"], res))
             else:
                 self.assertFalse(res["ok"])
+                self.assertTrue(res["suggestions"])
 
     def test_every_ingredient_maps_to_a_product(self):
         mapped = {p["ingredient_id"] for p in self.PR}
