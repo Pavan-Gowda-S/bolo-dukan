@@ -539,7 +539,7 @@ def _room(conn, token: str) -> dict:
     if r["closed"] or time.time() > r["expires_at"] or not s or s["status"] not in ACTIVE_SESSION_STATUSES:
         if not r["closed"]:
             conn.execute("UPDATE game_rooms SET closed = 1 WHERE id = ?", (r["id"],))
-        raise HTTPError(410, "This game room has closed. Thanks for playing!")
+        raise HTTPError(410, "This game room has closed. Thanks for playing.")
     return r
 
 

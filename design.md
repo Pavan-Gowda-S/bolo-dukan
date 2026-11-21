@@ -47,7 +47,7 @@ A restaurant operating surface for Indian restaurants: warm, festive, a little l
 
 ### Table status colors (dashboard contract)
 
-These map 1:1 to the session state machine and must stay consistent across grid, 3D floor and table cards:
+These map 1:1 to the session state machine and must stay consistent across the grid, the Plan view, the 3D floor, the waiter portal and table cards:
 
 | Token | Value | Meaning |
 |---|---|---|
@@ -58,6 +58,16 @@ These map 1:1 to the session state machine and must stay consistent across grid,
 | `--st-bill` | `#a855f7` | BILL_REQUESTED (purple) |
 | `--st-paid` | `#22c55e` | PAID / PAID_CASH (green) |
 | `--st-alert` | `#ef4444` | Waiter called (red bell) |
+
+Other fixed meanings:
+
+| Where | Colour | Meaning |
+|---|---|---|
+| Kitchen ticket border | mint → amber (`#f59e0b`) → red (`#ef4444`, pulsing) | 0–10 min, 10–20 min, over 20 min since the order was accepted |
+| Merge badge | sky tint (`rgba(76,201,240,.12)`) | Table merged with another table |
+| Veg dot | green `#22c55e` / red `#ef4444` / yellow `#facc15` | Veg / non-veg / egg (Indian food-label convention) |
+| Nutrition | mint protein, marigold carbs, pink fat, sky fibre | Same colours in the kcal ring and the bars |
+| WhatsApp button | green tint (`rgba(37,211,102,.12)`) | Share the bill on WhatsApp |
 
 Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, `.s-REJECTED` classes with `color-mix()` tinted backgrounds.
 
@@ -88,6 +98,15 @@ Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, 
 - **`.overlay` + `.sheet` / `.modal` / `.drawer`** — three dismissible layers, all `z-index` 60/61
 - **`.tilt`** — pointer-tracked 3D tilt surface driven by CSS vars (`--rx/--ry/--mx/--my`)
 - **`.reveal`** — scroll-entrance fade + rise, delay via `--d`
+- **Dish sheet** (`.dish-sheet`) — hero photo or coloured initial, veg dot, chips for spice/allergens, SVG kcal ring + macro bars (`.kring`, `.mbar`), "approx." footnote with its source
+- **Receipt** (`.receipt`) — cream paper card with a dashed header, item lines with unit prices, torn bottom edge (`.rc-edge`) and a WhatsApp share row
+- **Call-waiter sheet** (`.ws-grid`, `.ws-opt`) — six big reason tiles, then an "on the way" state with a ringing bell
+- **Preview banner** (`.preview-banner`) — sticky marigold banner while the menu is read-only
+- **Kitchen ticket** (`.tk`) — very large type for a TV across the room; new tickets slide in once; only timers update each second
+- **Waiter card** (`.wt`) — status-coloured border, tick-to-confirm list (`.chk`) before Accept
+- **Plan marker** (`.pmk`) and **floor editor marker** (`.mk`) — positioned in % over the blueprint; size grows with chairs
+- **Flip cards** (`.flip`) — 3D flip for the meal-planner wizard choices
+- **Mini stepper** (`.mini-step`) — − / typeable number / + for tables and chairs on Setup
 
 ## Motion
 
@@ -95,6 +114,7 @@ Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, 
 - Named transitions only (`transform`, `box-shadow`, `background`, `border-color`, `opacity`)
 - Ambient motion is decorative and layered behind content: `#bg3d` (Three.js background, fixed, pointer-events none, fades in via `.ready`), `.grain` overlay at 6% opacity, `.loader-orb`
 - Status flashing (yellow/orange) means "needs attention now" — never flash a color that isn't a live state
+- Screens that refresh on a timer (kitchen TV, waiter portal, store orders) animate an item only when it first appears; refreshes must not replay entrance animations
 
 ## Page inventory (`static/pages/`)
 
@@ -102,11 +122,17 @@ Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, 
 |---|---|---|
 | `index.html` | Landing | Marketing hero |
 | `signup.html`, `login.html` | Owner | Email/password + Google sign-in |
-| `setup.html` | Owner | Tables, language, Wi-Fi |
-| `menu.html` | Owner | Menu CRUD, CSV/photo import |
-| `qr.html` | Owner | Printable table QR cards |
-| `dashboard.html` | Cashier/Owner | Grid + 3D floor, actions, spoken alerts |
-| `table.html` | Guest | Ordering, voice, games, bill, pay |
+| `setup.html` | Owner | Tables (type or tap), chairs per table, "__ chairs for all tables", language, Wi-Fi, floor-plan link |
+| `menu.html` | Owner | Menu CRUD, CSV/photo import, dish details |
+| `qr.html` | Owner | Printable table QR cards with seats |
+| `floor.html` | Owner | Optional blueprint, drag-to-place tables, live 3D preview |
+| `staff.html` | Owner | Waiter accounts, tables, PINs |
+| `report.html` | Owner | Daily report; prints as a clean white page (Save as PDF) |
+| `dashboard.html` | Cashier/Owner | Grid, Plan view and 3D floor, actions, merge, spoken alerts |
+| `table.html` | Guest | Menu preview, dish details, ordering, voice, call waiter, games, receipt, pay |
+| `game.html` | Guests at one table | Private trivia room |
+| `staff_login.html`, `waiter.html` | Waiter | PIN login, waiter portal (mobile-first) |
+| `kitchen.html` | Kitchen TV | Dark, huge type, no touching after ▶ Start |
 | `paid.html` | Guest | Payment confirmation |
 | `store.html` | Store owner | Supermarket management |
 | `shop.html` | Shop customer | Catalog, cart, meal planner |
@@ -114,7 +140,7 @@ Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, 
 
 ## Frontend JS modules (`static/js/`)
 
-`common.js` (shared fetch/toast/helpers), `bg3d.js` + `floor3d.js` (Three.js), `dashboard.js` / `dashboard_plus.js`, `table.js`, `games.js`, `store.js`, `shop.js`, `planner.js`. Vanilla JS, no framework, no build step.
+`common.js` (shared fetch/toast/helpers), `bg3d.js` + `floor3d.js` (Three.js), `dashboard.js` / `dashboard_plus.js`, `table.js`, `games.js`, `kitchen.js`, `waiter.js`, `store.js`, `shop.js`, `planner.js`. Vanilla JS, no framework, no build step.
 
 ## Rules for new UI
 
@@ -124,3 +150,5 @@ Order status tags use `.s-PENDING`, `.s-ACCEPTED`, `.s-PREPARING`, `.s-SERVED`, 
 4. Money renders with `.mono` (tabular figures) in paise→rupee formatting, consistent everywhere.
 5. Interface text supports kn-IN / hi-IN / en-IN; use the Noto font stack and never assume Latin-only strings.
 6. Feature-gated UI must hide itself when the matching `FEATURE_*` flag is off (see `rules.md`).
+7. Every tap target on phones is at least 40 px; the kitchen TV is read from across a room, so its numbers stay at 2rem or more.
+8. Anything printed (daily report) has a `@media print` style: white paper, no navigation, rows that don't split across pages.

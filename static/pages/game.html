@@ -57,7 +57,7 @@
     }
     if (st.phase === "lobby" || st.phase === "done") {
       const done = st.phase === "done", top = st.players.slice(0, 3);
-      card.innerHTML = `<div class="eyebrow">${done ? "Final results" : "Waiting room"}</div><h2 style="margin:8px 0">${done ? (top[0] ? `🏆 ${BD.esc(top[0].nickname)} wins!` : "Game over") : "Get ready!"}</h2>
+      card.innerHTML = `<div class="eyebrow">${done ? "Final results" : "Waiting room"}</div><h2 style="margin:8px 0">${done ? (top[0] ? `🏆 ${BD.esc(top[0].nickname)} wins` : "Game over") : "Get ready"}</h2>
         ${done && top.length ? `<div class="podium"><div class="p2">${top[1] ? "🥈<br>" + BD.esc(top[1].nickname) + "<br>" + top[1].score : ""}</div><div class="p1">🥇<br>${BD.esc(top[0].nickname)}<br>${top[0].score}</div><div class="p3">${top[2] ? "🥉<br>" + BD.esc(top[2].nickname) + "<br>" + top[2].score : ""}</div></div>` : `<p class="muted">${st.total} questions · 15 seconds each · faster right answers score more.</p>`}
         ${lb()}
         ${st.is_host ? `<button class="btn lg block" id="go" style="margin-top:16px">${done ? "Play again" : "▶ Start the game"}</button>` : `<p class="faint small center" style="margin-top:14px">The host (👑) starts the game.</p>`}`;

@@ -1,6 +1,6 @@
 # Bolo Dukaan — PRDs
 
-Product requirements for Bolo Dukaan. One section per product area. Each PRD states the problem, the requirements, what is explicitly out of scope, and how the area is verified. Requirements marked **[SWITCH]** are gated by a `FEATURE_*` flag in `.env` and must degrade to the documented fallback when off.
+Product requirements for Bolo Dukaan. Voice and language run on **Sarvam AI** (Gemini only as backup). One section per product area. Each PRD states the problem, the requirements, what is explicitly out of scope, and how the area is verified. Requirements marked **[SWITCH]** are gated by a `FEATURE_*` flag in `.env` and must degrade to the documented fallback when off.
 
 ---
 
@@ -10,9 +10,10 @@ Product requirements for Bolo Dukaan. One section per product area. Each PRD sta
 
 **Requirements**
 - Owner signs up with email + password (PBKDF2-hashed) or Google ID token (verified audience/issuer/expiry/email).
-- Setup flow: restaurant name, language (kn-IN / hi-IN / en-IN), Wi-Fi details, table count (max 60).
+- Setup flow: restaurant name, language (kn-IN / hi-IN / en-IN), Wi-Fi details, table count (max 60; type it or tap +/−).
+- **Chairs per table** **[SWITCH: FEATURE_SEATS, default on]**: one number per table (1–20), typed or tapped, plus "__ chairs for all tables". `/api/owner/setup` accepts `seats[]` and rejects a list whose length isn't the table count. Seats appear on QR cards, dashboard cards, the waiter portal, the kitchen TV, the Plan view and the 3D floor. When more phones join than there are chairs, show a warning (never block).
 - Menu can be created three ways: typed entry, CSV upload (Excel "Save as CSV"), or photo/PDF OCR **[SWITCH: FEATURE_MENU_PHOTO]** — OCR always produces a *draft* the owner reviews and edits before saving.
-- Menu items support local-script name, category, price in **integer paise**, availability toggle, soft delete.
+- Menu items support local-script name, category, price in **integer paise**, availability toggle, soft delete, and optional details **[SWITCH: FEATURE_DISH_DETAILS]**: description, veg/non-veg, spice 0–3, allergens and owner-entered nutrition (kcal, protein, carbs, fat, fibre). Empty means unknown, never guessed. Same fields as optional CSV columns.
 - Owner can generate printable QR cards per table with the table token, Wi-Fi details, and Kannada/Hindi captions. QR links refresh when the public URL changes.
 
 **Out of scope:** multi-location restaurants, menu versioning, printed bill templates.
@@ -26,15 +27,15 @@ Product requirements for Bolo Dukaan. One section per product area. Each PRD sta
 **Problem.** Orders get lost on paper; the cashier cannot see which table needs attention.
 
 **Requirements**
-- Guest scans the table QR → sees menu → taps "Start ordering" → session enters `WAITING_APPROVAL`.
-- Cashier must approve before ordering begins (defends against shared/photographed QR links).
+- Guest scans the table QR → **previews the menu** **[SWITCH: FEATURE_MENU_PREVIEW, default on]** (read-only: no add buttons, cart, mic or budget; banner "Ordering opens once the waiter confirms you're at the table") → taps "Start ordering" → session enters `WAITING_APPROVAL`.
+- A waiter or the owner must approve before ordering begins (defends against shared/photographed QR links). Until then the server answers `409 Waiting for the waiter to confirm your table` to orders, voice, budget and assistant calls. When approved, the same screen switches to ordering without a reload.
 - Session state machine (authoritative, defined in `app/db.py`):
   `WAITING_APPROVAL → OPEN → BILL_REQUESTED → PAID | PAID_CASH → CLOSED`, plus `REJECTED` from approval, and per-order `PENDING → ACCEPTED → PREPARING → SERVED` (or `REJECTED`).
 - After `BILL_REQUESTED`, no new orders can be placed on that session.
 - Freeing a table closes the session and invalidates its join code and QR token for that session.
 - Dashboard colour contract (see `design.md`): grey empty, yellow flashing waiting, blue ordering, orange flashing new order, purple bill, green paid, red waiter bell. Grid view and 3D floor view show identical state.
 
-**Out of scope:** reservations, table merging across sessions, tipping.
+**Out of scope:** reservations, tipping.
 
 **Verified by:** state constants and `ACTIVE_SESSION_STATUSES` / `BILLABLE_ORDER_STATUSES` tuples in `app/db.py`; dashboard tests manual via demo script.
 
@@ -88,7 +89,7 @@ Product requirements for Bolo Dukaan. One section per product area. Each PRD sta
 - **Sales summary (A1)** **[SWITCH: FEATURE_SALES_SUMMARY]**: collected total, bill count, average, online vs cash donut, top items, bill list — only verified payments count.
 - **Owner voice assistant (A3)** **[SWITCH: FEATURE_OWNER_VOICE]**: read-only answers from the database; anything that mutates data requires a confirming tap.
 
-**Out of scope:** staff accounts/roles, shift management, inventory.
+**Out of scope:** shift management, inventory, payroll.
 
 **Verified by:** demo script steps 1:40–2:40; `app/summary.py` pure functions under test.
 
@@ -154,6 +155,97 @@ Product requirements for Bolo Dukaan. One section per product area. Each PRD sta
 
 ---
 
+## PRD-10: Waiter portal and staff accounts
+
+**[SWITCH: FEATURE_STAFF]**
+
+**Problem.** One cashier can't walk to every table; waiters need their own tool, but must not see the money.
+
+**Requirements**
+- Owner page `/owner/staff`: add a waiter (name, username, 4–6 digit PIN), assign tables (none = all), reset PIN, deactivate, copy the login link.
+- `/staff/login`: restaurant code + username + PIN. 5 wrong PINs lock that username for 10 minutes (20 per network). Separately signed `bd_staff` cookie.
+- `/waiter` (mobile-first): only assigned tables, coloured like the dashboard. Approve/reject ("Are guests seated at Table 4?"), read the order back and tick each item before **Accept** sends it to the kitchen, reject with a reason, preparing/served, clear waiter calls, merge tables, floor view. New events buzz, with optional Kannada voice.
+- Server permissions: approve/reject, order status, waiter-call done and merge accept the owner **or** a waiter of the same restaurant and an assigned table; everything else stays owner-only (403 for waiters). `approved_by` and `accepted_by` record "owner" or "waiter:Name" and show on the dashboard.
+
+**Verified by:** `tests/test_restaurant_upgrades.py::StaffTests` (403 on owner routes, other restaurants and unassigned tables; PIN throttling; owner cookie can't pass as staff).
+
+---
+
+## PRD-11: Kitchen TV display
+
+**[SWITCH: FEATURE_KITCHEN_TV]**
+
+**Problem.** Kitchens lose paper tickets and can't see how long a table has waited.
+
+**Requirements**
+- Owner gets a secret link (32 characters) from **📺 Kitchen display**; **Regenerate** invalidates the old one.
+- `/kitchen/{secret}`: one ▶ Start tap (sound + full screen + screen wake lock), then no touching. Tickets for ACCEPTED / PREPARING orders: table, seats, order number, big quantities, local names, mm:ss timer, amber after 10 min, red after 20 min, a "Cooking" badge when preparing. Served orders disappear. Refresh every 2 s; show "Reconnecting…" instead of going blank.
+- `GET /api/kitchen/{secret}/board` is read-only and carries no prices, phone numbers or totals.
+- When an order is accepted, a `kitchen_order` announcement is written from a fixed template ("ಟೇಬಲ್ 4. 2 ಮಸಾಲೆ ದೋಸೆ, …") and spoken once by the kitchen TV (`kitchen_claimed`), never by the cashier dashboard.
+
+**Verified by:** `KitchenTests` (no prices or phones, spoken once, served disappears, regenerate kills the old link).
+
+---
+
+## PRD-12: Guest experience upgrades
+
+- **Dish details** **[SWITCH: FEATURE_DISH_DETAILS]**: tapping a dish opens a sheet with photo or coloured initial, name, local name, price, veg dot, description, spice, allergens and nutrition (kcal ring; protein/carbs/fat/fibre bars with grams and % of calories). Owner values first, then computed IFCT/NIN values, else "Nutrition info not available for this dish." Always labelled approx. with its source. Add-to-cart hidden in preview.
+- **Call a waiter** for a reason (water, cutlery, clean the table, help to order, extra chutney, or typed). The guest sees "on the way" with the time, can cancel, and gets a tick when it's cleared. The kitchen alert speaks the reason from fixed Kannada phrases.
+- **Bill as a receipt** (restaurant, tables, bill number, date, item lines with unit prices, item count, total) with **Share on WhatsApp** and the phone's share sheet.
+
+**Verified by:** `DishDetailsTests`, `WaiterCallTests`; browser check of the sheets.
+
+---
+
+## PRD-13: Merge tables
+
+**[SWITCH: FEATURE_MERGE_TABLES]**
+
+- The owner (dashboard drawer) or a waiter (portal, own tables only) merges table B into table A for a big group. B's QR opens A's order; seats add up; one bill.
+- If both were ordering, B's guests, orders and waiter calls move to A, and B's phones follow automatically. A table whose bill is requested or paid, or with a payment in progress, can't be merged.
+- Unmerge any time; freeing A or paying cash unmerges.
+
+**Verified by:** `MergeTests`.
+
+---
+
+## PRD-14: Daily report
+
+**[SWITCH: FEATURE_DAILY_REPORT]**
+
+- `/owner/report?date=` shows the day's verified bills (time, table, method, Cashfree link, amount), UPI vs cash, and every item sold with quantity and amount.
+- **Download CSV** (UTF-8 with BOM so Excel shows ₹ and Kannada) and **Save as PDF** (print style). Owner-only.
+
+**Verified by:** `ReportTests`.
+
+---
+
+## PRD-15: Trivia with my table
+
+**[SWITCH: FEATURE_GAME_ROOMS]**
+
+- Tapping Play asks **Play with all tables** (existing quiz + leaderboard) or **Play with my table**.
+- A private room per table session: random 16+ character token, its own QR and WhatsApp link to `/g/{room}`, which opens only the game (no menu, cart, bill or session APIs).
+- Nickname join (up to 30 players, unique nicknames); the first player is host and starts; same questions, 15-second timer and speed scoring as the table quiz; live leaderboard and podium; play again.
+- The room closes when the table is freed or after 3 hours.
+
+**Verified by:** `GameRoomTests` (answer never sent during the question, no double scoring, room token can't read the session, closes with the table).
+
+---
+
+## PRD-16: Floor plan from a blueprint (optional)
+
+**[SWITCH: FEATURE_FLOOR_PLAN]**
+
+- Owner uploads a PNG/JPG up to 5 MB (checked by file signature), stored under `data/uploads/r<id>/`, served only to the owner and staff.
+- Placement editor: the image fills the editor; each table is a marker sized by seats ("T4 · 6"); drag with mouse or touch, snap to a light grid, "Reset to auto layout", live 3D preview. Positions saved as % (`tables.pos_x`, `pos_y`, 0–100).
+- Dashboard **Plan** view and the waiter floor view show the blueprint with live coloured markers; tap to open the table.
+- `floor3d.js` lays the blueprint on the 3D floor and places tables at their positions with as many chairs as seats; without positions it keeps the automatic layout. No AI detection of tables.
+
+**Verified by:** `FloorPlanTests` (bad file type and size rejected, positions validated, image not public).
+
+---
+
 ## Cross-cutting requirements
 
 | Area | Requirement |
@@ -162,4 +254,6 @@ Product requirements for Bolo Dukaan. One section per product area. Each PRD sta
 | AI policy | Every AI feature has an on/off switch, never decides money, always falls back to taps/forms. |
 | Windows | One double-click start (`start.bat`); only pure-Python dependency (`qrcode`); std-lib server so Smart App Control never blocks it. |
 | Security | See `rules.md` §Security — approved tables, join-code throttling, HMAC webhooks, signed HttpOnly cookies, HTTPS via ngrok. |
-| Feature switches | All `FEATURE_*` default **off**; with all off the site matches the `working-v1` baseline. |
+| Feature switches | `FEATURE_MENU_PREVIEW` and `FEATURE_SEATS` default **on**; every other `FEATURE_*` defaults **off**. With the new switches off the demo works exactly as before. |
+| Permissions | Checked on the server for every route; hiding a button is never the security. |
+| Timeouts | Every Sarvam call has a 15-second timeout and a tap fallback. |
