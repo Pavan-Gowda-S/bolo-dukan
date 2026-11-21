@@ -4,6 +4,7 @@ Routes look like  @app.route("POST", "/api/session/{session_id:int}/orders")
 and handlers receive (req, **params) and return a dict/list (sent as JSON) or a Response.
 """
 import json
+import os
 import mimetypes
 import re
 import sys
@@ -124,6 +125,11 @@ class Request:
         return self._form
 
 
+def _secure_cookies() -> bool:
+    """True when PUBLIC_URL is an https:// address (the deployed site). Local http://localhost keeps working without it."""
+    return os.getenv("PUBLIC_URL", "").strip().lower().startswith("https://")
+
+
 class Response:
     def __init__(self, body: bytes | str = b"", status: int = 200, content_type: str = "text/plain; charset=utf-8",
                  headers: dict | None = None):
@@ -139,6 +145,8 @@ class Response:
             c += f"; Max-Age={max_age}"
         if httponly:
             c += "; HttpOnly"
+        if _secure_cookies():  # live site on HTTPS: the browser never sends the login cookie over plain http
+            c += "; Secure"
         self.cookies.append(c)
 
     def delete_cookie(self, name: str):
