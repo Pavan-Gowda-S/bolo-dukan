@@ -25,7 +25,7 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 ---
 
 
-> 🚀 **Go live for free, always on:** see [DEPLOY.md](DEPLOY.md). It takes one command on a free Oracle Cloud server and gives you HTTPS, auto-restart and daily backups.
+> 🚀 **Go live for free:** double-click **`go-live.bat`** (your PC + a free permanent ngrok address, no card), or put it on an always-on free Oracle Cloud server with one command. Both are explained in [DEPLOY.md](DEPLOY.md).
 
 ## Contents
 

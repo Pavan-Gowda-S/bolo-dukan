@@ -4,6 +4,36 @@
 
 **Time:** about 30 minutes. You only do steps 1 and 2 by hand; the install script does the rest.
 
+## Two free ways
+
+| | **A. Your PC + ngrok (no card)** | **B. Oracle Cloud server (card check, never charged)** |
+|---|---|---|
+| Sign-up | ngrok with Google | DuckDNS + Oracle Cloud |
+| Address | `https://yourname.ngrok-free.dev` (permanent) | `https://yourname.duckdns.org` (permanent) |
+| Live when | your PC is on and awake | always, 24×7 |
+| Visitors see | a one-time ngrok "Visit site" page | the site directly |
+| Setup | 5 minutes | 30 minutes |
+
+# A. No card: your PC + ngrok (5 minutes)
+1. Double-click **`go-live.bat`** in the project folder.
+2. The first time, it walks you through three things:
+   - **Installing ngrok:** answer **Y**; it uses Microsoft's `winget`.
+   - **Your ngrok token:** sign up free at https://dashboard.ngrok.com/signup with Google, copy the token from https://dashboard.ngrok.com/get-started/your-authtoken and paste it.
+   - **Your permanent address:** open https://dashboard.ngrok.com/domains, copy your free address (e.g. `yourname.ngrok-free.dev`) and paste it.
+3. It starts the app and the link, checks that it is reachable from the internet, and opens it. It also offers to **start automatically every time you log in to Windows**.
+4. Print the QR codes again from **Setup → QR codes**. They now open the live address from any phone, on any network.
+
+| Task | How |
+|---|---|
+| Stop the live site | `go-live.bat -Stop` |
+| Stop the start-at-login | `go-live.bat -NoAutoStart` |
+| Logs | `data\live.log`, `data\live-errors.log`, `data
+grok.log` |
+
+Keep the PC awake: **Settings → System → Power → Sleep → Never** (when plugged in). On this PC, use `http://localhost:8001` or the live link; logging in through the Wi-Fi IP over plain http won't work once the live address is set.
+
+# B. Always on: Oracle Cloud Always Free
+
 ## 1. Free web address (DuckDNS, 2 minutes)
 1. Open https://www.duckdns.org and sign in with Google or GitHub.
 2. Type a name, e.g. `bolodukaan`, and click **add domain**. Your address is `bolodukaan.duckdns.org`.
