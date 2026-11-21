@@ -17,7 +17,7 @@
 # A. No card: your PC + ngrok (5 minutes)
 1. Double-click **`go-live.bat`** in the project folder.
 2. The first time, it walks you through three things:
-   - **Installing ngrok:** answer **Y**; it uses Microsoft's `winget`.
+   - **Installing ngrok:** answer **Y**; it downloads ngrok (about 12 MB) from ngrok's official site into your user folder. No admin rights needed.
    - **Your ngrok token:** sign up free at https://dashboard.ngrok.com/signup with Google, copy the token from https://dashboard.ngrok.com/get-started/your-authtoken and paste it.
    - **Your permanent address:** open https://dashboard.ngrok.com/domains, copy your free address (e.g. `yourname.ngrok-free.dev`) and paste it.
 3. It starts the app and the link, checks that it is reachable from the internet, and opens it. It also offers to **start automatically every time you log in to Windows**.

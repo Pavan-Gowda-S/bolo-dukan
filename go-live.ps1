@@ -57,21 +57,41 @@ Say "Bolo Dukaan - go live" "Yellow"
 Say ""
 
 # ------------------------------------------------------------------ 1. ngrok installed?
-$ngrok = Get-Command ngrok -ErrorAction SilentlyContinue
-if (-not $ngrok) {
+# Our own copy lives in %LOCALAPPDATA%\Programs\ngrok (no admin rights, no Store). A copy already on PATH also works.
+$ngrokDir = Join-Path $env:LOCALAPPDATA "Programs\ngrok"
+$ngrokExe = Join-Path $ngrokDir "ngrok.exe"
+if (-not (Test-Path $ngrokExe)) {
+    $onPath = Get-Command ngrok -ErrorAction SilentlyContinue
+    if ($onPath) { $ngrokExe = $onPath.Source }
+}
+if (-not (Test-Path $ngrokExe)) {
     if ($Quiet) { exit 1 }
     Say "ngrok is not installed. It makes the free public https address." "Cyan"
-    $ans = Read-Host "  Install it now with winget (Microsoft's installer)? [Y/n]"
-    if ($ans -and $ans -notmatch '^[Yy]') { Say "Install it later with:  winget install ngrok.ngrok"; Pause-Exit 1 }
-    winget install --id ngrok.ngrok -e --accept-source-agreements --accept-package-agreements
-    $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
-    $ngrok = Get-Command ngrok -ErrorAction SilentlyContinue
-    if (-not $ngrok) { Say "ngrok still not found. Close this window, open a new one and run go-live.bat again." "Red"; Pause-Exit 1 }
+    $ans = Read-Host "  Download it now from ngrok's official site (about 12 MB)? [Y/n]"
+    if ($ans -and $ans -notmatch '^[Yy]') { Say "Get it later from https://ngrok.com/download and run go-live.bat again."; Pause-Exit 1 }
+    $arch = "amd64"
+    if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { $arch = "arm64" }
+    $zip = Join-Path $env:TEMP "ngrok-v3-stable-windows-$arch.zip"
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $ProgressPreference = "SilentlyContinue"
+        Invoke-WebRequest -UseBasicParsing -Uri "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-$arch.zip" -OutFile $zip
+        New-Item -ItemType Directory -Force -Path $ngrokDir | Out-Null
+        Expand-Archive -LiteralPath $zip -DestinationPath $ngrokDir -Force
+        Remove-Item $zip -Force -ErrorAction SilentlyContinue
+    } catch {
+        Say "Download failed: $($_.Exception.Message)" "Red"
+        Say "Get it from https://ngrok.com/download, put ngrok.exe in $ngrokDir and run go-live.bat again."
+        Pause-Exit 1
+    }
+    $ngrokExe = Join-Path $ngrokDir "ngrok.exe"
+    if (-not (Test-Path $ngrokExe)) { Say "ngrok.exe wasn't in the download. Get it from https://ngrok.com/download" "Red"; Pause-Exit 1 }
+    Say "ngrok installed: $(& $ngrokExe version)" "Green"
 }
 
 # ------------------------------------------------------------------ 2. ngrok account token (once)
 $cfgOk = $false
-try { $out = & $ngrok.Source config check 2>&1 | Out-String; $cfgOk = ($LASTEXITCODE -eq 0) } catch { $cfgOk = $false }
+try { $out = & $ngrokExe config check 2>&1 | Out-String; $cfgOk = ($LASTEXITCODE -eq 0) } catch { $cfgOk = $false }
 $hasToken = $false
 foreach ($cfgFile in @((Join-Path $env:LOCALAPPDATA "ngrok\ngrok.yml"), (Join-Path $env:APPDATA "ngrok\ngrok.yml"), (Join-Path $env:USERPROFILE ".config\ngrok\ngrok.yml"))) {
     if ((Test-Path $cfgFile) -and ((Get-Content $cfgFile -Raw) -match "authtoken")) { $hasToken = $true }
@@ -84,7 +104,7 @@ if (-not ($cfgOk -and $hasToken)) {
     $tok = Read-Host "  Paste your ngrok authtoken"
     $tok = $tok.Trim()
     if (-not $tok) { Say "No token given." "Red"; Pause-Exit 1 }
-    & $ngrok.Source config add-authtoken $tok | Out-Null
+    & $ngrokExe config add-authtoken $tok | Out-Null
     if ($LASTEXITCODE -ne 0) { Say "ngrok did not accept that token." "Red"; Pause-Exit 1 }
     Say "Token saved in ngrok's own settings (not in this project)." "Green"
 }
@@ -132,11 +152,11 @@ try {
 } catch { }
 if (-not $tunnelUp) {
     Get-Process ngrok -ErrorAction SilentlyContinue | Stop-Process -Force
-    $ver = (& $ngrok.Source version) -replace '[^0-9.]', ''
+    $ver = (& $ngrokExe version) -replace '[^0-9.]', ''
     $parts = $ver.Split('.')
     $flag = "--url=$liveUrl"
     if ($parts.Count -ge 2 -and [int]$parts[0] -eq 3 -and [int]$parts[1] -lt 16) { $flag = "--domain=$domain" }
-    Start-Process -FilePath $ngrok.Source -ArgumentList @("http", $flag, "$Port", "--log=stdout") -WindowStyle Hidden `
+    Start-Process -FilePath $ngrokExe -ArgumentList @("http", $flag, "$Port", "--log=stdout") -WindowStyle Hidden `
         -RedirectStandardOutput (Join-Path $data "ngrok.log") -RedirectStandardError (Join-Path $data "ngrok-errors.log") | Out-Null
 }
 $hdr = @{ "ngrok-skip-browser-warning" = "1" }
