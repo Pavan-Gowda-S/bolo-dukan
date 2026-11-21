@@ -12,7 +12,7 @@
   // ---------------------------------------------------------------- view model
   function viewOf(t) {
     const s = t.session;
-    const v = { id: t.id, number: t.number, waiter: !!(s && s.waiter_calls.length), flash: false };
+    const v = { id: t.id, number: t.number, seats: data && data.features && data.features.seats ? t.seats : null, waiter: !!(s && s.waiter_calls.length), flash: false };
     if (!s) return Object.assign(v, { state: "empty", stateLabel: "Empty", color: C.empty });
     switch (s.status) {
       case "WAITING_APPROVAL": return Object.assign(v, { state: "waiting", stateLabel: "Wants to order", color: C.waiting, flash: true });
@@ -111,7 +111,9 @@
     let body;
     if (!s) body = `<div class="idle">Free · waiting for guests</div>`;
     else {
-      const info = [`👥 ${s.guests}`, `🍽 ${s.item_count} item${s.item_count === 1 ? "" : "s"}`, `⏱ ${BD.ago(s.started_at)}`];
+      const seatsOn = data.features.seats && t.seats;
+      const info = [seatsOn ? `👥 ${s.guests} phone${s.guests === 1 ? "" : "s"} · 🪑 ${t.seats}` : `👥 ${s.guests}`, `🍽 ${s.item_count} item${s.item_count === 1 ? "" : "s"}`, `⏱ ${BD.ago(s.started_at)}`];
+      if (seatsOn && s.guests > t.seats) info.push(`<b class="over-seats" title="More phones joined than chairs">⚠ more phones than chairs</b>`);
       let acts = "";
       if (s.status === "WAITING_APPROVAL") acts = `<button class="btn sm mint" data-a="approve" data-s="${s.id}">Approve</button><button class="btn-ghost sm" data-a="reject" data-s="${s.id}">Reject</button>`;
       else if (s.pending_count) { const o = s.orders.find(x => x.status === "PENDING"); acts = `<button class="btn sm mint" data-a="accept" data-o="${o.id}">Accept ${BD.rupees(o.total_paise)}</button><button class="btn-ghost sm" data-a="rejorder" data-o="${o.id}">Reject</button>`; }
@@ -126,7 +128,7 @@
     const say = cardSay.get(t.number);
     const sayHtml = say && say.until > Date.now() ? `<div class="kn-say">🔊 ${BD.esc(say.text)}</div>` : "";
     return `${v.waiter ? `<span class="bell" title="Waiter called">🔔</span>` : ""}
-      <div class="top"><div class="num"><small>TABLE</small>${t.number}</div><span class="st">${BD.esc(v.stateLabel)}</span></div>${sayHtml}${body}`;
+      <div class="top"><div class="num"><small>TABLE${data.features.seats && t.seats ? ` · ${t.seats} 🪑` : ""}</small>${t.number}</div><span class="st">${BD.esc(v.stateLabel)}</span></div>${sayHtml}${body}`;
   }
   function renderGrid() {
     const grid = $("gridView"), seen = new Set();
@@ -173,10 +175,10 @@
     if (!s) {
       html += `<div class="glass card center" style="margin-top:20px"><div style="font-size:2.6rem" class="float">🪑</div><p class="muted">This table is free. When guests scan its QR code and tap “Start ordering”, it lights up yellow here.</p></div>`;
     } else {
-      html += `<div class="d-meta"><div><span>Bill</span><b>${BD.rupees(s.bill_paise)}</b></div><div><span>Guests</span><b>${s.guests}</b></div><div><span>Join code</span><b class="code-big">${s.status === "WAITING_APPROVAL" ? "····" : BD.esc(s.join_code)}</b></div></div>`;
+      html += `<div class="d-meta"><div><span>Bill</span><b>${BD.rupees(s.bill_paise)}</b></div><div><span>Guests</span><b>${s.guests}${data.features.seats && t.seats ? ` <small class="faint">/ ${t.seats} seats</small>` : ""}</b></div><div><span>Join code</span><b class="code-big">${s.status === "WAITING_APPROVAL" ? "····" : BD.esc(s.join_code)}</b></div></div>`;
       s.waiter_calls.forEach(c => html += `<div class="waiter-row"><span>🔔 Needs help${c.reason ? " · " + BD.esc(c.reason) : ""} <span class="faint small">${BD.ago(c.created_at)}</span></span><button class="btn sm" data-a="wdone" data-c="${c.id}">Done</button></div>`);
       if (s.status === "WAITING_APPROVAL") {
-        html += `<div class="notice" style="margin-bottom:14px">Someone at table ${t.number} wants to start ordering. Glance at the table: if nobody is sitting there, reject it.</div>
+        html += `<div class="notice" style="margin-bottom:14px">Someone at table ${t.number} wants to start ordering. Glance at the table: if nobody is sitting there, reject it.${data.features.seats && t.seats ? `<br><b>${s.guests} phone${s.guests === 1 ? "" : "s"} joined · ${t.seats} seats</b>${s.guests > t.seats ? " · ⚠ more phones than chairs" : ""}` : ""}</div>
           <div class="row"><button class="btn mint grow" data-a="approve" data-s="${s.id}">Approve table</button><button class="btn-ghost" data-a="reject" data-s="${s.id}">Reject</button></div>`;
       }
       if (s.payment && s.payment.status === "ACTIVE" && s.status === "BILL_REQUESTED") html += `<div class="notice" style="margin-bottom:12px">💳 Guest opened a UPI payment link for ${BD.rupees(s.payment.amount_paise)}. Waiting for Cashfree to confirm…</div>`;

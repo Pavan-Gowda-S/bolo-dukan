@@ -394,7 +394,9 @@ def owner_me(req: Request):
         menu_count = conn.execute(
             "SELECT COUNT(*) FROM menu_items WHERE restaurant_id = ? AND deleted = 0", (r["id"],)
         ).fetchone()[0]
-    return {"email": owner["email"], "restaurant": r, "menu_count": menu_count,
+        seats = [x[0] for x in conn.execute(
+            "SELECT seats FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (r["id"],))]
+    return {"email": owner["email"], "restaurant": r, "menu_count": menu_count, "seats": seats,
             "features": config.features(), "languages": LANGUAGES}
 
 
@@ -409,6 +411,18 @@ def owner_setup(req: Request):
     wifi_name = _str(d, "wifi_name", 0, 60)
     wifi_password = _str(d, "wifi_password", 0, 60)
     name = _str(d, "name", 0, 80)
+    seats = d.get("seats")
+    if seats is not None and config.FEATURE_SEATS:  # 6: one number of chairs per table, 1-20
+        if not isinstance(seats, list) or len(seats) != count:
+            raise HTTPError(400, "Give the number of chairs for every table.")
+        try:
+            seats = [int(x) for x in seats]
+        except (TypeError, ValueError):
+            raise HTTPError(400, "Chairs must be numbers.")
+        if any(not 1 <= x <= 20 for x in seats):
+            raise HTTPError(400, "Each table can have 1 to 20 chairs.")
+    else:
+        seats = None
     rid = owner["restaurant_id"]
     with db() as conn:
         conn.execute("BEGIN IMMEDIATE")
@@ -423,6 +437,9 @@ def owner_setup(req: Request):
                 conn.execute("INSERT INTO tables (restaurant_id, number, token) VALUES (?, ?, ?)",
                              (rid, number, secrets.token_urlsafe(12)))
         conn.execute("UPDATE tables SET active = 0 WHERE restaurant_id = ? AND number > ?", (rid, count))
+        if seats:
+            for number, n in enumerate(seats, start=1):
+                conn.execute("UPDATE tables SET seats = ? WHERE restaurant_id = ? AND number = ?", (n, rid, number))
         if name:
             conn.execute("UPDATE restaurants SET name = ? WHERE id = ?", (name, rid))
         conn.execute(
@@ -552,7 +569,7 @@ def owner_qr(req: Request):
     with db() as conn:
         r = row(conn.execute("SELECT * FROM restaurants WHERE id = ?", (owner["restaurant_id"],)).fetchone())
         tables = rows(conn.execute(
-            "SELECT id, number, token FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number",
+            "SELECT id, number, token, seats FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number",
             (owner["restaurant_id"],),
         ))
     for t in tables:
@@ -560,7 +577,7 @@ def owner_qr(req: Request):
         t["svg"] = f"/api/owner/qr/{t['id']}.svg"
     local_only = bool(re.match(r"https?://(localhost|127\.0\.0\.1|\[::1\])", base))
     return {"restaurant": r, "base_url": base, "local_only": local_only,
-            "https": base.startswith("https://"), "tables": tables}
+            "https": base.startswith("https://"), "tables": tables, "features": config.features()}
 
 
 @route("GET", "/api/owner/qr/{table_id:int}.svg")
@@ -590,7 +607,7 @@ def guest_table(req: Request, token: str):
         menu = _menu(conn, t["restaurant_id"], only_available=True)
     store.menu_extras(menu)  # approx. calories/protein and real photos, when switched on
     return {
-        "table": {"number": t["number"]},
+        "table": {"number": t["number"], "seats": t["seats"]},
         "restaurant": {"name": t["restaurant_name"], "language": t["language"],
                        "wifi_name": t["wifi_name"], "wifi_password": t["wifi_password"]},
         "active_status": active["status"] if active else None,
@@ -1009,7 +1026,7 @@ def dashboard(req: Request):
     with db() as conn:
         r = row(conn.execute("SELECT * FROM restaurants WHERE id = ?", (rid,)).fetchone())
         tables = rows(conn.execute(
-            "SELECT id, number FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
+            "SELECT id, number, seats FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
         ))
         for t in tables:
             s = _active_session(conn, t["id"])

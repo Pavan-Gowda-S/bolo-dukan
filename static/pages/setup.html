@@ -34,6 +34,9 @@
   .lang-opts .opt b { font-size: 1.15rem; }
   .lang-opts input:checked + .opt { border-color: var(--marigold); background: rgba(255,193,69,.12); box-shadow: 0 10px 30px -12px rgba(255,159,28,.6); transform: translateY(-2px); }
   .lang-opts input:focus-visible + .opt { outline: 2px solid var(--marigold); outline-offset: 2px; }
+  .seats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; max-height: 260px; overflow: auto; padding: 2px; }
+  .seats-grid label { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-weight: 600; font-size: .9rem; }
+  .seats-grid input { width: 64px; }
   @media (max-width: 900px) { .setup { grid-template-columns: 1fr; } .preview { order: -1; } }
 </style>
 </head>
@@ -49,6 +52,10 @@
         <label class="field"><span>Restaurant name</span><input class="input" name="name" id="name" maxlength="80"></label>
         <div class="field"><span>How many tables?</span>
           <div class="big-step"><div class="stepper"><button type="button" id="minus" aria-label="Fewer tables">−</button><span class="val mono" id="count">8</span><button type="button" id="plus" aria-label="More tables">+</button></div><span class="muted small">Each table gets its own QR code</span></div>
+        </div>
+        <div class="field hidden" id="seatsBox"><span>Chairs at each table</span>
+          <div class="row wrap" style="gap:8px;margin-bottom:10px"><span class="muted small">Apply to all</span><input class="input input-sm mono" id="seatsAll" type="number" min="1" max="20" value="4" style="width:80px" aria-label="Chairs for every table"><button type="button" class="btn-ghost sm" id="seatsApply">Apply</button></div>
+          <div class="seats-grid" id="seatsGrid"></div>
         </div>
         <div class="field"><span>Kitchen language (for spoken alerts)</span>
           <div class="lang-opts">
@@ -76,9 +83,18 @@
 </div>
 <script>
 BD.ownerNav("/owner/setup");
-let count = 8, menuCount = 0;
+let count = 8, menuCount = 0, seats = [], seatsOn = false;
 const $ = id => document.getElementById(id);
+function drawSeats() {
+  if (!seatsOn) return;
+  while (seats.length < count) seats.push(Number($("seatsAll").value) || 4);
+  seats.length = count;
+  $("seatsGrid").innerHTML = seats.map((n, i) => `<label>Table ${i + 1}<input class="input input-sm mono" type="number" min="1" max="20" value="${n}" data-seat="${i}" aria-label="Chairs at table ${i + 1}"></label>`).join("");
+}
+$("seatsGrid").addEventListener("input", e => { const i = e.target.dataset.seat; if (i != null) seats[Number(i)] = Number(e.target.value); });
+$("seatsApply").onclick = () => { const n = Math.max(1, Math.min(20, Number($("seatsAll").value) || 4)); $("seatsAll").value = n; seats = seats.map(() => n); drawSeats(); };
 function drawFloor() {
+  drawSeats();
   $("count").textContent = count;
   $("pvCount").textContent = count + (count === 1 ? " table" : " tables");
   const cols = Math.min(6, Math.ceil(Math.sqrt(count * 1.5)));
@@ -100,6 +116,8 @@ $("name").addEventListener("input", e => $("pvTitle").textContent = e.target.val
   const r = me.restaurant; menuCount = me.menu_count;
   $("name").value = r.name; $("pvTitle").textContent = r.name;
   if (r.table_count) count = r.table_count;
+  seatsOn = !!(me.features && me.features.seats);
+  if (seatsOn) { seats = (me.seats || []).slice(0, count); $("seatsBox").classList.remove("hidden"); }
   $("wifi_name").value = r.wifi_name || ""; $("wifi_password").value = r.wifi_password || "";
   const radio = document.querySelector(`input[name=language][value="${r.language}"]`); if (radio) radio.checked = true;
   $("go").innerHTML = menuCount ? "Save &amp; show QR codes →" : "Save &amp; add the menu →";
@@ -112,7 +130,8 @@ $("form").addEventListener("submit", async e => {
   const fd = new FormData($("form"));
   BD.busy($("go"), true, "Saving…");
   try {
-    await BD.api("/api/owner/setup", { body: { name: fd.get("name"), table_count: count, language: fd.get("language"), wifi_name: fd.get("wifi_name"), wifi_password: fd.get("wifi_password") } });
+    if (seatsOn && seats.some(n => !(n >= 1 && n <= 20))) { $("err").textContent = "Each table can have 1 to 20 chairs."; BD.busy($("go"), false); return; }
+    await BD.api("/api/owner/setup", { body: { name: fd.get("name"), table_count: count, language: fd.get("language"), wifi_name: fd.get("wifi_name"), wifi_password: fd.get("wifi_password"), seats: seatsOn ? seats : undefined } });
     location.href = menuCount ? "/owner/qr" : "/owner/menu?onboarding=1";
   } catch (x) { $("err").textContent = x.message; BD.busy($("go"), false); }
 });

@@ -190,11 +190,11 @@ const Floor3D = {
       if (!t) { t = this.build(v, x, z); this.tables.set(v.id, t); t.group.scale.setScalar(0.01); t.grow = 0; }
       t.group.position.set(x, 0, z);
       t.view = v;
-      const key = `${v.number}|${v.stateLabel}|${v.color}`;
+      const key = `${v.number}|${v.stateLabel}|${v.color}|${v.seats || ""}`;
       if (key !== t.key) {
         t.key = key;
         if (t.label.material.map) t.label.material.map.dispose();
-        t.label.material.map = labelTexture(String(v.number), v.stateLabel.toUpperCase(), v.color);
+        t.label.material.map = labelTexture(String(v.number), v.stateLabel.toUpperCase() + (v.seats ? ` · ${v.seats} SEATS` : ""), v.color);
         t.label.material.needsUpdate = true;
         const col = new THREE.Color(v.color);
         t.ring.material.color.copy(col); t.disc.material.color.copy(col);

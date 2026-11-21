@@ -119,5 +119,28 @@ class MenuPreviewTests(Base):
         self.assertEqual(s, 200, r)
 
 
+class SeatsTests(Base):
+    def test_default_four_and_save(self):
+        me = call("GET", "/api/owner/me", cookie=self.owner)[1]
+        self.assertEqual(me["seats"], [4, 4, 4])
+        s, r, _ = call("POST", "/api/owner/setup", {"table_count": 3, "language": "kn-IN", "seats": [2, 6, 8]}, self.owner)
+        self.assertEqual(s, 200, r)
+        self.assertEqual(call("GET", "/api/owner/me", cookie=self.owner)[1]["seats"], [2, 6, 8])
+        self.assertEqual([t["seats"] for t in call("GET", "/api/owner/qr", cookie=self.owner)[1]["tables"]], [2, 6, 8])
+        self.assertEqual(call("GET", f"/api/t/{self.tables[1]['token']}")[1]["table"]["seats"], 6)
+        dash = call("GET", "/api/dashboard", cookie=self.owner)[1]
+        self.assertEqual([t["seats"] for t in dash["tables"]], [2, 6, 8])
+
+    def test_validation(self):
+        for bad in ([4, 4], [0, 4, 4], [4, 21, 4], ["x", 4, 4]):
+            s, r, _ = call("POST", "/api/owner/setup", {"table_count": 3, "language": "kn-IN", "seats": bad}, self.owner)
+            self.assertEqual(s, 400, (bad, r))
+
+    def test_more_tables_keep_seats(self):
+        call("POST", "/api/owner/setup", {"table_count": 3, "language": "kn-IN", "seats": [2, 6, 8]}, self.owner)
+        call("POST", "/api/owner/setup", {"table_count": 4, "language": "kn-IN"}, self.owner)
+        self.assertEqual(call("GET", "/api/owner/me", cookie=self.owner)[1]["seats"], [2, 6, 8, 4])
+
+
 if __name__ == "__main__":
     unittest.main()

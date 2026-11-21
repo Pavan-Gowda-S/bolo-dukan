@@ -133,3 +133,6 @@
 .v-said { padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid var(--line); margin-bottom: 10px; font-weight: 600; }
 .v-said small { display: block; color: var(--faint); font-weight: 700; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2px; }
 .o-answer { font-size: 1.15rem; font-weight: 700; color: var(--marigold); line-height: 1.4; animation: evIn .4s var(--spring) both; }
+
+/* 6: seats */
+.over-seats { color: #fbbf24; font-weight: 700; }

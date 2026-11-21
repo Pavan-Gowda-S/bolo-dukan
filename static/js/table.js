@@ -195,7 +195,7 @@
   function renderMain() {
     $("mRest").textContent = info.restaurant.name;
     $("mTable").textContent = info.table.number;
-    $("mGuests").textContent = sess.guests > 1 ? `· ${sess.guests} phones` : "";
+    $("mGuests").textContent = [sess.guests > 1 ? `· ${sess.guests} phones` : "", info.features.seats && info.table.seats ? `· ${info.table.seats} seats` : ""].filter(Boolean).join(" ");
     $("mCode").textContent = sess.join_code || "····";
     $("waiterBtn").classList.toggle("called", sess.waiter_called);
     $("waiterBtn").title = sess.waiter_called ? "A waiter is coming" : "Call waiter";

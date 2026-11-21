@@ -36,6 +36,7 @@
     .cards { grid-template-columns: repeat(2, 1fr); gap: 10mm; padding: 0; }
     .qcard { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; animation: none; }
   }
+  .seats-line { text-align: center; font-weight: 700; font-size: .85rem; margin: -4px 0 6px; opacity: .8; }
 </style>
 </head>
 <body>
@@ -68,7 +69,7 @@ const $ = id => document.getElementById(id);
   const rest = r.restaurant;
   $("cards").innerHTML = r.tables.map((t, i) => `<article class="qcard" style="animation-delay:${i * 0.05}s">
     <div class="top"><span class="rname">${BD.esc(rest.name)}</span><span style="font-size:1.2rem">🍽️</span></div>
-    <div class="tno"><small>TABLE</small>${t.number}</div>
+    <div class="tno"><small>TABLE</small>${t.number}</div>${r.features && r.features.seats ? `<div class="seats-line">🪑 ${t.seats} seats</div>` : ""}
     <div class="qr"><img src="${t.svg}?v=${Date.now()}" alt="QR code for table ${t.number}" loading="lazy"></div>
     <div class="scan">Scan to order & pay</div>
     <div class="kn">ಆರ್ಡರ್ ಮಾಡಲು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ · बोलकर ऑर्डर करें</div>
