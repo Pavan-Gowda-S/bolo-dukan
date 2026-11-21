@@ -283,6 +283,12 @@ def init_db() -> None:
         order_cols = {r[1] for r in conn.execute("PRAGMA table_info(orders)")}
         if "guest_id" not in order_cols:  # which phone placed the order (for "pay for my items")
             conn.execute("ALTER TABLE orders ADD COLUMN guest_id INTEGER")
+        menu_cols = {r[1] for r in conn.execute("PRAGMA table_info(menu_items)")}
+        for col, decl in (("description", "TEXT NOT NULL DEFAULT ''"), ("is_veg", "INTEGER"), ("spice", "INTEGER"),
+                          ("allergens", "TEXT NOT NULL DEFAULT ''"), ("kcal", "INTEGER"), ("protein_g", "REAL"),
+                          ("carbs_g", "REAL"), ("fat_g", "REAL"), ("fibre_g", "REAL")):
+            if col not in menu_cols:  # 4: optional dish details, entered by the owner (NULL = unknown)
+                conn.execute(f"ALTER TABLE menu_items ADD COLUMN {col} {decl}")
         table_cols = {r[1] for r in conn.execute("PRAGMA table_info(tables)")}
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")

@@ -218,3 +218,26 @@ html.gx-open, html.gx-open body { overflow: hidden; }
   backdrop-filter: blur(12px); animation: itemIn .5s var(--ease) both; }
 body.preview .g-tabs, body.preview #codeChip, body.preview #waiterBtn, body.preview #micFab, body.preview #budgetBtn, body.preview #cartBar { display: none !important; }
 body.preview .item { grid-template-columns: 76px 1fr; }
+
+/* 4: dish details sheet */
+[data-item] { cursor: pointer; }
+.dish-sheet { width: min(560px, 100%); }
+.dish-hero { position: relative; height: 200px; margin: -4px -22px 16px; overflow: hidden; display: grid; place-items: center;
+  background: radial-gradient(circle at 30% 25%, hsla(var(--h), 95%, 70%, .5), hsla(var(--h), 70%, 30%, .3) 70%), #1b1030; }
+.dish-hero .init { font-family: var(--font-display); font-size: 5rem; font-weight: 700; color: rgba(255,255,255,.85); text-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.dish-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: dishZoom 14s ease-in-out infinite alternate; }
+@keyframes dishZoom { to { transform: scale(1.12); } }
+.vdot { display: inline-grid; place-items: center; width: 16px; height: 16px; border: 2px solid var(--c); border-radius: 4px; margin-right: 8px; vertical-align: middle; }
+.vdot::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.vdot.veg { --c: #22c55e; } .vdot.nonveg { --c: #ef4444; }
+.nut-panel { display: flex; gap: 16px; align-items: center; }
+.kring { width: 120px; height: 120px; flex: none; }
+.kring .seg { transition: stroke-dasharray 1s var(--ease); animation: ringIn 1s var(--ease) both; }
+@keyframes ringIn { from { stroke-dasharray: 0 300; } }
+.kring .kv { font-family: var(--font-display); font-size: 24px; font-weight: 700; fill: var(--text); }
+.kring .kl { font-size: 11px; fill: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+.mrow { margin-bottom: 9px; font-size: .9rem; }
+.mbar { height: 8px; border-radius: 8px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 4px; }
+.mbar i { display: block; height: 100%; width: var(--w); background: var(--c); border-radius: inherit; animation: barIn .9s var(--ease) both; transform-origin: left; }
+@keyframes barIn { from { transform: scaleX(0); } }
+@media (max-width: 420px) { .nut-panel { flex-direction: column; align-items: stretch; } .kring { margin: 0 auto; } }

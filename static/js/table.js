@@ -250,6 +250,46 @@
       <div style="min-width:0"><div class="nm">${BD.esc(m.name)}</div>${m.name_local ? `<div class="lc">${BD.esc(m.name_local)}</div>` : ""}<div class="pr">${BD.rupees(m.price_paise)}</div>${m.nutrition ? `<div class="nut-mini" title="Approx. per serving, computed from ${BD.esc(m.nutrition_recipe || "a standard recipe")} (IFCT/NIN data)"><span><b>${m.nutrition.kcal}</b> kcal</span><span class="p"><b>${m.nutrition.protein_g}g</b> protein</span><span><b>${m.nutrition.carbs_g}g</b> carbs</span><span><b>${m.nutrition.fat_g}g</b> fat</span><span class="faint">approx.</span></div>` : ""}</div>
       <div class="ctl">${ctl}</div></div>`;
   }
+  // ---------------------------------------------------------------- 4: dish details sheet
+  const SPICE = ["Not spicy", "Mild", "Medium", "Hot"];
+  function macroRow(label, g, kcalPer, totalKcal, color) {
+    if (g == null) return "";
+    const pct = kcalPer && totalKcal ? Math.round(g * kcalPer * 100 / totalKcal) : null;
+    const w = kcalPer && totalKcal ? Math.min(100, g * kcalPer * 100 / totalKcal) : Math.min(100, g * 4);
+    return `<div class="mrow"><div class="row spread"><span>${label}</span><span><b>${g} g</b>${pct != null ? ` <span class="faint">· ${pct}% of kcal</span>` : ""}</span></div>
+      <div class="mbar"><i style="--w:${w.toFixed(1)}%;--c:${color}"></i></div></div>`;
+  }
+  function openDish(id) {
+    const m = menuById.get(id); if (!m) return;
+    const n = m.nutrition, qty = cart.get(id) || 0;
+    const canAdd = !preview && sess && sess.status === "OPEN";
+    let nut;
+    if (n && n.kcal != null) {
+      const p = (n.protein_g || 0) * 4, c = (n.carbs_g || 0) * 4, f = (n.fat_g || 0) * 9, tot = Math.max(1, p + c + f);
+      const C = 2 * Math.PI * 46, seg = (v, off, col) => `<circle r="46" cx="60" cy="60" fill="none" stroke="${col}" stroke-width="14" stroke-dasharray="${(v / tot * C).toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-off / tot * C).toFixed(1)}" transform="rotate(-90 60 60)" class="seg"/>`;
+      nut = `<div class="nut-panel"><svg viewBox="0 0 120 120" class="kring" aria-hidden="true"><circle r="46" cx="60" cy="60" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/>${n.protein_g != null || n.carbs_g != null || n.fat_g != null ? seg(p, 0, "#2ee6a6") + seg(c, p, "#ffc145") + seg(f, p + c, "#ff6b8a") : ""}
+          <text x="60" y="58" text-anchor="middle" class="kv">${n.kcal}</text><text x="60" y="76" text-anchor="middle" class="kl">kcal</text></svg>
+        <div class="grow">${macroRow("Protein", n.protein_g, 4, tot, "#2ee6a6")}${macroRow("Carbs", n.carbs_g, 4, tot, "#ffc145")}${macroRow("Fat", n.fat_g, 9, tot, "#ff6b8a")}${macroRow("Fibre", n.fibre_g, 0, 0, "#4cc9f0")}</div></div>
+        <p class="faint small" style="margin:8px 0 0">${m.nutrition_source === "owner" ? "Approx. per serving · entered by the restaurant" : `Approx. per serving, computed from IFCT/NIN data${m.nutrition_recipe ? ` (standard ${BD.esc(m.nutrition_recipe)} recipe)` : ""}`}</p>`;
+    } else nut = `<p class="muted small">Nutrition info not available for this dish.</p>`;
+    const pic = m.photo_url ? `<img src="${BD.esc(m.photo_url)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : "";
+    $("dishBody").innerHTML = `<div class="dish-hero" style="--h:${BD.hueFor(m.category + m.name)}"><span class="init">${BD.esc((m.name || "?").trim()[0])}</span>${pic}</div>
+      <div class="row spread" style="align-items:flex-start;gap:12px">
+        <div><h2 id="dishName" style="font-size:1.6rem">${m.is_veg != null ? `<i class="vdot ${m.is_veg ? "veg" : "nonveg"}" title="${m.is_veg ? "Veg" : "Non-veg"}"></i>` : ""}${BD.esc(m.name)}</h2>${m.name_local ? `<div class="muted">${BD.esc(m.name_local)}</div>` : ""}</div>
+        <b style="font-size:1.4rem" class="mono">${BD.rupees(m.price_paise)}</b></div>
+      ${m.description ? `<p style="margin:10px 0 0">${BD.esc(m.description)}</p>` : ""}
+      <div class="row wrap" style="gap:6px;margin:12px 0">${m.spice != null ? `<span class="chip">${"🌶️".repeat(Math.max(1, m.spice))} ${SPICE[m.spice]}</span>` : ""}${m.allergens ? `<span class="chip" style="color:#fbbf24">⚠ Contains: ${BD.esc(m.allergens)}</span>` : ""}<span class="chip">${BD.esc(m.category)}</span></div>
+      <h3 style="margin:6px 0 10px;font-size:1.05rem">Nutrition</h3>${nut}
+      ${canAdd ? `<button class="btn lg block" id="dishAdd" style="margin-top:16px">Add to cart · ${BD.rupees(m.price_paise)}${qty ? ` <span class="small">(${qty} in cart)</span>` : ""}</button>`
+        : preview ? `<p class="notice" style="margin-top:16px">Ordering opens once the waiter confirms you're at the table.</p>` : ""}`;
+    const add = $("dishAdd"); if (add) add.onclick = () => { changeQty(id, 1); closeSheets(); BD.toast(`Added ${m.name}`, "ok", 1800); };
+    openSheet("dishSheet");
+  }
+  $("menuList").addEventListener("click", e => {
+    if (!info_feature("dish_details") || e.target.closest("[data-inc],[data-dec],.ctl")) return;
+    const card = e.target.closest("[data-item]"); if (card) openDish(Number(card.dataset.item));
+  });
+
   function refreshItem(id) {
     const el = document.querySelector(`[data-item="${id}"]`); if (!el) return;
     const m = menuById.get(id), qty = cart.get(id) || 0;

@@ -65,7 +65,7 @@
       </article>
       <article class="glass method reveal" data-tilt="5" style="--d:.06s">
         <div class="ico">📄</div>
-        <div><h3>Upload a CSV</h3><p class="muted small" style="margin:6px 0 0">Columns: <span class="kbd">name</span> <span class="kbd">category</span> <span class="kbd">price</span> <span class="kbd">name_local</span>. Excel “Save as CSV” works. <a href="/static/sample_menu.csv" download>Sample file</a></p></div>
+        <div><h3>Upload a CSV</h3><p class="muted small" style="margin:6px 0 0">Columns: <span class="kbd">name</span> <span class="kbd">category</span> <span class="kbd">price</span> <span class="kbd">name_local</span> (optional: <span class="kbd">description</span> <span class="kbd">is_veg</span> <span class="kbd">spice</span> <span class="kbd">allergens</span> <span class="kbd">kcal</span> <span class="kbd">protein_g</span> <span class="kbd">carbs_g</span> <span class="kbd">fat_g</span> <span class="kbd">fibre_g</span>). Excel “Save as CSV” works. <a href="/static/sample_menu.csv" download>Sample file</a></p></div>
         <div class="act"><label class="drop" id="csvDrop"><input type="file" accept=".csv,text/csv" id="csvInput" hidden><span id="csvTxt">Choose a .csv file</span></label></div>
       </article>
       <form class="glass method reveal" style="--d:.12s" id="addForm" novalidate>
@@ -93,6 +93,16 @@
     <label class="field"><span>Local name</span><input class="input" name="name_local"></label>
     <div class="row" style="gap:12px"><label class="field grow"><span>Category</span><input class="input" name="category" list="cats"></label><label class="field" style="width:130px"><span>Price (₹)</span><input class="input" name="price" inputmode="decimal"></label></div>
     <label class="field"><span>Photo URL (optional)</span><input class="input" name="photo_url" placeholder="https://…"></label>
+    <div class="stack hidden" id="edDetails" style="gap:10px">
+      <label class="field"><span>Short description (optional)</span><textarea class="input" name="description" rows="2" maxlength="300" placeholder="Crisp dosa with potato masala, chutney and sambar"></textarea></label>
+      <div class="row" style="gap:10px">
+        <label class="field grow"><span>Veg / non-veg</span><select class="input" name="is_veg"><option value="">Not set</option><option value="1">Veg</option><option value="0">Non-veg</option></select></label>
+        <label class="field grow"><span>Spice</span><select class="input" name="spice"><option value="">Not set</option><option value="0">Not spicy</option><option value="1">Mild</option><option value="2">Medium</option><option value="3">Hot</option></select></label>
+      </div>
+      <label class="field"><span>Allergens (optional)</span><input class="input" name="allergens" maxlength="120" placeholder="nuts, dairy, gluten"></label>
+      <div class="field"><span>Nutrition per serving (optional, only if you know it; leave empty otherwise)</span>
+        <div class="row wrap" style="gap:8px"><input class="input input-sm" name="kcal" inputmode="numeric" placeholder="kcal" style="width:80px"><input class="input input-sm" name="protein_g" inputmode="decimal" placeholder="protein g" style="width:92px"><input class="input input-sm" name="carbs_g" inputmode="decimal" placeholder="carbs g" style="width:86px"><input class="input input-sm" name="fat_g" inputmode="decimal" placeholder="fat g" style="width:76px"><input class="input input-sm" name="fibre_g" inputmode="decimal" placeholder="fibre g" style="width:80px"></div></div>
+    </div>
     <div class="err" id="edErr"></div>
     <div class="row"><button class="btn grow" id="edSave">Save</button><button type="button" class="btn-ghost" data-close>Cancel</button></div>
   </form>
@@ -102,6 +112,7 @@
 BD.ownerNav("/owner/menu");
 const $ = id => document.getElementById(id);
 let items = [], features = {}, editing = null, reviewItems = [];
+const DETAILS = ["description", "is_veg", "spice", "allergens", "kcal", "protein_g", "carbs_g", "fat_g", "fibre_g"];
 if (BD.qs("onboarding")) $("stepLbl").textContent = "Step 3 of 3";
 
 const toPaise = v => { const n = parseFloat(String(v || "").replace(/[^\d.]/g, "")); return isFinite(n) ? Math.round(n * 100) : 0; };
@@ -151,6 +162,8 @@ $("list").addEventListener("click", async e => {
     const f = $("editForm");
     f.name.value = editing.name; f.name_local.value = editing.name_local; f.category.value = editing.category;
     f.price.value = editing.price_paise / 100; f.photo_url.value = editing.photo_url || ""; $("edErr").textContent = "";
+    $("edDetails").classList.toggle("hidden", !features.dish_details);
+    if (features.dish_details) DETAILS.forEach(k => { f[k].value = editing[k] == null ? "" : editing[k]; });
     openM("edit"); setTimeout(() => f.name.focus(), 50);
   }
   if (del) {
@@ -169,6 +182,7 @@ $("list").addEventListener("change", async e => {
 $("editForm").addEventListener("submit", async e => {
   e.preventDefault(); const f = e.target;
   const body = { name: f.name.value, name_local: f.name_local.value, category: f.category.value, price_paise: toPaise(f.price.value), photo_url: f.photo_url.value, available: !!editing.available };
+  if (features.dish_details) DETAILS.forEach(k => { body[k] = f[k].value.trim(); });
   BD.busy($("edSave"), true);
   try { await BD.api("/api/owner/menu/" + editing.id, { method: "PUT", body }); closeM(); await load(); BD.toast("Saved", "ok"); }
   catch (x) { $("edErr").textContent = x.message; }

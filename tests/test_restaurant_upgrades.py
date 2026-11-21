@@ -142,5 +142,46 @@ class SeatsTests(Base):
         self.assertEqual(call("GET", "/api/owner/me", cookie=self.owner)[1]["seats"], [2, 6, 8, 4])
 
 
+class DishDetailsTests(Base):
+    def test_owner_values_shown_and_partial_update_keeps_them(self):
+        dosa = self.menu[0]
+        body = dict(dosa, description="Crisp dosa", is_veg="1", spice="2", allergens="dairy", kcal="350", protein_g="8.5",
+                    carbs_g="", fat_g="12", fibre_g="")
+        s, r, _ = call("PUT", f"/api/owner/menu/{dosa['id']}", body, self.owner)
+        self.assertEqual(s, 200, r)
+        # the old edit form (no detail keys) must not wipe them
+        s, r, _ = call("PUT", f"/api/owner/menu/{dosa['id']}", {"name": "Masala Dosa", "price_paise": 8000, "category": "Tiffin"}, self.owner)
+        self.assertEqual(s, 200, r)
+        m = next(i for i in call("GET", f"/api/t/{self.tables[0]['token']}")[1]["menu"] if i["id"] == dosa["id"])
+        self.assertEqual((m["description"], m["is_veg"], m["spice"], m["allergens"]), ("Crisp dosa", 1, 2, "dairy"))
+        self.assertEqual(m["nutrition"], {"kcal": 350, "protein_g": 8.5, "carbs_g": None, "fat_g": 12.0, "fibre_g": None})
+        self.assertEqual(m["nutrition_source"], "owner")
+
+    def test_no_guessing(self):
+        coffee = next(i for i in call("GET", f"/api/t/{self.tables[0]['token']}")[1]["menu"] if i["name"] == "Idli Vada")
+        if not config.FEATURE_NUTRITION:
+            self.assertNotIn("nutrition", coffee)
+
+    def test_validation(self):
+        dosa = self.menu[0]
+        for bad in ({"spice": 5}, {"kcal": -3}, {"is_veg": "maybe"}, {"protein_g": "lots"}):
+            s, r, _ = call("PUT", f"/api/owner/menu/{dosa['id']}", dict(dosa, **bad), self.owner)
+            self.assertEqual(s, 400, (bad, r))
+
+    def test_csv_optional_columns(self):
+        data = b"name,price,category,is_veg,spice,kcal,protein_g,allergens\nPaneer Tikka,180,Starters,veg,2,320,18,dairy\nOdd,90,X,maybe,9,,,\n"
+        raw, ct = multipart(files={"file": ("m.csv", "text/csv", data)})
+        s, r, _ = call("POST", "/api/owner/menu/csv", cookie=self.owner, raw=raw, ctype=ct)
+        self.assertEqual((s, r.get("added")), (200, 2), r)
+        items = {i["name"]: i for i in call("GET", "/api/owner/menu", cookie=self.owner)[1]["items"]}
+        self.assertEqual((items["Paneer Tikka"]["kcal"], items["Paneer Tikka"]["is_veg"], items["Paneer Tikka"]["allergens"]), (320, 1, "dairy"))
+        self.assertIsNone(items["Odd"]["is_veg"])  # bad optional values are dropped, the dish is kept
+
+    def test_flag_off_hides_details(self):
+        config.FEATURE_DISH_DETAILS = False
+        m = call("GET", f"/api/t/{self.tables[0]['token']}")[1]["menu"][0]
+        self.assertNotIn("description", m)
+
+
 if __name__ == "__main__":
     unittest.main()

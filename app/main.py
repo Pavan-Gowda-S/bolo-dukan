@@ -73,6 +73,75 @@ def _menu_item_in(d: dict) -> dict:
     }
 
 
+DETAIL_COLS = ("description", "is_veg", "spice", "allergens", "kcal", "protein_g", "carbs_g", "fat_g", "fibre_g")
+
+
+def _blank(v) -> bool:
+    return v is None or (isinstance(v, str) and not v.strip())
+
+
+def _menu_details_in(d: dict) -> dict:
+    """4: optional dish details. Only the keys present in `d` are returned (so a partial update keeps the rest).
+    Nutrition is what the owner typed; empty means unknown (NULL). Nothing is guessed."""
+    out = {}
+    if "description" in d:
+        out["description"] = str(d.get("description") or "").strip()[:300]
+    if "allergens" in d:
+        out["allergens"] = str(d.get("allergens") or "").strip()[:120]
+    if "is_veg" in d:
+        v = d.get("is_veg")
+        if _blank(v):
+            out["is_veg"] = None
+        elif str(v).strip().lower() in ("1", "true", "veg", "yes", "y", "v"):
+            out["is_veg"] = 1
+        elif str(v).strip().lower() in ("0", "false", "nonveg", "non-veg", "non veg", "no", "n", "nv"):
+            out["is_veg"] = 0
+        else:
+            raise HTTPError(400, "Veg must be veg, non-veg or empty")
+    if "spice" in d:
+        v = d.get("spice")
+        try:
+            out["spice"] = None if _blank(v) else int(v)
+        except (TypeError, ValueError):
+            raise HTTPError(400, "Spice level must be 0 to 3")
+        if out["spice"] is not None and not 0 <= out["spice"] <= 3:
+            raise HTTPError(400, "Spice level must be 0 to 3")
+    for k, hi in (("kcal", 5000), ("protein_g", 500), ("carbs_g", 500), ("fat_g", 500), ("fibre_g", 200)):
+        if k in d:
+            v = d.get(k)
+            try:
+                x = None if _blank(v) else float(v)
+            except (TypeError, ValueError):
+                raise HTTPError(400, f"{k.replace('_g', '')} must be a number")
+            if x is not None and not 0 <= x <= hi:
+                raise HTTPError(400, f"{k.replace('_g', '')} looks wrong (0 to {hi})")
+            out[k] = (int(round(x)) if k == "kcal" else round(x, 1)) if x is not None else None
+    return out
+
+
+def _save_details(conn, item_id: int, details: dict) -> None:
+    if details and config.FEATURE_DISH_DETAILS:
+        cols = [c for c in DETAIL_COLS if c in details]
+        conn.execute(f"UPDATE menu_items SET {', '.join(c + ' = ?' for c in cols)} WHERE id = ?",
+                     (*[details[c] for c in cols], item_id))
+
+
+def dish_nutrition(menu: list[dict]) -> None:
+    """4: owner-entered nutrition wins over computed values; otherwise keep the computed one; never invent."""
+    if not config.FEATURE_DISH_DETAILS:
+        for m in menu:
+            for c in DETAIL_COLS:
+                m.pop(c, None)
+        return
+    for m in menu:
+        if m.get("kcal") is not None:
+            m["nutrition"] = {"kcal": m["kcal"], "protein_g": m.get("protein_g"), "carbs_g": m.get("carbs_g"),
+                              "fat_g": m.get("fat_g"), "fibre_g": m.get("fibre_g")}
+            m["nutrition_source"] = "owner"
+        elif m.get("nutrition"):
+            m["nutrition_source"] = "computed"
+
+
 # ===================================================================== helpers
 
 def _slugify(name: str) -> str:
@@ -179,7 +248,7 @@ def _owner_session(conn, session_id: int, owner: dict) -> dict:
 
 
 def _menu(conn, restaurant_id: int, only_available: bool = False) -> list[dict]:
-    q = ("SELECT id, name, name_local, category, price_paise, available, photo_url FROM menu_items "
+    q = ("SELECT id, name, name_local, category, price_paise, available, photo_url, " + ", ".join(DETAIL_COLS) + " FROM menu_items "
          "WHERE restaurant_id = ? AND deleted = 0")
     if only_available:
         q += " AND available = 1"
@@ -459,7 +528,9 @@ def owner_menu(req: Request):
 @route("POST", "/api/owner/menu")
 def owner_menu_add(req: Request):
     owner = require_owner(req)
-    it = _menu_item_in(req.json())
+    d = req.json()
+    it = _menu_item_in(d)
+    details = _menu_details_in(d)
     with db() as conn:
         new_id = conn.execute(
             "INSERT INTO menu_items (restaurant_id, name, name_local, category, price_paise, available, photo_url) "
@@ -467,13 +538,16 @@ def owner_menu_add(req: Request):
             (owner["restaurant_id"], it["name"], it["name_local"], it["category"], it["price_paise"],
              it["available"], it["photo_url"]),
         ).lastrowid
+        _save_details(conn, new_id, details)
     return {"ok": True, "id": new_id}
 
 
 @route("PUT", "/api/owner/menu/{item_id:int}")
 def owner_menu_edit(req: Request, item_id: int):
     owner = require_owner(req)
-    it = _menu_item_in(req.json())
+    d = req.json()
+    it = _menu_item_in(d)
+    details = _menu_details_in(d)
     with db() as conn:
         cur = conn.execute(
             "UPDATE menu_items SET name = ?, name_local = ?, category = ?, price_paise = ?, available = ?, photo_url = ? "
@@ -483,6 +557,7 @@ def owner_menu_edit(req: Request, item_id: int):
         )
         if cur.rowcount == 0:
             raise HTTPError(404, "Menu item not found")
+        _save_details(conn, item_id, details)
     return {"ok": True}
 
 
@@ -503,14 +578,15 @@ def owner_menu_bulk(req: Request):
         raise HTTPError(400, "No dishes to save")
     if len(items) > 300:
         raise HTTPError(400, "Too many dishes at once (max 300)")
-    clean = [_menu_item_in(x if isinstance(x, dict) else {}) for x in items]
+    clean = [(_menu_item_in(x if isinstance(x, dict) else {}), _menu_details_in(x if isinstance(x, dict) else {})) for x in items]
     with db() as conn:
-        for it in clean:
-            conn.execute(
+        for it, details in clean:
+            new_id = conn.execute(
                 "INSERT INTO menu_items (restaurant_id, name, name_local, category, price_paise, available) "
                 "VALUES (?, ?, ?, ?, ?, 1)",
                 (owner["restaurant_id"], it["name"], it["name_local"], it["category"], it["price_paise"]),
-            )
+            ).lastrowid
+            _save_details(conn, new_id, details)
     return {"ok": True, "added": len(clean)}
 
 
@@ -548,10 +624,18 @@ def owner_menu_csv(req: Request):
                 continue
             category = ((rec.get(fields["category"]) if "category" in fields else "") or "Menu").strip() or "Menu"
             local = ((rec.get(local_key) if local_key else "") or "").strip()
-            conn.execute(
+            new_id = conn.execute(
                 "INSERT INTO menu_items (restaurant_id, name, name_local, category, price_paise) VALUES (?, ?, ?, ?, ?)",
                 (owner["restaurant_id"], name[:80], local[:80], category[:40], price),
-            )
+            ).lastrowid
+            extra = {c: rec.get(fields[c]) for c in DETAIL_COLS if c in fields}  # 4: optional columns
+            if "veg" in fields and "is_veg" not in extra:
+                extra["is_veg"] = rec.get(fields["veg"])
+            try:
+                details = _menu_details_in(extra)
+            except HTTPError:  # one bad optional value: keep the dish, skip its details
+                details = {}
+            _save_details(conn, new_id, details)
             added += 1
     return {"ok": True, "added": added, "skipped": skipped}
 
@@ -606,6 +690,7 @@ def guest_table(req: Request, token: str):
         active = _active_session(conn, t["id"])
         menu = _menu(conn, t["restaurant_id"], only_available=True)
     store.menu_extras(menu)  # approx. calories/protein and real photos, when switched on
+    dish_nutrition(menu)     # 4: owner-entered values first; never guessed
     return {
         "table": {"number": t["number"], "seats": t["seats"]},
         "restaurant": {"name": t["restaurant_name"], "language": t["language"],
