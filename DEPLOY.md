@@ -27,8 +27,7 @@
 |---|---|
 | Stop the live site | `go-live.bat -Stop` |
 | Stop the start-at-login | `go-live.bat -NoAutoStart` |
-| Logs | `data\live.log`, `data\live-errors.log`, `data
-grok.log` |
+| Logs | `data\live.log`, `data\live-errors.log`, `data\ngrok.log` |
 
 Keep the PC awake: **Settings → System → Power → Sleep → Never** (when plugged in). On this PC, use `http://localhost:8001` or the live link; logging in through the Wi-Fi IP over plain http won't work once the live address is set.
 
