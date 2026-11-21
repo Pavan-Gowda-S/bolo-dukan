@@ -26,6 +26,7 @@ from .web import App, HTTPError, Request, Response, file_response, json_response
 IST = timezone(timedelta(hours=5, minutes=30))
 LANGUAGES = {"kn-IN": "Kannada", "hi-IN": "Hindi", "en-IN": "English"}
 MAX_TABLES = 60
+WAIT_MSG = "Waiting for the waiter to confirm your table"
 
 app = App(config.STATIC_DIR)
 route = app.route
@@ -675,7 +676,7 @@ def guest_order(req: Request, session_id: int):
         conn.execute("BEGIN IMMEDIATE")
         s = _guest_session(conn, session_id, req)
         if s["status"] != OPEN:
-            raise HTTPError(409, "Please wait for the cashier to approve your table." if s["status"] == WAITING_APPROVAL
+            raise HTTPError(409, WAIT_MSG if s["status"] == WAITING_APPROVAL
                             else "Ordering is closed for this table.")
         menu = {m["id"]: m for m in _menu(conn, s["restaurant_id"], only_available=True)}
         merged: dict[int, int] = {}
@@ -924,6 +925,8 @@ def guest_assistant(req: Request, session_id: int):
     with db() as conn:
         s = _guest_session(conn, session_id, req)
         menu = _menu(conn, s["restaurant_id"], only_available=True)
+    if s["status"] == WAITING_APPROVAL:
+        raise HTTPError(409, WAIT_MSG)
     if s["status"] not in (OPEN, BILL_REQUESTED):
         raise HTTPError(409, "The table is not open for ordering.")
     audio = files.get("audio")

@@ -38,6 +38,7 @@
         <button class="btn lg block" id="startBtn">Start ordering →</button>
         <button class="btn-ghost block" id="haveCode" style="margin-top:10px">My friends already started · enter code</button>
       </div>
+      <button class="btn-ghost block preview-btn hidden reveal" style="--d:.4s;margin-top:4px">👀 Preview the menu</button>
       <button class="btn-ghost open-games reveal" style="--d:.42s;justify-self:center;margin-top:14px">🎮 Dosa Flip · Chai Catch · Spice Match</button>
       <div class="glass card reveal hidden" id="joinBox" style="--d:.36s">
         <h3 style="margin-bottom:4px">Enter your table's code</h3>
@@ -60,6 +61,7 @@
       <p class="muted">Table <b id="waitTable"></b> will open in a moment, as soon as the cashier taps approve.</p>
       <p class="faint small" style="margin-top:22px">This stops prank orders from outside the restaurant.</p>
       <button class="btn cool open-games play-link">🎮 Play a game while you wait</button>
+      <button class="btn-ghost preview-btn hidden" style="margin-top:10px">👀 Browse the menu while you wait</button>
     </div>
   </section>
 
@@ -90,6 +92,7 @@
     </header>
 
     <div class="container g-body">
+      <div class="preview-banner hidden" id="previewBanner" role="status"><span class="grow">👀 Ordering opens once the waiter confirms you're at the table.</span><button class="btn-ghost sm" id="previewBack">← Back</button></div>
       <div id="tabMenu">
         <button class="glass budget-btn hidden" id="budgetBtn"><span class="b-ic">₹</span><span class="grow"><b>Order by budget</b><br><span class="muted small">“₹800, dinner for 4”: we'll build the cart</span></span><span>→</span></button>
         <div class="search-row"><input class="input" id="search" type="search" placeholder="Search dosa, coffee, ಕಾಫಿ…" autocomplete="off"></div>

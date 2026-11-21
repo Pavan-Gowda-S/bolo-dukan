@@ -279,6 +279,8 @@ def voice(req: Request, session_id: int):
     language = (fields.get("language") or "").strip() or None
     with db() as conn:
         s = m._guest_session(conn, session_id, req)
+        if s["status"] == m.WAITING_APPROVAL:
+            raise HTTPError(409, m.WAIT_MSG)
         if s["status"] not in (OPEN, BILL_REQUESTED):
             raise HTTPError(409, "Your table isn't open for ordering right now.")
         menu = _menu_for(conn, s["restaurant_id"])
@@ -410,7 +412,7 @@ def budget(req: Request, session_id: int):
     with db() as conn:
         s = m._guest_session(conn, session_id, req)
         if s["status"] != OPEN:
-            raise HTTPError(409, "Ordering is closed for this table.")
+            raise HTTPError(409, m.WAIT_MSG if s["status"] == m.WAITING_APPROVAL else "Ordering is closed for this table.")
         menu = _menu_for(conn, s["restaurant_id"])
     res = build_budget_basket(menu, int(round(rupees * 100)), people, meal)
     out = _proposal("budget_order", res["proposed_items"], ok=res["ok"], budget_paise=res["budget_paise"],

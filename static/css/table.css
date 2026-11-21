@@ -211,3 +211,10 @@ html.gx-open, html.gx-open body { overflow: hidden; }
 .nut-mini .p b { color: var(--mint); }
 .item .pic img { transition: transform .6s var(--ease); }
 .item:hover .pic img { transform: scale(1.1); }
+
+/* 1: menu preview before approval (read-only) */
+.preview-banner { position: sticky; top: 8px; z-index: 25; display: flex; align-items: center; gap: 10px; padding: 12px 14px; margin-bottom: 12px; border-radius: 16px;
+  background: linear-gradient(120deg, rgba(255,193,69,.18), rgba(255,120,60,.1)); border: 1px solid rgba(255,193,69,.5); color: #ffe2a3; font-weight: 600; font-size: .92rem;
+  backdrop-filter: blur(12px); animation: itemIn .5s var(--ease) both; }
+body.preview .g-tabs, body.preview #codeChip, body.preview #waiterBtn, body.preview #micFab, body.preview #budgetBtn, body.preview #cartBar { display: none !important; }
+body.preview .item { grid-template-columns: 76px 1fr; }

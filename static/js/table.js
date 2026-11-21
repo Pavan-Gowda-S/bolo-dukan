@@ -6,6 +6,7 @@
   const KEY = "bd_t_" + TOKEN;
   let info = null, me = null, sess = null, cart = new Map(), tab = "menu", cat = "", query = "";
   let prevOrders = new Map(), prevStatus = null, busyPoll = false, menuById = new Map();
+  let preview = false;  // item 1: read-only menu before the table is approved (the server also refuses orders: 409)
 
   // ---------------------------------------------------------------- utils
   const screens = ["sLoading", "sError", "sWelcome", "sWaiting", "sRejected", "sClosed", "sMain"];
@@ -33,6 +34,7 @@
     document.title = `${info.restaurant.name} · Table ${info.table.number}`;
     me = loadMe();
     if (me) { await fetchSession(); loadCart(); }
+    document.querySelectorAll(".preview-btn").forEach(b => b.classList.toggle("hidden", !info_feature("menu_preview")));
     route();
     setInterval(tick, 2500);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
@@ -61,11 +63,12 @@
   }
 
   function route() {
-    if (!sess) { if ($("sWelcome").classList.contains("hidden")) renderWelcome(true); prevStatus = null; return; }
+    if (!sess) { if (preview) return; if ($("sWelcome").classList.contains("hidden")) renderWelcome(true); prevStatus = null; return; }
     const st = sess.status;
     if (st !== prevStatus) onStatusChange(prevStatus, st);
     prevStatus = st;
-    if (st === "WAITING_APPROVAL") { $("waitTable").textContent = info.table.number; return show("sWaiting"); }
+    if (st === "WAITING_APPROVAL") { $("waitTable").textContent = info.table.number; if (preview) return; return show("sWaiting"); }
+    if (preview) { setPreview(false); renderMenu(); }  // approved (or closed): same view, now in ordering mode
     if (st === "REJECTED") return show("sRejected");
     if (st === "CLOSED" || st === "PAID_CASH") {
       $("closedTitle").textContent = st === "PAID_CASH" ? "Paid. Thank you!" : "Thank you!";
@@ -83,6 +86,25 @@
     if (to === "PAID" && from && from !== "PAID") { BD.confetti(); BD.toast("Payment confirmed. Thank you!", "ok", 5000); setTab("bill"); }
     if (to === "BILL_REQUESTED" && from === "OPEN") setTab("bill");
   }
+
+  // ---------------------------------------------------------------- menu preview (before approval)
+  function setPreview(on) {
+    preview = on;
+    document.body.classList.toggle("preview", on);
+    $("previewBanner").classList.toggle("hidden", !on);
+  }
+  function openPreview() {
+    setPreview(true);
+    $("mRest").textContent = info.restaurant.name; $("mTable").textContent = info.table.number;
+    $("mGuests").textContent = info.features.seats && info.table.seats ? `· ${info.table.seats} seats` : "";
+    show("sMain"); setTab("menu"); renderMenu();
+  }
+  document.querySelectorAll(".preview-btn").forEach(b => {
+    b.classList.toggle("hidden", !info_feature("menu_preview"));
+    b.onclick = openPreview;
+  });
+  function info_feature(k) { return !!(info && info.features && info.features[k]); }
+  $("previewBack").onclick = () => { setPreview(false); renderMenu(); if (sess) { prevStatus = null; route(); } else renderWelcome(true); };
 
   // ---------------------------------------------------------------- welcome / start / join
   function renderWelcome(animate) {
@@ -220,7 +242,7 @@
   function itemHtml(m, i) {
     const qty = cart.get(m.id) || 0;
     const pic = m.photo_url ? `<img src="${BD.esc(m.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'e',textContent:'${BD.foodEmoji(m.name, m.category)}'}))">` : `<span class="e">${BD.foodEmoji(m.name, m.category)}</span>`;
-    const ctl = qty
+    const ctl = preview ? "" : qty
       ? `<div class="stepper"><button data-dec="${m.id}" aria-label="One less">−</button><span class="val">${qty}</span><button data-inc="${m.id}" aria-label="One more">+</button></div>`
       : `<button class="add-btn" data-inc="${m.id}" aria-label="Add ${BD.esc(m.name)}">+</button>`;
     return `<div class="glass item ${qty ? "in-cart" : ""}" data-tilt="5" data-item="${m.id}" style="--h:${BD.hueFor(m.category + m.name)};animation-delay:${Math.min(i, 14) * 0.03}s">
@@ -240,6 +262,7 @@
   let searchT; $("search").addEventListener("input", e => { clearTimeout(searchT); searchT = setTimeout(() => { query = e.target.value; renderMenu(); }, 120); });
 
   function changeQty(id, delta) {
+    if (preview) { BD.toast("Ordering opens once the waiter confirms you're at the table.", "info"); return; }
     if (!sess || sess.status !== "OPEN") { BD.toast(sess && sess.status === "BILL_REQUESTED" ? "The bill is requested, so ordering is closed." : "Ordering is closed.", "bad"); return; }
     const q = Math.max(0, Math.min(20, (cart.get(id) || 0) + delta));
     q ? cart.set(id, q) : cart.delete(id);
@@ -257,7 +280,7 @@
   function updateCartBar() {
     const { n, sum } = cartTotals();
     $("cartCount").textContent = n; $("cartTotal").textContent = BD.rupees(sum);
-    const showBar = n > 0 && sess && sess.status === "OPEN";
+    const showBar = n > 0 && sess && sess.status === "OPEN" && !preview;
     $("cartBar").classList.toggle("show", showBar);
     $("micFab").classList.toggle("low", !showBar);
   }

@@ -101,6 +101,13 @@ FEATURE_SUPERMARKET = _flag("FEATURE_SUPERMARKET", False)        # B0/B1: superm
 FEATURE_MEAL_PLANNER = _flag("FEATURE_MEAL_PLANNER", False)      # B2: AI meal planner for supermarket customers
 FEATURE_NUTRITION = _flag("FEATURE_NUTRITION", False)            # calories/protein on menu dishes (computed)
 FEATURE_PHOTOS = _flag("FEATURE_PHOTOS", False)                  # real food/grocery photos (Wikimedia Commons)
+FEATURE_MENU_PREVIEW = _flag("FEATURE_MENU_PREVIEW", True)       # 1: browse the menu before the table is approved
+FEATURE_SEATS = _flag("FEATURE_SEATS", True)                     # 6: chairs per table
+FEATURE_DISH_DETAILS = _flag("FEATURE_DISH_DETAILS", False)      # 4: dish details sheet with nutrition
+FEATURE_KITCHEN_TV = _flag("FEATURE_KITCHEN_TV", False)          # 3: big-screen kitchen display
+FEATURE_STAFF = _flag("FEATURE_STAFF", False)                    # 2: waiter accounts + waiter portal
+FEATURE_GAME_ROOMS = _flag("FEATURE_GAME_ROOMS", False)          # 5: private trivia room for one table
+FEATURE_FLOOR_PLAN = _flag("FEATURE_FLOOR_PLAN", False)          # 7: floor plan from a blueprint
 
 
 def gemini_ready() -> bool:
@@ -141,6 +148,13 @@ def features() -> dict:
         "meal_planner": FEATURE_SUPERMARKET and FEATURE_MEAL_PLANNER,
         "nutrition": FEATURE_NUTRITION,
         "photos": FEATURE_PHOTOS,
+        "menu_preview": FEATURE_MENU_PREVIEW,
+        "seats": FEATURE_SEATS,
+        "dish_details": FEATURE_DISH_DETAILS,
+        "kitchen_tv": FEATURE_KITCHEN_TV,
+        "staff": FEATURE_STAFF,
+        "game_rooms": FEATURE_GAME_ROOMS,
+        "floor_plan": FEATURE_FLOOR_PLAN,
         "online_payment": cashfree_ready(),
         "ai_provider": ai_provider(),
     }
