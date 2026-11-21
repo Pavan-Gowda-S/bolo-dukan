@@ -4,13 +4,14 @@
 .shop-hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; align-items: center; padding: 34px 0 10px; }
 .shop-hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); }
 .shop-hero .lead { color: var(--muted); font-size: 1.05rem; margin: 12px 0 22px; max-width: 520px; }
-.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mode-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
 .mode-card { position: relative; padding: 22px; border-radius: 24px; cursor: pointer; text-align: left; border: 1px solid var(--line-2); color: var(--text);
   background: linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.02)); overflow: hidden; transition: border-color .3s, transform .5s var(--ease); }
 .mode-card::before { content: ""; position: absolute; inset: -40% -40% auto auto; width: 220px; height: 220px; border-radius: 50%; background: var(--g, var(--grad-hot)); filter: blur(50px); opacity: .35; transition: opacity .4s, transform .8s var(--ease); }
 .mode-card:hover::before { opacity: .6; transform: scale(1.2) translate(-10px, 10px); }
 .mode-card .ic { font-size: 2.6rem; display: inline-block; transform: translateZ(40px); filter: drop-shadow(0 12px 14px rgba(0,0,0,.5)); animation: bob 4s ease-in-out infinite; }
 .mode-card.cool { --g: var(--grad-cool); }
+.mode-card.find { --g: linear-gradient(135deg, #2ee6a6, #3b82f6); }
 .mode-card b { display: block; font-family: var(--font-display); font-size: 1.35rem; margin: 10px 0 4px; transform: translateZ(26px); }
 .mode-card span.s { color: var(--muted); font-size: .9rem; transform: translateZ(16px); display: block; }
 @keyframes bob { 0%, 100% { transform: translateZ(40px) translateY(0) rotate(-4deg); } 50% { transform: translateZ(40px) translateY(-8px) rotate(4deg); } }

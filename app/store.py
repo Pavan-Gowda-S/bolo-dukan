@@ -446,7 +446,7 @@ def shop_info(req: Request, slug: str):
                                                  "image_url", "image_credit", "diet", "stock")} for p in prods],
             "categories": sorted({p["category"] for p in prods}),
             "features": {"meal_planner": f["meal_planner"], "voice": f["voice_order"], "online_payment": f["online_payment"],
-                         "photos": f["photos"], "tts": f["server_tts"] or config.ai_ready()}}
+                         "photos": f["photos"], "aisle_finder": f["aisle_finder"], "tts": f["server_tts"] or config.ai_ready()}}
 
 
 def _create_order_link(req, conn_store: dict, order: dict) -> str:

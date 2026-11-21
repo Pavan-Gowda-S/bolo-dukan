@@ -69,7 +69,7 @@
     S.products = S.info.products; S.byId = new Map(S.products.map(p => [p.id, p]));
     if (S.info.features.meal_planner) { $("navPlan").classList.remove("hidden"); $("modePlan").classList.remove("hidden"); }
     if (S.info.features.voice) $("micFab").classList.remove("hidden");
-    if (S.info.features.aisle_finder) $("findBtn").classList.remove("hidden");
+    if (S.info.features.aisle_finder) { $("findBtn").classList.remove("hidden"); $("modeFind").classList.remove("hidden"); }
     loadCart();
     if (ORDER_ID) { S.show("order"); $("cartFab").style.display = "none"; $("micFab").style.display = "none"; return orderPage(); }
     renderCats(); route(); updateFab();
@@ -219,6 +219,7 @@
       : `<p class="muted small" style="margin-top:10px">This store doesn't stock “${BD.esc(q)}”. Ask at the billing counter.</p>`;
   }
   let fT; $("fQ").addEventListener("input", e => { clearTimeout(fT); fT = setTimeout(() => findList(e.target.value), 120); });
+  $("modeFind").onclick = () => { $("fQ").value = ""; findList(""); S.openSheet("findSheet"); setTimeout(() => $("fQ").focus(), 350); };
   $("findBtn").onclick = () => { $("fQ").value = $("q").value; findList($("fQ").value); S.openSheet("findSheet"); setTimeout(() => $("fQ").focus(), 350); };
   document.addEventListener("click", e => {
     const b = e.target.closest("[data-find],[data-pick]"); if (!b) return;
