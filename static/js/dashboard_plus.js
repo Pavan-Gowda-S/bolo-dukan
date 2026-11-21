@@ -19,6 +19,32 @@
       document.querySelector(".stats").before(box);
     }
     if (feats.owner_voice) buildOwnerMic();
+    if (feats.kitchen_tv) buildKitchenLink();
+  }
+
+  // ---------------------------------------------------------------- 3. kitchen TV link
+  function buildKitchenLink() {
+    const btn = document.createElement("button");
+    btn.className = "btn-ghost"; btn.textContent = "📺 Kitchen display";
+    const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(btn);
+    const m = document.createElement("div");
+    m.className = "modal"; m.id = "kitchenModal"; m.setAttribute("role", "dialog"); m.style.width = "min(520px, calc(100% - 24px))";
+    m.innerHTML = `<h3>Kitchen display</h3><p class="muted small" style="margin:6px 0 14px">Open this link on the kitchen TV or tablet and tap ▶ Start once. It shows accepted orders only (no prices or phone numbers) and reads new ones aloud.</p>
+      <div class="row"><input class="input grow mono" id="kUrl" readonly><button class="btn-ghost sm" id="kCopy">Copy</button></div>
+      <div class="row" style="margin-top:14px"><a class="btn grow" id="kOpen" target="_blank" rel="noopener">Open display ↗</a><button class="btn-ghost" id="kRegen" title="The old link stops working">Regenerate link</button><button class="btn-ghost" id="kClose">Close</button></div>`;
+    document.body.appendChild(m);
+    const ov = document.getElementById("ov");
+    const close = () => { m.classList.remove("show"); ov.classList.remove("show"); };
+    const set = url => { $("kUrl").value = url; $("kOpen").href = url; };
+    btn.onclick = async () => {
+      try { set((await BD.api("/api/owner/kitchen-link")).url); m.classList.add("show"); ov.classList.add("show"); } catch (x) { BD.toast(x.message, "bad"); }
+    };
+    $("kClose").onclick = close; ov.addEventListener("click", close);
+    $("kCopy").onclick = async () => { try { await navigator.clipboard.writeText($("kUrl").value); BD.toast("Link copied", "ok"); } catch (e) { $("kUrl").select(); } };
+    $("kRegen").onclick = async () => {
+      if (!confirm("Make a new kitchen link? The old link stops working on any screen that has it open.")) return;
+      try { set((await BD.api("/api/owner/kitchen-link/regenerate", { body: {} })).url); BD.toast("New link made. Open it on the kitchen screen.", "ok"); } catch (x) { BD.toast(x.message, "bad"); }
+    };
   }
 
   // ---------------------------------------------------------------- A1 sales summary

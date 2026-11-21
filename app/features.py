@@ -65,6 +65,10 @@ def announce(conn, restaurant_id: int, table_number: int, event: str, items=None
     elif event == "share_paid":
         kn, en = (f"ಟೇಬಲ್ {n}, ಒಬ್ಬರ ಪಾಲು ಪಾವತಿಯಾಗಿದೆ. {_rs(amount_paise or 0)} ರೂಪಾಯಿ.",
                   f"Table {n}: one share paid, {_rs(amount_paise or 0)} rupees.")
+    elif event == "kitchen_order":  # 3: spoken on the kitchen TV only
+        lines = items or []
+        kn = f"ಟೇಬಲ್ {n}. " + ", ".join(f"{q} {it.get('name_local') or it['name']}" for q, it in lines[:8]) + "."
+        en = f"Table {n}. " + ", ".join(f"{q} {it['name']}" for q, it in lines[:8]) + "."
     elif event == "store_order":  # table_number carries the store order number here
         kn, en = (f"ಹೊಸ ಆನ್‌ಲೈನ್ ಆರ್ಡರ್ ಸಂಖ್ಯೆ {n}, ಪಾವತಿಯಾಗಿದೆ. {_rs(amount_paise or 0)} ರೂಪಾಯಿ.",
                   f"New paid order number {n}, {_rs(amount_paise or 0)} rupees.")
@@ -86,7 +90,7 @@ def dashboard_extras(conn, restaurant_id: int) -> dict:
     if config.FEATURE_KANNADA_ALERTS:
         out["announcements"] = rows(conn.execute(
             "SELECT id, table_number, event_type, text_kn, text_en, claimed, created_at FROM announcements "
-            "WHERE restaurant_id = ? AND created_at >= ? ORDER BY id", (restaurant_id, _ago_iso(120))))
+            "WHERE restaurant_id = ? AND created_at >= ? AND event_type != 'kitchen_order' ORDER BY id", (restaurant_id, _ago_iso(120))))
     if config.FEATURE_TABLE_QUIZ:
         out["quiz_prizes"] = rows(conn.execute(
             "SELECT q.id AS round_id, q.winner_table AS table_number, q.winner_session_id AS session_id, q.winner_score AS score "

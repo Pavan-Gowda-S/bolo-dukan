@@ -183,5 +183,66 @@ class DishDetailsTests(Base):
         self.assertNotIn("description", m)
 
 
+class KitchenTests(Base):
+    def setUp(self):
+        super().setUp()
+        from app import ai
+        self._tts = ai.tts
+        ai.tts = lambda text, lang: b"RIFF0000WAVE"
+
+    def tearDown(self):
+        from app import ai
+        ai.tts = self._tts
+        super().tearDown()
+
+    def kitchen(self):
+        url = call("GET", "/api/owner/kitchen-link", cookie=self.owner)[1]["url"]
+        return url.rsplit("/", 1)[1]
+
+    def test_board_flow(self):
+        tok = self.kitchen()
+        self.assertGreaterEqual(len(tok), 24)
+        sid, g = self.start(1)
+        oid = self.order(sid, g, ((0, 2), (1, 1)))[1]["order_id"]
+        self.assertEqual(call("GET", f"/api/kitchen/{tok}/board")[1]["tickets"], [])  # pending: not in the kitchen yet
+        self.assertEqual(call("POST", f"/api/orders/{oid}/status", {"status": "ACCEPTED"}, self.owner)[0], 200)
+        b = call("GET", f"/api/kitchen/{tok}/board")[1]
+        t = b["tickets"][0]
+        self.assertEqual((t["table_number"], t["seats"], t["order_no"], t["status"]), (2, 4, 1, "ACCEPTED"))
+        self.assertEqual([(i["qty"], i["name"], i["name_local"]) for i in t["items"]], [(2, "Masala Dosa", "ಮಸಾಲೆ ದೋಸೆ"), (1, "Filter Coffee", "ಫಿಲ್ಟರ್ ಕಾಫಿ")])
+        text = json.dumps(b, ensure_ascii=False)
+        for secret in ("price", "phone", "total", "8000"):
+            self.assertNotIn(secret, text)
+        # spoken once on the kitchen TV, never on the cashier dashboard
+        a = b["announcements"][0]
+        self.assertIn("ಟೇಬಲ್ 2", a["text_kn"])
+        dash = call("GET", "/api/dashboard", cookie=self.owner)[1]
+        self.assertFalse(any(x["event_type"] == "kitchen_order" for x in dash["announcements"]))
+        c1 = call("POST", f"/api/kitchen/{tok}/announcements/{a['id']}/claim", {})[1]
+        c2 = call("POST", f"/api/kitchen/{tok}/announcements/{a['id']}/claim", {})[1]
+        self.assertTrue(c1["spoken_here"] and c1["audio"])
+        self.assertFalse(c2["spoken_here"])
+        self.assertEqual(call("GET", f"/api/kitchen/{tok}/board")[1]["announcements"], [])
+        # preparing shows, served disappears
+        call("POST", f"/api/orders/{oid}/status", {"status": "PREPARING"}, self.owner)
+        self.assertEqual(call("GET", f"/api/kitchen/{tok}/board")[1]["tickets"][0]["status"], "PREPARING")
+        call("POST", f"/api/orders/{oid}/status", {"status": "SERVED"}, self.owner)
+        self.assertEqual(call("GET", f"/api/kitchen/{tok}/board")[1]["tickets"], [])
+
+    def test_regenerate_invalidates(self):
+        old = self.kitchen()
+        new = call("POST", "/api/owner/kitchen-link/regenerate", {}, self.owner)[1]["url"].rsplit("/", 1)[1]
+        self.assertNotEqual(old, new)
+        self.assertEqual(call("GET", f"/api/kitchen/{old}/board")[0], 404)
+        self.assertEqual(call("GET", f"/api/kitchen/{new}/board")[0], 200)
+        self.assertEqual(call("GET", "/api/kitchen/short/board")[0], 404)
+
+    def test_flag_off(self):
+        tok = self.kitchen()
+        config.FEATURE_KITCHEN_TV = False
+        self.assertEqual(call("GET", f"/api/kitchen/{tok}/board")[0], 404)
+        self.assertEqual(call("GET", f"/kitchen/{tok}")[0], 404)
+
+
 if __name__ == "__main__":
     unittest.main()

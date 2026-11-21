@@ -293,6 +293,13 @@ def init_db() -> None:
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")
         rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}
+        if "kitchen_token" not in rest_cols:  # 3: secret link for the kitchen TV
+            conn.execute("ALTER TABLE restaurants ADD COLUMN kitchen_token TEXT NOT NULL DEFAULT ''")
+        ann_cols = {r[1] for r in conn.execute("PRAGMA table_info(announcements)")}
+        if "kitchen_claimed" not in ann_cols:  # 3: the kitchen TV claims its own copy
+            conn.execute("ALTER TABLE announcements ADD COLUMN kitchen_claimed INTEGER NOT NULL DEFAULT 0")
+        if "accepted_at" not in order_cols:
+            conn.execute("ALTER TABLE orders ADD COLUMN accepted_at TEXT")
         if "business_type" not in rest_cols:
             conn.execute("ALTER TABLE restaurants ADD COLUMN business_type TEXT NOT NULL DEFAULT 'restaurant'")
         conn.commit()

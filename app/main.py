@@ -1193,6 +1193,7 @@ def cashier_order_status(req: Request, order_id: int):
             raise HTTPError(409, f"Can't change an order from {o['status'].lower()} to {new.lower()}.")
         conn.execute("UPDATE orders SET status = ?, reject_reason = ?, updated_at = ? WHERE id = ?",
                      (new, reason if new == ORDER_REJECTED else o["reject_reason"], now_iso(), order_id))
+        restaurant.on_order_status(conn, o, new, s["restaurant_id"], s["table_number"])  # 3: kitchen TV
     return {"ok": True}
 
 
@@ -1281,3 +1282,4 @@ def health(req: Request):
 from . import features  # noqa: E402
 from . import upgrades  # noqa: E402  (sales summary, split bill, owner voice)
 from . import store  # noqa: E402  (supermarket mode and meal planner)
+from . import restaurant  # noqa: E402  (kitchen TV, staff + waiter portal, game rooms, daily report)
