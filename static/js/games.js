@@ -500,7 +500,10 @@
     el.querySelector(".gx-title b").textContent = "Play while you wait";
     el.querySelector(".gx-sub").textContent = "Your food is on its way 🍳";
     const list = (opts.quizEnabled ? [tableQuiz] : []).concat(GAMES);
-    el.querySelector(".gx-body").innerHTML = `<div class="gx-pick">${list.map((g, i) => `
+    const room = opts.roomsEnabled ? `<div class="gx-modes">
+        <button class="glass gx-mode" data-mode="all"><span class="gx-ico">🏆</span><b>Play with all tables</b><span class="muted small">${opts.quizEnabled ? "Live restaurant quiz + leaderboard" : "Games + today's leaderboard"}</span></button>
+        <button class="glass gx-mode" data-mode="room"><span class="gx-ico">👨‍👩‍👧</span><b>Play with my table</b><span class="muted small">A private trivia room just for your group</span></button></div>` : "";
+    el.querySelector(".gx-body").innerHTML = room + `<div class="gx-pick">${list.map((g, i) => `
       <button class="glass gx-card ${g.live ? "live" : ""}" data-g="${g.id}" data-tilt="8" style="--h:${g.hue};animation-delay:${i * 0.08}s">
         <span class="gx-ico">${g.icon}</span>
         <span class="gx-name">${g.name}${g.live ? ` <span class="live-tag">LIVE</span>` : ""}</span>
@@ -508,6 +511,10 @@
         <span class="gx-best">${g.live ? "Play against other tables · win a free tea" : best(g.id) ? `Your best: <b>${best(g.id)}</b>` : "Not played yet"}</span>
       </button>`).join("")}</div>`;
     el.querySelectorAll(".gx-card").forEach(b => b.onclick = () => play(list.find(g => g.id === b.dataset.g)));
+    el.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => {
+      if (b.dataset.mode === "room") return roomPanel();
+      if (opts.quizEnabled) play(tableQuiz); else el.querySelector(".gx-pick").scrollIntoView({ behavior: "smooth" });
+    });
     BD.tilt(el);
   }
   function play(game) {
@@ -564,6 +571,26 @@
         form.innerHTML = `<p class="small" style="color:var(--mint);font-weight:700;margin:0">Posted ✓</p>`; board();
       } catch (x) { BD.toast(x.message, "bad"); BD.busy(btn, false); }
     };
+  }
+  // private game room for this table: its own QR + link; the link opens only the game
+  async function roomPanel() {
+    stopCurrent(); hud(null, null);
+    el.querySelector(".gx-title b").textContent = "Play with my table";
+    el.querySelector(".gx-sub").textContent = "";
+    const body = el.querySelector(".gx-body");
+    const sess = opts.session && opts.session();
+    if (!sess) { body.innerHTML = `<div class="gx-over"><div class="gx-big">👨‍👩‍👧</div><p class="muted">Start ordering at your table first, then make a private game room.</p><button class="btn-ghost gx-menu">Back</button></div>`; body.querySelector(".gx-menu").onclick = picker; return; }
+    body.innerHTML = `<div class="gx-over"><div class="loader-orb" style="width:60px;height:60px"><i></i><i></i><i></i><b></b></div></div>`;
+    let r;
+    try { r = await BD.api(`/api/session/${sess.sid}/game-room`, { body: {}, headers: { "X-Guest-Token": sess.token } }); }
+    catch (x) { body.innerHTML = `<div class="gx-over"><p class="muted">${esc(x.message)}</p><button class="btn-ghost gx-menu">Back</button></div>`; body.querySelector(".gx-menu").onclick = picker; return; }
+    body.innerHTML = `<div class="gx-over"><div class="eyebrow">Private trivia room</div><h3 style="margin:6px 0 4px">Scan to join</h3>
+      <p class="muted small">Everyone at your table scans this (or opens the link). It opens only the game.</p>
+      <div style="background:#fff;border-radius:16px;padding:10px;width:200px;margin:12px auto"><img src="${esc(r.qr)}" alt="Game room QR code" style="width:100%"></div>
+      <div class="row" style="gap:8px;justify-content:center;flex-wrap:wrap"><a class="btn" href="${esc(r.url)}" target="_blank" rel="noopener">Open the game ↗</a>
+        <a class="btn-ghost" href="https://wa.me/?text=${encodeURIComponent("Join our table trivia: " + r.url)}" target="_blank" rel="noopener">Share on WhatsApp</a></div>
+      <button class="btn-ghost gx-menu" style="margin-top:12px">Other games</button></div>`;
+    body.querySelector(".gx-menu").onclick = picker;
   }
   function close() { stopCurrent(); if (el) el.classList.remove("show"); document.documentElement.classList.remove("gx-open"); }
 

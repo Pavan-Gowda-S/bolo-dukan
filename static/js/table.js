@@ -370,7 +370,7 @@
   function setHtml(id, html) { const el = $(id); if (el._h !== html) { el._h = html; el.innerHTML = html; } }
   document.addEventListener("click", e => {
     const g = e.target.closest("[data-goto]"); if (g) setTab(g.dataset.goto);
-    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, quizEnabled: !!(info && info.features.table_quiz), session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
+    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, quizEnabled: !!(info && info.features.table_quiz), roomsEnabled: !!(info && info.features.game_rooms), session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
   });
 
   // ---------------------------------------------------------------- bill

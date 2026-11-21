@@ -312,6 +312,18 @@ def init_db() -> None:
                 name TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'waiter', username TEXT NOT NULL,
                 pin_hash TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL,
                 UNIQUE (restaurant_id, username));
+            CREATE TABLE IF NOT EXISTS game_rooms (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                restaurant_id INTEGER NOT NULL REFERENCES restaurants(id), session_id INTEGER NOT NULL REFERENCES table_sessions(id),
+                token TEXT NOT NULL UNIQUE, created_at TEXT NOT NULL, expires_at REAL NOT NULL, closed INTEGER NOT NULL DEFAULT 0,
+                questions TEXT NOT NULL, starts_at REAL, host_player_id INTEGER);
+            CREATE TABLE IF NOT EXISTS game_room_players (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, room_id INTEGER NOT NULL REFERENCES game_rooms(id),
+                nickname TEXT NOT NULL, device_id TEXT NOT NULL DEFAULT '', player_key TEXT NOT NULL UNIQUE,
+                score INTEGER NOT NULL DEFAULT 0, joined_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS game_room_answers (
+                room_id INTEGER NOT NULL, player_id INTEGER NOT NULL, q_index INTEGER NOT NULL, choice INTEGER NOT NULL,
+                correct INTEGER NOT NULL, points INTEGER NOT NULL, answered_at REAL NOT NULL, PRIMARY KEY (room_id, player_id, q_index));
             CREATE TABLE IF NOT EXISTS staff_tables (
                 staff_id INTEGER NOT NULL REFERENCES staff(id), table_id INTEGER NOT NULL REFERENCES tables(id),
                 PRIMARY KEY (staff_id, table_id));

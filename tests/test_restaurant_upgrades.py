@@ -393,5 +393,45 @@ class WaiterCallTests(Base):
         self.assertEqual(call("POST", f"/api/session/{sid}/call-waiter/cancel", {})[0], 401)  # needs the guest token
 
 
+class GameRoomTests(Base):
+    def test_room_flow(self):
+        from app import features
+        sid, g = self.start(0)
+        r = call("POST", f"/api/session/{sid}/game-room", {}, headers=g)[1]
+        tok = r["token"]
+        self.assertGreaterEqual(len(tok), 16)
+        self.assertEqual(call("POST", f"/api/session/{sid}/game-room", {}, headers=g)[1]["token"], tok)  # one room per table
+        self.assertEqual(call("GET", f"/api/g/{tok}/qr.svg")[0], 200)
+        a = call("POST", f"/api/g/{tok}/join", {"nickname": "Anu"})[1]
+        b = call("POST", f"/api/g/{tok}/join", {"nickname": "Bala"})[1]
+        self.assertEqual(call("POST", f"/api/g/{tok}/join", {"nickname": "anu"})[0], 409)
+        self.assertEqual(call("POST", f"/api/g/{tok}/start", {"player_key": b["player_key"]})[0], 403)  # only the host
+        st = call("GET", f"/api/g/{tok}/state?k={a['player_key']}")[1]
+        self.assertTrue(st["is_host"] and st["phase"] == "lobby")
+        self.assertEqual(call("POST", f"/api/g/{tok}/start", {"player_key": a["player_key"]})[0], 200)
+        # jump to question 0
+        with dbm.db() as conn:
+            conn.execute("UPDATE game_rooms SET starts_at = ? WHERE token = ?", (__import__("time").time() - 1, tok))
+            ans = json.loads(conn.execute("SELECT questions FROM game_rooms WHERE token = ?", (tok,)).fetchone()[0])[0]["answer"]
+        st = call("GET", f"/api/g/{tok}/state?k={a['player_key']}")[1]
+        self.assertEqual(st["phase"], "question")
+        self.assertNotIn("answer", st)  # the right answer is never sent during the question
+        r1 = call("POST", f"/api/g/{tok}/answer", {"player_key": a["player_key"], "q_index": 0, "choice": ans})[1]
+        self.assertTrue(r1["correct"] and r1["points"] > 100)
+        r2 = call("POST", f"/api/g/{tok}/answer", {"player_key": a["player_key"], "q_index": 0, "choice": ans})[1]
+        st = call("GET", f"/api/g/{tok}/state?k={a['player_key']}")[1]
+        self.assertEqual(st["players"][0]["score"], r1["points"])  # answering twice doesn't double count
+        # the room token gives no access to the table session
+        self.assertEqual(call("GET", f"/api/session/{sid}", headers={"X-Guest-Token": tok})[0], 401)
+        # freeing the table closes the room
+        call("POST", f"/api/session/{sid}/free?force=1", {}, self.owner)
+        self.assertEqual(call("GET", f"/api/g/{tok}/state")[0], 410)
+
+    def test_flag_off(self):
+        sid, g = self.start(0)
+        config.FEATURE_GAME_ROOMS = False
+        self.assertEqual(call("POST", f"/api/session/{sid}/game-room", {}, headers=g)[0], 404)
+
+
 if __name__ == "__main__":
     unittest.main()

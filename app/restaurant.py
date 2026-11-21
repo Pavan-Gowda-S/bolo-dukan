@@ -508,3 +508,196 @@ def report_page(req: Request):
     if not config.FEATURE_DAILY_REPORT:
         _off()
     return file_response(config.STATIC_DIR / "pages" / "report.html")
+
+
+# ===================================================================== 5. trivia: private game room for one table
+
+import json  # noqa: E402
+import random  # noqa: E402
+
+import qrcode  # noqa: E402
+import qrcode.image.svg  # noqa: E402
+
+from .quiz_questions import QUESTIONS  # noqa: E402
+
+ROOM_HOURS = 3
+
+
+def _rooms_on():
+    if not config.FEATURE_GAME_ROOMS:
+        _off()
+
+
+def _room(conn, token: str) -> dict:
+    """The room by its secret token. Closed when the table is freed or after 3 hours. Gives access to nothing else."""
+    _rooms_on()
+    r = row(conn.execute("SELECT * FROM game_rooms WHERE token = ?", (token or "",)).fetchone())
+    if r is None:
+        raise HTTPError(404, "Game not found")
+    s = conn.execute("SELECT status FROM table_sessions WHERE id = ?", (r["session_id"],)).fetchone()
+    if r["closed"] or time.time() > r["expires_at"] or not s or s["status"] not in ACTIVE_SESSION_STATUSES:
+        if not r["closed"]:
+            conn.execute("UPDATE game_rooms SET closed = 1 WHERE id = ?", (r["id"],))
+        raise HTTPError(410, "This game room has closed. Thanks for playing!")
+    return r
+
+
+def _player(conn, room: dict, key: str) -> dict:
+    p = row(conn.execute("SELECT * FROM game_room_players WHERE room_id = ? AND player_key = ?", (room["id"], key or "")).fetchone())
+    if p is None:
+        raise HTTPError(403, "Join the game first.")
+    return p
+
+
+@route("POST", "/api/session/{session_id:int}/game-room")
+def create_room(req: Request, session_id: int):
+    _rooms_on()
+    with db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        s = m._guest_session(conn, session_id, req)
+        if s["status"] not in ACTIVE_SESSION_STATUSES:
+            raise HTTPError(409, "This table is closed.")
+        r = row(conn.execute("SELECT * FROM game_rooms WHERE session_id = ? AND closed = 0 AND expires_at > ? ORDER BY id DESC LIMIT 1",
+                             (session_id, time.time())).fetchone())
+        if r is None:
+            picks = random.sample(QUESTIONS, min(features.QUESTIONS_PER_ROUND, len(QUESTIONS)))
+            qs = []
+            for text, opts in picks:
+                order = list(range(len(opts)))
+                random.shuffle(order)
+                qs.append({"q": text, "options": [opts[i] for i in order], "answer": order.index(0)})
+            tok = secrets.token_urlsafe(16)
+            conn.execute("INSERT INTO game_rooms (restaurant_id, session_id, token, created_at, expires_at, questions) VALUES (?, ?, ?, ?, ?, ?)",
+                         (s["restaurant_id"], session_id, tok, now_iso(), time.time() + ROOM_HOURS * 3600, json.dumps(qs, ensure_ascii=False)))
+        else:
+            tok = r["token"]
+    url = f"{m.public_base(req)}/g/{tok}"
+    return {"token": tok, "url": url, "qr": f"/api/g/{tok}/qr.svg"}
+
+
+@route("GET", "/g/{token}")
+def room_page(req: Request, token: str):
+    _rooms_on()
+    return file_response(config.STATIC_DIR / "pages" / "game.html")
+
+
+@route("GET", "/api/g/{token}/qr.svg")
+def room_qr(req: Request, token: str):
+    with db() as conn:
+        _room(conn, token)
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=1, image_factory=qrcode.image.svg.SvgPathImage)
+    qr.add_data(f"{m.public_base(req)}/g/{token}")
+    qr.make(fit=True)
+    buf = io.BytesIO()
+    qr.make_image().save(buf)
+    return Response(buf.getvalue(), 200, "image/svg+xml; charset=utf-8", {"Cache-Control": "no-store"})
+
+
+@route("POST", "/api/g/{token}/join")
+def room_join(req: Request, token: str):
+    d = req.json()
+    nick = re.sub(r"\s+", " ", str(d.get("nickname") or "")).strip()[:16]
+    if not nick:
+        raise HTTPError(400, "Enter a nickname")
+    device = str(d.get("device_id") or "")[:64]
+    with db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        room = _room(conn, token)
+        if conn.execute("SELECT COUNT(*) FROM game_room_players WHERE room_id = ?", (room["id"],)).fetchone()[0] >= 30:
+            raise HTTPError(409, "This room is full")
+        if conn.execute("SELECT 1 FROM game_room_players WHERE room_id = ? AND lower(nickname) = lower(?)", (room["id"], nick)).fetchone():
+            raise HTTPError(409, "That nickname is taken in this room")
+        key = secrets.token_urlsafe(18)
+        pid = conn.execute("INSERT INTO game_room_players (room_id, nickname, device_id, player_key, joined_at) VALUES (?, ?, ?, ?, ?)",
+                           (room["id"], nick, device, key, now_iso())).lastrowid
+        if not room["host_player_id"]:
+            conn.execute("UPDATE game_rooms SET host_player_id = ? WHERE id = ?", (pid, room["id"]))
+    return {"player_key": key, "nickname": nick}
+
+
+@route("POST", "/api/g/{token}/start")
+def room_start(req: Request, token: str):
+    with db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        room = _room(conn, token)
+        p = _player(conn, room, str(req.json().get("player_key") or ""))
+        if p["id"] != room["host_player_id"]:
+            raise HTTPError(403, "Only the host can start.")
+        now = time.time()
+        if room["starts_at"] and now < room["starts_at"] + features.ROUND_SECONDS:
+            raise HTTPError(409, "The game is already running.")
+        new_qs = room["questions"]
+        if room["starts_at"]:  # play again: fresh shuffled questions, scores reset
+            picks = random.sample(QUESTIONS, min(features.QUESTIONS_PER_ROUND, len(QUESTIONS)))
+            qs = []
+            for text, opts in picks:
+                order = list(range(len(opts)))
+                random.shuffle(order)
+                qs.append({"q": text, "options": [opts[i] for i in order], "answer": order.index(0)})
+            new_qs = json.dumps(qs, ensure_ascii=False)
+            conn.execute("DELETE FROM game_room_answers WHERE room_id = ?", (room["id"],))
+            conn.execute("UPDATE game_room_players SET score = 0 WHERE room_id = ?", (room["id"],))
+        conn.execute("UPDATE game_rooms SET starts_at = ?, questions = ? WHERE id = ?", (now + 4, new_qs, room["id"]))
+    return {"ok": True}
+
+
+@route("GET", "/api/g/{token}/state")
+def room_state(req: Request, token: str):
+    with db() as conn:
+        room = _room(conn, token)
+        key = req.query.get("k") or ""
+        me = row(conn.execute("SELECT * FROM game_room_players WHERE room_id = ? AND player_key = ?", (room["id"], key)).fetchone()) if key else None
+        players = rows(conn.execute("SELECT id, nickname, score FROM game_room_players WHERE room_id = ? ORDER BY score DESC, id", (room["id"],)))
+        qs = json.loads(room["questions"])
+        out = {"players": [{"nickname": p["nickname"], "score": p["score"], "me": bool(me and p["id"] == me["id"]),
+                            "host": p["id"] == room["host_player_id"]} for p in players],
+               "joined": bool(me), "is_host": bool(me and me["id"] == room["host_player_id"]), "total": len(qs)}
+        now = time.time()
+        if not room["starts_at"]:
+            out["phase"] = "lobby"
+        elif now < room["starts_at"]:
+            out.update(phase="countdown", starts_in=round(room["starts_at"] - now, 1))
+        elif now >= room["starts_at"] + features.ROUND_SECONDS:
+            out["phase"] = "done"
+        else:
+            t = now - room["starts_at"]
+            qi, into = int(t // features.SLOT), t % features.SLOT
+            q = qs[qi]
+            out.update(q_index=qi, question=q["q"], options=q["options"])
+            mine = row(conn.execute("SELECT choice, correct, points FROM game_room_answers WHERE room_id = ? AND player_id = ? AND q_index = ?",
+                                    (room["id"], me["id"], qi)).fetchone()) if me else None
+            out["my_answer"] = mine
+            if into < features.QUESTION_SECONDS:
+                out.update(phase="question", time_left=round(features.QUESTION_SECONDS - into, 1))
+            else:
+                out.update(phase="reveal", answer=q["answer"], next_in=round(features.SLOT - into, 1))
+    return out
+
+
+@route("POST", "/api/g/{token}/answer")
+def room_answer(req: Request, token: str):
+    d = req.json()
+    try:
+        qi, choice = int(d.get("q_index")), int(d.get("choice"))
+    except (TypeError, ValueError):
+        raise HTTPError(400, "Bad answer")
+    with db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        room = _room(conn, token)
+        p = _player(conn, room, str(d.get("player_key") or ""))
+        if not room["starts_at"]:
+            raise HTTPError(409, "The game hasn't started.")
+        qs = json.loads(room["questions"])
+        t = time.time() - room["starts_at"]
+        if t < 0 or int(t // features.SLOT) != qi or t % features.SLOT >= features.QUESTION_SECONDS or qi >= len(qs):
+            raise HTTPError(409, "Time's up for that question.")
+        if not 0 <= choice < len(qs[qi]["options"]):
+            raise HTTPError(400, "Bad answer")
+        correct = choice == qs[qi]["answer"]
+        time_left = features.QUESTION_SECONDS - (t % features.SLOT)
+        points = 100 + int(round(100 * time_left / features.QUESTION_SECONDS)) if correct else 0  # same scoring as the table quiz
+        cur = conn.execute("INSERT OR IGNORE INTO game_room_answers (room_id, player_id, q_index, choice, correct, points, answered_at) "
+                           "VALUES (?, ?, ?, ?, ?, ?, ?)", (room["id"], p["id"], qi, choice, int(correct), points, time.time()))
+        if cur.rowcount:
+            conn.execute("UPDATE game_room_players SET score = score + ? WHERE id = ?", (points, p["id"]))
+    return {"ok": True, "correct": correct, "points": points}

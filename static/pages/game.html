@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Table Trivia</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<style>
+  .g-wrap { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; }
+  .g-card { width: min(520px, 100%); padding: 24px; border-radius: 26px; animation: gIn .5s var(--spring) both; }
+  @keyframes gIn { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+  .big { font-family: var(--font-display); font-size: 4.4rem; text-align: center; line-height: 1; }
+  .opts { display: grid; gap: 10px; margin-top: 16px; }
+  .opt { padding: 16px; border-radius: 16px; border: 2px solid var(--line-2); background: rgba(255,255,255,.05); color: var(--text); font-weight: 700; font-size: 1.05rem; text-align: left; cursor: pointer; transition: all .2s var(--ease); }
+  .opt:hover:not(:disabled) { border-color: var(--marigold); transform: translateY(-2px); }
+  .opt.picked { border-color: var(--sky); background: rgba(76,201,240,.15); }
+  .opt.right { border-color: var(--mint); background: rgba(46,230,166,.18); }
+  .opt.wrong { border-color: #ff6b8a; background: rgba(255,107,138,.14); }
+  .bar { height: 8px; border-radius: 8px; background: rgba(255,255,255,.08); overflow: hidden; margin: 12px 0 4px; }
+  .bar i { display: block; height: 100%; background: var(--grad-hot); transition: width .25s linear; }
+  .lb { margin-top: 16px; display: grid; gap: 6px; }
+  .lb div { display: flex; justify-content: space-between; padding: 8px 12px; border-radius: 12px; background: rgba(255,255,255,.05); font-weight: 700; }
+  .lb div.me { background: rgba(255,193,69,.15); border: 1px solid rgba(255,193,69,.4); }
+  .podium { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 8px; align-items: end; margin: 18px 0 8px; text-align: center; }
+  .podium div { border-radius: 14px 14px 0 0; padding: 10px 6px; font-weight: 800; background: rgba(255,255,255,.08); animation: rise .8s var(--spring) both; }
+  .podium .p1 { height: 140px; background: linear-gradient(180deg, rgba(255,193,69,.45), rgba(255,193,69,.1)); animation-delay: .3s; }
+  .podium .p2 { height: 105px; animation-delay: .15s; } .podium .p3 { height: 80px; }
+  @keyframes rise { from { transform: scaleY(0); transform-origin: bottom; } }
+</style>
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app g-wrap"><div class="glass g-card" id="card"><p class="muted">Loading…</p></div></div>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const TOKEN = decodeURIComponent(location.pathname.split("/").filter(Boolean).pop() || "");
+  const API = "/api/g/" + encodeURIComponent(TOKEN), KEY = "bd_room_" + TOKEN;
+  let me = JSON.parse(BD.store.get(KEY) || "null"), st = null, lastQ = -1, picked = null, timer = 0;
+  const card = $("card");
+  const lb = () => `<div class="lb">${st.players.map((p, i) => `<div class="${p.me ? "me" : ""}"><span>${["🥇", "🥈", "🥉"][i] || i + 1} ${BD.esc(p.nickname)}${p.host ? " 👑" : ""}</span><span class="mono">${p.score}</span></div>`).join("")}</div>`;
+  function draw() {
+    if (!me || !st.joined) {
+      card.innerHTML = `<div class="eyebrow">Table trivia</div><h2 style="margin:8px 0">Join the game</h2><p class="muted">Only your table is in this room. ${st.players.length} playing.</p>
+        <form id="jf" class="row" style="gap:8px;margin-top:14px"><input class="input grow" id="nick" maxlength="16" placeholder="Your nickname" value="${BD.esc(BD.store.get("bd_player") || "")}"><button class="btn">Join</button></form><div class="err" id="jerr"></div>`;
+      $("jf").onsubmit = async e => {
+        e.preventDefault();
+        try { const r = await BD.api(API + "/join", { body: { nickname: $("nick").value, device_id: BD.deviceId() } }); me = r; BD.store.set(KEY, JSON.stringify(r)); BD.store.set("bd_player", r.nickname); tick(); }
+        catch (x) { $("jerr").textContent = x.message; }
+      };
+      return;
+    }
+    if (st.phase === "lobby" || st.phase === "done") {
+      const done = st.phase === "done", top = st.players.slice(0, 3);
+      card.innerHTML = `<div class="eyebrow">${done ? "Final results" : "Waiting room"}</div><h2 style="margin:8px 0">${done ? (top[0] ? `🏆 ${BD.esc(top[0].nickname)} wins!` : "Game over") : "Get ready!"}</h2>
+        ${done && top.length ? `<div class="podium"><div class="p2">${top[1] ? "🥈<br>" + BD.esc(top[1].nickname) + "<br>" + top[1].score : ""}</div><div class="p1">🥇<br>${BD.esc(top[0].nickname)}<br>${top[0].score}</div><div class="p3">${top[2] ? "🥉<br>" + BD.esc(top[2].nickname) + "<br>" + top[2].score : ""}</div></div>` : `<p class="muted">${st.total} questions · 15 seconds each · faster right answers score more.</p>`}
+        ${lb()}
+        ${st.is_host ? `<button class="btn lg block" id="go" style="margin-top:16px">${done ? "Play again" : "▶ Start the game"}</button>` : `<p class="faint small center" style="margin-top:14px">The host (👑) starts the game.</p>`}`;
+      if (done && !draw.cel) { draw.cel = true; BD.confetti(); }
+      const go = $("go"); if (go) go.onclick = async () => { try { await BD.api(API + "/start", { body: { player_key: me.player_key } }); draw.cel = false; tick(); } catch (x) { BD.toast(x.message, "bad"); } };
+      return;
+    }
+    if (st.phase === "countdown") { card.innerHTML = `<div class="eyebrow center">Starting in</div><div class="big">${Math.ceil(st.starts_in)}</div>`; return; }
+    if (st.q_index !== lastQ) { lastQ = st.q_index; picked = st.my_answer ? st.my_answer.choice : null; }
+    const rev = st.phase === "reveal";
+    card.innerHTML = `<div class="row spread"><span class="eyebrow">Question ${st.q_index + 1} of ${st.total}</span><span class="mono" style="font-weight:800">${rev ? "⏱ next " + Math.ceil(st.next_in) : "⏱ " + Math.ceil(st.time_left)}</span></div>
+      <div class="bar"><i style="width:${rev ? 0 : (st.time_left / 15) * 100}%"></i></div>
+      <h3 style="margin:10px 0 0;font-size:1.3rem">${BD.esc(st.question)}</h3>
+      <div class="opts">${st.options.map((o, i) => `<button class="opt ${picked === i ? "picked" : ""} ${rev && i === st.answer ? "right" : ""} ${rev && picked === i && i !== st.answer ? "wrong" : ""}" data-i="${i}" ${picked != null || rev ? "disabled" : ""}>${BD.esc(o)}</button>`).join("")}</div>
+      ${rev ? lb() : ""}`;
+  }
+  card.addEventListener("click", async e => {
+    const b = e.target.closest("[data-i]"); if (!b || picked != null) return;
+    picked = Number(b.dataset.i); draw(); BD.buzz(15);
+    try { const r = await BD.api(API + "/answer", { body: { player_key: me.player_key, q_index: st.q_index, choice: picked } }); if (r.correct) BD.sound.chime("tap"); }
+    catch (x) { BD.toast(x.message, "bad"); }
+  });
+  async function tick() {
+    clearTimeout(timer);
+    try { st = await BD.api(API + "/state" + (me ? "?k=" + encodeURIComponent(me.player_key) : "")); if (me && !st.joined) { me = null; BD.store.del(KEY); } draw(); }
+    catch (x) { card.innerHTML = `<div class="center"><div style="font-size:3rem">🎲</div><h2 style="margin:10px 0">${x.status === 410 ? "Game closed" : "Game not found"}</h2><p class="muted">${BD.esc(x.message)}</p></div>`; return; }
+    timer = setTimeout(tick, st.phase === "question" || st.phase === "countdown" || st.phase === "reveal" ? 700 : 2000);
+  }
+  document.addEventListener("click", () => BD.sound.unlock(), { once: true });
+  tick();
+})();
+</script>
+</body>
+</html>

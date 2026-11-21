@@ -265,3 +265,9 @@ body.preview .item { grid-template-columns: 76px 1fr; }
 .ws-wait { text-align: center; padding: 10px 0; }
 .ws-bell { font-size: 3rem; display: inline-block; animation: ring 1.2s ease-in-out infinite; }
 @media (max-width: 380px) { .ws-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* 5: play with all tables / with my table */
+.gx-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 560px; margin: 0 auto 16px; }
+.gx-mode { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 16px 10px; border-radius: 20px; cursor: pointer; color: var(--text); border: 1px solid var(--line-2); transition: transform .25s var(--spring), border-color .2s; animation: itemIn .5s var(--ease) both; }
+.gx-mode:hover { transform: translateY(-3px); border-color: rgba(255,193,69,.6); }
+.gx-mode .gx-ico { font-size: 2rem; }
