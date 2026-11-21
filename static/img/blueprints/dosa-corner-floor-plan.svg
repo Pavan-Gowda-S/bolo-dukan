@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><pattern id="g" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/></pattern><pattern id="g2" width="20.0" height="20.0" patternUnits="userSpaceOnUse"><path d="M 20.0 0 L 0 0 0 20.0" fill="none" stroke="rgba(255,255,255,.035)" stroke-width="1"/></pattern><pattern id="tile" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1"/></pattern></defs>
+<rect width="1600" height="1000" fill="#0f3d73"/><rect width="1600" height="1000" fill="url(#g2)"/><rect width="1600" height="1000" fill="url(#g)"/>
+<polygon points="60,60 560,60 560,520 1540,520 1540,940 60,940" fill="rgba(255,255,255,.04)"/>
+<rect x="60" y="200" width="500" height="320" fill="url(#tile)"/>
+<polygon points="60,60 560,60 560,520 1540,520 1540,940 60,940" fill="none" stroke="#f4f8ff" stroke-width="16" stroke-linejoin="miter"/>
+<line x1="60" y1="200" x2="560" y2="200" stroke="#f4f8ff" stroke-width="8" stroke-linecap="square"/>
+<line x1="60" y1="520" x2="560" y2="520" stroke="#f4f8ff" stroke-width="8" stroke-linecap="square"/>
+<line x1="60" y1="800" x2="240" y2="800" stroke="#f4f8ff" stroke-width="8" stroke-linecap="square"/>
+<line x1="240" y1="800" x2="240" y2="940" stroke="#f4f8ff" stroke-width="8" stroke-linecap="square"/>
+<line x1="330" y1="200" x2="400" y2="200" stroke="#0f3d73" stroke-width="10" stroke-linecap="square"/>
+<line x1="330" y1="200" x2="330" y2="130" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 330 130 A 70 70 0 0 0 400 200" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5"/>
+<line x1="470" y1="520" x2="550" y2="520" stroke="#0f3d73" stroke-width="10" stroke-linecap="square"/>
+<line x1="550" y1="520" x2="550" y2="600" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 550 600 A 80 80 0 0 0 470 520" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5"/>
+<line x1="150" y1="800" x2="220" y2="800" stroke="#0f3d73" stroke-width="10" stroke-linecap="square"/>
+<line x1="220" y1="800" x2="220" y2="730" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 220 730 A 70 70 0 0 1 150 800" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5"/>
+<line x1="1540" y1="760" x2="1540" y2="900" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="1540" y1="760" x2="1470" y2="760" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 1470 760 A 70 70 0 0 1 1540 830" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5"/>
+<line x1="1540" y1="900" x2="1470" y2="900" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 1470 900 A 70 70 0 0 0 1540 830" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="6 5"/>
+<line x1="700" y1="940" x2="900" y2="940" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="700" y1="935" x2="900" y2="935" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="700" y1="945" x2="900" y2="945" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="700" y1="940" x2="900" y2="940" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<line x1="1000" y1="940" x2="1200" y2="940" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="1000" y1="935" x2="1200" y2="935" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="1000" y1="945" x2="1200" y2="945" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="1000" y1="940" x2="1200" y2="940" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<line x1="600" y1="520" x2="760" y2="520" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="600" y1="515" x2="760" y2="515" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="600" y1="525" x2="760" y2="525" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="600" y1="520" x2="760" y2="520" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<line x1="900" y1="520" x2="1100" y2="520" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="900" y1="515" x2="1100" y2="515" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="900" y1="525" x2="1100" y2="525" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="900" y1="520" x2="1100" y2="520" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<line x1="60" y1="580" x2="60" y2="740" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="55" y1="580" x2="55" y2="740" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="65" y1="580" x2="65" y2="740" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="60" y1="580" x2="60" y2="740" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<line x1="60" y1="300" x2="60" y2="440" stroke="#0f3d73" stroke-width="18" stroke-linecap="square"/>
+<line x1="55" y1="300" x2="55" y2="440" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="65" y1="300" x2="65" y2="440" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="60" y1="300" x2="60" y2="440" stroke="#e8f1ff" stroke-width="1" stroke-linecap="square"/>
+<rect x="78" y="218" width="64" height="282" rx="0" fill="rgba(255,255,255,.06)" stroke="#e8f1ff" stroke-width="2"/>
+<circle cx="110" cy="250" r="18" fill="none" stroke="#e8f1ff" stroke-width="2"/><circle cx="110" cy="250" r="7" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<circle cx="110" cy="320" r="18" fill="none" stroke="#e8f1ff" stroke-width="2"/><circle cx="110" cy="320" r="7" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<circle cx="110" cy="390" r="18" fill="none" stroke="#e8f1ff" stroke-width="2"/><circle cx="110" cy="390" r="7" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<circle cx="110" cy="460" r="18" fill="none" stroke="#e8f1ff" stroke-width="2"/><circle cx="110" cy="460" r="7" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<rect x="72" y="212" width="88" height="294" rx="0" fill="none" stroke="#e8f1ff" stroke-width="1.5" stroke-dasharray="8 6"/>
+<text x="176" y="360" font-size="13" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="2" opacity="1" font-family="Segoe UI, Arial, sans-serif" transform="rotate(90 176 360)">DOSA TAWA · RANGE</text>
+<rect x="190" y="216" width="140" height="46" rx="0" fill="rgba(255,255,255,.05)" stroke="#e8f1ff" stroke-width="2"/>
+<rect x="205" y="224" width="50" height="30" rx="6" fill="none" stroke="#e8f1ff" stroke-width="1.5"/><rect x="265" y="224" width="50" height="30" rx="6" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<text x="260" y="282" font-size="12" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">SINK</text>
+<rect x="345" y="216" width="95" height="46" rx="0" fill="rgba(255,255,255,.05)" stroke="#e8f1ff" stroke-width="2"/>
+<text x="392" y="245" font-size="12" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">DISH</text>
+<rect x="462" y="216" width="80" height="84" rx="0" fill="rgba(255,255,255,.05)" stroke="#e8f1ff" stroke-width="2"/>
+<line x1="462" y1="258" x2="542" y2="258" stroke="#e8f1ff" stroke-width="1.5" stroke-linecap="square"/>
+<text x="502" y="320" font-size="12" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">FRIDGE</text>
+<rect x="205" y="330" width="220" height="80" rx="6" fill="rgba(255,255,255,.05)" stroke="#e8f1ff" stroke-width="2"/>
+<text x="315" y="366" font-size="14" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">PREP ISLAND</text>
+<text x="315" y="388" font-size="11" font-weight="500" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">batter · grinder · chutney</text>
+<rect x="270" y="506" width="180" height="28" rx="0" fill="rgba(255,209,102,.18)" stroke="#ffd166" stroke-width="2"/>
+<text x="360" y="556" font-size="12" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">▲ SERVING PASS</text>
+<text x="320" y="470" font-size="30" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="6" opacity="1" font-family="Segoe UI, Arial, sans-serif">KITCHEN</text>
+<rect x="80" y="78" width="50" height="42" rx="0" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5"/>
+<rect x="142" y="78" width="50" height="42" rx="0" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5"/>
+<rect x="204" y="78" width="50" height="42" rx="0" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5"/>
+<rect x="266" y="78" width="50" height="42" rx="0" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5"/>
+<rect x="328" y="78" width="50" height="42" rx="0" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5"/>
+<text x="220" y="150" font-size="13" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">SHELVES · DRY STORE</text>
+<rect x="430" y="78" width="110" height="104" rx="0" fill="rgba(255,255,255,.05)" stroke="#e8f1ff" stroke-width="2"/>
+<text x="485" y="136" font-size="12" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">COLD</text>
+<text x="485" y="152" font-size="12" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">ROOM</text>
+<text x="250" y="186" font-size="22" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="5" opacity="1" font-family="Segoe UI, Arial, sans-serif">STORE</text>
+<ellipse cx="105" cy="900" rx="18" ry="24" fill="none" stroke="#e8f1ff" stroke-width="2"/><rect x="85" y="916" width="40" height="16" fill="none" stroke="#e8f1ff" stroke-width="2"/>
+<rect x="160" y="900" width="65" height="30" rx="0" fill="none" stroke="#e8f1ff" stroke-width="2"/>
+<ellipse cx="192" cy="915" rx="18" ry="9" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<text x="150" y="860" font-size="15" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="3" opacity="1" font-family="Segoe UI, Arial, sans-serif">RESTROOM</text>
+<rect x="262" y="905" width="78" height="27" rx="0" fill="none" stroke="#e8f1ff" stroke-width="2"/>
+<ellipse cx="301" cy="918" rx="20" ry="8" fill="none" stroke="#e8f1ff" stroke-width="1.5"/>
+<text x="301" y="895" font-size="11" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">HAND WASH</text>
+<path d="M 1290 540 L 1524 540 L 1524 720 L 1462 720 L 1462 602 L 1290 602 Z" fill="rgba(255,209,102,.16)" stroke="#ffd166" stroke-width="3"/>
+<rect x="1330" y="552" width="48" height="36" rx="0" fill="none" stroke="#ffd166" stroke-width="2"/>
+<text x="1354" y="576" font-size="11" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">POS</text>
+<circle cx="1420" cy="570" r="9" fill="none" stroke="#ffd166" stroke-width="2"/>
+<text x="1420" y="598" font-size="10" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">UPI</text>
+<circle cx="1495" cy="650" r="13" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<text x="1380" y="650" font-size="22" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="4" opacity="1" font-family="Segoe UI, Arial, sans-serif">CASHIER</text>
+<text x="1380" y="674" font-size="12" font-weight="600" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="0.85" font-family="Segoe UI, Arial, sans-serif">billing · parcel</text>
+<rect x="1300" y="905" width="150" height="23" rx="6" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<text x="1375" y="896" font-size="11" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="1.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">WAITING</text>
+<path d="M 1590 830 L 1560 830" stroke="#ffd166" stroke-width="3"/><path d="M 1568 818 L 1556 830 L 1568 842" fill="none" stroke="#ffd166" stroke-width="3"/>
+<text x="1462" y="836" font-size="15" font-weight="800" fill="#ffd166" text-anchor="end" letter-spacing="3" opacity="1" font-family="Segoe UI, Arial, sans-serif">ENTRANCE</text>
+<rect x="159.0" y="585.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(0.0 170.0 596.0)"/>
+<rect x="213.0" y="639.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(90.0 224.0 650.0)"/>
+<rect x="159.0" y="693.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(180.0 170.0 704.0)"/>
+<rect x="105.0" y="639.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(270.0 116.0 650.0)"/>
+<circle cx="170" cy="650" r="36" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="170" y="657" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T1</text>
+<rect x="389.0" y="585.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(0.0 400.0 596.0)"/>
+<rect x="443.0" y="639.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(90.0 454.0 650.0)"/>
+<rect x="389.0" y="693.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(180.0 400.0 704.0)"/>
+<rect x="335.0" y="639.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(270.0 346.0 650.0)"/>
+<circle cx="400" cy="650" r="36" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="400" y="657" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T2</text>
+<rect x="409.0" y="765.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(0.0 420.0 776.0)"/>
+<rect x="463.0" y="819.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(90.0 474.0 830.0)"/>
+<rect x="409.0" y="873.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(180.0 420.0 884.0)"/>
+<rect x="355.0" y="819.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(270.0 366.0 830.0)"/>
+<circle cx="420" cy="830" r="36" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="420" y="837" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T3</text>
+<rect x="709.0" y="595.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(0.0 720.0 606.0)"/>
+<rect x="763.0" y="649.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(90.0 774.0 660.0)"/>
+<rect x="709.0" y="703.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(180.0 720.0 714.0)"/>
+<rect x="655.0" y="649.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(270.0 666.0 660.0)"/>
+<circle cx="720" cy="660" r="36" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="720" y="667" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T4</text>
+<rect x="969.0" y="595.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(0.0 980.0 606.0)"/>
+<rect x="1023.0" y="649.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(90.0 1034.0 660.0)"/>
+<rect x="969.0" y="703.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(180.0 980.0 714.0)"/>
+<rect x="915.0" y="649.0" width="22" height="22" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2" transform="rotate(270.0 926.0 660.0)"/>
+<circle cx="980" cy="660" r="36" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="980" y="667" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T5</text>
+<rect x="775.6666666666666" y="775.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="775.6666666666666" y="883.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="839.0" y="775.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="839.0" y="883.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="902.3333333333334" y="775.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="902.3333333333334" y="883.0" width="22.0" height="22.0" rx="5" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<rect x="755.0" y="809.0" width="190.0" height="62.0" rx="8" fill="rgba(255,209,102,.10)" stroke="#ffd166" stroke-width="2.5"/>
+<text x="850" y="847" font-size="20" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">T6</text>
+<text x="1150" y="792" font-size="34" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="8" opacity="0.9" font-family="Segoe UI, Arial, sans-serif">DINING HALL</text>
+<text x="1150" y="820" font-size="14" font-weight="600" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="2" opacity="1" font-family="Segoe UI, Arial, sans-serif">6 tables · 26 seats</text>
+<circle cx="1240" cy="905" r="14" fill="rgba(46,230,166,.18)" stroke="#7ff0c8" stroke-width="2"/>
+<circle cx="90" cy="560" r="14" fill="rgba(46,230,166,.18)" stroke="#7ff0c8" stroke-width="2"/>
+<circle cx="1215" cy="560" r="14" fill="rgba(46,230,166,.18)" stroke="#7ff0c8" stroke-width="2"/>
+<line x1="60" y1="30" x2="560" y2="30" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="60" y1="21" x2="60" y2="39" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="560" y1="21" x2="560" y2="39" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<text x="310.0" y="24.0" font-size="14" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">6.25 m</text>
+<line x1="60" y1="972" x2="1540" y2="972" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="60" y1="963" x2="60" y2="981" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="1540" y1="963" x2="1540" y2="981" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<text x="800.0" y="994.0" font-size="14" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">18.50 m</text>
+<line x1="28" y1="60" x2="28" y2="940" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="19" y1="60" x2="37" y2="60" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="19" y1="940" x2="37" y2="940" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<text x="20.0" y="500.0" font-size="14" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif" transform="rotate(-90 20.0 500.0)">11.00 m</text>
+<line x1="1572" y1="520" x2="1572" y2="940" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="1563" y1="520" x2="1581" y2="520" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="1563" y1="940" x2="1581" y2="940" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<text x="1580.0" y="730.0" font-size="14" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif" transform="rotate(90 1580.0 730.0)">5.25 m</text>
+<line x1="580" y1="80" x2="580" y2="500" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="571" y1="80" x2="589" y2="80" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="571" y1="500" x2="589" y2="500" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-linecap="square"/>
+<text x="596.0" y="290.0" font-size="14" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif" transform="rotate(90 596.0 290.0)">5.75 m</text>
+<rect x="660" y="110" width="520" height="220" rx="0" fill="rgba(10,30,60,.55)" stroke="#e8f1ff" stroke-width="2"/>
+<line x1="660" y1="170" x2="1180" y2="170" stroke="#e8f1ff" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="660" y1="290" x2="1180" y2="290" stroke="#e8f1ff" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="920" y1="290" x2="920" y2="330" stroke="#e8f1ff" stroke-width="1.5" stroke-linecap="square"/>
+<text x="920" y="152" font-size="34" font-weight="800" fill="#ffd166" text-anchor="middle" letter-spacing="8" opacity="1" font-family="Segoe UI, Arial, sans-serif">DOSA CORNER</text>
+<text x="920" y="206" font-size="18" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="3" opacity="1" font-family="Segoe UI, Arial, sans-serif">GROUND FLOOR PLAN · L-SHAPED</text>
+<text x="920" y="236" font-size="14" font-weight="500" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Kitchen · Store · Cashier · Dining for 6 tables · Restroom</text>
+<text x="920" y="264" font-size="14" font-weight="600" fill="#e8f1ff" text-anchor="middle" letter-spacing="1" opacity="1" font-family="Segoe UI, Arial, sans-serif">Built-up area ≈ 133 m²  ·  grid = 1 m</text>
+<text x="790" y="316" font-size="13" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="2" opacity="1" font-family="Segoe UI, Arial, sans-serif">SCALE 1 : 100</text>
+<text x="1050" y="316" font-size="13" font-weight="700" fill="#e8f1ff" text-anchor="middle" letter-spacing="2" opacity="1" font-family="Segoe UI, Arial, sans-serif">SHEET A-01</text>
+<text x="920" y="380" font-size="16" font-weight="700" fill="rgba(232,241,255,.55)" text-anchor="middle" letter-spacing="4" opacity="0.8" font-family="Segoe UI, Arial, sans-serif">OPEN-AIR SEATING / PARKING</text>
+<rect x="700" y="400" width="440" height="80" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="1.5" stroke-dasharray="10 8"/>
+<g transform="translate(1420 150)"><circle r="46" fill="none" stroke="#e8f1ff" stroke-width="2"/><path d="M 0 -38 L 14 18 L 0 8 L -14 18 Z" fill="#ffd166"/><text y="-52" text-anchor="middle" font-size="18" font-weight="800" fill="#e8f1ff" font-family="Segoe UI, Arial">N</text></g>
+<rect x="1250" y="250" width="270" height="238" rx="0" fill="rgba(10,30,60,.55)" stroke="#e8f1ff" stroke-width="1.5"/>
+<text x="1385" y="278" font-size="14" font-weight="800" fill="#e8f1ff" text-anchor="middle" letter-spacing="3" opacity="1" font-family="Segoe UI, Arial, sans-serif">LEGEND</text>
+<line x1="1272" y1="318" x2="1272" y2="296" stroke="#ffd166" stroke-width="3" stroke-linecap="square"/>
+<path d="M 1272 296 A 22 22 0 0 1 1294 318" fill="none" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1320" y="314" font-size="13" font-weight="600" fill="#e8f1ff" text-anchor="start" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Door + swing</text>
+<line x1="1264" y1="342" x2="1304" y2="342" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<line x1="1264" y1="352" x2="1304" y2="352" stroke="#e8f1ff" stroke-width="2" stroke-linecap="square"/>
+<text x="1320" y="352" font-size="13" font-weight="600" fill="#e8f1ff" text-anchor="start" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Window</text>
+<circle cx="1284" cy="385" r="12" fill="rgba(255,209,102,.1)" stroke="#ffd166" stroke-width="2"/>
+<text x="1320" y="390" font-size="13" font-weight="600" fill="#e8f1ff" text-anchor="start" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Table spot (T1–T6)</text>
+<rect x="1274" y="413" width="20" height="20" rx="4" fill="none" stroke="rgba(232,241,255,.55)" stroke-width="2"/>
+<text x="1320" y="428" font-size="13" font-weight="600" fill="#e8f1ff" text-anchor="start" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Chair</text>
+<rect x="1264" y="450" width="40" height="22" rx="0" fill="none" stroke="#e8f1ff" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="1320" y="466" font-size="13" font-weight="600" fill="#e8f1ff" text-anchor="start" letter-spacing="0.5" opacity="1" font-family="Segoe UI, Arial, sans-serif">Exhaust hood</text>
+</svg>
