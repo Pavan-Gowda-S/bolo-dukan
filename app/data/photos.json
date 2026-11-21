@@ -4,272 +4,1579 @@
   "page": "https://commons.wikimedia.org/wiki/File:Tomato_Rasam_-_Home_Made.JPG",
   "author": "Mailz2kumar",
   "license": "CC BY-SA 4.0",
-  "title": "File:Tomato Rasam - Home Made.JPG"
+  "title": "File:Tomato Rasam - Home Made.JPG",
+  "local": "/static/img/photos/recipe_rasam.jpg"
  },
  "recipe:bisi_bele_bath": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Bisi_Bele_Bath_%28Bisibelebath%29.JPG/960px-Bisi_Bele_Bath_%28Bisibelebath%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Bisi_Bele_Bath_(Bisibelebath).JPG",
   "author": "Food and Remedy, LLC",
   "license": "CC BY-SA 3.0",
-  "title": "File:Bisi Bele Bath (Bisibelebath).JPG"
+  "title": "File:Bisi Bele Bath (Bisibelebath).JPG",
+  "local": "/static/img/photos/recipe_bisi_bele_bath.jpg"
  },
  "recipe:curd_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Curd_rice_in_ICH_Bhopal.jpg/960px-Curd_rice_in_ICH_Bhopal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Curd_rice_in_ICH_Bhopal.jpg",
   "author": "Suyash Dwivedi",
   "license": "CC BY-SA 4.0",
-  "title": "File:Curd rice in ICH Bhopal.jpg"
+  "title": "File:Curd rice in ICH Bhopal.jpg",
+  "local": "/static/img/photos/recipe_curd_rice.jpg"
  },
  "recipe:lemon_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Lemon_Rice_in_Kerala.jpg/960px-Lemon_Rice_in_Kerala.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Lemon_Rice_in_Kerala.jpg",
   "author": "Ganesh Gore",
   "license": "CC BY-SA 4.0",
-  "title": "File:Lemon Rice in Kerala.jpg"
- },
- "recipe:tomato_rice": {
-  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Parboiled_rice_with_chicken%2C_peppers%2C_cucurbita%2C_peas_and_tomato.jpg/960px-Parboiled_rice_with_chicken%2C_peppers%2C_cucurbita%2C_peas_and_tomato.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "page": "https://commons.wikimedia.org/wiki/File:Parboiled_rice_with_chicken,_peppers,_cucurbita,_peas_and_tomato.jpg",
-  "author": "Petar Milošević",
-  "license": "CC BY-SA 4.0",
-  "title": "File:Parboiled rice with chicken, peppers, cucurbita, peas and tomato.jpg"
+  "title": "File:Lemon Rice in Kerala.jpg",
+  "local": "/static/img/photos/recipe_lemon_rice.jpg"
  },
  "recipe:vangi_bath": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Vaanghi_Baath.jpg/960px-Vaanghi_Baath.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Vaanghi_Baath.jpg",
   "author": "Sherin",
   "license": "CC BY-SA 4.0",
-  "title": "File:Vaanghi Baath.jpg"
+  "title": "File:Vaanghi Baath.jpg",
+  "local": "/static/img/photos/recipe_vangi_bath.jpg"
  },
  "recipe:puliyogare": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/LEMON_PULIHORA.JPG/960px-LEMON_PULIHORA.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:LEMON_PULIHORA.JPG",
   "author": "Mkr.lines",
   "license": "CC BY-SA 4.0",
-  "title": "File:LEMON PULIHORA.JPG"
+  "title": "File:LEMON PULIHORA.JPG",
+  "local": "/static/img/photos/recipe_puliyogare.jpg"
  },
  "recipe:coconut_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Coconut_Rice_-_Easythaiger_2026-04-21.jpg/960px-Coconut_Rice_-_Easythaiger_2026-04-21.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Coconut_Rice_-_Easythaiger_2026-04-21.jpg",
   "author": "Andy Li",
   "license": "CC0",
-  "title": "File:Coconut Rice - Easythaiger 2026-04-21.jpg"
+  "title": "File:Coconut Rice - Easythaiger 2026-04-21.jpg",
+  "local": "/static/img/photos/recipe_coconut_rice.jpg"
  },
  "recipe:jeera_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Jeera-rice.JPG/960px-Jeera-rice.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Jeera-rice.JPG",
   "author": "Sonia Goyal",
   "license": "CC BY-SA 2.0",
-  "title": "File:Jeera-rice.JPG"
+  "title": "File:Jeera-rice.JPG",
+  "local": "/static/img/photos/recipe_jeera_rice.jpg"
  },
  "recipe:bread_omelette": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Bread_Omelette_6.jpg/960px-Bread_Omelette_6.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Bread_Omelette_6.jpg",
   "author": "Gannu03",
   "license": "CC BY-SA 4.0",
-  "title": "File:Bread Omelette 6.jpg"
+  "title": "File:Bread Omelette 6.jpg",
+  "local": "/static/img/photos/recipe_bread_omelette.jpg"
  },
  "recipe:egg_sandwich": {
   "thumb": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Egg_Sandwich.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
   "page": "https://commons.wikimedia.org/wiki/File:Egg_Sandwich.jpg",
   "author": "David Gossow",
   "license": "CC BY-SA 4.0",
-  "title": "File:Egg Sandwich.jpg"
- },
- "recipe:egg_rice_bowl": {
-  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Rice_with_stir-fried_squid%2C_garlic%2C_pepper_and_fried_duck_egg.jpg/960px-Rice_with_stir-fried_squid%2C_garlic%2C_pepper_and_fried_duck_egg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "page": "https://commons.wikimedia.org/wiki/File:Rice_with_stir-fried_squid,_garlic,_pepper_and_fried_duck_egg.jpg",
-  "author": "Vee Satayamas",
-  "license": "CC BY 4.0",
-  "title": "File:Rice with stir-fried squid, garlic, pepper and fried duck egg.jpg"
+  "title": "File:Egg Sandwich.jpg",
+  "local": "/static/img/photos/recipe_egg_sandwich.jpg"
  },
  "recipe:chicken_curry": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Chicken_Curry_9.jpg/960px-Chicken_Curry_9.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Chicken_Curry_9.jpg",
   "author": "Gaurav Dhwaj Khadka",
   "license": "CC BY-SA 4.0",
-  "title": "File:Chicken Curry 9.jpg"
+  "title": "File:Chicken Curry 9.jpg",
+  "local": "/static/img/photos/recipe_chicken_curry.jpg"
  },
  "recipe:chicken_biryani": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/A_home_made_plate_of_mutton_biryani_served_with_chicken_kassa_cooked_in_the_bengali_style.jpg/960px-A_home_made_plate_of_mutton_biryani_served_with_chicken_kassa_cooked_in_the_bengali_style.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:A_home_made_plate_of_mutton_biryani_served_with_chicken_kassa_cooked_in_the_bengali_style.jpg",
   "author": "Subhrajyoti07",
   "license": "CC BY-SA 4.0",
-  "title": "File:A home made plate of mutton biryani served with chicken kassa cooked in the bengali style.jpg"
- },
- "recipe:pepper_chicken": {
-  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Parboiled_rice_with_chicken%2C_peppers%2C_cucurbita%2C_peas_and_tomato.jpg/960px-Parboiled_rice_with_chicken%2C_peppers%2C_cucurbita%2C_peas_and_tomato.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "page": "https://commons.wikimedia.org/wiki/File:Parboiled_rice_with_chicken,_peppers,_cucurbita,_peas_and_tomato.jpg",
-  "author": "Petar Milošević",
-  "license": "CC BY-SA 4.0",
-  "title": "File:Parboiled rice with chicken, peppers, cucurbita, peas and tomato.jpg"
+  "title": "File:A home made plate of mutton biryani served with chicken kassa cooked in the bengali style.jpg",
+  "local": "/static/img/photos/recipe_chicken_biryani.jpg"
  },
  "recipe:chicken_tikka": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Chicken_tikka_in_Araku_Valley%2C_Andhra_Pradesh_01.jpg/960px-Chicken_tikka_in_Araku_Valley%2C_Andhra_Pradesh_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Chicken_tikka_in_Araku_Valley,_Andhra_Pradesh_01.jpg",
   "author": "Satdeep Gill",
   "license": "CC BY-SA 4.0",
-  "title": "File:Chicken tikka in Araku Valley, Andhra Pradesh 01.jpg"
+  "title": "File:Chicken tikka in Araku Valley, Andhra Pradesh 01.jpg",
+  "local": "/static/img/photos/recipe_chicken_tikka.jpg"
  },
  "recipe:fish_curry": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Manglorean_style_white_pomfret_fish_curry-My_home_Bangalore-Karn.jpg/960px-Manglorean_style_white_pomfret_fish_curry-My_home_Bangalore-Karn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Manglorean_style_white_pomfret_fish_curry-My_home_Bangalore-Karn.jpg",
   "author": "Shruthi Gaurav Alva",
   "license": "CC BY-SA 4.0",
-  "title": "File:Manglorean style white pomfret fish curry-My home Bangalore-Karn.jpg"
+  "title": "File:Manglorean style white pomfret fish curry-My home Bangalore-Karn.jpg",
+  "local": "/static/img/photos/recipe_fish_curry.jpg"
  },
  "recipe:fish_fry": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Anjal_Fish_Tawa_Fry_3.jpg/960px-Anjal_Fish_Tawa_Fry_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Anjal_Fish_Tawa_Fry_3.jpg",
   "author": "Yakshitha",
   "license": "CC BY-SA 4.0",
-  "title": "File:Anjal Fish Tawa Fry 3.jpg"
+  "title": "File:Anjal Fish Tawa Fry 3.jpg",
+  "local": "/static/img/photos/recipe_fish_fry.jpg"
  },
  "recipe:mutton_curry": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Mutton_Curry_%2844786%29.jpg/960px-Mutton_Curry_%2844786%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Mutton_Curry_(44786).jpg",
   "author": "Gaurav Dhwaj Khadka",
   "license": "CC BY-SA 3.0",
-  "title": "File:Mutton Curry (44786).jpg"
+  "title": "File:Mutton Curry (44786).jpg",
+  "local": "/static/img/photos/recipe_mutton_curry.jpg"
  },
  "recipe:toast_egg_bhurji": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Breakfast_of_eggs_and_toast_%286103428227%29.jpg/960px-Breakfast_of_eggs_and_toast_%286103428227%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Breakfast_of_eggs_and_toast_(6103428227).jpg",
   "author": "Barry Pousman from New York, NY",
   "license": "CC BY 2.0",
-  "title": "File:Breakfast of eggs and toast (6103428227).jpg"
+  "title": "File:Breakfast of eggs and toast (6103428227).jpg",
+  "local": "/static/img/photos/recipe_toast_egg_bhurji.jpg"
  },
  "recipe:chicken_fried_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Siam_Fried_Rice_with_Chicken_by_Papaya%2C_Hove.jpg/960px-Siam_Fried_Rice_with_Chicken_by_Papaya%2C_Hove.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Siam_Fried_Rice_with_Chicken_by_Papaya,_Hove.jpg",
   "author": "Andy Li",
   "license": "CC0",
-  "title": "File:Siam Fried Rice with Chicken by Papaya, Hove.jpg"
+  "title": "File:Siam Fried Rice with Chicken by Papaya, Hove.jpg",
+  "local": "/static/img/photos/recipe_chicken_fried_rice.jpg"
  },
  "recipe:fish_tikka": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Tandoori_Fish_tikka.jpg/960px-Tandoori_Fish_tikka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Tandoori_Fish_tikka.jpg",
   "author": "Fatimahope",
   "license": "CC BY-SA 4.0",
-  "title": "File:Tandoori Fish tikka.jpg"
+  "title": "File:Tandoori Fish tikka.jpg",
+  "local": "/static/img/photos/recipe_fish_tikka.jpg"
  },
  "recipe:egg_curry_rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Egg_Biryani_in_a_restaurant.jpg/960px-Egg_Biryani_in_a_restaurant.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Egg_Biryani_in_a_restaurant.jpg",
   "author": "Medhi jyoti",
   "license": "CC BY-SA 4.0",
-  "title": "File:Egg Biryani in a restaurant.jpg"
+  "title": "File:Egg Biryani in a restaurant.jpg",
+  "local": "/static/img/photos/recipe_egg_curry_rice.jpg"
  },
  "recipe:tofu_stir_fry": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Black_pepper_tofu_fried_udon_-_Stir_Fry_by_CK.jpg/960px-Black_pepper_tofu_fried_udon_-_Stir_Fry_by_CK.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Black_pepper_tofu_fried_udon_-_Stir_Fry_by_CK.jpg",
   "author": "Andy Li",
   "license": "CC0",
-  "title": "File:Black pepper tofu fried udon - Stir Fry by CK.jpg"
+  "title": "File:Black pepper tofu fried udon - Stir Fry by CK.jpg",
+  "local": "/static/img/photos/recipe_tofu_stir_fry.jpg"
  },
  "recipe:soya_pulao": {
   "thumb": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Pulao_tiniu.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
   "page": "https://commons.wikimedia.org/wiki/File:Pulao_tiniu.JPG",
   "author": "User zh:User:用心阁 on zh.wikipedia",
   "license": "CC BY-SA 3.0",
-  "title": "File:Pulao tiniu.JPG"
+  "title": "File:Pulao tiniu.JPG",
+  "local": "/static/img/photos/recipe_soya_pulao.jpg"
  },
  "recipe:chana_sundal": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Sundal_pori.jpg/960px-Sundal_pori.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Sundal_pori.jpg",
   "author": "Madhavan M murugaiyan",
   "license": "CC0",
-  "title": "File:Sundal pori.jpg"
- },
- "recipe:paneer_rice_bowl": {
-  "thumb": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Susu-bukkumi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-  "page": "https://commons.wikimedia.org/wiki/File:Susu-bukkumi.jpg",
-  "author": "박 엘리사벳",
-  "license": "CC BY 2.0 kr",
-  "title": "File:Susu-bukkumi.jpg"
+  "title": "File:Sundal pori.jpg",
+  "local": "/static/img/photos/recipe_chana_sundal.jpg"
  },
  "recipe:moong_soup": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Homemade_Lentil_Soup_-_Lavash_2025-02-10.jpg/960px-Homemade_Lentil_Soup_-_Lavash_2025-02-10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Homemade_Lentil_Soup_-_Lavash_2025-02-10.jpg",
   "author": "Andy Li",
   "license": "CC0",
-  "title": "File:Homemade Lentil Soup - Lavash 2025-02-10.jpg"
+  "title": "File:Homemade Lentil Soup - Lavash 2025-02-10.jpg",
+  "local": "/static/img/photos/recipe_moong_soup.jpg"
  },
  "ingredient:rice": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Plain_white_rice-min-min.jpg/960px-Plain_white_rice-min-min.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Plain_white_rice-min-min.jpg",
   "author": "Sum overseas",
   "license": "CC BY-SA 4.0",
-  "title": "File:Plain white rice-min-min.jpg"
- },
- "ingredient:cabbage": {
-  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Pieris_brassicae_auf_Centaurea_jacea_01.jpg/960px-Pieris_brassicae_auf_Centaurea_jacea_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "page": "https://commons.wikimedia.org/wiki/File:Pieris_brassicae_auf_Centaurea_jacea_01.jpg",
-  "author": "Uoaei1",
-  "license": "CC BY-SA 4.0",
-  "title": "File:Pieris brassicae auf Centaurea jacea 01.jpg"
+  "title": "File:Plain white rice-min-min.jpg",
+  "local": "/static/img/photos/ingredient_rice.jpg"
  },
  "ingredient:green_peas": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/India_-_Varanasi_green_peas_-_2714.jpg/960px-India_-_Varanasi_green_peas_-_2714.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:India_-_Varanasi_green_peas_-_2714.jpg",
   "author": "Jorge Royan",
   "license": "CC BY-SA 3.0",
-  "title": "File:India - Varanasi green peas - 2714.jpg"
- },
- "ingredient:spinach": {
-  "thumb": "https://upload.wikimedia.org/wikipedia/commons/3/37/Spinacia_oleracea_Spinazie_bloeiend.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-  "page": "https://commons.wikimedia.org/wiki/File:Spinacia_oleracea_Spinazie_bloeiend.jpg",
-  "author": "Rasbak",
-  "license": "CC BY-SA 3.0",
-  "title": "File:Spinacia oleracea Spinazie bloeiend.jpg"
+  "title": "File:India - Varanasi green peas - 2714.jpg",
+  "local": "/static/img/photos/ingredient_green_peas.jpg"
  },
  "ingredient:methi_leaves": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Washed_fenugreek_leaves_for_cooking_methi-chadachadi.jpg/960px-Washed_fenugreek_leaves_for_cooking_methi-chadachadi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Washed_fenugreek_leaves_for_cooking_methi-chadachadi.jpg",
   "author": "Subhashish Panigrahi",
   "license": "CC BY-SA 4.0",
-  "title": "File:Washed fenugreek leaves for cooking methi-chadachadi.jpg"
+  "title": "File:Washed fenugreek leaves for cooking methi-chadachadi.jpg",
+  "local": "/static/img/photos/ingredient_methi_leaves.jpg"
  },
  "ingredient:brinjal": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Solanum_melongena_24_08_2012_%281%29.JPG/960px-Solanum_melongena_24_08_2012_%281%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Solanum_melongena_24_08_2012_(1).JPG",
   "author": "Joydeep",
   "license": "CC BY-SA 3.0",
-  "title": "File:Solanum melongena 24 08 2012 (1).JPG"
+  "title": "File:Solanum melongena 24 08 2012 (1).JPG",
+  "local": "/static/img/photos/ingredient_brinjal.jpg"
  },
  "ingredient:bhindi": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Quiabo.jpg/960px-Quiabo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Quiabo.jpg",
   "author": "ArionStar",
   "license": "CC0",
-  "title": "File:Quiabo.jpg"
- },
- "ingredient:bottle_gourd": {
-  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Lagenaria_siceraria_var_peregrina_MHNT.BOT.2013.22.54.jpg/960px-Lagenaria_siceraria_var_peregrina_MHNT.BOT.2013.22.54.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
-  "page": "https://commons.wikimedia.org/wiki/File:Lagenaria_siceraria_var_peregrina_MHNT.BOT.2013.22.54.jpg",
-  "author": "Roger Culos",
-  "license": "CC BY-SA 3.0",
-  "title": "File:Lagenaria siceraria var peregrina MHNT.BOT.2013.22.54.jpg"
+  "title": "File:Quiabo.jpg",
+  "local": "/static/img/photos/ingredient_bhindi.jpg"
  },
  "ingredient:cucumber": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Cucumber_in_jaffna.JPG/960px-Cucumber_in_jaffna.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Cucumber_in_jaffna.JPG",
   "author": "Maathavan",
   "license": "CC BY-SA 3.0",
-  "title": "File:Cucumber in jaffna.JPG"
+  "title": "File:Cucumber in jaffna.JPG",
+  "local": "/static/img/photos/ingredient_cucumber.jpg"
  },
  "ingredient:beetroot": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Beetroots_in_a_basket.jpg/960px-Beetroots_in_a_basket.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Beetroots_in_a_basket.jpg",
   "author": "W.carter",
   "license": "CC BY-SA 4.0",
-  "title": "File:Beetroots in a basket.jpg"
+  "title": "File:Beetroots in a basket.jpg",
+  "local": "/static/img/photos/ingredient_beetroot.jpg"
  },
  "ingredient:mushroom": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Edible_fungi_in_basket_2012_G1.jpg/960px-Edible_fungi_in_basket_2012_G1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Edible_fungi_in_basket_2012_G1.jpg",
   "author": "George Chernilevsky",
   "license": "Public domain",
-  "title": "File:Edible fungi in basket 2012 G1.jpg"
+  "title": "File:Edible fungi in basket 2012 G1.jpg",
+  "local": "/static/img/photos/ingredient_mushroom.jpg"
+ },
+ "recipe:sambar": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Sambar-Popular_south-Indian_food.jpg/960px-Sambar-Popular_south-Indian_food.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sambar-Popular_south-Indian_food.jpg",
+  "author": "KARANK21",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Sambar-Popular south-Indian food.jpg",
+  "local": "/static/img/photos/recipe_sambar.jpg"
+ },
+ "recipe:veg_pulao": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/0/00/Veg_pulao%2C_self-cooked%2C_Roing%2C_Arunachal_Pradesh%2C_jpg.0002.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Veg_pulao,_self-cooked,_Roing,_Arunachal_Pradesh,_jpg.0002.jpg",
+  "author": "Abhi881991",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Veg pulao, self-cooked, Roing, Arunachal Pradesh, jpg.0002.jpg",
+  "local": "/static/img/photos/recipe_veg_pulao.jpg"
+ },
+ "recipe:kootu": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Cabbage_kootu.jpg/960px-Cabbage_kootu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Cabbage_kootu.jpg",
+  "author": "Sanjay Acharya",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Cabbage kootu.jpg",
+  "local": "/static/img/photos/recipe_kootu.jpg"
+ },
+ "recipe:avial": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Avial_kyra_theatre.jpg/960px-Avial_kyra_theatre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Avial_kyra_theatre.jpg",
+  "author": "t3rmin4t0r (Gopal Vijayaraghavan)",
+  "license": "CC BY 2.0",
+  "title": "File:Avial kyra theatre.jpg",
+  "local": "/static/img/photos/recipe_avial.jpg"
+ },
+ "recipe:beans_palya": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Carrot_beans_Poriyal_-_WCI-Day0-Dinner.jpg/960px-Carrot_beans_Poriyal_-_WCI-Day0-Dinner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Carrot_beans_Poriyal_-_WCI-Day0-Dinner.jpg",
+  "author": "Sumitsurai",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Carrot beans Poriyal - WCI-Day0-Dinner.jpg",
+  "local": "/static/img/photos/recipe_beans_palya.jpg"
+ },
+ "recipe:cabbage_palya": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Cabbage_and_Carrot_Poriyal.jpg/960px-Cabbage_and_Carrot_Poriyal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Cabbage_and_Carrot_Poriyal.jpg",
+  "author": "Deviselvam",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Cabbage and Carrot Poriyal.jpg",
+  "local": "/static/img/photos/recipe_cabbage_palya.jpg"
+ },
+ "recipe:bhindi_fry": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Bhindi_masala6B28F933-2AD2-4AD5-8D5D-7105F119C55F.jpg/960px-Bhindi_masala6B28F933-2AD2-4AD5-8D5D-7105F119C55F.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Bhindi_masala6B28F933-2AD2-4AD5-8D5D-7105F119C55F.jpg",
+  "author": "Savant dev",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Bhindi masala6B28F933-2AD2-4AD5-8D5D-7105F119C55F.jpg",
+  "local": "/static/img/photos/recipe_bhindi_fry.jpg"
+ },
+ "recipe:palak_dal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Dal_palak_casserole.jpg/960px-Dal_palak_casserole.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Dal_palak_casserole.jpg",
+  "author": "P1898",
+  "license": "CC BY 4.0",
+  "title": "File:Dal palak casserole.jpg",
+  "local": "/static/img/photos/recipe_palak_dal.jpg"
+ },
+ "recipe:majjige_huli": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Sorekayi_Majjige_Huli-_my_home_Bangalore-Karnataka-pic_12.jpg/960px-Sorekayi_Majjige_Huli-_my_home_Bangalore-Karnataka-pic_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sorekayi_Majjige_Huli-_my_home_Bangalore-Karnataka-pic_12.jpg",
+  "author": "Shruthi Gaurav Alva",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Sorekayi Majjige Huli- my home Bangalore-Karnataka-pic 12.jpg",
+  "local": "/static/img/photos/recipe_majjige_huli.jpg"
+ },
+ "recipe:ragi_mudde": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/RAGI_MUDDE.JPG/960px-RAGI_MUDDE.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:RAGI_MUDDE.JPG",
+  "author": "Vsigamany",
+  "license": "CC BY-SA 4.0",
+  "title": "File:RAGI MUDDE.JPG",
+  "local": "/static/img/photos/recipe_ragi_mudde.jpg"
+ },
+ "recipe:south_indian_meals": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/South_indian_meals_24.jpg/960px-South_indian_meals_24.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:South_indian_meals_24.jpg",
+  "author": "Swathi sri srinivasa raghavan",
+  "license": "CC0",
+  "title": "File:South indian meals 24.jpg",
+  "local": "/static/img/photos/recipe_south_indian_meals.jpg"
+ },
+ "recipe:dal_tadka": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Dal_Tadka-Delhi.jpg/960px-Dal_Tadka-Delhi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Dal_Tadka-Delhi.jpg",
+  "author": "AugustineKajur",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Dal Tadka-Delhi.jpg",
+  "local": "/static/img/photos/recipe_dal_tadka.jpg"
+ },
+ "recipe:chana_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg/960px-Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg",
+  "author": "Andy Li",
+  "license": "CC0",
+  "title": "File:Chana Masala - Mohammed - Spice Of Life 2024-05-27.jpg",
+  "local": "/static/img/photos/recipe_chana_masala.jpg"
+ },
+ "recipe:rajma_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Rajma_Masala_%2832081557778%29.jpg/960px-Rajma_Masala_%2832081557778%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Rajma_Masala_(32081557778).jpg",
+  "author": "Gaurav Nemade",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Rajma Masala (32081557778).jpg",
+  "local": "/static/img/photos/recipe_rajma_masala.jpg"
+ },
+ "recipe:dal_makhani": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Dal_Makhani.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Dal_Makhani.jpg",
+  "author": "Charles Haynes",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Dal Makhani.jpg",
+  "local": "/static/img/photos/recipe_dal_makhani.jpg"
+ },
+ "recipe:moong_khichdi": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/MoongDal_Khichdi.jpg/960px-MoongDal_Khichdi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:MoongDal_Khichdi.jpg",
+  "author": "Mrudit161187",
+  "license": "CC BY-SA 4.0",
+  "title": "File:MoongDal Khichdi.jpg",
+  "local": "/static/img/photos/recipe_moong_khichdi.jpg"
+ },
+ "recipe:palak_paneer": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Palakpaneer_Rayagada_Odisha_0009.jpg/960px-Palakpaneer_Rayagada_Odisha_0009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Palakpaneer_Rayagada_Odisha_0009.jpg",
+  "author": "Lopanayak",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Palakpaneer Rayagada Odisha 0009.jpg",
+  "local": "/static/img/photos/recipe_palak_paneer.jpg"
+ },
+ "recipe:paneer_butter_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Paneer_butter_masala_2.jpg/960px-Paneer_butter_masala_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Paneer_butter_masala_2.jpg",
+  "author": "Gannu03",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Paneer butter masala 2.jpg",
+  "local": "/static/img/photos/recipe_paneer_butter_masala.jpg"
+ },
+ "recipe:matar_paneer": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Matar-Paneer.JPG/960px-Matar-Paneer.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Matar-Paneer.JPG",
+  "author": "Mdsmds0",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Matar-Paneer.JPG",
+  "local": "/static/img/photos/recipe_matar_paneer.jpg"
+ },
+ "recipe:kadai_paneer": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Kadai_paneer_with_garlic_naan.jpg/960px-Kadai_paneer_with_garlic_naan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Kadai_paneer_with_garlic_naan.jpg",
+  "author": "YKanchan07",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Kadai paneer with garlic naan.jpg",
+  "local": "/static/img/photos/recipe_kadai_paneer.jpg"
+ },
+ "recipe:paneer_bhurji": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Homemade_Paneer_Bhurji_cooked_in_pan_India.jpg/960px-Homemade_Paneer_Bhurji_cooked_in_pan_India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Homemade_Paneer_Bhurji_cooked_in_pan_India.jpg",
+  "author": "Status 401",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Homemade Paneer Bhurji cooked in pan India.jpg",
+  "local": "/static/img/photos/recipe_paneer_bhurji.jpg"
+ },
+ "recipe:aloo_gobi": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Aloo_gobi.jpg/960px-Aloo_gobi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Aloo_gobi.jpg",
+  "author": "Unknown",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Aloo gobi.jpg",
+  "local": "/static/img/photos/recipe_aloo_gobi.jpg"
+ },
+ "recipe:aloo_matar": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Aloo_matar_1_-_Massachusetts.jpg/960px-Aloo_matar_1_-_Massachusetts.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Aloo_matar_1_-_Massachusetts.jpg",
+  "author": "Daderot",
+  "license": "CC0",
+  "title": "File:Aloo matar 1 - Massachusetts.jpg",
+  "local": "/static/img/photos/recipe_aloo_matar.jpg"
+ },
+ "recipe:jeera_aloo": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Jeera_aloo_served_with_sprouts_and_dal.jpg/960px-Jeera_aloo_served_with_sprouts_and_dal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Jeera_aloo_served_with_sprouts_and_dal.jpg",
+  "author": "Kanikatwl",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Jeera aloo served with sprouts and dal.jpg",
+  "local": "/static/img/photos/recipe_jeera_aloo.jpg"
+ },
+ "recipe:baingan_bharta": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Baingan_Ka_Bharta.JPG/960px-Baingan_Ka_Bharta.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Baingan_Ka_Bharta.JPG",
+  "author": "Zeel Patel",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Baingan Ka Bharta.JPG",
+  "local": "/static/img/photos/recipe_baingan_bharta.jpg"
+ },
+ "recipe:bhindi_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Bhindi_Masala.jpg/960px-Bhindi_Masala.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Bhindi_Masala.jpg",
+  "author": "Monali.mishra",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Bhindi Masala.jpg",
+  "local": "/static/img/photos/recipe_bhindi_masala.jpg"
+ },
+ "recipe:lauki_chana_dal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Lauki_and_Chana_Dal_Curry.jpg/960px-Lauki_and_Chana_Dal_Curry.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Lauki_and_Chana_Dal_Curry.jpg",
+  "author": "Neha Sonal",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Lauki and Chana Dal Curry.jpg",
+  "local": "/static/img/photos/recipe_lauki_chana_dal.jpg"
+ },
+ "recipe:soya_curry": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Nutrela_Soya_Chunks_Curry.jpg/960px-Nutrela_Soya_Chunks_Curry.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Nutrela_Soya_Chunks_Curry.jpg",
+  "author": "Rashmi Biswas",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Nutrela Soya Chunks Curry.jpg",
+  "local": "/static/img/photos/recipe_soya_curry.jpg"
+ },
+ "recipe:veg_biryani": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Veg_biryani.jpg/960px-Veg_biryani.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Veg_biryani.jpg",
+  "author": "Ramesh bethi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Veg biryani.jpg",
+  "local": "/static/img/photos/recipe_veg_biryani.jpg"
+ },
+ "recipe:kadhi": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Gujaratikadhi.jpg/960px-Gujaratikadhi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Gujaratikadhi.jpg",
+  "author": "Mowglee",
+  "license": "Public domain",
+  "title": "File:Gujaratikadhi.jpg",
+  "local": "/static/img/photos/recipe_kadhi.jpg"
+ },
+ "recipe:peas_pulao": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Matar_Pulao_-_Mohali_2016-08-06_8222.JPG/960px-Matar_Pulao_-_Mohali_2016-08-06_8222.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Matar_Pulao_-_Mohali_2016-08-06_8222.JPG",
+  "author": "Biswarup Ganguly",
+  "license": "CC BY 3.0",
+  "title": "File:Matar Pulao - Mohali 2016-08-06 8222.JPG",
+  "local": "/static/img/photos/recipe_peas_pulao.jpg"
+ },
+ "recipe:egg_curry": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Spicy_Anda_Curry.jpg/960px-Spicy_Anda_Curry.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Spicy_Anda_Curry.jpg",
+  "author": "https://onlybestrecipes.com/egg-curry-recipeegg-curry-recipe/",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Spicy Anda Curry.jpg",
+  "local": "/static/img/photos/recipe_egg_curry.jpg"
+ },
+ "recipe:egg_bhurji": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Spicy_egg_bhurji_%40_the_eggfactory.jpg/960px-Spicy_egg_bhurji_%40_the_eggfactory.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Spicy_egg_bhurji_@_the_eggfactory.jpg",
+  "author": "Praveen from Bangalore, India",
+  "license": "CC BY 2.0",
+  "title": "File:Spicy egg bhurji @ the eggfactory.jpg",
+  "local": "/static/img/photos/recipe_egg_bhurji.jpg"
+ },
+ "recipe:egg_fried_rice": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Egg_Fried_Rice.jpg/960px-Egg_Fried_Rice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Egg_Fried_Rice.jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Egg Fried Rice.jpg",
+  "local": "/static/img/photos/recipe_egg_fried_rice.jpg"
+ },
+ "recipe:masala_omelette": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Indian_Omelette_Odisha.jpg/960px-Indian_Omelette_Odisha.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Indian_Omelette_Odisha.jpg",
+  "author": "Saileshpat",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Indian Omelette Odisha.jpg",
+  "local": "/static/img/photos/recipe_masala_omelette.jpg"
+ },
+ "recipe:prawn_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Prawns_Masala_Recipe.jpg/960px-Prawns_Masala_Recipe.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Prawns_Masala_Recipe.jpg",
+  "author": "Quickspicerecipes",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Prawns Masala Recipe.jpg",
+  "local": "/static/img/photos/recipe_prawn_masala.jpg"
+ },
+ "recipe:butter_chicken": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Chicken_makhani.jpg/960px-Chicken_makhani.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chicken_makhani.jpg",
+  "author": "stu_spivack",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Chicken makhani.jpg",
+  "local": "/static/img/photos/recipe_butter_chicken.jpg"
+ },
+ "recipe:chicken_sukka": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Mangalorean_country_chicken_curry_%28_Kori_sukka%29.jpg/960px-Mangalorean_country_chicken_curry_%28_Kori_sukka%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mangalorean_country_chicken_curry_(_Kori_sukka).jpg",
+  "author": "Yakshitha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mangalorean country chicken curry ( Kori sukka).jpg",
+  "local": "/static/img/photos/recipe_chicken_sukka.jpg"
+ },
+ "recipe:idli": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/1/11/Idli_Sambar.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Idli_Sambar.JPG",
+  "author": "Soumya dey at English Wikipedia",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Idli Sambar.JPG",
+  "local": "/static/img/photos/recipe_idli.jpg"
+ },
+ "recipe:masala_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Masala_dosa_01.jpg/960px-Masala_dosa_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Masala_dosa_01.jpg",
+  "author": "Marajozkee",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Masala dosa 01.jpg",
+  "local": "/static/img/photos/recipe_masala_dosa.jpg"
+ },
+ "recipe:plain_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Plain_Dosa_from_North_India.jpg/960px-Plain_Dosa_from_North_India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Plain_Dosa_from_North_India.jpg",
+  "author": "Libreravi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Plain Dosa from North India.jpg",
+  "local": "/static/img/photos/recipe_plain_dosa.jpg"
+ },
+ "recipe:set_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Set_Dosa_1.jpg/960px-Set_Dosa_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Set_Dosa_1.jpg",
+  "author": "Yakshitha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Set Dosa 1.jpg",
+  "local": "/static/img/photos/recipe_set_dosa.jpg"
+ },
+ "recipe:rava_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Rava_Mysore_Dosa.jpg/960px-Rava_Mysore_Dosa.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Rava_Mysore_Dosa.jpg",
+  "author": "Oleg Yunakov",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Rava Mysore Dosa.jpg",
+  "local": "/static/img/photos/recipe_rava_dosa.jpg"
+ },
+ "recipe:neer_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Neer_Dosa%28_Neer_Tellavu%29.jpg/960px-Neer_Dosa%28_Neer_Tellavu%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Neer_Dosa(_Neer_Tellavu).jpg",
+  "author": "Yakshitha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Neer Dosa( Neer Tellavu).jpg",
+  "local": "/static/img/photos/recipe_neer_dosa.jpg"
+ },
+ "recipe:upma": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Upma_South_India.JPG/960px-Upma_South_India.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Upma_South_India.JPG",
+  "author": "Intodustin",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Upma South India.JPG",
+  "local": "/static/img/photos/recipe_upma.jpg"
+ },
+ "recipe:khara_bath": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Chow_chow_bath_%28_khara_bath_%26_kesari_bath_%29.jpg/960px-Chow_chow_bath_%28_khara_bath_%26_kesari_bath_%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chow_chow_bath_(_khara_bath_%26_kesari_bath_).jpg",
+  "author": "Apoorva lakshmi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chow chow bath ( khara bath & kesari bath ).jpg",
+  "local": "/static/img/photos/recipe_khara_bath.jpg"
+ },
+ "recipe:kesari_bath": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Kesari_bhath.jpg/960px-Kesari_bhath.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Kesari_bhath.jpg",
+  "author": "AntanO",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Kesari bhath.jpg",
+  "local": "/static/img/photos/recipe_kesari_bath.jpg"
+ },
+ "recipe:chow_chow_bath": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Chow_chow_bath_%28_khara_bath_%26_kesari_bath_%29.jpg/960px-Chow_chow_bath_%28_khara_bath_%26_kesari_bath_%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chow_chow_bath_(_khara_bath_%26_kesari_bath_).jpg",
+  "author": "Apoorva lakshmi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chow chow bath ( khara bath & kesari bath ).jpg",
+  "local": "/static/img/photos/recipe_chow_chow_bath.jpg"
+ },
+ "recipe:poha": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Poha_with_tomato_sause.jpg/960px-Poha_with_tomato_sause.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Poha_with_tomato_sause.jpg",
+  "author": "Mrsagar105",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Poha with tomato sause.jpg",
+  "local": "/static/img/photos/recipe_poha.jpg"
+ },
+ "recipe:pongal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Ven_Pongal_%26_sakkarai_pongal_with_vada_%26_bonda.jpg/960px-Ven_Pongal_%26_sakkarai_pongal_with_vada_%26_bonda.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ven_Pongal_%26_sakkarai_pongal_with_vada_%26_bonda.jpg",
+  "author": "Raamsanjay",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ven Pongal & sakkarai pongal with vada & bonda.jpg",
+  "local": "/static/img/photos/recipe_pongal.jpg"
+ },
+ "recipe:akki_rotti": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/2/22/Akki_rotti.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Akki_rotti.JPG",
+  "author": "Amarrg (talk) (Uploads)",
+  "license": "Public domain",
+  "title": "File:Akki rotti.JPG"
+ },
+ "recipe:ragi_dosa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Ragi_Dosa_Mumbai.jpg/960px-Ragi_Dosa_Mumbai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ragi_Dosa_Mumbai.jpg",
+  "author": "Pradeep717",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ragi Dosa Mumbai.jpg"
+ },
+ "recipe:oats_upma": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Oats_Upma...yummy.jpg/960px-Oats_Upma...yummy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Oats_Upma...yummy.jpg",
+  "author": "vrk1219",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Oats Upma...yummy.jpg"
+ },
+ "recipe:oats_porridge": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/1/19/Porridge_oats_with_blueberries_and_cinnamon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Porridge_oats_with_blueberries_and_cinnamon.jpg",
+  "author": "Ash TheFreecycler",
+  "license": "CC BY 2.0",
+  "title": "File:Porridge oats with blueberries and cinnamon.jpg"
+ },
+ "recipe:semiya_upma": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Traditional_Vermicelli_Upma_%28Semiya_Upma%29_with_Fresh_Vegetables.jpg/960px-Traditional_Vermicelli_Upma_%28Semiya_Upma%29_with_Fresh_Vegetables.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Traditional_Vermicelli_Upma_(Semiya_Upma)_with_Fresh_Vegetables.jpg",
+  "author": "Srujanabotcha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Traditional Vermicelli Upma (Semiya Upma) with Fresh Vegetables.jpg"
+ },
+ "recipe:aloo_paratha": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Aloo_Paratha_%2896238%29.jpg/960px-Aloo_Paratha_%2896238%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Aloo_Paratha_(96238).jpg",
+  "author": "Gannu03",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Aloo Paratha (96238).jpg"
+ },
+ "recipe:methi_thepla": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Masala_thepla_with_Methi_kela.JPG/960px-Masala_thepla_with_Methi_kela.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Masala_thepla_with_Methi_kela.JPG",
+  "author": "Rupasree",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Masala thepla with Methi kela.JPG"
+ },
+ "recipe:poori_sagu": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg/960px-Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg",
+  "author": "Wikichethan",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Poori Sagu Karnataka Kannada ಪೂರಿ ಸಾಗು ಕನ್ನಡ.jpg"
+ },
+ "recipe:besan_chilla": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Chilla_besan.JPG/960px-Chilla_besan.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chilla_besan.JPG",
+  "author": "Kamalsahansi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chilla besan.JPG"
+ },
+ "recipe:moong_chilla": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Moonglet_chilla_with_curd_and_hot_tea.jpg/960px-Moonglet_chilla_with_curd_and_hot_tea.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Moonglet_chilla_with_curd_and_hot_tea.jpg",
+  "author": "RekhaY07",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Moonglet chilla with curd and hot tea.jpg"
+ },
+ "recipe:pesarattu": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Pesarattu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Pesarattu.jpg",
+  "author": "Ryallabandi at en.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Pesarattu.jpg"
+ },
+ "recipe:adai": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Adai_Dosai_with_Chutney_01.jpg/960px-Adai_Dosai_with_Chutney_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Adai_Dosai_with_Chutney_01.jpg",
+  "author": "Sudhan Ram",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Adai Dosai with Chutney 01.jpg"
+ },
+ "recipe:uttapam": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Onion_%22Uttapam%22.jpg/960px-Onion_%22Uttapam%22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Onion_%22Uttapam%22.jpg",
+  "author": "Raj.Ranveer",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Onion \"Uttapam\".jpg"
+ },
+ "recipe:veg_sandwich": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Veg_Sandwich_3.jpg/960px-Veg_Sandwich_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Veg_Sandwich_3.jpg",
+  "author": "Ganesh Mohan T",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Veg Sandwich 3.jpg"
+ },
+ "recipe:paneer_paratha": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Awadhi_palak_paneer_paratha_dahi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Awadhi_palak_paneer_paratha_dahi.jpg",
+  "author": "rovingl",
+  "license": "CC BY 2.0",
+  "title": "File:Awadhi palak paneer paratha dahi.jpg"
+ },
+ "recipe:idli_vada": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Idli_vada_%28Tirupati%2C_Andrapradesh%29.jpg/960px-Idli_vada_%28Tirupati%2C_Andrapradesh%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Idli_vada_(Tirupati,_Andrapradesh).jpg",
+  "author": "ChiK",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Idli vada (Tirupati, Andrapradesh).jpg"
+ },
+ "recipe:medu_vada": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Uzhunnu_Vada_%28%E0%B4%89%E0%B4%B4%E0%B5%81%E0%B4%A8%E0%B5%8D%E0%B4%A8%E0%B5%8D_%E0%B4%B5%E0%B4%9F%29.jpg/960px-Uzhunnu_Vada_%28%E0%B4%89%E0%B4%B4%E0%B5%81%E0%B4%A8%E0%B5%8D%E0%B4%A8%E0%B5%8D_%E0%B4%B5%E0%B4%9F%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Uzhunnu_Vada_(%E0%B4%89%E0%B4%B4%E0%B5%81%E0%B4%A8%E0%B5%8D%E0%B4%A8%E0%B5%8D_%E0%B4%B5%E0%B4%9F).jpg",
+  "author": "Jyothis Thaliath",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Uzhunnu Vada (ഉഴുന്ന് വട).jpg"
+ },
+ "recipe:chapati": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Chapati_making_at_the_Chokhi_Dhani_Resort_Panchkula_08.jpg/960px-Chapati_making_at_the_Chokhi_Dhani_Resort_Panchkula_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chapati_making_at_the_Chokhi_Dhani_Resort_Panchkula_08.jpg",
+  "author": "Kritzolina",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chapati making at the Chokhi Dhani Resort Panchkula 08.jpg"
+ },
+ "recipe:plain_rice": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/7/77/Steamed_rice_in_bowl_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Steamed_rice_in_bowl_01.jpg",
+  "author": "Anna Frodesiak",
+  "license": "CC0",
+  "title": "File:Steamed rice in bowl 01.jpg"
+ },
+ "recipe:phulka_dal_combo": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Roti_with_Chana_Dal.jpg/960px-Roti_with_Chana_Dal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Roti_with_Chana_Dal.jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Roti with Chana Dal.jpg"
+ },
+ "recipe:pav_bhaji": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Pav_bhaji_SWW.jpg/960px-Pav_bhaji_SWW.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Pav_bhaji_SWW.jpg",
+  "author": "Solowomanwalks",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Pav bhaji SWW.jpg"
+ },
+ "recipe:onion_pakoda": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Onion_pakoda_with_futana_chutni.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Onion_pakoda_with_futana_chutni.jpg",
+  "author": "Narendar",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Onion pakoda with futana chutni.jpg"
+ },
+ "recipe:mirchi_bajji": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Stuffed_mirchi_bajji_%2816164286908%29.jpg/960px-Stuffed_mirchi_bajji_%2816164286908%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Stuffed_mirchi_bajji_(16164286908).jpg",
+  "author": "balu from fremont, ca, usa",
+  "license": "CC BY 2.0",
+  "title": "File:Stuffed mirchi bajji (16164286908).jpg"
+ },
+ "recipe:mangalore_buns": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Mangalore_Bun_%2B_Pickle_%284307171460%29.jpg/960px-Mangalore_Bun_%2B_Pickle_%284307171460%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mangalore_Bun_%2B_Pickle_(4307171460).jpg",
+  "author": "Manish Chauhan from Bangalore, India",
+  "license": "CC BY 2.0",
+  "title": "File:Mangalore Bun + Pickle (4307171460).jpg"
+ },
+ "recipe:goli_baje": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Goli_baje_or_Mangalore_bajji.jpg/960px-Goli_baje_or_Mangalore_bajji.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Goli_baje_or_Mangalore_bajji.jpg",
+  "author": "Rayabhari",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Goli baje or Mangalore bajji.jpg"
+ },
+ "recipe:masala_puri": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Masala_puri.jpg/960px-Masala_puri.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Masala_puri.jpg",
+  "author": "Kaushik AP",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Masala puri.jpg"
+ },
+ "recipe:pani_puri": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Crispy_Pani_Puri.jpg/960px-Crispy_Pani_Puri.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Crispy_Pani_Puri.jpg",
+  "author": "Teena Sometimes",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Crispy Pani Puri.jpg"
+ },
+ "recipe:kosambari": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Kosambari.jpg/960px-Kosambari.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Kosambari.jpg",
+  "author": "Bhavana Homecook",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Kosambari.jpg"
+ },
+ "recipe:cucumber_raita": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Cucumber-raita.jpg/960px-Cucumber-raita.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Cucumber-raita.jpg",
+  "author": "Sonia Goyal",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Cucumber-raita.jpg"
+ },
+ "recipe:aloo_tikki": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Aloo_Tikki_-_Homemade_-_Assam_-_DSC_002.jpg/960px-Aloo_Tikki_-_Homemade_-_Assam_-_DSC_002.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Aloo_Tikki_-_Homemade_-_Assam_-_DSC_002.jpg",
+  "author": "Gitika Gayan",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Aloo Tikki - Homemade - Assam - DSC 002.jpg"
+ },
+ "recipe:paneer_tikka": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Panir_Tikka_Indian_cheese_grilled.jpg/960px-Panir_Tikka_Indian_cheese_grilled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Panir_Tikka_Indian_cheese_grilled.jpg",
+  "author": "Sonja Pauen -Stanhopea",
+  "license": "CC BY 2.0 de",
+  "title": "File:Panir Tikka Indian cheese grilled.jpg"
+ },
+ "recipe:veg_noodles": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Hakka_Noodles%2C_Veg_Manchurian_PK009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Hakka_Noodles,_Veg_Manchurian_PK009.jpg",
+  "author": "PallaviKhale",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Hakka Noodles, Veg Manchurian PK009.jpg"
+ },
+ "recipe:veg_fried_rice": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Veg_Fried_Rice_%2851465%29.jpg/960px-Veg_Fried_Rice_%2851465%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Veg_Fried_Rice_(51465).jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Veg Fried Rice (51465).jpg"
+ },
+ "recipe:dhokla": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Dhokla_Home_Made%2CDuliajan%2CAssam.jpg/960px-Dhokla_Home_Made%2CDuliajan%2CAssam.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Dhokla_Home_Made,Duliajan,Assam.jpg",
+  "author": "Das Mousumi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Dhokla Home Made,Duliajan,Assam.jpg"
+ },
+ "recipe:filter_coffee": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/8/84/Indian_filter_coffee_in_Dabarah.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Indian_filter_coffee_in_Dabarah.jpg",
+  "author": "Unknown",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Indian filter coffee in Dabarah.jpg"
+ },
+ "recipe:masala_chai": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Masala_Chai.jpg/960px-Masala_Chai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Masala_Chai.jpg",
+  "author": "Ganesh Mohan T",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Masala Chai.jpg"
+ },
+ "recipe:badam_milk": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Badam_milk_spilled.jpg/960px-Badam_milk_spilled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Badam_milk_spilled.jpg",
+  "author": "DEEPAN RAJA .M",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Badam milk spilled.jpg"
+ },
+ "recipe:buttermilk": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Buttermilk-%28right%29-and-Milk-%28left%29.jpg/960px-Buttermilk-%28right%29-and-Milk-%28left%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Buttermilk-(right)-and-Milk-(left).jpg",
+  "author": "Ukko-wc",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Buttermilk-(right)-and-Milk-(left).jpg"
+ },
+ "recipe:sweet_lassi": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Lassi_%28Sweet%29.JPG/960px-Lassi_%28Sweet%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Lassi_(Sweet).JPG",
+  "author": "Nivasdurai",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Lassi (Sweet).JPG"
+ },
+ "recipe:lime_soda": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Koh_Mak%2C_Thailand%2C_Lime_juice_with_ice%2C_Lemonade%2C_Limeade.jpg/960px-Koh_Mak%2C_Thailand%2C_Lime_juice_with_ice%2C_Lemonade%2C_Limeade.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Koh_Mak,_Thailand,_Lime_juice_with_ice,_Lemonade,_Limeade.jpg",
+  "author": "Vyacheslav Argenberg",
+  "license": "CC BY 4.0",
+  "title": "File:Koh Mak, Thailand, Lime juice with ice, Lemonade, Limeade.jpg"
+ },
+ "recipe:gulab_jamun": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Two_Gulab_Jamun_in_a_plate_01.jpg/960px-Two_Gulab_Jamun_in_a_plate_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Two_Gulab_Jamun_in_a_plate_01.jpg",
+  "author": "Suyash.dwivedi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Two Gulab Jamun in a plate 01.jpg"
+ },
+ "recipe:mysore_pak": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Ghee_Mysore_Pak.jpg/960px-Ghee_Mysore_Pak.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ghee_Mysore_Pak.jpg",
+  "author": "Vaidehi Pujary",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ghee Mysore Pak.jpg"
+ },
+ "recipe:rice_kheer": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/CHAPATI_%26_KHEER_%28RICE_KHEER%29.JPG/960px-CHAPATI_%26_KHEER_%28RICE_KHEER%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:CHAPATI_%26_KHEER_(RICE_KHEER).JPG",
+  "author": "Kaman7580",
+  "license": "CC BY-SA 4.0",
+  "title": "File:CHAPATI & KHEER (RICE KHEER).JPG"
+ },
+ "recipe:fruit_bowl": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Fruitbowlwithmelons.jpg/960px-Fruitbowlwithmelons.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Fruitbowlwithmelons.jpg",
+  "author": "Mauro David",
+  "license": "CC BY 2.5",
+  "title": "File:Fruitbowlwithmelons.jpg"
+ },
+ "recipe:peanut_poha_chivda": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/0/00/Poha_Chivda_-_Homemade_-_Maharashtra_-_The_healthy%2C_tasty_snack.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Poha_Chivda_-_Homemade_-_Maharashtra_-_The_healthy,_tasty_snack.jpg",
+  "author": "Sheetal Rabindran",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Poha Chivda - Homemade - Maharashtra - The healthy, tasty snack.jpg"
+ },
+ "recipe:kettle_poha": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Poha_with_tomato_sause.jpg/960px-Poha_with_tomato_sause.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Poha_with_tomato_sause.jpg",
+  "author": "Mrsagar105",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Poha with tomato sause.jpg"
+ },
+ "recipe:rice_cooker_khichdi": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Spicy_Khichdi.JPG/960px-Spicy_Khichdi.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Spicy_Khichdi.JPG",
+  "author": "Seena.ge",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Spicy Khichdi.JPG"
+ },
+ "ingredient:basmati_rice": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Grano_de_arroz_basmati_integral%2C_2020-06-12%2C_DD_01-11_FS.jpg/960px-Grano_de_arroz_basmati_integral%2C_2020-06-12%2C_DD_01-11_FS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Grano_de_arroz_basmati_integral,_2020-06-12,_DD_01-11_FS.jpg",
+  "author": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Grano de arroz basmati integral, 2020-06-12, DD 01-11 FS.jpg"
+ },
+ "ingredient:rice_flour": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/1/19/Two_kinds_of_rice_flour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Two_kinds_of_rice_flour.jpg",
+  "author": "FotoosVanRobin",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Two kinds of rice flour.jpg"
+ },
+ "ingredient:poha": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/Poha.jpg/960px-Poha.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Poha.jpg",
+  "author": "Sanjay Acharya, aka Sanjay ach at en.wikipedia",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Poha.jpg"
+ },
+ "ingredient:rava": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Sa_semolina_far.jpg/960px-Sa_semolina_far.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sa_semolina_far.jpg",
+  "author": "Sanjay ach",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Sa semolina far.jpg"
+ },
+ "ingredient:atta": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Whole_wheat_grain_flour_being_scooped.jpg/960px-Whole_wheat_grain_flour_being_scooped.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Whole_wheat_grain_flour_being_scooped.jpg",
+  "author": "Margaret Hoogstrate",
+  "license": "CC BY 3.0",
+  "title": "File:Whole wheat grain flour being scooped.jpg"
+ },
+ "ingredient:maida": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/All-Purpose_Flour_%284107895947%29.jpg/960px-All-Purpose_Flour_%284107895947%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:All-Purpose_Flour_(4107895947).jpg",
+  "author": "Veganbaking.net from USA",
+  "license": "CC BY-SA 2.0",
+  "title": "File:All-Purpose Flour (4107895947).jpg"
+ },
+ "ingredient:besan": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Gram_flour_AvL.jpg/960px-Gram_flour_AvL.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Gram_flour_AvL.jpg",
+  "author": "AlexanderVanLoon",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Gram flour AvL.jpg"
+ },
+ "ingredient:ragi_flour": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Ragi_millet_flour.jpg/960px-Ragi_millet_flour.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ragi_millet_flour.jpg",
+  "author": "Medhi jyoti",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ragi millet flour.jpg"
+ },
+ "ingredient:oats": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/9/97/Rolled_oats.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Rolled_oats.jpg",
+  "author": "en:user:Hankwang",
+  "license": "Public domain",
+  "title": "File:Rolled oats.jpg"
+ },
+ "ingredient:vermicelli": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Vermicelli_Upma_in_North_India.jpg/960px-Vermicelli_Upma_in_North_India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Vermicelli_Upma_in_North_India.jpg",
+  "author": "Ravi Dwivedi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Vermicelli Upma in North India.jpg"
+ },
+ "ingredient:bread": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Home_made_sour_dough_bread.jpg/960px-Home_made_sour_dough_bread.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Home_made_sour_dough_bread.jpg",
+  "author": "Tomascastelazo",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Home made sour dough bread.jpg"
+ },
+ "ingredient:pav": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Bhaji_pav_2.jpg/960px-Bhaji_pav_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Bhaji_pav_2.jpg",
+  "author": "BHAAGIi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Bhaji pav 2.jpg"
+ },
+ "ingredient:noodles": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Hot_Dry_Noodles.jpg/960px-Hot_Dry_Noodles.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Hot_Dry_Noodles.jpg",
+  "author": "ZhengZhou",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Hot Dry Noodles.jpg"
+ },
+ "ingredient:gulab_jamun_mix": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Two_Gulab_Jamun_in_a_plate_01.jpg/960px-Two_Gulab_Jamun_in_a_plate_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Two_Gulab_Jamun_in_a_plate_01.jpg",
+  "author": "Suyash.dwivedi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Two Gulab Jamun in a plate 01.jpg"
+ },
+ "ingredient:chana_dal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Chana_Ko_Dal.jpg/960px-Chana_Ko_Dal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chana_Ko_Dal.jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chana Ko Dal.jpg"
+ },
+ "ingredient:rajma": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Chitra_Rajma.jpg/960px-Chitra_Rajma.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chitra_Rajma.jpg",
+  "author": "Sanjay Acharya",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chitra Rajma.jpg"
+ },
+ "ingredient:kabuli_chana": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/Ordinary_chickpeas_in_a_ceramic_bowl.jpg/960px-Ordinary_chickpeas_in_a_ceramic_bowl.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ordinary_chickpeas_in_a_ceramic_bowl.jpg",
+  "author": "AlixSaz",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ordinary chickpeas in a ceramic bowl.jpg"
+ },
+ "ingredient:green_moong": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Mung_beans_%28Vigna_radiata%29.jpg/960px-Mung_beans_%28Vigna_radiata%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mung_beans_(Vigna_radiata).jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mung beans (Vigna radiata).jpg"
+ },
+ "ingredient:peanuts": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg/960px-Peanuts_%28Arachis_hypogaea%29_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_peeled.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Peanuts_(Arachis_hypogaea)_-_in_shell,_shell_cracked_open,_shelled,_peeled.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Peanuts (Arachis hypogaea) - in shell, shell cracked open, shelled, peeled.jpg"
+ },
+ "ingredient:roasted_chana": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Roasted_Chickpea_Chana_with_Salt_and_Turmeric.jpg/960px-Roasted_Chickpea_Chana_with_Salt_and_Turmeric.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Roasted_Chickpea_Chana_with_Salt_and_Turmeric.jpg",
+  "author": "Nizil Shah",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Roasted Chickpea Chana with Salt and Turmeric.jpg"
+ },
+ "ingredient:tofu": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Tofu_Sisig.jpg/960px-Tofu_Sisig.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Tofu_Sisig.jpg",
+  "author": "Louiesemendez",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Tofu Sisig.jpg"
+ },
+ "ingredient:milk": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/2025.04.10_Milk_Glass_Sugar_Bowl_and_Antique_Glass_Creamer.jpg/960px-2025.04.10_Milk_Glass_Sugar_Bowl_and_Antique_Glass_Creamer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:2025.04.10_Milk_Glass_Sugar_Bowl_and_Antique_Glass_Creamer.jpg",
+  "author": "Illarion Kalashnikov",
+  "license": "CC BY-SA 4.0",
+  "title": "File:2025.04.10 Milk Glass Sugar Bowl and Antique Glass Creamer.jpg"
+ },
+ "ingredient:curd": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Plain_Curd_Rice.jpg/960px-Plain_Curd_Rice.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Plain_Curd_Rice.jpg",
+  "author": "5boi38",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Plain Curd Rice.jpg"
+ },
+ "ingredient:egg": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Chicken_Egg_without_Eggshell_5859.jpg/960px-Chicken_Egg_without_Eggshell_5859.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chicken_Egg_without_Eggshell_5859.jpg",
+  "author": "Biswarup Ganguly",
+  "license": "CC BY 3.0",
+  "title": "File:Chicken Egg without Eggshell 5859.jpg"
+ },
+ "ingredient:chicken": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Raw_chicken.jpg/960px-Raw_chicken.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Raw_chicken.jpg",
+  "author": "Bhaskaranaidu",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Raw chicken.jpg"
+ },
+ "ingredient:fish": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Seer_fish_%2890288%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Seer_fish_(90288).jpg",
+  "author": "Jeevitha VM",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Seer fish (90288).jpg"
+ },
+ "ingredient:prawns": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Prawns_-_%E0%A4%B8%E0%A5%81%E0%A4%82%E0%A4%97%E0%A4%9F%E0%A4%BE.jpg/960px-Prawns_-_%E0%A4%B8%E0%A5%81%E0%A4%82%E0%A4%97%E0%A4%9F%E0%A4%BE.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Prawns_-_%E0%A4%B8%E0%A5%81%E0%A4%82%E0%A4%97%E0%A4%9F%E0%A4%BE.jpg",
+  "author": "Kaviyatriatisha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Prawns - सुंगटा.jpg"
+ },
+ "ingredient:onion": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Mixed_onions.jpg/960px-Mixed_onions.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mixed_onions.jpg",
+  "author": "Colin",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Mixed onions.jpg"
+ },
+ "ingredient:carrot": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Carrots_of_many_colors.jpg/960px-Carrots_of_many_colors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Carrots_of_many_colors.jpg",
+  "author": "Stephen Ausmus",
+  "license": "Public domain",
+  "title": "File:Carrots of many colors.jpg"
+ },
+ "ingredient:beans": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Four_Different_Varieties_of_Green_Beans_%28Phaseolus_vulgaris%29.jpg/960px-Four_Different_Varieties_of_Green_Beans_%28Phaseolus_vulgaris%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Four_Different_Varieties_of_Green_Beans_(Phaseolus_vulgaris).jpg",
+  "author": "Christopher Franz",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Four Different Varieties of Green Beans (Phaseolus vulgaris).jpg"
+ },
+ "ingredient:capsicum": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Baby_Bell_pepper_%27%27Capsicum_annuum%27%27_.jpg/960px-Baby_Bell_pepper_%27%27Capsicum_annuum%27%27_.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Baby_Bell_pepper_%27%27Capsicum_annuum%27%27_.jpg",
+  "author": "Brocken Inaglory",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Baby Bell pepper ''Capsicum annuum'' .jpg"
+ },
+ "ingredient:sweet_corn": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Sweet_corn_2.jpg/960px-Sweet_corn_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sweet_corn_2.jpg",
+  "author": "পাপৰি বৰা",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Sweet corn 2.jpg"
+ },
+ "ingredient:coconut": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Coconuts_-_single_and_cracked_open.jpg/960px-Coconuts_-_single_and_cracked_open.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Coconuts_-_single_and_cracked_open.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Coconuts - single and cracked open.jpg"
+ },
+ "ingredient:garlic": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Garlic_bulbs_and_cloves.jpg/960px-Garlic_bulbs_and_cloves.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Garlic_bulbs_and_cloves.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Garlic bulbs and cloves.jpg"
+ },
+ "ingredient:green_chilli": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Green_chillies_variety.jpg/960px-Green_chillies_variety.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Green_chillies_variety.jpg",
+  "author": "Medhi jyoti",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Green chillies variety.jpg"
+ },
+ "ingredient:curry_leaves": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/%27Narasingha_Paat%27_or_Curry_leaves%2C_Scientific_Name-_Murraya_koenigii.jpg/960px-%27Narasingha_Paat%27_or_Curry_leaves%2C_Scientific_Name-_Murraya_koenigii.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:%27Narasingha_Paat%27_or_Curry_leaves,_Scientific_Name-_Murraya_koenigii.jpg",
+  "author": "AditiB08",
+  "license": "CC BY-SA 4.0",
+  "title": "File:'Narasingha Paat' or Curry leaves, Scientific Name- Murraya koenigii.jpg"
+ },
+ "ingredient:coriander_leaves": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Coriander_Leaves.jpg/960px-Coriander_Leaves.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Coriander_Leaves.jpg",
+  "author": "Rupeshm364",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Coriander Leaves.jpg"
+ },
+ "ingredient:mint": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Mint_leaves_%28Mentha_spicata%29.jpg/960px-Mint_leaves_%28Mentha_spicata%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mint_leaves_(Mentha_spicata).jpg",
+  "author": "Commonists",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mint leaves (Mentha spicata).jpg"
+ },
+ "ingredient:lemon": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Lemon.jpg/960px-Lemon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Lemon.jpg",
+  "author": "André Karwath aka Aka",
+  "license": "CC BY-SA 2.5",
+  "title": "File:Lemon.jpg"
+ },
+ "ingredient:tamarind": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Tamarind_fruits_%28Tamarindus_indica_%27Si_Thong%27%29.jpg/960px-Tamarind_fruits_%28Tamarindus_indica_%27Si_Thong%27%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Tamarind_fruits_(Tamarindus_indica_%27Si_Thong%27).jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Tamarind fruits (Tamarindus indica 'Si Thong').jpg"
+ },
+ "ingredient:banana": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Cavendish_banana_from_Maracaibo.jpg/960px-Cavendish_banana_from_Maracaibo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Cavendish_banana_from_Maracaibo.jpg",
+  "author": "Wilfredor",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Cavendish banana from Maracaibo.jpg"
+ },
+ "ingredient:apple": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/960px-Red_Apple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Red_Apple.jpg",
+  "author": "Abhijit Tembhekar from Mumbai, India",
+  "license": "CC BY 2.0",
+  "title": "File:Red Apple.jpg"
+ },
+ "ingredient:orange": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Oranges_-_whole-halved-segment.jpg/960px-Oranges_-_whole-halved-segment.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Oranges_-_whole-halved-segment.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Oranges - whole-halved-segment.jpg"
+ },
+ "ingredient:dates": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Mazafati_dates_-_whole%2C_halved_and_seed.jpg/960px-Mazafati_dates_-_whole%2C_halved_and_seed.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mazafati_dates_-_whole,_halved_and_seed.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mazafati dates - whole, halved and seed.jpg"
+ },
+ "ingredient:raisins": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Raisins_01.jpg/960px-Raisins_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Raisins_01.jpg",
+  "author": "Paweł Kuźniar (Jojo_1, Jojo)",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Raisins 01.jpg"
+ },
+ "ingredient:almonds": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg/960px-Almonds_-_in_shell%2C_shell_cracked_open%2C_shelled%2C_blanched.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Almonds_-_in_shell,_shell_cracked_open,_shelled,_blanched.jpg",
+  "author": "Ivar Leidus",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Almonds - in shell, shell cracked open, shelled, blanched.jpg"
+ },
+ "ingredient:biscuits": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Morinaga_marie_biscuit_2014-2.jpg/960px-Morinaga_marie_biscuit_2014-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Morinaga_marie_biscuit_2014-2.jpg",
+  "author": "Kentin",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Morinaga marie biscuit 2014-2.jpg"
+ },
+ "ingredient:jaggery": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Jaggery_preparation0.jpg/960px-Jaggery_preparation0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Jaggery_preparation0.jpg",
+  "author": "Ezhuttukari",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Jaggery preparation0.jpg"
+ },
+ "ingredient:coconut_milk": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Coconut_milk_from_can01.JPG/960px-Coconut_milk_from_can01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Coconut_milk_from_can01.JPG",
+  "author": "Meursault2004",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Coconut milk from can01.JPG"
+ },
+ "ingredient:corn_flour": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Corn_flour_%2820240709%29.jpg/960px-Corn_flour_%2820240709%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Corn_flour_(20240709).jpg",
+  "author": "Fumikas Sagisavas",
+  "license": "CC0",
+  "title": "File:Corn flour (20240709).jpg"
+ },
+ "ingredient:soy_sauce": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Soy_Sauce_Bulk.jpg/960px-Soy_Sauce_Bulk.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Soy_Sauce_Bulk.jpg",
+  "author": "SamHolt6",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Soy Sauce Bulk.jpg"
+ },
+ "ingredient:tea_powder": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Darjeeling%2C_India%2C_Darjeeling_tea%2C_Black_tea.jpg/960px-Darjeeling%2C_India%2C_Darjeeling_tea%2C_Black_tea.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Darjeeling,_India,_Darjeeling_tea,_Black_tea.jpg",
+  "author": "Vyacheslav Argenberg",
+  "license": "CC BY 4.0",
+  "title": "File:Darjeeling, India, Darjeeling tea, Black tea.jpg"
+ },
+ "ingredient:coffee_powder": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/8/84/Indian_filter_coffee_in_Dabarah.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Indian_filter_coffee_in_Dabarah.jpg",
+  "author": "Unknown",
+  "license": "CC BY-SA 3.0",
+  "title": "File:Indian filter coffee in Dabarah.jpg"
+ },
+ "ingredient:rasam_powder": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Rasam_powder_picture.JPG/960px-Rasam_powder_picture.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Rasam_powder_picture.JPG",
+  "author": "Nithyasrm",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Rasam powder picture.JPG"
+ },
+ "ingredient:chole_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg/960px-Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chana_Masala_-_Mohammed_-_Spice_Of_Life_2024-05-27.jpg",
+  "author": "Andy Li",
+  "license": "CC0",
+  "title": "File:Chana Masala - Mohammed - Spice Of Life 2024-05-27.jpg"
+ },
+ "ingredient:pav_bhaji_masala": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Bambayya_Pav_bhaji.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Bambayya_Pav_bhaji.jpg",
+  "author": "Rupali Banarase",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Bambayya Pav bhaji.jpg"
+ },
+ "ingredient:biryani_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Garam_masala_used_for_making_Biryani_and_Hyderabadi_Haleem.jpg/960px-Garam_masala_used_for_making_Biryani_and_Hyderabadi_Haleem.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Garam_masala_used_for_making_Biryani_and_Hyderabadi_Haleem.jpg",
+  "author": "Breville USA",
+  "license": "CC BY 2.0",
+  "title": "File:Garam masala used for making Biryani and Hyderabadi Haleem.jpg"
+ },
+ "ingredient:tandoori_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Tandoori_masala.jpg/960px-Tandoori_masala.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Tandoori_masala.jpg",
+  "author": "Kamava1971",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Tandoori masala.jpg"
+ },
+ "ingredient:oil": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Sunflower_oil_bottles_in_Dnipro.jpg/960px-Sunflower_oil_bottles_in_Dnipro.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sunflower_oil_bottles_in_Dnipro.jpg",
+  "author": "Alex Blokha",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Sunflower oil bottles in Dnipro.jpg"
+ },
+ "ingredient:turmeric": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Chlorofeel_Spices_Turmeric_Powder_Packet.jpg/960px-Chlorofeel_Spices_Turmeric_Powder_Packet.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chlorofeel_Spices_Turmeric_Powder_Packet.jpg",
+  "author": "Businesses247",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chlorofeel Spices Turmeric Powder Packet.jpg"
+ },
+ "ingredient:chilli_powder": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Salt%2C_Sugar%2C_Chili_Powder_and_Tumeric.jpg/960px-Salt%2C_Sugar%2C_Chili_Powder_and_Tumeric.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Salt,_Sugar,_Chili_Powder_and_Tumeric.jpg",
+  "author": "Doug Beckers from Macmasters Beach, Australia",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Salt, Sugar, Chili Powder and Tumeric.jpg"
+ },
+ "ingredient:mustard_seeds": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Mustard_seeds_03.jpg/960px-Mustard_seeds_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mustard_seeds_03.jpg",
+  "author": "Rajani Gairshail",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mustard seeds 03.jpg"
+ },
+ "ingredient:garam_masala": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Garam_Masala_1.jpg/960px-Garam_Masala_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Garam_Masala_1.jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Garam Masala 1.jpg"
+ },
+ "ingredient:coriander_powder": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Chlorofeel_Spices_Turmeric%2C_Coriander_and_Cumin_Powder_Packet.jpg/960px-Chlorofeel_Spices_Turmeric%2C_Coriander_and_Cumin_Powder_Packet.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Chlorofeel_Spices_Turmeric,_Coriander_and_Cumin_Powder_Packet.jpg",
+  "author": "Businesses247",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Chlorofeel Spices Turmeric, Coriander and Cumin Powder Packet.jpg"
+ },
+ "ingredient:dry_red_chilli": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Dried_red_chillies_in_Jaipur.jpg/960px-Dried_red_chillies_in_Jaipur.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Dried_red_chillies_in_Jaipur.jpg",
+  "author": "Dudva",
+  "license": "CC0",
+  "title": "File:Dried red chillies in Jaipur.jpg"
+ },
+ "ingredient:cardamom": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Elettaria_cardamomum_Capsules_and_seeds.jpg/960px-Elettaria_cardamomum_Capsules_and_seeds.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Elettaria_cardamomum_Capsules_and_seeds.jpg",
+  "author": "Didier Descouens",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Elettaria cardamomum Capsules and seeds.jpg"
+ },
+ "recipe:potato_palya": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Lunchbox-20101109_Radidh_rasam%2C_potato_poryal_%285158863719%29.jpg/960px-Lunchbox-20101109_Radidh_rasam%2C_potato_poryal_%285158863719%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Lunchbox-20101109_Radidh_rasam,_potato_poryal_(5158863719).jpg",
+  "author": "Daiju Azuma from KOBE, Japan",
+  "license": "CC BY-SA 2.0",
+  "title": "File:Lunchbox-20101109 Radidh rasam, potato poryal (5158863719).jpg"
+ },
+ "recipe:masoor_dal": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Masoor_Dal_in_Dhaba_Style.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Masoor_Dal_in_Dhaba_Style.jpg",
+  "author": "Solehachikhalkar",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Masoor Dal in Dhaba Style.jpg"
+ },
+ "recipe:mix_veg_curry": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Mixed_vegetable_curry_2.jpg/960px-Mixed_vegetable_curry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Mixed_vegetable_curry_2.jpg",
+  "author": "Dolon Prova",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mixed vegetable curry 2.jpg"
+ },
+ "recipe:mushroom_masala": {
+  "thumb": "https://upload.wikimedia.org/wikipedia/commons/3/37/Mushroom_Tikka_Masala_by_Preeti_Tamilarasan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "page": "https://commons.wikimedia.org/wiki/File:Mushroom_Tikka_Masala_by_Preeti_Tamilarasan.jpg",
+  "author": "Preeti Tamilarasan",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Mushroom Tikka Masala by Preeti Tamilarasan.jpg"
+ },
+ "recipe:rava_idli": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/MTR_Rava_Idli.jpg/960px-MTR_Rava_Idli.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:MTR_Rava_Idli.jpg",
+  "author": "Maharana7573",
+  "license": "CC BY-SA 4.0",
+  "title": "File:MTR Rava Idli.jpg"
+ },
+ "recipe:sprouts_salad": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Sprouts_salad.jpg/960px-Sprouts_salad.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Sprouts_salad.jpg",
+  "author": "Keerthinellikkalaya",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Sprouts salad.jpg"
+ },
+ "recipe:semiya_payasa": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Semiya_payasam%2C_Alappuzha.jpg/960px-Semiya_payasam%2C_Alappuzha.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Semiya_payasam,_Alappuzha.jpg",
+  "author": "Vis M",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Semiya payasam, Alappuzha.jpg"
+ },
+ "recipe:banana_shake": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Banana_shake.jpg/960px-Banana_shake.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Banana_shake.jpg",
+  "author": "Daniel Wiafe",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Banana shake.jpg"
+ },
+ "recipe:paneer_rice_bowl": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Paneer_fried_rice...jpg/960px-Paneer_fried_rice...jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Paneer_fried_rice...jpg",
+  "author": "Dikshita Bairagi",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Paneer fried rice...jpg"
+ },
+ "ingredient:masoor_dal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/A_mix_of_split_lentils%2C_masoor_dal_India.jpg/960px-A_mix_of_split_lentils%2C_masoor_dal_India.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:A_mix_of_split_lentils,_masoor_dal_India.jpg",
+  "author": "jasleen_kaur from USA",
+  "license": "CC BY-SA 2.0",
+  "title": "File:A mix of split lentils, masoor dal India.jpg"
+ },
+ "ingredient:urad_dal": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Urad_dal_black_gram.jpg/960px-Urad_dal_black_gram.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Urad_dal_black_gram.jpg",
+  "author": "தீப்தி செந்தில்",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Urad dal black gram.jpg"
+ },
+ "ingredient:paneer": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Panir_Paneer_Indian_cheese_fresh.jpg/960px-Panir_Paneer_Indian_cheese_fresh.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Panir_Paneer_Indian_cheese_fresh.jpg",
+  "author": "Sonja Pauen - Stanhopea",
+  "license": "CC BY 2.0 de",
+  "title": "File:Panir Paneer Indian cheese fresh.jpg"
+ },
+ "ingredient:ghee": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Ghee_2.jpg/960px-Ghee_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Ghee_2.jpg",
+  "author": "Gaurav Dhwaj Khadka",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Ghee 2.jpg"
+ },
+ "ingredient:butter": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Antoine_Vollon_-_Mound_of_Butter_-_National_Gallery_of_Art.jpg/960px-Antoine_Vollon_-_Mound_of_Butter_-_National_Gallery_of_Art.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Antoine_Vollon_-_Mound_of_Butter_-_National_Gallery_of_Art.jpg",
+  "author": "Antoine Vollon",
+  "license": "Public domain",
+  "title": "File:Antoine Vollon - Mound of Butter - National Gallery of Art.jpg"
+ },
+ "ingredient:spinach": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Spinach_leaves_1.jpg/960px-Spinach_leaves_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Spinach_leaves_1.jpg",
+  "author": "Microrao",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Spinach leaves 1.jpg"
+ },
+ "ingredient:ginger": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/GingerRoot_Novo_Los_Angeles.jpg/960px-GingerRoot_Novo_Los_Angeles.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:GingerRoot_Novo_Los_Angeles.jpg",
+  "author": "Blervis",
+  "license": "CC BY-SA 4.0",
+  "title": "File:GingerRoot Novo Los Angeles.jpg"
+ },
+ "ingredient:cashews": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/CASHEW_NUTS.jpg/960px-CASHEW_NUTS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:CASHEW_NUTS.jpg",
+  "author": "Ranjithkumar Murugesan",
+  "license": "CC0",
+  "title": "File:CASHEW NUTS.jpg"
+ },
+ "ingredient:cumin": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Seeds_of_Cumin.jpg/960px-Seeds_of_Cumin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Seeds_of_Cumin.jpg",
+  "author": "Sanjay Acharya",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Seeds of Cumin.jpg"
+ },
+ "ingredient:black_pepper": {
+  "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Black_peppercorns_gn.jpg/960px-Black_peppercorns_gn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+  "page": "https://commons.wikimedia.org/wiki/File:Black_peppercorns_gn.jpg",
+  "author": "Gnangcomapp",
+  "license": "CC BY-SA 4.0",
+  "title": "File:Black peppercorns gn.jpg"
  }
 }
