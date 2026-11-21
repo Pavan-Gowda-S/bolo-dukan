@@ -310,6 +310,8 @@ def init_db() -> None:
         if "accepted_by" not in order_cols:  # 2: "owner" or "waiter:Ravi"
             conn.execute("ALTER TABLE orders ADD COLUMN accepted_by TEXT NOT NULL DEFAULT ''")
         sess_cols = {r[1] for r in conn.execute("PRAGMA table_info(table_sessions)")}
+        if "bill_payer" not in sess_cols:  # who pays, decided by Bill Roulette
+            conn.execute("ALTER TABLE table_sessions ADD COLUMN bill_payer TEXT NOT NULL DEFAULT ''")
         if "tip_paise" not in sess_cols:  # tip chosen by the guest, added to the UPI link
             conn.execute("ALTER TABLE table_sessions ADD COLUMN tip_paise INTEGER NOT NULL DEFAULT 0")
         if "approved_by" not in sess_cols:
@@ -333,6 +335,24 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS game_room_answers (
                 room_id INTEGER NOT NULL, player_id INTEGER NOT NULL, q_index INTEGER NOT NULL, choice INTEGER NOT NULL,
                 correct INTEGER NOT NULL, points INTEGER NOT NULL, answered_at REAL NOT NULL, PRIMARY KEY (room_id, player_id, q_index));
+            CREATE TABLE IF NOT EXISTS game_prizes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, restaurant_id INTEGER NOT NULL, session_id INTEGER NOT NULL,
+                table_number INTEGER NOT NULL, game TEXT NOT NULL, kind TEXT NOT NULL, label TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending', given_by TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS roulette_rounds (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, session_id INTEGER NOT NULL, players TEXT NOT NULL,
+                loser INTEGER NOT NULL, pulls TEXT NOT NULL, done INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS housie_rounds (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, restaurant_id INTEGER NOT NULL, starts_at REAL NOT NULL, seq TEXT NOT NULL,
+                ended INTEGER NOT NULL DEFAULT 0, ended_at REAL, created_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS housie_tickets (
+                round_id INTEGER NOT NULL, session_id INTEGER NOT NULL, table_number INTEGER NOT NULL, grid TEXT NOT NULL,
+                PRIMARY KEY (round_id, session_id));
+            CREATE TABLE IF NOT EXISTS housie_claims (
+                round_id INTEGER NOT NULL, prize TEXT NOT NULL, session_id INTEGER NOT NULL, table_number INTEGER NOT NULL,
+                created_at TEXT NOT NULL, PRIMARY KEY (round_id, prize));
+            CREATE TABLE IF NOT EXISTS lucky_spins (
+                session_id INTEGER PRIMARY KEY, segment INTEGER NOT NULL, label TEXT NOT NULL, created_at TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS staff_tables (
                 staff_id INTEGER NOT NULL REFERENCES staff(id), table_id INTEGER NOT NULL REFERENCES tables(id),
                 PRIMARY KEY (staff_id, table_id));

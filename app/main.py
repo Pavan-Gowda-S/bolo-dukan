@@ -294,6 +294,7 @@ def _session_view(conn, s: dict) -> dict:
         "settled_paise": s.get("settled_paise", 0),
         "pay_method": s.get("pay_method", ""),
         "tip_paise": int(s.get("tip_paise") or 0) if config.FEATURE_TIPS else 0,
+        "bill_payer": s.get("bill_payer", "") if config.FEATURE_ROULETTE else "",
         "guests": guests,
         "waiter_called": calls > 0,
         "waiter_call": row(conn.execute("SELECT id, reason, created_at FROM waiter_calls WHERE session_id = ? AND done = 0 ORDER BY id DESC LIMIT 1", (s["id"],)).fetchone()),
@@ -1176,6 +1177,7 @@ def dashboard(req: Request):
         ).fetchone()
         extras = features.dashboard_extras(conn, rid)
         more = upgrades.dashboard_extras(conn, rid)
+        prizes = tablegames.pending_prizes(conn, rid)  # Housie / Lucky Spin prizes waiting to be served
     return {
         "restaurant": r,
         "tables": tables,
@@ -1184,6 +1186,7 @@ def dashboard(req: Request):
         "server_time": now_iso(),
         **extras,  # announcements (Kannada alerts) and quiz prizes
         **more,    # split-bill progress per table
+        "game_prizes": prizes,  # Housie / Lucky Spin prizes to serve (added to the bill at ₹0)
     }
 
 
@@ -1321,3 +1324,4 @@ from . import features  # noqa: E402
 from . import upgrades  # noqa: E402  (sales summary, split bill, owner voice)
 from . import store  # noqa: E402  (supermarket mode and meal planner)
 from . import restaurant  # noqa: E402  (kitchen TV, staff + waiter portal, game rooms, daily report)
+from . import tablegames  # noqa: E402  (Bill Roulette, Housie, Lucky Spin, game prizes)

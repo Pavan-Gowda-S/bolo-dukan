@@ -208,6 +208,12 @@
     renderOrders(); renderBill(); updateCartBar();
     $("micFab").classList.toggle("hidden", !(info.features.voice_order && (sess.status === "OPEN" || (sess.status === "BILL_REQUESTED" && info.features.voice_actions))));
     $("budgetBtn").classList.toggle("hidden", !(info.features.budget_order && sess.status === "OPEN"));
+    if (info.features.lucky_spin && info.features.lucky_spin_min_paise && sess.status === "OPEN") {  // nudge: order a bit more, unlock a spin
+      const more = info.features.lucky_spin_min_paise - sess.bill_paise;
+      $("spinNudgeText").innerHTML = more > 0 ? `<b>Order ${BD.rupees(more)} more</b> to unlock the Lucky Spin<br><span class="small muted">Win free chai, juice, dessert or a starter</span>`
+        : `<b>Lucky Spin unlocked!</b><br><span class="small muted">Tap to spin the wheel once</span>`;
+      $("spinNudge").classList.remove("hidden");
+    } else $("spinNudge").classList.add("hidden");
   }
 
   function notifyOrderChanges() {
@@ -370,7 +376,7 @@
   function setHtml(id, html) { const el = $(id); if (el._h !== html) { el._h = html; el.innerHTML = html; } }
   document.addEventListener("click", e => {
     const g = e.target.closest("[data-goto]"); if (g) setTab(g.dataset.goto);
-    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, quizEnabled: !!(info && info.features.table_quiz), roomsEnabled: !!(info && info.features.game_rooms), session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
+    if (e.target.closest(".open-games") && BD.Games) BD.Games.open({ tableToken: TOKEN, quizEnabled: !!(info && info.features.table_quiz), roomsEnabled: !!(info && info.features.game_rooms), features: (info && info.features) || {}, session: () => (me && sess && ["OPEN", "BILL_REQUESTED", "PAID", "WAITING_APPROVAL"].includes(sess.status) ? me : null) });
   });
 
   // ---------------------------------------------------------------- bill
@@ -388,6 +394,7 @@
     if (!lines.size) html += `<p style="opacity:.6">Nothing on the bill yet. Only orders the cashier accepted show here.</p>`;
     lines.forEach(l => html += `<div class="ln"><span><span><b>${l.qty} ×</b> ${BD.esc(l.name)}</span><small>${BD.rupees(l.price)} each</small></span><span class="mono">${l.price ? BD.rupees(l.qty * l.price) : "FREE"}</span></div>`);
     html += `</div><div class="rc-sub"><span>${nItems} item${nItems === 1 ? "" : "s"}</span><span class="mono">${BD.rupees(sess.bill_paise)}</span></div>
+      ${sess.bill_payer ? `<div class="payer-tag">🎯 ${BD.esc(sess.bill_payer)} pays today · Bill Roulette</div>` : ""}
       ${sess.tip_paise ? `<div class="rc-sub"><span>Tip · thank you</span><span class="mono">${BD.rupees(sess.tip_paise)}</span></div>` : ""}
       <div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise + (sess.tip_paise || 0))}</b></div>
       ${sess.status === "PAID" || sess.pay_method ? "" : `<p class="rc-note">Prices as on the menu. Pay by UPI or at the counter.</p>`}`;

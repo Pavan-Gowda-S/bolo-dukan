@@ -72,6 +72,10 @@ def announce(conn, restaurant_id: int, table_number: int, event: str, items=None
     elif event == "share_paid":
         kn, en = (f"ಟೇಬಲ್ {n}, ಒಬ್ಬರ ಪಾಲು ಪಾವತಿಯಾಗಿದೆ. {_rs(amount_paise or 0)} ರೂಪಾಯಿ.",
                   f"Table {n}: one share paid, {_rs(amount_paise or 0)} rupees.")
+    elif event == "game_prize":  # reason carries the prize ("juice (First line)")
+        kn, en = f"ಟೇಬಲ್ {n} ಗೆದ್ದಿದ್ದಾರೆ. ಉಚಿತ {reason} ಕೊಡಿ.", f"Table {n} won: free {reason}."
+    elif event == "roulette":  # reason carries the name of the person who pays
+        kn, en = f"ಟೇಬಲ್ {n}, ಇಂದು {reason} ಬಿಲ್ ಕೊಡುತ್ತಾರೆ.", f"Table {n}: {reason} pays the bill today."
     elif event == "kitchen_order":  # 3: spoken on the kitchen TV only
         lines = items or []
         kn = f"ಟೇಬಲ್ {n}. " + ", ".join(f"{q} {it.get('name_local') or it['name']}" for q, it in lines[:8]) + "."

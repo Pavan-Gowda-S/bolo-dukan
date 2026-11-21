@@ -275,3 +275,90 @@ body.preview .item { grid-template-columns: 76px 1fr; }
 /* tips */
 .tip-box { padding: 14px 16px; border-radius: 18px; margin: 0 0 16px; }
 .tip-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+/* ================= live games: Bill Roulette, Housie, Lucky Spin ================= */
+.lv-msg { text-align: center; display: grid; gap: 10px; justify-items: center; padding: 8px 4px; }
+.lv-big { font-size: 3.6rem; filter: drop-shadow(0 12px 18px rgba(0,0,0,.5)); }
+
+/* Bill Roulette: a metal cylinder seen at an angle */
+.rl { padding: 6px 2px 14px; }
+.rl-spin-ico { animation: rlWobble 2.4s ease-in-out infinite; }
+@keyframes rlWobble { 50% { transform: rotate(14deg) scale(1.06); } }
+.rl-names { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; min-height: 34px; }
+.rl-chip button { border: 0; background: none; color: var(--faint); cursor: pointer; margin-left: 4px; }
+.rl-stage { position: relative; height: 250px; perspective: 900px; display: grid; place-items: center; margin-top: 4px; }
+.rl-cyl { position: relative; width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #f4f6fb 0%, #9aa3b5 22%, #4a5162 55%, #23262f 80%), #3a3f4c;
+  box-shadow: inset 0 -14px 30px rgba(0,0,0,.6), inset 0 10px 20px rgba(255,255,255,.25), 0 30px 50px -20px rgba(0,0,0,.9), 0 0 0 6px #2a2e38, 0 0 0 9px #5d6578;
+  transform: rotateX(28deg) rotate(var(--a, 0deg)); transition: transform 2s cubic-bezier(.16,.84,.24,1); }
+.rl-ch { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px; border-radius: 50%;
+  transform: rotate(var(--r)) translateY(-62px); background: radial-gradient(circle at 40% 35%, #0b0c10 0 55%, #1a1c22 70%, #6b7385 100%);
+  box-shadow: inset 0 6px 10px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.3); display: grid; place-items: center; }
+.rl-ch b { transform: rotate(calc(-1 * var(--r))); font-size: 1.2rem; }
+.rl-ch.safe { background: radial-gradient(circle, rgba(46,230,166,.35), #10251d 70%); }
+.rl-ch.bang { background: radial-gradient(circle, #ff6b6b, #7a0f1f 70%); box-shadow: 0 0 24px #ff4d6d; }
+.rl-hub { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #8a93a6 60%, #2b2f3a); box-shadow: 0 4px 10px rgba(0,0,0,.6); }
+.rl-pin { position: absolute; top: 14px; left: 50%; width: 0; height: 0; margin-left: -12px; border: 12px solid transparent; border-top: 20px solid var(--marigold); filter: drop-shadow(0 4px 6px rgba(0,0,0,.6)); }
+.rl-turn { text-align: center; margin: 4px 0 10px; }
+.rl-name { font-family: var(--font-display); font-size: 2.2rem; animation: rlPop .5s var(--spring) both; }
+.rl-loser { font-size: 1.5rem; padding: 12px 16px; border-radius: 18px; background: linear-gradient(135deg, rgba(255,77,109,.25), rgba(255,159,28,.18)); border: 1px solid rgba(255,77,109,.55); animation: rlPop .6s var(--spring) both; }
+@keyframes rlPop { from { transform: scale(.6); opacity: 0; } }
+.rl-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 14px; }
+.rl-now { border-color: var(--marigold); color: var(--marigold); }
+.rl-safe { color: var(--mint); } .rl-bang { color: #ff8fa3; border-color: rgba(255,77,109,.6); }
+.rl-pull { animation: rlPulse 1.6s ease-in-out infinite; }
+@keyframes rlPulse { 50% { box-shadow: 0 0 0 8px rgba(255,159,28,.18), 0 8px 0 rgba(120,30,20,.55); } }
+.rl-shake { animation: shake .5s; }
+
+/* Housie: rolling ball + ticket */
+.hs { padding: 4px 2px 14px; }
+.hs-float { animation: float 4s ease-in-out infinite; }
+.hs-prizes { display: grid; gap: 6px; font-weight: 700; }
+.hs-prizes span { padding: 8px 12px; border-radius: 12px; background: rgba(255,193,69,.12); border: 1px solid rgba(255,193,69,.4); color: #ffe2a3; }
+.hs-top { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; }
+.hs-ball { flex: none; width: 104px; height: 104px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 32% 28%, #fff 0 8%, #ffd36b 22%, #ff9f1c 55%, #b85a00 100%);
+  box-shadow: inset -10px -14px 24px rgba(0,0,0,.35), 0 18px 30px -12px rgba(255,159,28,.7); }
+.hs-ball span { width: 62px; height: 62px; border-radius: 50%; background: #fff; color: #1a0b07; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 1.9rem; box-shadow: inset 0 -3px 6px rgba(0,0,0,.15); }
+.hs-ball.roll { animation: hsRoll .9s var(--spring); }
+@keyframes hsRoll { from { transform: translateX(-120px) rotate(-360deg) scale(.6); opacity: 0; } }
+.hs-big { font-family: var(--font-display); font-size: 1.8rem; line-height: 1.1; }
+.hs-last { display: flex; gap: 5px; margin: 6px 0 2px; }
+.hs-last i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; font-weight: 800; background: rgba(255,255,255,.1); }
+.hs-ticket { display: grid; gap: 4px; padding: 10px; border-radius: 16px; background: linear-gradient(160deg, #fff8ea, #ffe9c4); box-shadow: 0 20px 40px -18px rgba(0,0,0,.8); transform: perspective(900px) rotateX(8deg); }
+.hs-r { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; }
+.hs-c { aspect-ratio: 1; border-radius: 8px; border: 1px solid #e2c993; background: #fffdf6; color: #3a2207; font-weight: 800; font-size: clamp(.75rem, 3.4vw, 1.05rem); display: grid; place-items: center; cursor: pointer; padding: 0; transition: transform .2s var(--spring), background .2s; }
+.hs-c.blank { background: repeating-linear-gradient(45deg, #f3e2bf 0 4px, #f8ebcf 4px 8px); border-color: transparent; cursor: default; }
+.hs-c.called { border-color: #ff9f1c; }
+.hs-c.dab { background: radial-gradient(circle, #ff4d6d 0 45%, #ffd0d8 46%); color: #fff; transform: scale(.94); animation: dab .35s var(--spring); }
+@keyframes dab { from { transform: scale(1.3); } }
+.hs-claims { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.hs-claims .btn { font-size: .9rem; padding: 12px 8px; }
+
+/* Lucky Spin: tilted wheel with running lights */
+.sp { padding: 4px 2px 14px; }
+.sp-stage { position: relative; height: 330px; perspective: 1000px; display: grid; place-items: center; }
+.sp-wheel { position: relative; width: 290px; height: 290px; border-radius: 50%; transform: rotateX(18deg) rotate(var(--rot, 0deg)); transition: none;
+  box-shadow: 0 0 0 10px #2b1450, 0 0 0 14px #ffc145, 0 30px 60px -20px rgba(0,0,0,.9), inset 0 0 30px rgba(0,0,0,.35); }
+.sp-wheel.go { transition: transform 5s cubic-bezier(.12,.72,.08,1); }
+.sp-lab { position: absolute; left: 50%; top: 50%; width: 120px; margin-left: -60px; text-align: center; font-weight: 800; font-size: .78rem; color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,.7); transform: rotate(var(--a)) translateY(-98px); letter-spacing: .02em; }
+.sp-bulb { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #fff6c8;
+  transform: rotate(var(--a)) translateY(-152px); box-shadow: 0 0 10px #ffd36b; animation: bulb 1s steps(1) infinite; animation-delay: var(--d); }
+@keyframes bulb { 50% { background: #7a5a10; box-shadow: none; } }
+.sp-hub { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px; border-radius: 50%; display: grid; place-items: center; font-size: 1.8rem;
+  background: radial-gradient(circle at 35% 30%, #fff, #ffc145 50%, #b86a00); box-shadow: 0 6px 16px rgba(0,0,0,.6); }
+.sp-pointer { position: absolute; top: 6px; left: 50%; z-index: 2; width: 0; height: 0; margin-left: -16px; border: 16px solid transparent; border-top: 30px solid #fff; filter: drop-shadow(0 4px 8px rgba(0,0,0,.6)); }
+.sp-go { animation: rlPulse 1.6s ease-in-out infinite; }
+.sp-res { text-align: center; font-size: 1.3rem; padding: 12px; border-radius: 18px; background: rgba(255,193,69,.12); border: 1px solid rgba(255,193,69,.45); animation: rlPop .6s var(--spring) both; }
+.sp-lock { padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line-2); }
+.sp-meter { height: 10px; border-radius: 10px; background: rgba(255,255,255,.1); overflow: hidden; margin-top: 8px; }
+.sp-meter i { display: block; height: 100%; background: var(--grad-hot); border-radius: inherit; transition: width .8s var(--ease); }
+@media (max-width: 400px) { .sp-wheel { width: 250px; height: 250px; } .sp-lab { transform: rotate(var(--a)) translateY(-84px); font-size: .7rem; } .sp-bulb { transform: rotate(var(--a)) translateY(-131px); } .sp-stage { height: 290px; } }
+
+/* spin nudge on the menu, payer on the bill */
+.spin-nudge { display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin-bottom: 12px; border-radius: 16px; cursor: pointer; color: var(--text); width: 100%; text-align: left;
+  background: linear-gradient(120deg, rgba(155,92,255,.2), rgba(255,61,154,.12)); border: 1px solid rgba(155,92,255,.45); }
+.spin-nudge .sp-mini { font-size: 1.6rem; animation: spinMini 4s linear infinite; }
+@keyframes spinMini { to { transform: rotate(360deg); } }
+.payer-tag { margin-top: 10px; padding: 8px 12px; border-radius: 12px; background: rgba(255,77,109,.12); border: 1px dashed #e7a3b1; text-align: center; font-weight: 800; }

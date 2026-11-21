@@ -48,7 +48,7 @@
     <!-- DIRECT SHOP -->
     <section id="vShop" class="view hidden">
       <div class="shop-bar">
-        <div class="search-row"><input class="input" id="q" type="search" placeholder="Search atta, milk, tomato…" aria-label="Search products"></div>
+        <div class="search-row"><input class="input" id="q" type="search" placeholder="Search atta, milk, tomato…" aria-label="Search products"><button class="btn cool hidden" id="findBtn" title="Show me where it is in the store">📍 Find in store</button></div>
         <div class="pill-scroller" id="cats" style="margin-top:8px"></div>
       </div>
       <div id="pgrid" class="pgrid"></div>
@@ -131,6 +131,17 @@
   <p class="heard" id="vHeard">Tap the mic and speak</p>
   <form class="row" id="vForm" style="margin-top:8px"><input class="input grow" id="vText" placeholder="…or type it" maxlength="300"><button class="btn-ghost">Go</button></form>
   <div id="vOut" style="margin-top:14px"></div>
+</div>
+<div class="sheet" id="findSheet" role="dialog" aria-modal="true" aria-labelledby="fH"><div class="grab"></div>
+  <h3 id="fH">📍 Where is it?</h3>
+  <p class="muted small" style="margin:4px 0 12px">Type what you need, pick the exact one, and we'll show you the aisle in 3D.</p>
+  <input class="input" id="fQ" type="search" placeholder="chips, atta, ghee…" autocomplete="off" aria-label="What are you looking for?">
+  <div id="fList" class="find-list"></div>
+</div>
+<div class="map-ov hidden" id="mapOv" role="dialog" aria-modal="true" aria-label="Store map">
+  <div class="map-mount" id="mapMount"></div>
+  <div class="map-card glass" id="mapCard"></div>
+  <button class="btn-ghost map-close" id="mapClose" aria-label="Close map">✕ Close</button>
 </div>
 <div class="sheet" id="recipeSheet" role="dialog" aria-modal="true" aria-labelledby="rdName" style="width:min(780px,100%)"><div class="grab"></div><div id="rd"></div></div>
 

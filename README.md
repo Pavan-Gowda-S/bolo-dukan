@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="static/img/logo.svg" width="88" alt="Bolo Dukaan logo">
+<img src="docs/assets/hero.svg" width="100%" alt="Bolo Dukaan: a live 3D restaurant floor where tables light up as guests order, pay and play">
 
 # Bolo Dukaan for Restaurants
 
@@ -33,10 +33,12 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 - [Quick start (Windows)](#quick-start-windows)
 - [Configuration and switches](#configuration-and-switches)
 - [Restaurant upgrades in detail](#restaurant-upgrades-in-detail)
+- [Games that matter to the bill](#games-that-matter-to-the-bill)
+- [Automations](#automations)
 - [Blueprint to 3D (Gemini vision)](#blueprint-to-3d-gemini-vision)
 - [Payments with Cashfree](#payments-with-cashfree)
 - [Relay AI agent](#relay-ai-agent)
-- [Supermarket mode and AI Meal Planner](#supermarket-mode-and-ai-meal-planner)
+- [Supermarket mode, 3D aisle finder and AI Meal Planner](#supermarket-mode-3d-aisle-finder-and-ai-meal-planner)
 - [How a table works](#how-a-table-works)
 - [Security](#security)
 - [Architecture](#architecture)
@@ -188,6 +190,10 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 | `FEATURE_MERGE_TABLES` | Merge two tables for a big group | Separate bills |
 | `FEATURE_GAME_ROOMS` | "Play with my table" private trivia | Restaurant-wide games |
 | `FEATURE_FLOOR_PLAN` | Blueprint + table positions, plan view, 3D layout | Auto layout |
+| `FEATURE_ROULETTE` | Bill Roulette: the table finds out who pays | Pay as usual |
+| `FEATURE_HOUSIE` | Live Housie (tambola) for the whole restaurant; line → free juice, full house → free starter | Other games |
+| `FEATURE_LUCKY_SPIN` + `LUCKY_SPIN_MIN_RUPEES` | Spin the wheel once the table's accepted bill reaches the amount (default ₹300) | No wheel |
+| `FEATURE_AISLE_FINDER` | Supermarket: 3D store map with the product's aisle, side, bay and shelf | Search only |
 | `FEATURE_FLOOR_AI` | Read the blueprint: walls from the drawing, tables/counters/rooms with Gemini (needs `GEMINI_API_KEY`) | Walls only; drag tables by hand |
 | `FEATURE_TIPS` | Tip chips on the guest bill, added to the Cashfree UPI amount | No tip option |
 | `FEATURE_RELAY` | Send events to a Relay.app AI agent (needs `RELAY_WEBHOOK_URL`) | Nothing is sent |
@@ -214,6 +220,75 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 **Trivia: two modes.** Tapping Play asks *Play with all tables* (the restaurant quiz and leaderboard) or *Play with my table*: a private room with its own QR and WhatsApp link (`/g/<room>`) that opens **only the game**. Players pick a nickname, the host starts, everyone gets the same question with a 15-second countdown, faster right answers score more, and there's a live leaderboard and a podium. The room closes when the table is freed or after 3 hours.
 
 **Floor plan from a blueprint (optional).** Upload a PNG or JPG (up to 5 MB) at `/owner/floor`; the app reads it and proposes walls, tables, counters and rooms (see [Blueprint to 3D](#blueprint-to-3d-gemini-vision)), and you can still drag each table (mouse or touch, snap to grid, reset to auto layout) while a live 3D preview updates. The dashboard's 3D floor lays the blueprint on the floor and puts tables where they really are; a **Plan** view shows the blueprint with live coloured markers. Owners who skip it keep the automatic layout.
+
+## Games that matter to the bill
+
+Tap 🎮 at the table. Every result is drawn **on the server** (Python `secrets`), never on a phone, so nobody can rig it. Prizes are free menu items: the dashboard shows **"Give free juice"**, staff serve it and tap once, and it's **added to the bill at ₹0** (for example *Fresh Lime Soda (Housie prize, free) … ₹0*).
+
+| Game | Players | How it works | Why the restaurant likes it |
+|---|---|---|---|
+| 🎯 **Bill Roulette** | one table, 2–12 people | Add everyone's name. A metal cylinder with one chamber per player spins and clicks; each person pulls in turn. The server loaded one chamber before the first pull. Whoever hits it **pays for the whole table**, shown on the bill and the dashboard. | Fun, fast, settles "who pays", shareable on WhatsApp |
+| 🎱 **Housie** | the whole restaurant | Each table gets a real tambola ticket (3 × 9, 15 numbers). A number is called every 7 s with a rolling ball; auto-mark or tap to dab. **First line → free juice, full house → free starter.** Claims are checked against the numbers actually called; the first valid claim wins. | Keeps every table in their seats, ordering |
+| 🎡 **Lucky Spin** | one table | Unlocks when the table's accepted bill reaches `LUCKY_SPIN_MIN_RUPEES` (default ₹300). The menu shows "Order ₹80 more to unlock the Lucky Spin". One spin per visit on a lit, tilted wheel: free chai, juice, dessert or starter. | Nudges a bigger order (spend to unlock) |
+| 🏆 Table Quiz · 👨‍👩‍👧 Play with my table | restaurant / one table | Live trivia between tables (free tea) or a private trivia room with its own QR | Engagement while waiting |
+| 🛺 Rickshaw Rush · 🥞 Dosa Flip · ☕ Chai Catch · 🌶️ Spice Match | one phone | Arcade games with today's leaderboard | Fun while the food cooks |
+
+## Automations
+
+Everything below happens by itself once the switches are on. GitHub draws these diagrams from the text.
+
+**Order to kitchen to payment**
+```mermaid
+sequenceDiagram
+    participant G as Guest phone
+    participant S as Bolo Dukaan server
+    participant W as Waiter phone
+    participant K as Kitchen TV
+    participant C as Cashfree
+    participant R as Relay AI agent
+    G->>S: Scan QR, browse menu, "Start ordering"
+    S-->>W: Buzz + Kannada voice "Table 4 wants to order"
+    W->>S: Approve (guests are seated)
+    G->>S: Order (tap or say it: Sarvam)
+    W->>S: Read back, tick items, Accept
+    S-->>K: Ticket + "ಟೇಬಲ್ 4. 2 ಮಸಾಲೆ ದೋಸೆ" (once)
+    G->>S: Request bill, add tip, Pay
+    S->>C: Payment link for the exact amount
+    C-->>S: Webhook (HMAC) → server re-checks the link
+    S-->>G: PAID ✓ (only on full-amount confirmation)
+    S-->>R: bill_paid event (no phone numbers)
+```
+
+**Prizes to the bill at ₹0**
+```mermaid
+flowchart LR
+    A[Housie claim / Lucky Spin] -->|server checks| B{Valid?}
+    B -- no --> X[Keep playing]
+    B -- yes --> C[Prize waiting on dashboard + Kannada alert]
+    C --> D[Staff serve it, tap Give]
+    D --> E[Item added to the table's bill at ₹0]
+```
+
+**Blueprint to 3D floor**
+```mermaid
+flowchart LR
+    U[Owner uploads floor plan] --> T[Browser traces walls and door gaps from the pixels]
+    U --> G[Gemini vision finds tables, chairs, counters, rooms]
+    G --> V[Each find checked against the drawing]
+    T --> P[Preview in 3D]
+    V --> P
+    P -->|owner taps Apply| D[Dashboard 3D floor + Plan view]
+```
+
+| Automation | Trigger | Result |
+|---|---|---|
+| Spoken alerts | start, order, waiter call, bill, paid, prize, roulette | One dashboard (and the kitchen TV for orders) says it in Kannada, Hindi or English, once |
+| Kitchen tickets | order accepted | Ticket appears; timer turns amber at 10 min and red at 20; disappears when served |
+| Payment check | Cashfree webhook or "check status" | Table turns PAID only when Cashfree confirms the full amount |
+| Free prizes | Housie / Lucky Spin / Table Quiz win | Prize waits on the dashboard; one tap adds it at ₹0 |
+| Unmerge | the main table is freed or paid in cash | Merged tables go back to normal |
+| Game room close | table freed or 3 hours | The private trivia link stops working |
+| Relay events | bill paid, waiter call, owner sends the report | Your Relay.app agent summarises, alerts or logs |
 
 ## Blueprint to 3D (Gemini vision)
 
@@ -279,9 +354,11 @@ The code lives in `app/relay.py` (sender) and `app/restaurant.py` (`relay_bill`,
           "items": [{"name": "Masala Dosa", "qty": 2, "amount_rupees": 160.0}, {"name": "Filter Coffee", "qty": 1, "amount_rupees": 30.0}]}}
 ```
 
-## Supermarket mode and AI Meal Planner
+## Supermarket mode, 3D aisle finder and AI Meal Planner
 
 Choose **Supermarket** when you sign up (needs `FEATURE_SUPERMARKET=true`). You land on **/store**: products (demo catalogue of ~160 groceries, CSV, or a price-list photo you check before saving), a shop link + QR, paid orders with a pick-and-pack checklist and Kannada alerts, and today's sales.
+
+**3D aisle finder** (`FEATURE_AISLE_FINDER`): a shopper taps **📍 Find in store**, types "chips", picks the exact type (Lay's Magic Masala, Bingo, Pringles…), and a 3D store opens. It has aisles with hanging signs, shelves stocked in each category's colour, the entrance and billing counters, a **glowing green path** from the entrance, and a **bouncing pin** on the exact spot. The camera flies in, and a card says *Aisle 7 · Snacks · left side · bay 2 · top shelf* with **Add to cart**. Every product card has a 📍 button too. The layout is built from the store's own categories (two per aisle, A–Z), so every shopper sees the same map.
 
 Customers can **shop directly** (search, categories, cart, or say "eradu kilo atta, ondu litre haalu") or **plan meals**: an 8-step wizard (people, budget, days, meals, appliances, diet, goal, staples), up to 100 matching recipes ranked by goal with nutrition and estimated cost, recipe detail with steps in English, ಕನ್ನಡ or हिन्दी, **read-aloud** and **hands-free mode** ("next", "ಮುಂದೆ", "आगे"), a YouTube link, then a cart of the cheapest packs with **Fill to budget** (lands ₹20–30 under, never over) and UPI payment.
 
@@ -362,6 +439,10 @@ Dashboard colours: grey empty · **yellow flashing** wants to start · blue orde
 | Owner | POST · PUT | `/api/owner/floor/read` · `/api/owner/floor/layout` | Read the blueprint with Gemini (proposal) · save the approved layout |
 | Owner | POST | `/api/owner/report/relay` | Send the daily report to the Relay AI agent |
 | Guest | POST | `/api/session/{id}/tip` | Choose a tip (5 / 10 / 15 % or rupees) |
+| Games | POST | `/api/session/{id}/roulette` · `/roulette/{round}/pull` | Bill Roulette |
+| Games | GET · POST | `/api/session/{id}/housie` · `/housie/join` · `/housie/claim` | Housie |
+| Games | GET · POST | `/api/session/{id}/spin` | Lucky Spin state · spin |
+| Owner or waiter | POST | `/api/prizes/{id}/give` | Add a won prize to the bill at ₹0 |
 | Owner | POST | `/api/owner/voice` · `/api/owner/voice/confirm` | Owner voice assistant |
 | Guest | GET | `/api/t/{token}` | Table (seats, merged), restaurant, menu |
 | Guest | POST | `/api/t/{token}/start` · `/join` | Ask to start · join with code |
@@ -398,6 +479,7 @@ app/
   restaurant.py  kitchen TV, staff + waiter portal, merge tables, daily report, game rooms, floor plan, tips, Relay hooks
   floorplan.py   clean-up of the AI's blueprint reading (pure functions, tested)
   relay.py       Relay.app AI agent webhook sender
+  tablegames.py  Bill Roulette, Housie (tambola tickets + claims), Lucky Spin, prizes at ₹0
   features.py    voice ordering, Kannada alerts, budget basket, table quiz, menu photo
   upgrades.py    sales summary, split bill, owner voice assistant
   ai.py          Sarvam first, Gemini backup
@@ -411,10 +493,12 @@ app/
 static/
   pages/   landing, signup, login, setup, menu, qr, dashboard, table, paid, kitchen, waiter, staff,
            staff_login, report, floor, game, store, shop, credits
-  js/      common, bg3d, floor3d, blueprint (wall tracing + checks), dashboard, dashboard_plus, table, games, kitchen, waiter, store, shop, planner
+  js/      common, bg3d, floor3d, blueprint (wall tracing + checks), dashboard, dashboard_plus, table, games, games_live,
+           kitchen, waiter, store, shop, store3d (3D aisle finder), planner
   css/     design system and page styles
 scripts/   check_sarvam.py, seed_source.py, fetch_photos.py, localize_photos.py, make_blueprint.py
 tests/     pytest suite (pure functions + real routes on a temporary database)
+docs/      README artwork (animated SVG)
 run.py · start.bat · start.ps1 · check.bat · check.py · ngrok.bat · .env.example
 ```
 

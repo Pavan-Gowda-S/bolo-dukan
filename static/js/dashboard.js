@@ -242,6 +242,12 @@
         return poll(true);
       }
       if (a === "sharecash" && !confirm("Mark this share as paid in cash?")) return;
+      if (a === "gprize") {
+        BD.busy(btn, true);
+        const r = await BD.api(`/api/prizes/${btn.dataset.p}/give`, { method: "POST", body: {} });
+        BD.toast(r.message, r.added ? "ok" : "info", 5000); BD.sound.chime("paid");
+        return poll(true);
+      }
       if (a === "reward") {
         BD.busy(btn, true);
         const r = await BD.api(`/api/quiz/${btn.dataset.r}/reward`, { method: "POST", body: {} });
@@ -373,7 +379,9 @@
   // ---------------------------------------------------------------- quiz prizes
   function renderPrizes(list) {
     const html = list.map(p => `<div class="prize"><span class="gift">🎁</span><span class="grow"><b>Table ${p.table_number} won the Table Quiz</b><br><span class="small muted">${p.score} points · their free tea is added to the bill at ₹0</span></span>
-      <button class="btn sm" data-a="reward" data-r="${p.round_id}">Give free tea</button></div>`).join("");
+      <button class="btn sm" data-a="reward" data-r="${p.round_id}">Give free tea</button></div>`).join("")
+      + (data.game_prizes || []).map(p => `<div class="prize"><span class="gift">${p.game === "Housie" ? "🎱" : "🎡"}</span><span class="grow"><b>Table ${p.table_number} won ${BD.esc(p.game)}: free ${BD.esc(p.label)}</b><br><span class="small muted">Serve it, then tap Give: it's added to their bill at ₹0</span></span>
+      <button class="btn sm" data-a="gprize" data-p="${p.id}">Give free ${BD.esc(p.kind)}</button></div>`).join("");
     const box = $("prizes");
     if (box._h !== html) { box._h = html; box.innerHTML = html; }
   }

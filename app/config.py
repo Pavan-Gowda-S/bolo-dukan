@@ -113,6 +113,14 @@ FEATURE_GAME_ROOMS = _flag("FEATURE_GAME_ROOMS", False)          # 5: private tr
 FEATURE_FLOOR_PLAN = _flag("FEATURE_FLOOR_PLAN", False)          # 7: floor plan from a blueprint
 FEATURE_FLOOR_AI = _flag("FEATURE_FLOOR_AI", False)              # read an uploaded blueprint with Gemini vision
 FEATURE_RELAY = _flag("FEATURE_RELAY", False)                    # send events to a Relay.app AI agent (RELAY_WEBHOOK_URL)
+FEATURE_ROULETTE = _flag("FEATURE_ROULETTE", False)              # Bill Roulette: the table finds out who pays
+FEATURE_HOUSIE = _flag("FEATURE_HOUSIE", False)                  # live Housie (tambola) for the whole restaurant
+FEATURE_LUCKY_SPIN = _flag("FEATURE_LUCKY_SPIN", False)          # spin-the-wheel unlocked by spending
+FEATURE_AISLE_FINDER = _flag("FEATURE_AISLE_FINDER", False)      # supermarket: 3D store map showing the product's aisle
+try:
+    LUCKY_SPIN_MIN_PAISE = max(0, int(float(os.getenv("LUCKY_SPIN_MIN_RUPEES", "300")) * 100))
+except ValueError:
+    LUCKY_SPIN_MIN_PAISE = 30000
 FEATURE_TIPS = _flag("FEATURE_TIPS", False)                      # guests can add a tip to the UPI payment
 FEATURE_MERGE_TABLES = _flag("FEATURE_MERGE_TABLES", False)      # merge two tables for a big group
 FEATURE_DAILY_REPORT = _flag("FEATURE_DAILY_REPORT", False)      # daily report: CSV download + printable PDF
@@ -165,6 +173,11 @@ def features() -> dict:
         "floor_plan": FEATURE_FLOOR_PLAN,
         "merge_tables": FEATURE_MERGE_TABLES,
         "tips": FEATURE_TIPS and cashfree_ready(),
+        "roulette": FEATURE_ROULETTE,
+        "housie": FEATURE_HOUSIE,
+        "lucky_spin": FEATURE_LUCKY_SPIN,
+        "lucky_spin_min_paise": LUCKY_SPIN_MIN_PAISE if FEATURE_LUCKY_SPIN else None,
+        "aisle_finder": FEATURE_SUPERMARKET and FEATURE_AISLE_FINDER,
         "floor_ai": FEATURE_FLOOR_PLAN and FEATURE_FLOOR_AI and gemini_ready(),
         "relay": FEATURE_RELAY and bool(RELAY_WEBHOOK_URL),
         "daily_report": FEATURE_DAILY_REPORT,

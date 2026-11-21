@@ -288,3 +288,21 @@
 @media (prefers-reduced-motion: reduce) { .basket, .orbit, .mode-card .ic, .rd-hero img { animation: none; } }
 .ptable .switch { display: inline-block; vertical-align: middle; }
 .ocard.still { animation: none; }
+
+/* 3D aisle finder */
+.search-row .btn { white-space: nowrap; }
+.pin-btn { border: 0; background: rgba(76,201,240,.15); border: 1px solid rgba(76,201,240,.4); border-radius: 10px; width: 34px; height: 34px; cursor: pointer; font-size: 1rem; transition: transform .2s var(--spring); }
+.pin-btn:hover { transform: translateY(-2px) scale(1.06); }
+.find-list { max-height: 55vh; overflow: auto; }
+.find-row { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 10px; margin-bottom: 6px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--text); cursor: pointer; animation: rise .35s var(--ease) both; }
+.find-row:hover { border-color: rgba(76,201,240,.6); background: rgba(76,201,240,.08); }
+.find-row .th { width: 46px; height: 46px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; font-size: 1.5rem; background: rgba(255,255,255,.06); flex: none; }
+.find-row .th img { width: 100%; height: 100%; object-fit: cover; }
+.map-ov { position: fixed; inset: 0; z-index: 90; background: #0d0818; animation: mapIn .45s var(--ease) both; }
+@keyframes mapIn { from { opacity: 0; transform: scale(1.04); } }
+.map-mount { position: absolute; inset: 0; }
+.map-card { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(520px, calc(100% - 24px)); padding: 14px 16px; border-radius: 20px; animation: rise .6s .3s var(--ease) both; }
+.map-aisle { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 18px; background: var(--grad-hot); color: #1a0b07; font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1; box-shadow: 0 12px 24px -10px rgba(255,100,60,.8); flex: none; }
+.map-aisle small { font-family: var(--font); font-size: .6rem; letter-spacing: .14em; }
+.map-close { position: absolute; top: 14px; right: 14px; z-index: 2; }
+.map-card { background: rgba(14,8,26,.9) !important; border-color: rgba(255,193,69,.35) !important; }

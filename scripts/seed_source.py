@@ -786,6 +786,16 @@ PLAIN_TOPUPS = [("Guava 250 g", "Fresh Fruits", 250, "g", 30, "vegan"), ("Papaya
                 ("Pomegranate 500 g", "Fresh Fruits", 500, "g", 120, "vegan"), ("Real Mixed Fruit Juice 1 L", "Beverages", 1000, "ml", 110, "vegan"),
                 ("Peanut Chikki 100 g", "Snacks", 100, "g", 25, "vegan"), ("Amul Lassi Cup 200 ml", "Dairy, Eggs & Tofu", 200, "ml", 25, "veg"),
                 ("Sprouts Mix 200 g", "Fresh Vegetables", 200, "g", 35, "vegan"), ("Roasted Makhana 100 g", "Snacks", 100, "g", 85, "vegan")]
+# everyday shelf products that aren't recipe ingredients or top-ups (chips, namkeen, soft drinks...)
+SHELF_ONLY = [("Lay's Classic Salted Chips 52 g", "Lay's", "Snacks", 52, "g", 20, "vegan"),
+              ("Lay's India's Magic Masala Chips 52 g", "Lay's", "Snacks", 52, "g", 20, "vegan"),
+              ("Bingo Mad Angles Achaari Masti 72 g", "Bingo", "Snacks", 72, "g", 20, "vegan"),
+              ("Kurkure Masala Munch 90 g", "Kurkure", "Snacks", 90, "g", 20, "vegan"),
+              ("Pringles Original Potato Chips 107 g", "Pringles", "Snacks", 107, "g", 110, "vegan"),
+              ("Banana Chips (Kerala) 200 g", "", "Snacks", 200, "g", 80, "vegan"),
+              ("Haldiram's Aloo Bhujia 200 g", "Haldiram's", "Snacks", 200, "g", 55, "vegan"),
+              ("Thums Up 750 ml", "Thums Up", "Beverages", 750, "ml", 40, "vegan"),
+              ("Bisleri Water 1 L", "Bisleri", "Beverages", 1000, "ml", 20, "vegan")]
 for _iid, _extra in EXTRA_PACKS.items():
     PACKS[_iid] = PACKS[_iid] + _extra
 
@@ -845,6 +855,10 @@ def build():
         products.append({"id": pid, "name": name, "brand": "", "category": cat, "pack_size": size, "pack_unit": unit,
                          "price_paise": rupees * 100, "stock": 100, "available": 1, "ingredient_id": None, "topup": 1, "diet": diet})
         pid += 1
+    for (name, brand, cat, size, unit, rupees, diet) in SHELF_ONLY:
+        products.append({"id": pid, "name": name, "brand": brand, "category": cat, "pack_size": size, "pack_unit": unit,
+                         "price_paise": rupees * 100, "stock": 100, "available": 1, "ingredient_id": None, "topup": 0, "diet": diet})
+        pid += 1
     return ingredients, recipes, products
 
 
@@ -884,8 +898,8 @@ def validate(ingredients, recipes, products) -> list[str]:
             errors.append(f"{r['id']}: vegan_ok but has egg/meat")
     for p in products:
         if p["ingredient_id"] is None:
-            if not p["topup"]:
-                errors.append(f"product {p['name']}: no ingredient and not a top-up")
+            if not p["topup"] and p["name"] not in {x[0] for x in SHELF_ONLY}:
+                errors.append(f"product {p['name']}: no ingredient, not a top-up and not a shelf-only product")
             continue
         if p["ingredient_id"] not in ings:
             errors.append(f"product {p['name']}: unknown ingredient")

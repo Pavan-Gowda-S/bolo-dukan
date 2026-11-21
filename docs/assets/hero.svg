@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="Bolo Dukaan: a live 3D restaurant floor where tables light up as guests order, pay and play">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a0b2e"/><stop offset=".55" stop-color="#0d0618"/><stop offset="1" stop-color="#2a0f1f"/></linearGradient>
+    <linearGradient id="hot" x1="0" x2="1"><stop offset="0" stop-color="#ffb238"/><stop offset=".5" stop-color="#ff6a3d"/><stop offset="1" stop-color="#ff3d7f"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b1850"/><stop offset="1" stop-color="#160c2a"/></linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff9f1c" stop-opacity=".55"/><stop offset="1" stop-color="#ff9f1c" stop-opacity="0"/></radialGradient>
+    <radialGradient id="wood" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#d49a6a"/><stop offset="1" stop-color="#7a4b2f"/></radialGradient>
+    <style>
+      .t { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+      .ring { fill: none; stroke-width: 5; animation: status 9s infinite; }
+      .r2 { animation-delay: -1.5s } .r3 { animation-delay: -3s } .r4 { animation-delay: -4.5s } .r5 { animation-delay: -6s } .r6 { animation-delay: -7.5s }
+      @keyframes status { 0%, 14% { stroke: #6b6584 } 16%, 30% { stroke: #facc15 } 32%, 46% { stroke: #3b82f6 } 48%, 62% { stroke: #fb923c } 64%, 78% { stroke: #a855f7 } 80%, 100% { stroke: #22c55e } }
+      .float { animation: float 4s ease-in-out infinite; } .f2 { animation-delay: -1.3s } .f3 { animation-delay: -2.6s }
+      @keyframes float { 50% { transform: translateY(-10px) } }
+      .beam { animation: beam 3s ease-in-out infinite; transform-origin: center bottom; }
+      @keyframes beam { 0%, 100% { opacity: .15 } 50% { opacity: .55 } }
+      .spin { animation: spin 6s linear infinite; transform-box: fill-box; transform-origin: center; }
+      @keyframes spin { to { transform: rotate(360deg) } }
+      .wave { animation: wave 1.6s ease-out infinite; transform-box: fill-box; transform-origin: left center; opacity: 0; }
+      .w2 { animation-delay: .4s } .w3 { animation-delay: .8s }
+      @keyframes wave { 0% { opacity: .9; transform: scale(.6) } 100% { opacity: 0; transform: scale(1.4) } }
+      .ball { animation: roll 5s ease-in-out infinite; }
+      @keyframes roll { 0%, 100% { transform: translateX(0) } 50% { transform: translateX(26px) } }
+      .coin { animation: coin 2.4s ease-in infinite; } .c2 { animation-delay: -.8s } .c3 { animation-delay: -1.6s }
+      @keyframes coin { 0% { transform: translateY(-30px); opacity: 0 } 20% { opacity: 1 } 100% { transform: translateY(60px); opacity: 0 } }
+      .pulse { animation: pulse 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+      @keyframes pulse { 50% { transform: scale(1.08) } }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+    </style>
+  </defs>
+  <rect width="1200" height="520" rx="28" fill="url(#bg)"/>
+  <circle cx="1060" cy="70" r="220" fill="url(#glow)"/>
+
+  <!-- title -->
+  <g class="t">
+    <text x="64" y="118" font-size="64" font-weight="800" fill="#f7f2ff">Bolo <tspan fill="url(#hot)">Dukaan</tspan></text>
+    <text x="66" y="160" font-size="22" fill="#b6abcc">Every table, talking to you.</text>
+    <g font-size="15" font-weight="700" fill="#f7f2ff">
+      <rect x="64" y="190" width="150" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="80" y="212">🎙 Sarvam voice</text>
+      <rect x="222" y="190" width="160" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="238" y="212">💳 Cashfree UPI</text>
+      <rect x="390" y="190" width="150" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="406" y="212">🧊 3D floor</text>
+      <rect x="64" y="232" width="176" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="80" y="254">🗺 Blueprint → 3D</text>
+      <rect x="248" y="232" width="134" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="264" y="254">🎲 Live games</text>
+      <rect x="390" y="232" width="150" height="34" rx="17" fill="#ffffff14" stroke="#ffffff33"/><text x="406" y="254">🤖 Relay agent</text>
+    </g>
+    <!-- phone with a Kannada alert -->
+    <g transform="translate(70 300)">
+      <rect width="240" height="170" rx="22" fill="#1d1233" stroke="#ffffff33"/>
+      <rect x="16" y="18" width="208" height="56" rx="14" fill="#ff9f1c22" stroke="#ff9f1c88"/>
+      <text x="28" y="44" font-size="13.5" font-weight="800" fill="#ffc145">🔊 ಟೇಬಲ್ 4, ಹೊಸ ಆರ್ಡರ್</text>
+      <text x="32" y="64" font-size="12" fill="#b6abcc">Table 4, new order · 2 masala dosa</text>
+      <path class="wave" d="M198 46 a10 10 0 0 1 0 14" stroke="#ffc145" stroke-width="3" fill="none"/>
+      <path class="wave w2" d="M204 40 a18 18 0 0 1 0 26" stroke="#ffc145" stroke-width="3" fill="none"/>
+      <rect x="16" y="88" width="208" height="64" rx="14" fill="#2ee6a61a" stroke="#2ee6a666"/>
+      <text x="32" y="114" font-size="15" font-weight="800" fill="#2ee6a6">✓ Paid ₹480 by UPI</text>
+      <text x="32" y="136" font-size="12" fill="#b6abcc">verified with Cashfree · table turns green</text>
+      <g class="coin"><circle cx="200" cy="120" r="9" fill="#ffc145"/><text x="195.5" y="124.5" font-size="11" font-weight="900" fill="#7a4b00">₹</text></g>
+    </g>
+  </g>
+
+  <!-- isometric floor -->
+  <g transform="translate(560 120)">
+    <polygon points="300,0 600,170 300,340 0,170" fill="url(#floor)" stroke="#ffffff22" stroke-width="2"/>
+    <g stroke="#ffffff10">
+      <line x1="75" y1="127" x2="375" y2="297"/><line x1="150" y1="85" x2="450" y2="255"/><line x1="225" y1="42" x2="525" y2="212"/>
+      <line x1="75" y1="212" x2="375" y2="42"/><line x1="150" y1="255" x2="450" y2="85"/><line x1="225" y1="297" x2="525" y2="127"/>
+    </g>
+    <!-- tables: wooden tops with status rings that cycle like the real dashboard -->
+    <g>
+      <g transform="translate(205 110)"><polygon class="beam" points="-22,-90 22,-90 34,0 -34,0" fill="#facc15" opacity=".2"/><ellipse class="ring" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+      <g transform="translate(320 165)"><ellipse class="ring r2" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+      <g transform="translate(430 220)"><ellipse class="ring r3" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+      <g transform="translate(110 165)"><ellipse class="ring r4" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+      <g transform="translate(225 220)"><ellipse class="ring r5" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+      <g transform="translate(335 275)"><ellipse class="ring r6" rx="46" ry="24"/><ellipse rx="34" ry="17" fill="url(#wood)"/></g>
+    </g>
+    <!-- floating labels -->
+    <g class="t" font-weight="800">
+      <g class="float"><rect x="160" y="22" width="92" height="40" rx="12" fill="#0e081add" stroke="#facc15"/><text x="206" y="48" text-anchor="middle" font-size="17" fill="#fff">T1 · 4</text></g>
+      <g class="float f2"><rect x="380" y="132" width="104" height="40" rx="12" fill="#0e081add" stroke="#fb923c"/><text x="432" y="158" text-anchor="middle" font-size="15" fill="#fff">New order</text></g>
+      <g class="float f3"><rect x="280" y="232" width="100" height="40" rx="12" fill="#0e081add" stroke="#22c55e"/><text x="330" y="258" text-anchor="middle" font-size="15" fill="#fff">Paid ✓</text></g>
+    </g>
+  </g>
+
+  <!-- lucky spin wheel -->
+  <g transform="translate(1080 400)">
+    <g class="spin">
+      <circle r="62" fill="#3b1d6e" stroke="#ffc145" stroke-width="6"/>
+      <path d="M0 0 L0 -60 A60 60 0 0 1 42.4 -42.4 Z" fill="#ff9f1c"/><path d="M0 0 L42.4 -42.4 A60 60 0 0 1 60 0 Z" fill="#5a2a8c"/>
+      <path d="M0 0 L60 0 A60 60 0 0 1 42.4 42.4 Z" fill="#2ee6a6"/><path d="M0 0 L42.4 42.4 A60 60 0 0 1 0 60 Z" fill="#5a2a8c"/>
+      <path d="M0 0 L0 60 A60 60 0 0 1 -42.4 42.4 Z" fill="#ff3d9a"/><path d="M0 0 L-42.4 42.4 A60 60 0 0 1 -60 0 Z" fill="#3b1d6e"/>
+      <path d="M0 0 L-60 0 A60 60 0 0 1 -42.4 -42.4 Z" fill="#ffc145"/><path d="M0 0 L-42.4 -42.4 A60 60 0 0 1 0 -60 Z" fill="#5a2a8c"/>
+    </g>
+    <circle r="16" fill="#ffc145"/><polygon points="-10,-74 10,-74 0,-56" fill="#fff"/>
+  </g>
+  <!-- housie ball -->
+  <g transform="translate(960 450)"><g class="ball"><circle r="30" fill="#ff9f1c"/><circle r="19" fill="#fff"/><text class="t" x="0" y="7" text-anchor="middle" font-size="20" font-weight="900" fill="#1a0b07">42</text></g></g>
+  <text class="t" x="1136" y="500" text-anchor="end" font-size="13" fill="#7d7296">live demo colours: empty → wants to start → ordering → new order → bill → paid</text>
+</svg>

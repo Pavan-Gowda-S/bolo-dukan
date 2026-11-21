@@ -69,6 +69,7 @@
     S.products = S.info.products; S.byId = new Map(S.products.map(p => [p.id, p]));
     if (S.info.features.meal_planner) { $("navPlan").classList.remove("hidden"); $("modePlan").classList.remove("hidden"); }
     if (S.info.features.voice) $("micFab").classList.remove("hidden");
+    if (S.info.features.aisle_finder) $("findBtn").classList.remove("hidden");
     loadCart();
     if (ORDER_ID) { S.show("order"); $("cartFab").style.display = "none"; $("micFab").style.display = "none"; return orderPage(); }
     renderCats(); route(); updateFab();
@@ -95,7 +96,7 @@
       <div class="ph"><i class="diet-dot diet-${p.diet || "veg"}" title="${BD.esc(p.diet || "veg")}"></i>${S.pic(p.image_url, S.emoji(p.name, p.category), p.image_credit)}</div>
       <div class="nm">${BD.esc(p.name)}</div>
       <div class="meta">${BD.esc(p.brand || p.category)} · ${S.packLabel(p)}${p.stock <= 5 ? ` · <span style="color:var(--marigold)">only ${p.stock} left</span>` : ""}</div>
-      <div class="foot"><span class="pr">${BD.rupees(p.price_paise)}</span><span class="ctl">${cardCtl(p)}</span></div></div>`).join("");
+      <div class="foot"><span class="pr">${BD.rupees(p.price_paise)}</span>${S.info.features.aisle_finder ? `<button class="pin-btn" data-find="${p.id}" title="Where is it?" aria-label="Find ${BD.esc(p.name)} in the store">📍</button>` : ""}<span class="ctl">${cardCtl(p)}</span></div></div>`).join("");
     BD.tilt($("pgrid"));
   }
   document.addEventListener("click", e => {
@@ -206,6 +207,39 @@
     } catch (x) { $("vOut").innerHTML = `<div class="notice bad">${BD.esc(x.message)} You can search and tap products instead.</div>`; }
     finally { $("vOrb").classList.remove("think"); }
   }
+
+  // ---------- 3D aisle finder ----------
+  function findList(q) {
+    q = q.trim().toLowerCase();
+    const words = q.split(/\s+/).filter(Boolean);
+    const hits = !words.length ? [] : S.products.filter(p => words.every(w => (p.name + " " + p.brand + " " + p.category).toLowerCase().includes(w))).slice(0, 30);
+    $("fList").innerHTML = !q ? `<p class="faint small">Try “chips”, “atta” or “ghee”.</p>` : hits.length
+      ? `<p class="faint small" style="margin:10px 0 6px">${hits.length} type${hits.length === 1 ? "" : "s"} found. Pick yours:</p>` + hits.map(p => `<button class="find-row" data-pick="${p.id}"><span class="th">${S.pic(p.image_url, S.emoji(p.name, p.category))}</span>
+          <span class="grow"><b>${BD.esc(p.name)}</b><span class="faint small" style="display:block">${BD.esc(p.brand || p.category)} · ${S.packLabel(p)} · ${BD.rupees(p.price_paise)}</span></span><span class="chip">📍 Show</span></button>`).join("")
+      : `<p class="muted small" style="margin-top:10px">This store doesn't stock “${BD.esc(q)}”. Ask at the billing counter.</p>`;
+  }
+  let fT; $("fQ").addEventListener("input", e => { clearTimeout(fT); fT = setTimeout(() => findList(e.target.value), 120); });
+  $("findBtn").onclick = () => { $("fQ").value = $("q").value; findList($("fQ").value); S.openSheet("findSheet"); setTimeout(() => $("fQ").focus(), 350); };
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-find],[data-pick]"); if (!b) return;
+    e.stopPropagation(); showMap(S.byId.get(Number(b.dataset.find || b.dataset.pick)));
+  });
+  let map3d = null;
+  async function showMap(p) {
+    if (!p) return;
+    S.closeSheets();
+    $("mapOv").classList.remove("hidden"); document.documentElement.style.overflow = "hidden";
+    $("mapCard").innerHTML = `<div class="loader-orb" style="width:50px;height:50px"><i></i><i></i><i></i><b></b></div>`;
+    try { map3d = map3d || await import("/static/js/store3d.js?v=1").then(() => window.Store3D); }
+    catch (e) { $("mapCard").innerHTML = `<p class="muted">The 3D map needs internet (Three.js).</p>`; return; }
+    const where = map3d.open($("mapMount"), S.products, S.info.categories, p);
+    $("mapCard").innerHTML = where ? `<div class="row" style="gap:12px;align-items:center"><span class="map-aisle"><small>AISLE</small>${where.aisle}</span>
+        <span class="grow"><b>${BD.esc(p.name)}</b><span class="muted small" style="display:block">${BD.esc(where.category)} · ${where.side} side · bay ${where.bay + 1} · ${["bottom", "middle", "top"][where.level]} shelf</span>
+        <span class="small" style="color:var(--mint)">Follow the green path from the entrance</span></span></div>
+        <div class="row" style="gap:8px;margin-top:10px"><span class="pr mono">${BD.rupees(p.price_paise)}</span><span class="grow"></span><button class="btn sm" data-inc="${p.id}">Add to cart</button></div>`
+      : `<p class="muted">Couldn't place this product on the map.</p>`;
+  }
+  $("mapClose").onclick = () => { $("mapOv").classList.add("hidden"); document.documentElement.style.overflow = ""; if (map3d) map3d.close(); };
 
   // ---------- order status ----------
   async function orderPage() {

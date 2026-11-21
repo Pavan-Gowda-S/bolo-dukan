@@ -274,3 +274,20 @@ Product requirements for Bolo Dukaan. Voice and language run on **Sarvam AI** (G
 | Feature switches | `FEATURE_MENU_PREVIEW` and `FEATURE_SEATS` default **on**; every other `FEATURE_*` defaults **off**. With the new switches off the demo works exactly as before. |
 | Permissions | Checked on the server for every route; hiding a button is never the security. |
 | Timeouts | Every Sarvam call has a 15-second timeout and a tap fallback. |
+
+---
+
+## PRD-19: Games that matter to the bill
+
+- **Bill Roulette** **[SWITCH: FEATURE_ROULETTE]**: 2–12 named players; the server loads one chamber (`secrets`) before the first pull; players pull in order; whoever hits it "pays the bill", shown on the receipt and announced. No money moves by itself.
+- **Housie** **[SWITCH: FEATURE_HOUSIE]**: real tambola tickets (3 × 9, 15 numbers); one number every 7 s after a 40 s lobby; claims checked against the numbers really called; first line → free juice, full house → free starter (first valid claim wins).
+- **Lucky Spin** **[SWITCH: FEATURE_LUCKY_SPIN, LUCKY_SPIN_MIN_RUPEES]**: unlocked by the accepted bill; one spin per visit; weighted result drawn on the server; the menu nudges "Order ₹X more to unlock".
+- **Prizes** are added to the winning table's bill at **₹0** when staff serve them and tap Give (owner or waiter).
+
+**Verified by:** `tests/test_table_games.py` (valid tickets, no early reveal of the loser, bogus claims refused, one spin, prize at ₹0 doesn't change the bill).
+
+---
+
+## PRD-20: Supermarket 3D aisle finder
+
+**[SWITCH: FEATURE_AISLE_FINDER]** — the shopper types a product ("chips"), picks the exact type, and a 3D store shows aisles with signs, shelves, the entrance and billing counters, a glowing path from the entrance and a pin on the exact spot, plus "Aisle 7 · left side · bay 2 · top shelf". The layout is built from the store's categories (two per aisle, A–Z) so every shopper sees the same map.
