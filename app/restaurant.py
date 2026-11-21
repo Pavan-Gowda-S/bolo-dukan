@@ -341,8 +341,9 @@ def waiter_board(req: Request):
     """Only the waiter's tables. No revenue, totals, prices, payments, menu editing or settings."""
     st = require_staff(req, roles=("waiter",))
     with db() as conn:
-        r = row(conn.execute("SELECT name, language FROM restaurants WHERE id = ?", (st["restaurant_id"],)).fetchone())
-        q = "SELECT id, number, seats, merged_into FROM tables WHERE restaurant_id = ? AND active = 1"
+        r = row(conn.execute("SELECT name, language, floor_image FROM restaurants WHERE id = ?", (st["restaurant_id"],)).fetchone())
+        r["floor_image"] = f"/api/floor/image?v={r['floor_image']}" if r["floor_image"] and config.FEATURE_FLOOR_PLAN else ""
+        q = "SELECT id, number, seats, merged_into, pos_x, pos_y FROM tables WHERE restaurant_id = ? AND active = 1"
         args = [st["restaurant_id"]]
         if st["table_ids"] is not None:
             q += f" AND id IN ({','.join('?' * len(st['table_ids']))})"
@@ -367,7 +368,7 @@ def waiter_board(req: Request):
             (st["restaurant_id"], features._ago_iso(120), *numbers))) if numbers else []
     return {"me": {"name": st["name"], "role": st["role"]}, "restaurant": r, "tables": tables, "announcements": ann,
             "features": {"seats": config.FEATURE_SEATS, "kannada_alerts": config.FEATURE_KANNADA_ALERTS,
-                         "merge_tables": config.FEATURE_MERGE_TABLES}, "server_time": now_iso()}
+                         "merge_tables": config.FEATURE_MERGE_TABLES, "floor_plan": config.FEATURE_FLOOR_PLAN}, "server_time": now_iso()}
 
 
 # ===================================================================== merge two tables (big groups)
@@ -701,3 +702,111 @@ def room_answer(req: Request, token: str):
         if cur.rowcount:
             conn.execute("UPDATE game_room_players SET score = score + ? WHERE id = ?", (points, p["id"]))
     return {"ok": True, "correct": correct, "points": points}
+
+
+# ===================================================================== 7. floor plan from a blueprint (optional)
+
+def _floor_on():
+    if not config.FEATURE_FLOOR_PLAN:
+        _off()
+
+
+def _floor_path(rid: int, name: str):
+    return config.UPLOAD_DIR / f"r{rid}" / name
+
+
+@route("GET", "/owner/floor")
+def floor_page(req: Request):
+    _floor_on()
+    return file_response(config.STATIC_DIR / "pages" / "floor.html")
+
+
+@route("GET", "/api/owner/floor")
+def floor_get(req: Request):
+    owner = m.require_owner(req)
+    _floor_on()
+    with db() as conn:
+        img = conn.execute("SELECT floor_image FROM restaurants WHERE id = ?", (owner["restaurant_id"],)).fetchone()[0]
+        tables = rows(conn.execute("SELECT id, number, seats, pos_x, pos_y FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number",
+                                   (owner["restaurant_id"],)))
+    return {"image": f"/api/floor/image?v={img}" if img else None, "tables": tables}
+
+
+@route("POST", "/api/owner/floor/image")
+def floor_upload(req: Request):
+    owner = m.require_owner(req)
+    _floor_on()
+    _, files = req.form()
+    f = files.get("file")
+    if f is None or not f.data:
+        raise HTTPError(400, "Choose a PNG or JPG image")
+    if len(f.data) > 5_000_000:
+        raise HTTPError(400, "The image must be 5 MB or smaller")
+    ext = "png" if f.data[:8] == b"\x89PNG\r\n\x1a\n" else "jpg" if f.data[:3] == b"\xff\xd8\xff" else None
+    if not ext:  # trust the bytes, not the file name
+        raise HTTPError(400, "Please upload a PNG or JPG image")
+    folder = _floor_path(owner["restaurant_id"], "")
+    folder.mkdir(parents=True, exist_ok=True)
+    for old in folder.glob("floor.*"):
+        old.unlink()
+    (folder / f"floor.{ext}").write_bytes(f.data)
+    ver = f"floor.{ext}:{secrets.token_hex(4)}"
+    with db() as conn:
+        conn.execute("UPDATE restaurants SET floor_image = ? WHERE id = ?", (ver, owner["restaurant_id"]))
+    return {"ok": True, "image": f"/api/floor/image?v={ver}"}
+
+
+@route("DELETE", "/api/owner/floor/image")
+def floor_delete(req: Request):
+    owner = m.require_owner(req)
+    _floor_on()
+    for old in _floor_path(owner["restaurant_id"], "").glob("floor.*"):
+        old.unlink()
+    with db() as conn:
+        conn.execute("UPDATE restaurants SET floor_image = '' WHERE id = ?", (owner["restaurant_id"],))
+    return {"ok": True}
+
+
+@route("GET", "/api/floor/image")
+def floor_image(req: Request):
+    """The blueprint, for the owner or this restaurant's staff only."""
+    _floor_on()
+    try:
+        who = actor(req)
+    except HTTPError:
+        who = require_staff(req, roles=("waiter", "kitchen")) if config.FEATURE_STAFF else m.require_owner(req)
+    with db() as conn:
+        img = conn.execute("SELECT floor_image FROM restaurants WHERE id = ?", (who["restaurant_id"],)).fetchone()[0]
+    if not img:
+        raise HTTPError(404, "No floor plan")
+    name = img.split(":", 1)[0]
+    path = _floor_path(who["restaurant_id"], name)
+    if not path.exists():
+        raise HTTPError(404, "No floor plan")
+    return Response(path.read_bytes(), 200, "image/png" if name.endswith(".png") else "image/jpeg", {"Cache-Control": "private, max-age=86400"})
+
+
+@route("PUT", "/api/owner/floor")
+def floor_save(req: Request):
+    owner = m.require_owner(req)
+    _floor_on()
+    pos = req.json().get("positions")
+    if not isinstance(pos, list) or len(pos) > 200:
+        raise HTTPError(400, "Bad positions")
+    with db() as conn:
+        valid = {r[0] for r in conn.execute("SELECT id FROM tables WHERE restaurant_id = ? AND active = 1", (owner["restaurant_id"],))}
+        clean = []
+        for p in pos:
+            try:
+                tid = int(p.get("table_id"))
+                x = None if p.get("x") is None else float(p.get("x"))
+                y = None if p.get("y") is None else float(p.get("y"))
+            except (TypeError, ValueError, AttributeError):
+                raise HTTPError(400, "Bad positions")
+            if tid not in valid:
+                raise HTTPError(400, "Unknown table")
+            if (x is None) != (y is None) or (x is not None and not (0 <= x <= 100 and 0 <= y <= 100)):
+                raise HTTPError(400, "Positions must be 0 to 100")
+            clean.append((None if x is None else round(x, 2), None if y is None else round(y, 2), tid))
+        conn.executemany("UPDATE tables SET pos_x = ?, pos_y = ? WHERE id = ?", clean)
+    return {"ok": True}

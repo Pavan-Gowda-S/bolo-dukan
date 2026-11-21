@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Floor Plan</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<style>
+  .fp-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
+  .fp-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .fp { position: relative; width: 100%; border-radius: 18px; overflow: hidden; border: 1px solid var(--line-2); touch-action: none; user-select: none;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), #140c22; }
+  .fp img { display: block; width: 100%; height: auto; pointer-events: none; opacity: .92; }
+  .fp.noimg { aspect-ratio: 16 / 10; }
+  .mk { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 50%; cursor: grab; font-weight: 800; font-size: .78rem; line-height: 1.1; text-align: center;
+    color: #1a0b07; background: radial-gradient(circle at 35% 30%, #ffd58a, #ff9f1c); border: 2px solid #fff; box-shadow: 0 8px 18px rgba(0,0,0,.5); transition: box-shadow .2s, transform .15s; }
+  .mk.rect { border-radius: 12px; }
+  .mk.drag { cursor: grabbing; transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 14px 30px rgba(0,0,0,.6), 0 0 0 6px rgba(255,193,69,.35); z-index: 5; }
+  .mk small { display: block; font-weight: 700; font-size: .62rem; opacity: .8; }
+  .preview3d { height: 420px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line-2); background: #0b0716; }
+  @media (max-width: 900px) { .fp-wrap { grid-template-columns: 1fr; } .preview3d { height: 300px; } }
+</style>
+</head>
+<body data-bg="calm">
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding:24px 0 60px">
+    <div class="eyebrow">Optional</div>
+    <h2 style="margin-top:6px">Floor plan</h2>
+    <p class="muted" style="max-width:720px">Upload a photo or drawing of your floor (PNG or JPG, up to 5 MB) and drag each table to where it really is. The dashboard's 3D floor and the plan view then match your restaurant. You can also skip the image and just arrange the tables.</p>
+    <div class="fp-tools">
+      <label class="btn sm" style="cursor:pointer">⬆ Upload blueprint<input type="file" id="file" accept="image/png,image/jpeg" hidden></label>
+      <button class="btn-ghost sm hidden" id="rmImg">Remove image</button>
+      <button class="btn-ghost sm" id="reset">Reset to auto layout</button>
+      <label class="row small muted" style="gap:6px"><input type="checkbox" id="snap" checked> Snap to grid</label>
+      <span class="grow"></span>
+      <button class="btn mint" id="save" disabled>Save positions</button>
+    </div>
+    <div class="fp-wrap">
+      <div><div class="fp noimg" id="fp"></div><p class="faint small" style="margin-top:8px">Drag the circles (round tables are sized by chairs). Works with mouse and touch.</p></div>
+      <div><div class="preview3d" id="p3d"></div><p class="faint small" style="margin-top:8px">3D preview · drag to orbit</p></div>
+    </div>
+  </main>
+</div>
+<script>
+BD.ownerNav("/dashboard");
+const $ = id => document.getElementById(id);
+let data = null, pos = new Map(), dirty = false;
+function auto(i, n) { const cols = Math.ceil(Math.sqrt(n * 1.4)), rows = Math.ceil(n / cols), c = i % cols, r = Math.floor(i / cols); return [((c + .5) / cols) * 100, ((r + .5) / rows) * 100]; }
+function setDirty(v) { dirty = v; $("save").disabled = !v; }
+async function load() {
+  try { data = await BD.api("/api/owner/floor"); } catch (x) { if (x.status === 404) { document.querySelector("main").innerHTML = `<div class="glass card center" style="margin-top:30px"><p class="muted">Turn on the floor plan with <span class="kbd">FEATURE_FLOOR_PLAN=true</span> in .env and restart.</p></div>`; return; } BD.toast(x.message, "bad"); return; }
+  pos = new Map(data.tables.map((t, i) => [t.id, t.pos_x != null ? [t.pos_x, t.pos_y] : auto(i, data.tables.length)]));
+  draw(); preview();
+}
+function draw() {
+  const fp = $("fp");
+  fp.classList.toggle("noimg", !data.image);
+  $("rmImg").classList.toggle("hidden", !data.image);
+  fp.innerHTML = (data.image ? `<img src="${BD.esc(data.image)}" alt="Floor plan" onload="window.__fpLoaded && window.__fpLoaded()">` : "") +
+    data.tables.map(t => { const [x, y] = pos.get(t.id), size = 34 + Math.min(20, t.seats) * 3;
+      return `<div class="mk ${t.seats > 6 ? "rect" : ""}" data-id="${t.id}" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px" role="button" aria-label="Table ${t.number}, ${t.seats} seats. Drag to move.">T${t.number}<small>${t.seats}</small></div>`; }).join("");
+}
+let drag = null;
+$("fp").addEventListener("pointerdown", e => {
+  const mk = e.target.closest(".mk"); if (!mk) return;
+  drag = mk; mk.classList.add("drag"); mk.setPointerCapture(e.pointerId); e.preventDefault();
+});
+$("fp").addEventListener("pointermove", e => {
+  if (!drag) return;
+  const r = $("fp").getBoundingClientRect();
+  let x = Math.max(2, Math.min(98, (e.clientX - r.left) / r.width * 100)), y = Math.max(2, Math.min(98, (e.clientY - r.top) / r.height * 100));
+  if ($("snap").checked) { x = Math.round(x / 2.5) * 2.5; y = Math.round(y / 2.5) * 2.5; }
+  drag.style.left = x + "%"; drag.style.top = y + "%";
+  pos.set(Number(drag.dataset.id), [x, y]); setDirty(true);
+});
+const endDrag = () => { if (drag) { drag.classList.remove("drag"); drag = null; preview(); } };
+$("fp").addEventListener("pointerup", endDrag); $("fp").addEventListener("pointercancel", endDrag);
+$("reset").onclick = () => { data.tables.forEach((t, i) => pos.set(t.id, auto(i, data.tables.length))); setDirty(true); draw(); preview(); };
+$("save").onclick = async () => {
+  BD.busy($("save"), true);
+  try { await BD.api("/api/owner/floor", { method: "PUT", body: { positions: data.tables.map(t => ({ table_id: t.id, x: pos.get(t.id)[0], y: pos.get(t.id)[1] })) } }); setDirty(false); BD.toast("Floor plan saved. The dashboard's 3D floor now follows it.", "ok", 4000); }
+  catch (x) { BD.toast(x.message, "bad"); }
+  BD.busy($("save"), false); $("save").disabled = !dirty;
+};
+$("file").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  if (f.size > 5e6) { BD.toast("The image must be 5 MB or smaller", "bad"); return; }
+  const fd = new FormData(); fd.append("file", f);
+  try { const r = await BD.api("/api/owner/floor/image", { form: fd }); data.image = r.image; draw(); preview(); BD.toast("Blueprint uploaded. Now drag the tables onto it.", "ok", 4000); }
+  catch (x) { BD.toast(x.message, "bad"); }
+  e.target.value = "";
+};
+$("rmImg").onclick = async () => { if (!confirm("Remove the blueprint image? Table positions are kept.")) return; try { await BD.api("/api/owner/floor/image", { method: "DELETE" }); data.image = null; draw(); preview(); } catch (x) { BD.toast(x.message, "bad"); } };
+addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+// live 3D preview with the same renderer as the dashboard
+let p3 = null;
+function preview() {
+  if (!data) return;
+  const views = data.tables.map(t => ({ id: t.id, number: t.number, seats: t.seats, state: "empty", stateLabel: "Free", color: "#6b6584", pos_x: pos.get(t.id)[0], pos_y: pos.get(t.id)[1] }));
+  const go = () => { window.Floor3D.setBlueprint(data.image); window.Floor3D.update(views); };
+  if (!p3) p3 = import("/static/js/floor3d.js?v=4").then(() => window.Floor3D.mount($("p3d"), () => {}));
+  p3.then(go).catch(() => { $("p3d").innerHTML = `<p class="muted center" style="padding:60px 20px">The 3D preview needs internet (Three.js).</p>`; });
+}
+load();
+</script>
+</body>
+</html>

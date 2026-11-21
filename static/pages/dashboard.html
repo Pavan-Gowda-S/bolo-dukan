@@ -28,6 +28,7 @@
         <div class="seg" role="tablist" aria-label="View">
           <button class="active" data-view="grid" role="tab" aria-selected="true">▦ Grid</button>
           <button data-view="floor" role="tab" aria-selected="false">◈ 3D floor</button>
+          <button data-view="plan" role="tab" aria-selected="false" class="hidden" id="planTab">▣ Plan</button>
         </div>
         <button class="btn-ghost" id="soundBtn">🔔 Turn on sound</button>
       </div>
@@ -49,6 +50,7 @@
     <div id="feed" class="feed" aria-live="polite"></div>
 
     <section id="gridView" class="tgrid"></section>
+    <section id="planView" class="plan-view glass hidden"><div class="plan-box" id="planBox"></div><p class="faint small" style="margin:8px 4px 0">Tap a table to open it · <a href="/owner/floor">Edit floor plan</a></p></section>
     <section id="floorView" class="floor3d glass hidden"><div class="floor-hint">Drag to orbit · Ctrl + scroll to zoom · tap a table</div><div id="floorMount" class="floor-mount"></div></section>
   </main>
 </div>

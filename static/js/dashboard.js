@@ -12,7 +12,7 @@
   // ---------------------------------------------------------------- view model
   function viewOf(t) {
     const s = t.session;
-    const v = { id: t.id, number: t.number, seats: data && data.features && data.features.seats ? t.seats : null, waiter: !!(s && s.waiter_calls.length), flash: false };
+    const v = { id: t.id, number: t.number, pos_x: data && data.features && data.features.floor_plan ? t.pos_x : null, pos_y: t.pos_y, seats: data && data.features && data.features.seats ? t.seats : null, waiter: !!(s && s.waiter_calls.length), flash: false };
     if (!s) return Object.assign(v, { state: "empty", stateLabel: "Empty", color: C.empty });
     switch (s.status) {
       case "WAITING_APPROVAL": return Object.assign(v, { state: "waiting", stateLabel: "Wants to order", color: C.waiting, flash: true });
@@ -324,13 +324,15 @@
     document.querySelectorAll(".seg button").forEach(b => { const on = b.dataset.view === v; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
     $("gridView").classList.toggle("hidden", v !== "grid");
     $("floorView").classList.toggle("hidden", v !== "floor");
+    $("planView").classList.toggle("hidden", v !== "plan");
+    if (v === "plan") renderPlan();
     if (v === "floor") loadFloor();
     if (window.Floor3D) window.Floor3D.visible = v === "floor";
   }
   function loadFloor() {
     if (floorLoaded) { if (window.Floor3D && window.Floor3D.ready) { window.Floor3D.resize(); pushFloor(); } return; }
     floorLoaded = true;
-    import("/static/js/floor3d.js?v=3").then(() => {
+    import("/static/js/floor3d.js?v=4").then(() => {
       window.Floor3D.mount($("floorMount"), id => openDrawer(id));
       window.Floor3D.visible = view === "floor";
       pushFloor();
@@ -339,7 +341,28 @@
       $("floorMount").innerHTML = `<div class="center muted" style="padding:80px 20px">The 3D view needs an internet connection (it loads Three.js). The grid view works offline.</div>`;
     });
   }
-  function pushFloor() { if (window.Floor3D && window.Floor3D.ready && data) window.Floor3D.update(data.tables.map(viewOf)); }
+  function blueprintUrl() { return data && data.features.floor_plan && data.restaurant.floor_image ? "/api/floor/image?v=" + encodeURIComponent(data.restaurant.floor_image) : null; }
+  function pushFloor() {
+    if (!(window.Floor3D && window.Floor3D.ready && data)) return;
+    if (window.Floor3D.setBlueprint) window.Floor3D.setBlueprint(blueprintUrl());
+    window.Floor3D.update(data.tables.map(viewOf));
+  }
+  // 7: 2D plan view: the blueprint with live table markers in the dashboard colours
+  function renderPlan() {
+    if (!data) return;
+    const has = data.features.floor_plan && (data.restaurant.floor_image || data.tables.some(t => t.pos_x != null));
+    $("planTab").classList.toggle("hidden", !has);
+    if (!has) { if (view === "plan") setView("grid"); return; }
+    if (view !== "plan") return;
+    const n = data.tables.length, cols = Math.ceil(Math.sqrt(n * 1.4)), rows = Math.ceil(n / cols), url = blueprintUrl();
+    const box = $("planBox");
+    if (box.dataset.img !== String(url)) { box.dataset.img = String(url); box.innerHTML = (url ? `<img src="${url}" alt="Floor plan">` : "") + `<div class="plan-marks"></div>`; box.classList.toggle("noimg", !url); }
+    box.querySelector(".plan-marks").innerHTML = data.tables.map((t, i) => {
+      const v = viewOf(t), x = t.pos_x != null ? t.pos_x : ((i % cols) + .5) / cols * 100, y = t.pos_y != null ? t.pos_y : (Math.floor(i / cols) + .5) / rows * 100;
+      return `<button class="pmk ${v.flash ? "flash" : ""}" data-tid="${t.id}" style="left:${x}%;top:${y}%;--c:${v.color}" title="Table ${t.number}: ${BD.esc(v.stateLabel)}">${t.number}${v.waiter ? "🔔" : ""}<small>${BD.esc(v.stateLabel)}</small></button>`;
+    }).join("");
+  }
+  $("planBox").addEventListener("click", e => { const b = e.target.closest("[data-tid]"); if (b) openDrawer(Number(b.dataset.tid)); });
   document.querySelectorAll(".seg button").forEach(b => b.onclick = () => setView(b.dataset.view));
 
   // ---------------------------------------------------------------- quiz prizes
@@ -367,7 +390,7 @@
         cards.clear();
         $("gridView").innerHTML = `<div class="glass card center" style="grid-column:1/-1"><p>No tables yet. <a href="/owner/setup">Set up your tables</a> to get QR codes.</p></div>`;
       } else renderGrid();
-      renderStats(); renderDrawer(); pushFloor(); updateSoundBtn();
+      renderStats(); renderDrawer(); pushFloor(); renderPlan(); updateSoundBtn();
     } catch (x) {
       if (x.status === 401) { location.href = "/owner/login?next=/dashboard"; return; }
       failures++;

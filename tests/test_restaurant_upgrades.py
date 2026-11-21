@@ -433,5 +433,38 @@ class GameRoomTests(Base):
         self.assertEqual(call("POST", f"/api/session/{sid}/game-room", {}, headers=g)[0], 404)
 
 
+class FloorPlanTests(Base):
+    PNG = b"\x89PNG\r\n\x1a\n" + bytes(64)
+
+    def test_upload_positions_and_access(self):
+        raw, ct = multipart(files={"file": ("plan.png", "image/png", self.PNG)})
+        s, r, _ = call("POST", "/api/owner/floor/image", cookie=self.owner, raw=raw, ctype=ct)
+        self.assertEqual(s, 200, r)
+        s, img, resp = call("GET", "/api/floor/image", cookie=self.owner)
+        self.assertEqual((s, resp.content_type), (200, "image/png"))
+        self.assertEqual(call("GET", "/api/floor/image")[0], 401)  # not public
+        pos = [{"table_id": t["id"], "x": 10 + i * 30, "y": 50} for i, t in enumerate(self.tables)]
+        self.assertEqual(call("PUT", "/api/owner/floor", {"positions": pos}, self.owner)[0], 200)
+        dash = call("GET", "/api/dashboard", cookie=self.owner)[1]
+        self.assertEqual([(t["pos_x"], t["pos_y"]) for t in dash["tables"]], [(10.0, 50.0), (40.0, 50.0), (70.0, 50.0)])
+        self.assertTrue(dash["restaurant"]["floor_image"].startswith("floor.png"))
+        self.assertEqual(call("DELETE", "/api/owner/floor/image", cookie=self.owner)[0], 200)
+        self.assertEqual(call("GET", "/api/floor/image", cookie=self.owner)[0], 404)
+
+    def test_validation(self):
+        raw, ct = multipart(files={"file": ("evil.png", "image/png", b"<script>alert(1)</script>")})
+        self.assertEqual(call("POST", "/api/owner/floor/image", cookie=self.owner, raw=raw, ctype=ct)[0], 400)
+        raw, ct = multipart(files={"file": ("big.png", "image/png", self.PNG + b"0" * 5_000_001)})
+        self.assertEqual(call("POST", "/api/owner/floor/image", cookie=self.owner, raw=raw, ctype=ct)[0], 400)
+        t = self.tables[0]["id"]
+        for bad in ([{"table_id": t, "x": 120, "y": 5}], [{"table_id": 999999, "x": 1, "y": 1}], [{"table_id": t, "x": 5}]):
+            self.assertEqual(call("PUT", "/api/owner/floor", {"positions": bad}, self.owner)[0], 400, bad)
+
+    def test_flag_off(self):
+        config.FEATURE_FLOOR_PLAN = False
+        self.assertEqual(call("GET", "/api/owner/floor", cookie=self.owner)[0], 404)
+        self.assertEqual(call("GET", "/owner/floor")[0], 404)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -141,3 +141,15 @@
 .merge-badge { margin-top: 8px; padding: 6px 10px; border-radius: 10px; background: rgba(76,201,240,.12); border: 1px solid rgba(76,201,240,.4); color: #a5e8ff; font-weight: 700; font-size: .85rem; }
 .merge-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; padding: 10px 12px; border-radius: 14px; background: rgba(76,201,240,.08); border: 1px solid rgba(76,201,240,.3); font-weight: 700; }
 .merge-row select { flex: 1; min-width: 160px; }
+
+/* 7: plan view */
+.plan-view { padding: 12px; }
+.plan-box { position: relative; border-radius: 16px; overflow: hidden; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), #140c22; }
+.plan-box.noimg { aspect-ratio: 16 / 10; }
+.plan-box img { display: block; width: 100%; opacity: .85; }
+.plan-marks { position: absolute; inset: 0; }
+.pmk { position: absolute; transform: translate(-50%, -50%); min-width: 54px; padding: 6px 8px; border-radius: 14px; border: 2px solid var(--c); background: color-mix(in srgb, var(--c) 35%, #120a20); color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,.5); transition: transform .2s var(--spring); }
+.pmk small { display: block; font-size: .6rem; font-weight: 700; opacity: .85; white-space: nowrap; }
+.pmk:hover { transform: translate(-50%, -50%) scale(1.1); }
+.pmk.flash { animation: pmkPulse 1.2s ease-in-out infinite; }
+@keyframes pmkPulse { 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--c) 30%, transparent), 0 8px 20px rgba(0,0,0,.5); } }

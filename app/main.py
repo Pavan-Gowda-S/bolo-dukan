@@ -1138,7 +1138,7 @@ def dashboard(req: Request):
     with db() as conn:
         r = row(conn.execute("SELECT * FROM restaurants WHERE id = ?", (rid,)).fetchone())
         tables = rows(conn.execute(
-            "SELECT id, number, seats, merged_into FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
+            "SELECT id, number, seats, merged_into, pos_x, pos_y FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
         ))
         for t in tables:
             s = _active_session(conn, t["id"])

@@ -290,11 +290,16 @@ def init_db() -> None:
             if col not in menu_cols:  # 4: optional dish details, entered by the owner (NULL = unknown)
                 conn.execute(f"ALTER TABLE menu_items ADD COLUMN {col} {decl}")
         table_cols = {r[1] for r in conn.execute("PRAGMA table_info(tables)")}
+        if "pos_x" not in table_cols:  # 7: position on the floor plan, in % of its width/height
+            conn.execute("ALTER TABLE tables ADD COLUMN pos_x REAL")
+            conn.execute("ALTER TABLE tables ADD COLUMN pos_y REAL")
         if "merged_into" not in table_cols:  # merged tables: this table's QR opens the host table's order
             conn.execute("ALTER TABLE tables ADD COLUMN merged_into INTEGER")
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")
         rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}
+        if "floor_image" not in rest_cols:  # 7: optional blueprint, stored under data/uploads/r<id>/
+            conn.execute("ALTER TABLE restaurants ADD COLUMN floor_image TEXT NOT NULL DEFAULT ''")
         if "kitchen_token" not in rest_cols:  # 3: secret link for the kitchen TV
             conn.execute("ALTER TABLE restaurants ADD COLUMN kitchen_token TEXT NOT NULL DEFAULT ''")
         ann_cols = {r[1] for r in conn.execute("PRAGMA table_info(announcements)")}

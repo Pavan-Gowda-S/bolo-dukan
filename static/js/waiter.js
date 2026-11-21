@@ -41,7 +41,18 @@
     });
   }
 
+  let planOn = false;
+  function drawPlan() {
+    const url = data.restaurant.floor_image, n = data.tables.length, cols = Math.ceil(Math.sqrt(n * 1.4)), rows = Math.ceil(n / cols);
+    $("grid").innerHTML = `<div class="glass" style="grid-column:1/-1;position:relative;border-radius:16px;overflow:hidden;${url ? "" : "aspect-ratio:16/10"}">${url ? `<img src="${BD.esc(url)}" alt="Floor plan" style="display:block;width:100%;opacity:.85">` : ""}
+      ${data.tables.map((t, i) => { const [label, color] = state(t.session), x = t.pos_x != null ? t.pos_x : ((i % cols) + .5) / cols * 100, y = t.pos_y != null ? t.pos_y : (Math.floor(i / cols) + .5) / rows * 100;
+        return `<button data-plan="${t.id}" style="position:absolute;left:${x}%;top:${y}%;transform:translate(-50%,-50%);padding:6px 10px;border-radius:12px;border:2px solid ${color};background:#120a20;color:#fff;font-weight:800">${t.number}<small style="display:block;font-size:.6rem">${label}</small></button>`; }).join("")}</div>`;
+  }
   function draw() {
+    const canPlan = data.features.floor_plan && (data.restaurant.floor_image || data.tables.some(t => t.pos_x != null));
+    let pb = document.getElementById("planBtn");
+    if (canPlan && !pb) { pb = document.createElement("button"); pb.id = "planBtn"; pb.className = "btn-ghost sm"; pb.textContent = "▣ Floor"; $("soundBtn").before(pb); pb.onclick = () => { planOn = !planOn; pb.classList.toggle("active", planOn); draw(); }; }
+    if (planOn && canPlan) return drawPlan();
     if (!data.tables.length) { $("grid").innerHTML = `<div class="glass card center" style="grid-column:1/-1"><p class="muted">No tables are assigned to you yet. Ask the owner.</p></div>`; return; }
     $("grid").innerHTML = data.tables.map(t => {
       const s = t.session, [label, color] = state(s);
@@ -79,6 +90,7 @@
     }).join("");
   }
 
+  $("grid").addEventListener("click", e => { const p = e.target.closest("[data-plan]"); if (!p) return; planOn = false; const b = $("planBtn"); if (b) b.classList.remove("active"); draw(); const el = [...document.querySelectorAll(".wt")][data.tables.findIndex(t => String(t.id) === p.dataset.plan)]; if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); });
   $("grid").addEventListener("change", e => {
     const c = e.target.closest("[data-tick]"); if (!c) return;
     c.checked ? ticked.add(c.dataset.tick) : ticked.delete(c.dataset.tick); BD.buzz(8); draw();

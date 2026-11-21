@@ -42,6 +42,9 @@
   .lang-opts .opt b { font-size: 1.15rem; }
   .lang-opts input:checked + .opt { border-color: var(--marigold); background: rgba(255,193,69,.12); box-shadow: 0 10px 30px -12px rgba(255,159,28,.6); transform: translateY(-2px); }
   .lang-opts input:focus-visible + .opt { outline: 2px solid var(--marigold); outline-offset: 2px; }
+  .floor-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; color: var(--text) !important; text-decoration: none !important; font-size: 1.3rem; transition: transform .25s var(--spring); }
+  .floor-link:hover { transform: translateY(-2px); }
+  .floor-link b { font-size: 1rem; }
   .seats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; max-height: 260px; overflow: auto; padding: 2px; }
   .seats-grid label { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-weight: 600; font-size: .9rem; }
   .seats-grid input { width: 64px; }
@@ -76,6 +79,7 @@
           <label class="field grow" style="min-width:180px"><span>Wi-Fi name</span><input class="input" name="wifi_name" id="wifi_name" maxlength="60" placeholder="Optional"></label>
           <label class="field grow" style="min-width:180px"><span>Wi-Fi password</span><input class="input" name="wifi_password" id="wifi_password" maxlength="60" placeholder="Shown to guests"></label>
         </div>
+        <a class="glass floor-link hidden" id="floorLink" href="/owner/floor">🗺️ <span class="grow"><b>Floor plan (optional)</b><br><span class="muted small">Upload a blueprint and place your tables. The 3D floor will match it.</span></span> →</a>
         <div class="err" id="err" role="alert"></div>
         <button class="btn lg block" id="go">Save &amp; continue →</button>
       </div>
@@ -139,6 +143,7 @@ $("name").addEventListener("input", e => $("pvTitle").textContent = e.target.val
   $("name").value = r.name; $("pvTitle").textContent = r.name;
   if (r.table_count) count = r.table_count;
   seatsOn = !!(me.features && me.features.seats);
+  $("floorLink").classList.toggle("hidden", !(me.features && me.features.floor_plan));
   if (seatsOn) { seats = (me.seats || []).slice(0, count); $("seatsBox").classList.remove("hidden"); }
   $("wifi_name").value = r.wifi_name || ""; $("wifi_password").value = r.wifi_password || "";
   const radio = document.querySelector(`input[name=language][value="${r.language}"]`); if (radio) radio.checked = true;

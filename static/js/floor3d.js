@@ -142,8 +142,10 @@ const Floor3D = {
     const leg = new THREE.Mesh(geo.leg, mat.metal); leg.position.y = 0.48; leg.castShadow = true;
     const base = new THREE.Mesh(geo.base, mat.metal); base.position.y = 0.03;
     g.add(top, leg, base);
-    for (let i = 0; i < 4; i++) {
-      const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+    const nChairs = Math.max(1, Math.min(12, view.seats || 4)), rad = nChairs > 6 ? 1.55 + (nChairs - 6) * 0.12 : 1.55;
+    if (nChairs > 6) top.scale.set(1 + (nChairs - 6) * 0.1, 1, 1 + (nChairs - 6) * 0.1);
+    for (let i = 0; i < nChairs; i++) {
+      const a = (i / nChairs) * Math.PI * 2 + Math.PI / 4;
       const chair = new THREE.Group();
       const seat = new THREE.Mesh(geo.seat, mat.chair); seat.position.y = 0.52; seat.castShadow = true;
       const back = new THREE.Mesh(geo.back, mat.chair); back.position.set(0, 0.85, 0.26); back.castShadow = true;
@@ -151,7 +153,7 @@ const Floor3D = {
       [[-.22, -.22], [.22, -.22], [-.22, .22], [.22, .22]].forEach(([lx, lz]) => {
         const l = new THREE.Mesh(geo.chairLeg, mat.metal); l.position.set(lx, 0.25, lz); chair.add(l);
       });
-      chair.position.set(Math.cos(a) * 1.55, 0, Math.sin(a) * 1.55);
+      chair.position.set(Math.cos(a) * rad, 0, Math.sin(a) * rad);
       chair.lookAt(0, 0, 0); chair.rotateY(Math.PI);
       g.add(chair);
     }
@@ -174,19 +176,26 @@ const Floor3D = {
     hit.position.y = 1.2; hit.userData.tableId = view.id;
     g.add(ring, disc, beam, light, badge, plates, label, hit);
     this.scene.add(g);
-    return { group: g, ring, disc, beam, light, badge, plates, label, hit, key: "", phase: Math.random() * 6 };
+    return { group: g, ring, disc, beam, light, badge, plates, label, hit, key: "", phase: Math.random() * 6, seats: view.seats || 4 };
   },
 
   update(views) {
     if (!this.ready) return;
+    this.lastViews = views;
     const ids = new Set(views.map(v => v.id));
     this.tables.forEach((t, id) => { if (!ids.has(id)) { this.scene.remove(t.group); this.tables.delete(id); } });
     const n = views.length, cols = Math.ceil(Math.sqrt(n * 1.4)), gap = 4.1;
     const rowsN = Math.ceil(n / cols);
+    const planned = n > 0 && views.every(v => v.pos_x != null && v.pos_y != null);
+    const S = Math.max(16, Math.sqrt(n) * gap * 1.7), ar = this.bpAspect || 1.6;
+    const W = S * Math.sqrt(ar), D = S / Math.sqrt(ar);
+    this.planSize = planned ? [W, D] : null;
+    this.fitBlueprint();
     views.forEach((v, i) => {
       const c = i % cols, r = Math.floor(i / cols);
-      const x = (c - (cols - 1) / 2) * gap, z = (r - (rowsN - 1) / 2) * gap;
+      const x = planned ? (v.pos_x / 100 - 0.5) * W : (c - (cols - 1) / 2) * gap, z = planned ? (v.pos_y / 100 - 0.5) * D : (r - (rowsN - 1) / 2) * gap;
       let t = this.tables.get(v.id);
+      if (t && t.seats !== (v.seats || 4)) { this.scene.remove(t.group); this.tables.delete(v.id); t = null; }  // chairs changed: rebuild
       if (!t) { t = this.build(v, x, z); this.tables.set(v.id, t); t.group.scale.setScalar(0.01); t.grow = 0; }
       t.group.position.set(x, 0, z);
       t.view = v;
@@ -203,13 +212,35 @@ const Floor3D = {
       t.badge.visible = !!v.waiter;
       t.plates.visible = v.state !== "empty" && v.state !== "waiting";
     });
-    const span = Math.max(cols, rowsN) * gap;
+    const span = planned ? Math.max(W, D) * 0.8 : Math.max(cols, rowsN) * gap;
     this.controls.maxDistance = Math.max(20, span * 2.4);
     if (!this.framed) {
       this.framed = true;
       const aspect = this.camera.aspect || 1.6, fit = span / Math.min(1.6, aspect) * 0.95;
       this.camera.position.set(0, fit * 0.9 + 4, fit + 4.5);
     }
+  },
+
+  // 7: the owner's blueprint lies on the floor under the tables (positions are % of its width/height)
+  setBlueprint(url) {
+    if (!this.ready || url === this.bpUrl) return;
+    this.bpUrl = url;
+    if (this.bp) { this.scene.remove(this.bp); this.bp.material.map && this.bp.material.map.dispose(); this.bp = null; }
+    if (!url) { this.bpAspect = null; return; }
+    new THREE.TextureLoader().load(url, tex => {
+      if (url !== this.bpUrl) return tex.dispose();
+      tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+      this.bpAspect = tex.image.width / tex.image.height || 1.6;
+      this.bp = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ map: tex, transparent: true, opacity: 0.9, roughness: 0.9 }));
+      this.bp.rotation.x = -Math.PI / 2; this.bp.position.y = 0.015; this.bp.receiveShadow = true;
+      this.scene.add(this.bp);
+      if (this.lastViews) this.update(this.lastViews); else this.fitBlueprint();
+    });
+  },
+  fitBlueprint() {
+    if (!this.bp) return;
+    const [W, D] = this.planSize || [16 * Math.sqrt(this.bpAspect), 16 / Math.sqrt(this.bpAspect)];
+    this.bp.scale.set(W * 1.08, D * 1.08, 1);
   },
 
   frame() {
