@@ -213,18 +213,19 @@
       group.forEach(m => { html += itemHtml(m, i++); });
       html += `</div>`;
     });
+    if (info.menu.some(m => m.photo_credit || m.nutrition)) html += `<p class="faint small center" style="margin:18px 0 0">${info.menu.some(m => m.nutrition) ? "Calories &amp; protein are approx. per serving (IFCT/NIN data). " : ""}${info.menu.some(m => m.photo_credit) ? 'Photos: Wikimedia Commons · <a href="/credits">credits</a>' : ""}</p>`;
     $("menuList").innerHTML = html;
     BD.tilt($("menuList"));
   }
   function itemHtml(m, i) {
     const qty = cart.get(m.id) || 0;
-    const pic = m.photo_url ? `<img src="${BD.esc(m.photo_url)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'e',textContent:'${BD.foodEmoji(m.name, m.category)}'}))">` : `<span class="e">${BD.foodEmoji(m.name, m.category)}</span>`;
+    const pic = m.photo_url ? `<img src="${BD.esc(m.photo_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'e',textContent:'${BD.foodEmoji(m.name, m.category)}'}))">` : `<span class="e">${BD.foodEmoji(m.name, m.category)}</span>`;
     const ctl = qty
       ? `<div class="stepper"><button data-dec="${m.id}" aria-label="One less">−</button><span class="val">${qty}</span><button data-inc="${m.id}" aria-label="One more">+</button></div>`
       : `<button class="add-btn" data-inc="${m.id}" aria-label="Add ${BD.esc(m.name)}">+</button>`;
     return `<div class="glass item ${qty ? "in-cart" : ""}" data-tilt="5" data-item="${m.id}" style="--h:${BD.hueFor(m.category + m.name)};animation-delay:${Math.min(i, 14) * 0.03}s">
       <div class="pic">${pic}</div>
-      <div style="min-width:0"><div class="nm">${BD.esc(m.name)}</div>${m.name_local ? `<div class="lc">${BD.esc(m.name_local)}</div>` : ""}<div class="pr">${BD.rupees(m.price_paise)}</div></div>
+      <div style="min-width:0"><div class="nm">${BD.esc(m.name)}</div>${m.name_local ? `<div class="lc">${BD.esc(m.name_local)}</div>` : ""}<div class="pr">${BD.rupees(m.price_paise)}</div>${m.nutrition ? `<div class="nut-mini" title="Approx. per serving, computed from ${BD.esc(m.nutrition_recipe || "a standard recipe")} (IFCT/NIN data)"><span><b>${m.nutrition.kcal}</b> kcal</span><span class="p"><b>${m.nutrition.protein_g}g</b> protein</span><span><b>${m.nutrition.carbs_g}g</b> carbs</span><span><b>${m.nutrition.fat_g}g</b> fat</span><span class="faint">approx.</span></div>` : ""}</div>
       <div class="ctl">${ctl}</div></div>`;
   }
   function refreshItem(id) {

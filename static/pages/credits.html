@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Photo Credits</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/shop.css">
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar"><div class="container"><a class="brand" href="/"><span class="brand-mark" id="mark"></span><span class="word">Bolo Dukaan</span></a><nav class="nav-links"><a href="javascript:history.back()">← Back</a></nav></div></header>
+  <main class="container" style="padding:30px 0 60px">
+    <div class="eyebrow">Credits</div>
+    <h2 style="margin:8px 0 6px">Photos &amp; nutrition data</h2>
+    <p class="muted" style="max-width:680px">Food and grocery photos come from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> under free licences (CC0, public domain, CC BY, CC BY-SA). Each photo links to its page with the full licence. Nutrition values are approximate and come from the sources below.</p>
+    <div class="glass card" style="margin:18px 0"><h3>Nutrition sources</h3><ul id="srcs" class="muted small" style="margin:10px 0 0"></ul></div>
+    <div id="grid" class="cgrid"></div>
+  </main>
+</div>
+<script>
+document.getElementById("mark").innerHTML = BD.logoSvg;
+BD.api("/api/credits").then(r => {
+  document.getElementById("srcs").innerHTML = r.nutrition_sources.map(s => `<li>${BD.esc(s)}</li>`).join("");
+  const nice = k => k.replace(/^(recipe|ingredient):/, "").replace(/_/g, " ");
+  document.getElementById("grid").innerHTML = r.photos.length ? r.photos.map((p, i) => `<a class="glass" href="${BD.esc(p.page)}" target="_blank" rel="noopener" style="animation-delay:${Math.min(i, 20) * .03}s">
+    <img src="${BD.esc(p.thumb)}" alt="${BD.esc(nice(p.key))}" loading="lazy" referrerpolicy="no-referrer">
+    <div><b style="color:var(--text);text-transform:capitalize">${BD.esc(nice(p.key))}</b><br>© ${BD.esc(p.author)} · ${BD.esc(p.license)}</div></a>`).join("")
+    : `<p class="muted">No photos downloaded yet.</p>`;
+}).catch(e => BD.toast(e.message, "bad"));
+</script>
+</body>
+</html>

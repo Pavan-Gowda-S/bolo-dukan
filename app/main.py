@@ -312,7 +312,7 @@ def owner_login(req: Request):
 
 @route("GET", "/api/auth/config")
 def auth_config(req: Request):
-    return {"google_client_id": config.GOOGLE_CLIENT_ID}
+    return {"google_client_id": config.GOOGLE_CLIENT_ID, "supermarket": config.FEATURE_SUPERMARKET}
 
 
 def _verify_google_token(credential: str) -> dict:

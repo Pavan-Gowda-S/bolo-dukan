@@ -25,6 +25,7 @@ The cashier runs everything from one screen.
 
 - [What it does](#what-it-does)
 - [Features](#features)
+- [Supermarket mode & AI Meal Planner](#supermarket-mode--ai-meal-planner)
 - [Quick start (Windows)](#quick-start-windows)
 - [Configuration](#configuration)
 - [How a table works](#how-a-table-works)
@@ -71,6 +72,13 @@ The cashier runs everything from one screen.
 - Approve / reject tables, accept / reject (with a reason) / preparing / served, paid in cash, free table
 - **Spoken alerts** in Kannada, Hindi or English ("ಟೇಬಲ್ 5, ಹೊಸ ಆರ್ಡರ್") via Gemini TTS, with browser voice and text fallbacks
 - Today's revenue and open bills at a glance
+
+**Upgrades (each behind its own switch)**
+- **Sales summary** (A1): today's collected total, bill count, average, online vs cash donut, top items and a bill list. Only verified payments count.
+- **Split the bill** (A2): equally or by items. Each person gets their own Cashfree UPI link; the table is PAID only when every share is paid (or the cashier takes the rest in cash). A Kannada alert for each share.
+- **Owner voice assistant** (A3): "aaj ka collection?", "how many tables are free?", "free table 4". Answers come from the database; anything that changes data asks for a tap first.
+- **Nutrition on the menu**: approx. kcal, protein, carbs and fat per dish, computed from standard recipes and IFCT 2017 / NIN data.
+- **Real food photos** from Wikimedia Commons (free licences, credited at `/credits`).
 
 **Built for Windows**
 - Double-click `start.bat`. It needs only Python and **one pure-Python package** (`qrcode`).
@@ -128,6 +136,34 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 | `FEATURE_BUDGET_ORDER` | "₹800 for 4" basket (pure code) | Order normally |
 | `FEATURE_VOICE_ACTIONS` | Voice "bill" / "waiter" | Buttons |
 | `FEATURE_TABLE_QUIZ` | Live quiz between tables, free tea prize | Other games |
+| `FEATURE_SALES_SUMMARY` | Today's sales strip + bill list (A1) | Dashboard totals |
+| `FEATURE_SPLIT_BILL` | Split equally / by items, one UPI link per person (A2) | One bill for the table |
+| `FEATURE_OWNER_VOICE` | Owner voice assistant on the dashboard (A3) | Dashboard buttons |
+| `FEATURE_SUPERMARKET` | "Supermarket" business type, products, store QR, direct order, pick & pack | Restaurant only |
+| `FEATURE_MEAL_PLANNER` | AI meal planner in the shop (needs `FEATURE_SUPERMARKET`) | Direct shopping |
+| `FEATURE_NUTRITION` | Approx. kcal / protein / carbs / fat on menus and recipes | Prices only |
+| `FEATURE_PHOTOS` | Real food & grocery photos (Wikimedia Commons) | Emoji |
+
+## Supermarket mode & AI Meal Planner
+
+Choose **Supermarket** when you sign up (needs `FEATURE_SUPERMARKET=true`). You land on **/store**:
+
+- **Products**: load a demo catalogue of ~160 groceries, add one by one, import a CSV, or snap a **photo of a price list** (AI reads it, you check every price before saving).
+- **Shop link + QR** for the counter. Customers open `/s/<your-store>`.
+- **Orders**: paid orders appear with a chime and a Kannada alert. Tick each item as you pick it, then **Mark packed** → **Handed over**.
+- **Sales**: today's verified total, orders, average and top sellers.
+
+Customers can **shop directly** (search, categories, cart, or say "eradu kilo atta, ondu litre haalu") or **plan meals**:
+
+1. **Wizard** (8 steps, or say it all at once): people, budget, days, meals per day, appliances (3D flip cards), diet, goal (high protein, high calorie, low calorie, balanced, low carb), staples at home.
+2. **Recipes**: up to 100 of 142 recipes that fit the kitchen and diet, ranked by the goal, with kcal / protein / carbs, badges, time and estimated cost. A sticky budget bar turns amber over 90 % and red over budget.
+3. **Recipe detail**: ingredients scaled to your people, steps in English, ಕನ್ನಡ or हिन्दी, **read aloud**, **hands-free mode** (say "next", "repeat", "previous", "ಮುಂದೆ", "आगे"), nutrition with sources, and a **YouTube** link (or an embedded video when a recipe has a `youtube_id`).
+4. **Cart**: the cheapest packs that cover every ingredient, with leftovers shown. Swap a pack, remove an item, then **Fill to budget**, which adds fruit, snacks or staples so you land **₹20–30 under** your budget and never over.
+5. **Pay** with a Cashfree UPI link. The order is confirmed only after Cashfree confirms the full amount.
+
+Example: 4 people, ₹1,500, 2 days, veg, high protein, stove + pressure cooker → 56 recipes; 4 recipes cost ₹1,157 and **Fill to budget** brings it to ₹1,476 (₹24 under).
+
+Rules: the AI only understands speech, reads price lists and translates. Every price, quantity, total and budget decision is computed in code (`app/planner.py`, money in integer paise) and nothing is bought without a tap. Data: `app/data/ingredients.json` (97 ingredients, nutrition per 100 g with a source on every row), `recipes.json` (142), `products_demo.json` (163 SKUs, demo prices). Rebuild and validate them with `python scripts/seed_source.py`.
 
 ## How a table works
 
@@ -212,6 +248,19 @@ Dashboard colours: grey empty · **yellow flashing** wants to start · blue orde
 | Cashier | POST | `/api/orders/{id}/status` | ACCEPTED, REJECTED, PREPARING, SERVED |
 | Cashier | POST | `/api/waiter-calls/{id}/done` | Clear a waiter call |
 | Cashier | GET | `/api/announce?text=` | Gemini TTS audio |
+| Cashier | GET | `/api/dashboard/summary?date=` | Today's sales summary (A1) |
+| Guest | GET / POST | `/api/session/{id}/split` · `/split/cancel` · `/shares/{share}/pay` | Split the bill (A2) |
+| Cashier | POST | `/api/shares/{id}/cash` | Take one share in cash |
+| Owner | POST | `/api/owner/voice` · `/api/owner/voice/confirm` | Owner voice assistant (A3) |
+| Store | GET / POST / PUT / DELETE | `/api/store/products[/{id}]` · `/csv` · `/photo` · `/bulk` · `/api/store/seed-demo` | Products |
+| Store | GET | `/api/store/info` · `/api/store/qr.svg` · `/api/store/orders` | Store, QR, orders |
+| Store | POST | `/api/store/orders/{id}/status` | PAID → PACKED → DONE |
+| Shop | GET | `/api/s/{slug}` | Store and products |
+| Shop | POST | `/api/s/{slug}/voice` · `/checkout` | Voice add, checkout (Cashfree link) |
+| Shop | GET / POST | `/api/s/{slug}/orders/{id}?t=` · `/repay` | Order status, pay again |
+| Planner | GET / POST | `/api/s/{slug}/planner/options` · `/recipes` · `/recipe/{id}` · `/cart` · `/voice` · `/command` | Meal planner |
+| Planner | POST | `/api/s/{slug}/tts` | Read a step aloud |
+| Public | GET | `/api/credits` | Photo credits and nutrition sources |
 | Cashfree | POST | `/api/webhooks/cashfree` | Payment notification |
 
 </details>
@@ -228,9 +277,16 @@ app/
   cashfree.py    payment links and webhook signatures
   net.py         HTTPS client (urllib)
   config.py      .env loading and feature switches
+  summary.py · split.py   sales summary and bill splitting (pure functions)
+  upgrades.py    A1-A3 routes
+  planner.py     meal planner maths (filter, nutrition, ranking, cart, fill to budget)
+  store.py       supermarket, shop and planner routes
+  data/          ingredients, recipes, demo products, photo credits
+scripts/         seed_source.py (data + validation), fetch_photos.py, localize_photos.py
+tests/           unit tests (python -m unittest discover -s tests)
 static/
-  pages/         landing, signup, login, setup, menu, qr, dashboard, table, paid
-  js/            common, bg3d (3D background), floor3d (3D floor), dashboard, table, games
+  pages/         landing, signup, login, setup, menu, qr, dashboard, table, paid, store, shop, credits
+  js/            common, bg3d (3D background), floor3d (3D floor), dashboard, dashboard_plus, table, games, store, shop, planner
   css/           design system and page styles
 run.py · start.bat · start.ps1 · check.bat · check.py · ngrok.bat · .env.example
 ```

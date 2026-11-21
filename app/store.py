@@ -51,9 +51,13 @@ def data():
 
 
 def photo(key: str):
+    """A real photo for a recipe or ingredient. Prefers the local copy (static/img/photos) over hot-linking Wikimedia."""
     if not config.FEATURE_PHOTOS:
         return None
-    return data()["photos"].get(key)
+    ph = data()["photos"].get(key)
+    if ph and ph.get("local") and (config.STATIC_DIR / ph["local"].removeprefix("/static/")).exists():
+        return dict(ph, thumb=ph["local"])
+    return ph
 
 
 def _rs(paise: int) -> str:
@@ -427,7 +431,7 @@ def credits_page(req: Request):
 
 @route("GET", "/api/credits")
 def credits(req: Request):
-    return {"photos": [dict(v, key=k) for k, v in sorted(data()["photos"].items())],
+    return {"photos": [dict(v, key=k, thumb=(photo(k) or v)["thumb"]) for k, v in sorted(data()["photos"].items())],
             "nutrition_sources": sorted({i["source"] for i in data()["ingredients"].values()})}
 
 
@@ -783,9 +787,7 @@ def planner_recipe(req: Request, slug: str, rid: str):
         q = line["qty"] * f
         ings.append({"id": ing["id"], "name": ing["name"], "name_local": ing.get("name_local", {}),
                      "qty": round(q) if ing["unit"] != "pcs" else round(q, 1), "unit": ing["unit"], "staple": ing["is_staple"]})
-    steps = r["steps"]
-    if lang != "en-IN":
-        steps = [translate(s, lang) for s in steps]
+    steps = translate_many(r["steps"], lang) if lang != "en-IN" else r["steps"]
     n = planner.recipe_nutrition(r, D["ingredients"])
     card = _recipe_card(r, n, planner.badges(n), people, prods)
     from urllib.parse import quote_plus
@@ -814,6 +816,31 @@ def translate(text: str, lang: str) -> str:
         with db() as conn:
             conn.execute("INSERT OR REPLACE INTO translations (lang, src, text) VALUES (?, ?, ?)", (lang, text, out))
     return out or text
+
+
+def translate_many(texts: list[str], lang: str) -> list[str]:
+    """Translate all steps of a recipe in ONE AI call (fast), cache each step; anything missing stays English."""
+    if lang not in features.LANG_NAMES or lang == "en-IN" or not texts:
+        return list(texts)
+    with db() as conn:
+        cached = {src: t for src, t in conn.execute(
+            f"SELECT src, text FROM translations WHERE lang = ? AND src IN ({','.join('?' * len(texts))})", (lang, *texts)).fetchall()}
+    todo = [t for t in dict.fromkeys(texts) if t not in cached]
+    if todo:
+        try:
+            out = ai.chat_json([{"role": "system", "content": f"Translate each cooking instruction into {features.LANG_NAMES[lang]}. Keep numbers, "
+                                                              "times and temperatures as digits. Reply with ONE JSON object only: "
+                                                              '{"translations": [string, ...]} in the same order and the same count.'},
+                                {"role": "user", "content": json.dumps(todo, ensure_ascii=False)}])
+            got = out.get("translations") if isinstance(out, dict) else None
+        except ai.AIError:
+            got = None
+        if isinstance(got, list) and len(got) == len(todo) and all(isinstance(x, str) and x.strip() for x in got):
+            with db() as conn:
+                for src, t in zip(todo, got):
+                    conn.execute("INSERT OR REPLACE INTO translations (lang, src, text) VALUES (?, ?, ?)", (lang, src, t.strip()))
+                    cached[src] = t.strip()
+    return [cached.get(t, t) for t in texts]
 
 
 @route("POST", "/api/s/{slug}/planner/cart")

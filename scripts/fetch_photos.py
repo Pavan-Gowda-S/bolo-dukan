@@ -19,7 +19,7 @@ DATA = ROOT / "app" / "data"
 API = "https://commons.wikimedia.org/w/api.php"
 UA = "BoloDukaanPhotoFinder/1.0 (open-source restaurant demo)"
 OK_LICENSE = re.compile(r"^(cc0|public domain|pd|cc by(-sa)? [0-9.]+|cc by(-sa)?)", re.I)
-BAD_WORDS = re.compile(r"(logo|map|diagram|chart|icon|stamp|flag|svg|drawing|illustration|seal|coat of arms)", re.I)
+BAD_WORDS = re.compile(r"(logo|map|diagram|chart|icon|stamp|flag|svg|drawing|illustration|seal|coat of arms|skeleton|museum|mhnt|herbarium|specimen|deer|statue|poster|\bplants?\b|\bflowers\b|refinery|lamp|kebab|samosa|brussels)", re.I)
 
 # better search words for some items (Commons titles)
 QUERY = {
@@ -49,8 +49,24 @@ QUERY = {
     "recipe:egg_curry_rice": "egg biryani", "recipe:air_fryer_chana": "roasted chickpeas", "recipe:peanut_poha_chivda": "poha chivda",
     "recipe:curd_oats_bowl": "oats yogurt bowl", "recipe:moong_soup": "lentil soup", "recipe:tofu_stir_fry": "tofu stir fry",
     "recipe:soya_pulao": "pulao", "recipe:chana_sundal": "sundal", "recipe:lime_soda": "lime soda", "recipe:plain_rice": "steamed rice bowl",
-    "recipe:idli_vada": "idli vada", "recipe:dhokla": "dhokla", "recipe:aloo_tikki": "aloo tikki", "recipe:fish_tikka": "fish tikka",
+    "recipe:idli_vada": "idli vada", "ingredient:tomato": "tomatoes", "ingredient:potato": "potatoes",
+    "ingredient:spinach": "spinach leaves", "ingredient:ginger": "ginger root", "ingredient:black_pepper": "black peppercorns",
+    "ingredient:cumin": "cumin seeds", "ingredient:sugar": "white sugar", "ingredient:salt": "table salt", "ingredient:cashews": "cashew nuts",
+    "ingredient:urad_dal": "black gram dal", "ingredient:mutton": "goat meat", "recipe:tomato_rice": "tomato rice",
+    "recipe:pepper_chicken": "pepper chicken", "recipe:potato_palya": "potato poriyal", "recipe:masoor_dal": "masoor dal",
+    "recipe:mix_veg_curry": "mixed vegetable curry", "recipe:masala_vada": "masala vada", "recipe:semiya_payasa": "semiya payasam",
+    "recipe:mushroom_masala": "mushroom masala curry", "recipe:sprouts_salad": "moong sprouts salad", "recipe:sambar": "sambar south indian food", "recipe:dhokla": "dhokla", "recipe:aloo_tikki": "aloo tikki", "recipe:fish_tikka": "fish tikka",
 }
+
+
+STOP = {"with", "and", "the", "for", "bowl", "fry", "south", "indian", "food", "raw", "glass", "bottle", "leaves", "powder"}
+
+
+def relevant(query: str, title: str) -> bool:
+    """The file title must mention a real word of what we searched for (stops 'cabbage' -> a butterfly photo)."""
+    words = [w for w in re.findall(r"[a-z]+", query.lower()) if len(w) >= 3 and w not in STOP]
+    t = title.lower()
+    return not words or any(w[:5] in t for w in words)
 
 
 def search(query: str):
@@ -66,7 +82,7 @@ def search(query: str):
         meta = info.get("extmetadata") or {}
         lic = (meta.get("LicenseShortName") or {}).get("value", "")
         title = p.get("title", "")
-        if info.get("mime") not in ("image/jpeg", "image/png") or not OK_LICENSE.match(lic.strip()) or BAD_WORDS.search(title):
+        if info.get("mime") not in ("image/jpeg", "image/png") or not OK_LICENSE.match(lic.strip()) or BAD_WORDS.search(title) or not relevant(query, title):
             continue
         if (info.get("thumbwidth") or 0) < 300:
             continue
@@ -92,18 +108,26 @@ def main():
             found += 1
             continue
         q = QUERY.get(key, name)
-        try:
-            hit = search(q) or (search(name) if q != name else None)
-        except Exception as e:
-            print("  error", key, e)
-            hit = None
+        hit = None
+        for attempt in range(4):  # Wikimedia rate-limits fast clients: back off and retry
+            try:
+                hit = search(q) or (search(name) if q != name else None)
+                break
+            except Exception as e:
+                if "429" in str(e) and attempt < 3:
+                    time.sleep(20 * (attempt + 1))
+                    continue
+                print("  error", key, e)
+                break
         if hit:
             photos[key] = hit
             found += 1
         else:
             missing += 1
             print("  no photo:", key, "(", q, ")")
-        time.sleep(0.25)
+        time.sleep(1.5)
+        if found % 10 == 0:
+            out_path.write_text(json.dumps(photos, ensure_ascii=False, indent=1), encoding="utf-8")
     out_path.write_text(json.dumps(photos, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"photos: {found} found, {missing} without a photo (they use an emoji). Saved {out_path}")
 

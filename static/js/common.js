@@ -92,6 +92,16 @@
     for (const [re, e] of EMOJI) if (re.test(s)) return e;
     return "🍽️";
   };
+  const GROCERY = [
+    [/atta|flour|maida|rava|semolina|besan|ragi/i, "🌾"], [/rice|akki|poha|basmati/i, "🍚"], [/dal|lentil|chana|rajma|moong|urad|toor|masoor|pulses/i, "🫘"],
+    [/milk|curd|dahi|paneer|butter|ghee|cheese|lassi/i, "🥛"], [/egg/i, "🥚"], [/tofu/i, "🧈"], [/chicken|mutton|meat/i, "🍗"], [/fish|prawn/i, "🐟"],
+    [/tomato/i, "🍅"], [/onion/i, "🧅"], [/potato|aloo/i, "🥔"], [/carrot/i, "🥕"], [/garlic/i, "🧄"], [/ginger/i, "🫚"], [/chilli|chili/i, "🌶️"],
+    [/lemon|lime/i, "🍋"], [/banana/i, "🍌"], [/apple/i, "🍎"], [/papaya|mango/i, "🥭"], [/pomegranate|grape/i, "🍇"], [/coconut/i, "🥥"],
+    [/cucumber/i, "🥒"], [/brinjal|eggplant/i, "🍆"], [/corn/i, "🌽"], [/mushroom/i, "🍄"], [/spinach|palak|methi|leaves|coriander|cabbage|beans|peas|okra|bhindi|gourd/i, "🥬"],
+    [/oil/i, "🫗"], [/salt|sugar|jaggery/i, "🧂"], [/tea|coffee/i, "☕"], [/biscuit|bread|pav|bun/i, "🍞"], [/juice|drink|soda/i, "🧃"],
+    [/nut|cashew|almond|raisin|peanut|makhana|chikki/i, "🥜"], [/masala|powder|spice|cumin|jeera|pepper|turmeric|mustard|hing|cardamom/i, "🫙"], [/noodle|pasta|vermicelli/i, "🍜"],
+  ];
+  BD.groceryEmoji = (name, cat) => { const s = (name || "") + " " + (cat || ""); for (const [re, e] of GROCERY) if (re.test(s)) return e; return "🛍️"; };
   BD.hueFor = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
 
   // ---------- toast ----------

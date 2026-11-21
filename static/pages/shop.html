@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Shop</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/shop.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body data-bg="calm">
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar"><div class="container">
+    <a class="brand" href="#home" id="brand"><span class="brand-mark" id="mark"></span><span class="word" id="sname">Shop</span></a>
+    <nav class="nav-links"><a href="#home" data-nav="home">Home</a><a href="#shop" data-nav="shop">Shop</a><a href="#plan" data-nav="plan" id="navPlan" class="hidden">Plan my meals</a></nav>
+  </div></header>
+
+  <main class="container" style="padding-bottom:120px">
+    <div id="loading" style="padding:80px 0"><div class="loader-orb"><i></i><i></i><i></i><b></b></div></div>
+    <div id="fatal" class="hidden glass card center" style="margin-top:40px"></div>
+
+    <!-- HOME -->
+    <section id="vHome" class="view hidden">
+      <div class="shop-hero">
+        <div>
+          <div class="eyebrow reveal">Fresh groceries · pay by UPI</div>
+          <h1 class="reveal" style="--d:.05s;margin-top:10px">Welcome to <span class="hot-text serif-i" id="heroName">the store</span></h1>
+          <p class="lead reveal" style="--d:.1s">Pick groceries yourself, say what you need, or let the meal planner build a cart from recipes that fit your budget.</p>
+          <div class="mode-cards">
+            <button class="mode-card reveal" data-tilt="8" data-go="shop" style="--d:.15s"><span class="ic">🛒</span><b>Shop directly</b><span class="s">Browse, search or say “2 kilo atta, 1 litre milk”.</span></button>
+            <button class="mode-card cool reveal hidden" data-tilt="8" data-go="plan" id="modePlan" style="--d:.2s"><span class="ic">🍳</span><b>Plan my meals</b><span class="s">People, budget, days → recipes → one-tap cart.</span></button>
+          </div>
+        </div>
+        <div class="basket-stage" aria-hidden="true">
+          <div class="orbit"><i>🥕</i></div>
+          <div class="basket"><div class="face">🍅</div><div class="face">🥛</div><div class="face">🌾</div><div class="face">🧅</div><div class="face">🥚</div><div class="face">🍋</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIRECT SHOP -->
+    <section id="vShop" class="view hidden">
+      <div class="shop-bar">
+        <div class="search-row"><input class="input" id="q" type="search" placeholder="Search atta, milk, tomato…" aria-label="Search products"></div>
+        <div class="pill-scroller" id="cats" style="margin-top:8px"></div>
+      </div>
+      <div id="pgrid" class="pgrid"></div>
+      <p class="faint small center" style="margin-top:24px">Photos: Wikimedia Commons contributors · <a href="/credits">credits</a>. Prices are set by the store.</p>
+    </section>
+
+    <!-- PLANNER WIZARD -->
+    <section id="vPlan" class="view hidden wiz">
+      <div class="wiz-top">
+        <button class="btn-ghost sm" id="wBack" aria-label="Back">← Back</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn-ghost sm hidden" id="wVoice" title="Say it: “4 people, 1500 rupees, 2 days, veg, high protein”">🎙 Say it</button>
+      </div>
+      <div class="glass card-lg" id="wizCard" style="min-height:420px"></div>
+      <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn lg" id="wNext">Next →</button></div>
+    </section>
+
+    <!-- RECIPES -->
+    <section id="vRecipes" class="view hidden">
+      <div class="row spread wrap" style="margin-top:18px">
+        <div><div class="eyebrow">Step 2 · choose recipes</div><h2 style="margin-top:6px" id="rTitle">Recipes for you</h2></div>
+        <button class="btn-ghost sm" data-go="plan">✎ Change plan</button>
+      </div>
+      <div class="glass budget-bar" id="bbar">
+        <div class="row spread wrap"><b id="bbText">Pick recipes</b><span class="muted small" id="bbCover"></span></div>
+        <div class="meter"><i></i></div>
+        <div class="faint small" style="margin-top:6px">Recipe costs are estimates for <span id="bbPeople"></span>. Your real cart uses this store's packs and prices.</div>
+      </div>
+      <div class="filters">
+        <input class="input input-sm grow" id="rq" type="search" placeholder="Search recipes" style="max-width:260px" aria-label="Search recipes">
+        <div class="pill-scroller" id="rfilt" style="padding:0"></div>
+      </div>
+      <div id="rgrid" class="rgrid" style="margin-top:14px"></div>
+      <div class="row" style="position:sticky;bottom:14px;justify-content:center;margin-top:20px;z-index:20"><button class="btn lg" id="toCart" disabled>Build my cart →</button></div>
+    </section>
+
+    <!-- PLANNER CART -->
+    <section id="vPCart" class="view hidden">
+      <div class="row spread wrap" style="margin-top:18px">
+        <div><div class="eyebrow">Step 3 · your cart</div><h2 style="margin-top:6px">Groceries for your plan</h2></div>
+        <button class="btn-ghost sm" data-go="recipes">← Recipes</button>
+      </div>
+      <div class="store-grid" style="margin-top:14px">
+        <div class="glass card" id="pcLines"></div>
+        <div class="stack">
+          <div class="glass card" id="pcSum"></div>
+          <div class="glass card" id="pcCover"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDER STATUS -->
+    <section id="vOrder" class="view hidden"><div class="narrow"><div class="glass card-lg center" id="oCard" style="margin-top:30px"></div></div></section>
+  </main>
+</div>
+
+<button class="cart-fab" id="cartFab" aria-label="Open cart"><span>🛒</span><span class="n" id="cartN">0</span><span id="cartT" class="mono">₹0</span></button>
+<button class="mic-fab hidden" id="micFab" aria-label="Say what you want to buy">🎙</button>
+
+<div class="overlay" id="ov"></div>
+<div class="sheet" id="cartSheet" role="dialog" aria-modal="true" aria-labelledby="cartH"><div class="grab"></div>
+  <div class="row spread"><h3 id="cartH">Your cart</h3><button class="btn-ghost sm" data-close>Close</button></div>
+  <div id="cartLines" style="margin-top:10px"></div>
+</div>
+<div class="sheet" id="paySheet" role="dialog" aria-modal="true" aria-labelledby="payH"><div class="grab"></div>
+  <h3 id="payH">Pay with UPI</h3>
+  <p class="muted small" style="margin:6px 0 14px">We'll open a secure Cashfree page. Your order is confirmed only after the payment succeeds.</p>
+  <div class="stack">
+    <label class="field"><span>Your name (optional)</span><input class="input" id="pName" maxlength="60" autocomplete="name"></label>
+    <label class="field"><span>Mobile number</span><input class="input" id="pPhone" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile"></label>
+    <div class="total-row"><span class="muted">To pay</span><b id="payTotal">₹0</b></div>
+    <div class="err" id="payErr" role="alert"></div>
+    <button class="btn lg block" id="payGo">Pay now →</button>
+  </div>
+</div>
+<div class="sheet" id="voiceSheet" role="dialog" aria-modal="true" aria-labelledby="vH"><div class="grab"></div>
+  <h3 id="vH" class="center">Say what you need</h3>
+  <p class="muted small center" style="margin:4px 0 0">Kannada, Hindi or English · e.g. “eradu kilo akki, ondu litre haalu”</p>
+  <button class="v-orb" id="vOrb" aria-label="Tap to talk">🎙</button>
+  <p class="heard" id="vHeard">Tap the mic and speak</p>
+  <form class="row" id="vForm" style="margin-top:8px"><input class="input grow" id="vText" placeholder="…or type it" maxlength="300"><button class="btn-ghost">Go</button></form>
+  <div id="vOut" style="margin-top:14px"></div>
+</div>
+<div class="sheet" id="recipeSheet" role="dialog" aria-modal="true" aria-labelledby="rdName" style="width:min(780px,100%)"><div class="grab"></div><div id="rd"></div></div>
+
+<script src="/static/js/shop.js"></script>
+<script src="/static/js/planner.js"></script>
+</body>
+</html>

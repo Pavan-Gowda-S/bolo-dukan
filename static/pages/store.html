@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>My Store</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Devanagari:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/shop.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script src="/static/js/common.js"></script>
+<script type="module" src="/static/js/bg3d.js"></script>
+</head>
+<body data-bg="calm">
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar"><div class="container">
+    <a class="brand" href="/store"><span class="brand-mark" id="mark"></span><span class="word">Bolo Dukaan</span></a>
+    <nav class="nav-links"><a href="/store" class="active">Store</a><a href="#" id="openShop" target="_blank" rel="noopener">Open shop ↗</a><a href="/credits">Credits</a><a href="#" id="logout">Log out</a></nav>
+  </div></header>
+  <main class="container" style="padding-bottom:60px">
+    <section class="row spread wrap" style="margin-top:24px">
+      <div><div class="row" style="gap:10px"><span class="chip on"><span class="dot"></span>Live</span><span class="muted small" id="clock"></span></div>
+        <h2 id="sName" style="margin-top:6px">My store</h2></div>
+      <button class="btn-ghost" id="soundBtn">🔔 Turn on sound</button>
+    </section>
+    <div class="tabs" role="tablist">
+      <button class="active" data-tab="over" role="tab">📊 Overview</button>
+      <button data-tab="orders" role="tab">📦 Orders <span class="chip" id="toPack" style="padding:2px 8px;margin-left:4px">0</span></button>
+      <button data-tab="products" role="tab">🏷️ Products</button>
+    </div>
+
+    <section class="tab-pane show" id="t-over">
+      <div class="kpis" id="kpis"></div>
+      <div class="store-grid" style="margin-top:18px">
+        <div class="glass card"><h3>Today's paid orders</h3><div id="bills" style="margin-top:10px"></div></div>
+        <div class="glass card center">
+          <h3>Your shop link</h3><p class="muted small">Print this QR at the counter. Customers scan, shop and pay by UPI.</p>
+          <div class="qr-box" style="margin-top:12px"><img id="qr" alt="Shop QR code"></div>
+          <div class="row" style="margin-top:14px;justify-content:center"><input class="input input-sm grow" id="link" readonly style="max-width:320px"><button class="btn-ghost sm" id="copy">Copy</button></div>
+          <a class="btn-ghost sm" id="dlQr" download="shop-qr.svg" style="margin-top:10px;display:inline-block">Download QR</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-pane" id="t-orders">
+      <div class="row wrap seg-o" style="margin-bottom:12px;gap:8px"><button class="pill active" data-of="open">To pack</button> <button class="pill" data-of="PACKED">Ready</button> <button class="pill" data-of="DONE">Done</button> <button class="pill" data-of="PENDING_PAYMENT">Awaiting payment</button></div>
+      <div id="orders"></div>
+    </section>
+
+    <section class="tab-pane" id="t-products">
+      <div class="store-grid">
+        <div class="glass card">
+          <div class="row spread wrap"><h3>Products <span class="faint small" id="pCount"></span></h3><input class="input input-sm" id="pq" type="search" placeholder="Search" style="max-width:200px"></div>
+          <div class="scroll-box" style="margin-top:12px"><table class="ptable"><thead><tr><th></th><th>Product</th><th>Price ₹</th><th>Stock</th><th>On</th><th></th></tr></thead><tbody id="ptbody"></tbody></table></div>
+          <p class="faint small" style="margin:8px 0 0">Change a price or stock and press Enter (or leave the box) to save.</p>
+        </div>
+        <div class="stack">
+          <div class="glass card" id="demoCard"><h3>Quick start</h3><p class="muted small">Load ~160 common groceries with demo prices. Edit prices to match your shop afterwards.</p><button class="btn violet block" id="seed">Load demo catalogue</button></div>
+          <form class="glass card" id="addForm"><h3>Add a product</h3>
+            <div class="form-grid" style="margin-top:10px">
+              <label class="field full"><span>Name</span><input class="input input-sm" name="name" required maxlength="100" placeholder="Toor Dal 1 kg"></label>
+              <label class="field"><span>Brand</span><input class="input input-sm" name="brand" maxlength="60"></label>
+              <label class="field"><span>Category</span><input class="input input-sm" name="category" maxlength="60" list="catList" placeholder="Dals & Pulses"></label>
+              <label class="field"><span>Price ₹</span><input class="input input-sm" name="price" inputmode="decimal" required></label>
+              <label class="field"><span>Pack size</span><input class="input input-sm" name="pack_size" inputmode="decimal" required placeholder="1000"></label>
+              <label class="field"><span>Unit</span><select class="input input-sm" name="pack_unit"><option value="g">g</option><option value="ml">ml</option><option value="pcs">pcs</option></select></label>
+              <label class="field"><span>Stock</span><input class="input input-sm" name="stock" inputmode="numeric" value="100"></label>
+              <label class="field full"><span>Matches ingredient (for the meal planner)</span><select class="input input-sm" name="ingredient_id" id="ingSel"><option value="">— none —</option></select></label>
+            </div>
+            <div class="err" id="addErr"></div><button class="btn block">Add product</button>
+          </form>
+          <div class="glass card"><h3>Import</h3>
+            <label class="drop" id="csvDrop" style="display:block;margin-top:10px"><input type="file" id="csvFile" accept=".csv,text/csv" hidden>📄 <b>CSV file</b><div class="faint small">name, brand, category, pack_size, pack_unit, price, stock, ingredient_id</div></label>
+            <label class="drop hidden" id="photoDrop" style="display:block;margin-top:10px"><input type="file" id="photoFile" accept="image/*,.pdf" hidden>📸 <b>Photo of a price list</b><div class="faint small">AI reads it; you check every price before saving</div></label>
+            <div class="small muted" id="photoMsg" style="margin-top:8px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<datalist id="catList"></datalist>
+<div class="overlay" id="ov"></div>
+<div class="modal" id="draftModal" role="dialog" aria-modal="true" aria-labelledby="dH">
+  <h3 id="dH">Check what we read</h3><p class="muted small" style="margin:6px 0 12px">Nothing is saved until you tap Save. Fill in any missing price, or untick a row to skip it.</p>
+  <div class="scroll-box"><table class="ptable"><thead><tr><th></th><th>Name</th><th>Size</th><th>Unit</th><th>Price ₹</th></tr></thead><tbody id="draftBody"></tbody></table></div>
+  <div class="err" id="draftErr"></div>
+  <div class="row" style="margin-top:12px"><button class="btn grow" id="draftSave">Save products</button><button class="btn-ghost" id="draftCancel">Cancel</button></div>
+</div>
+<script src="/static/js/store.js"></script>
+</body>
+</html>

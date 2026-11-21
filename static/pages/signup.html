@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/style.css">
 <link rel="stylesheet" href="/static/css/auth.css">
+<link rel="stylesheet" href="/static/css/shop.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script src="/static/js/common.js"></script>
 <script type="module" src="/static/js/bg3d.js"></script>
@@ -23,7 +24,11 @@
     <h2 style="margin:8px 0 6px">Create your <span class="hot-text serif-i">restaurant</span></h2>
     <p class="muted" style="margin:0 0 22px">Takes about a minute. Tables and menu come next.</p>
     <div class="stack">
-      <label class="field"><span>Restaurant name</span><input class="input" name="restaurant_name" placeholder="e.g. Dosa Corner" autocomplete="organization" required></label>
+      <div class="btype hidden" id="btype" role="radiogroup" aria-label="Business type">
+        <label><input type="radio" name="business_type" value="restaurant" checked><span class="e">🍽️</span><b>Restaurant</b></label>
+        <label><input type="radio" name="business_type" value="supermarket"><span class="e">🛒</span><b>Supermarket</b></label>
+      </div>
+      <label class="field"><span id="nameLbl">Restaurant name</span><input class="input" name="restaurant_name" placeholder="e.g. Dosa Corner" autocomplete="organization" required></label>
       <div id="gbox"></div>
       <div class="or">or with email</div>
       <label class="field"><span>Email</span><input class="input" type="email" name="email" placeholder="you@restaurant.com" autocomplete="email" required></label>
@@ -38,13 +43,23 @@
 <script>
 document.getElementById("mark").innerHTML = BD.logoSvg;
 const form = document.getElementById("form"), err = document.getElementById("err"), go = document.getElementById("go");
+BD.api("/api/auth/config").then(c => { if (c.supermarket) document.getElementById("btype").classList.remove("hidden"); }).catch(() => {});
+const btype = () => (form.querySelector("[name=business_type]:checked") || {}).value || "restaurant";
+form.addEventListener("change", e => {
+  if (e.target.name !== "business_type") return;
+  const shop = btype() === "supermarket";
+  document.getElementById("nameLbl").textContent = shop ? "Store name" : "Restaurant name";
+  form.restaurant_name.placeholder = shop ? "e.g. Fresh Mart" : "e.g. Dosa Corner";
+  document.querySelector("h2 .hot-text").textContent = shop ? "store" : "restaurant";
+  document.getElementById("go").textContent = shop ? "Create my store →" : "Create my restaurant →";
+});
 BD.googleButton(document.getElementById("gbox"), "signup",
-  () => ({ restaurant_name: form.restaurant_name.value.trim() }),
+  () => ({ restaurant_name: form.restaurant_name.value.trim(), business_type: btype() }),
   msg => { err.textContent = msg; });
 form.addEventListener("submit", async e => {
   e.preventDefault(); err.textContent = "";
   const d = Object.fromEntries(new FormData(form));
-  if (!d.restaurant_name.trim()) return err.textContent = "Please enter the restaurant name";
+  if (!d.restaurant_name.trim()) return err.textContent = btype() === "supermarket" ? "Please enter the store name" : "Please enter the restaurant name";
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email.trim())) return err.textContent = "Please enter a valid email";
   if (d.password.length < 6) return err.textContent = "Password must be at least 6 characters";
   BD.busy(go, true, "Creating…");
