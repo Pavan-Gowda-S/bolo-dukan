@@ -241,3 +241,27 @@ body.preview .item { grid-template-columns: 76px 1fr; }
 .mbar i { display: block; height: 100%; width: var(--w); background: var(--c); border-radius: inherit; animation: barIn .9s var(--ease) both; transform-origin: left; }
 @keyframes barIn { from { transform: scaleX(0); } }
 @media (max-width: 420px) { .nut-panel { flex-direction: column; align-items: stretch; } .kring { margin: 0 auto; } }
+
+/* receipt-style bill */
+.receipt { border-radius: 22px 22px 0 0; padding: 22px 22px 34px; font-variant-numeric: tabular-nums; animation: rcIn .6s var(--spring) both; }
+@keyframes rcIn { from { opacity: 0; transform: translateY(18px) rotateX(10deg); } }
+.rc-head { text-align: center; border-bottom: 2px dashed #e7cba6; padding-bottom: 12px; margin-bottom: 8px; }
+.rc-logo { width: 40px; height: 40px; margin: 0 auto 6px; border-radius: 12px; display: grid; place-items: center; background: #1a0b07; color: #ffc145; transform: rotate(-6deg); }
+.rc-logo svg { width: 22px; height: 22px; }
+.rc-meta { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 12px; font-size: .78rem; font-weight: 700; opacity: .65; margin-top: 6px; }
+.receipt .ln span:first-child { display: grid; }
+.receipt .ln small { font-weight: 500; opacity: .6; font-size: .76rem; }
+.rc-sub { display: flex; justify-content: space-between; padding: 10px 0 0; font-weight: 600; opacity: .7; }
+.rc-note { margin: 10px 0 0; font-size: .78rem; opacity: .6; text-align: center; }
+.rc-edge { position: absolute; left: 0; right: 0; bottom: -12px; height: 14px; background: radial-gradient(circle at 10px -2px, transparent 10px, #ffeed6 11px) repeat-x; background-size: 20px 14px; }
+.share-row { gap: 8px; margin-top: 22px; }
+.wa-btn { border-color: rgba(37,211,102,.55) !important; background: rgba(37,211,102,.12) !important; color: #b6f5cd !important; font-weight: 800; }
+.wa-ic { font-size: 1rem; }
+/* call-waiter sheet */
+.ws-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ws-opt { display: grid; gap: 6px; place-items: center; padding: 14px 8px; border-radius: 16px; border: 1px solid var(--line-2); background: rgba(255,255,255,.05); color: var(--text); font-weight: 700; font-size: .86rem; cursor: pointer; transition: transform .2s var(--spring), background .2s; }
+.ws-opt span { font-size: 1.8rem; }
+.ws-opt:hover { background: rgba(255,193,69,.12); } .ws-opt:active { transform: scale(.94); }
+.ws-wait { text-align: center; padding: 10px 0; }
+.ws-bell { font-size: 3rem; display: inline-block; animation: ring 1.2s ease-in-out infinite; }
+@media (max-width: 380px) { .ws-grid { grid-template-columns: repeat(2, 1fr); } }

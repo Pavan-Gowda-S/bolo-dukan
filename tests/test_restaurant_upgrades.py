@@ -377,5 +377,21 @@ class ReportTests(Base):
         self.assertEqual(call("GET", "/api/owner/report", cookie=self.owner)[0], 404)
 
 
+class WaiterCallTests(Base):
+    def test_reason_kannada_and_cancel(self):
+        sid, g = self.start(0)
+        self.assertEqual(call("POST", f"/api/session/{sid}/call-waiter", {"reason": "Water"}, headers=g)[0], 200)
+        v = call("GET", f"/api/session/{sid}", headers=g)[1]
+        self.assertTrue(v["waiter_called"])
+        self.assertEqual(v["waiter_call"]["reason"], "Water")
+        ann = call("GET", "/api/dashboard", cookie=self.owner)[1]["announcements"]
+        self.assertIn("ನೀರು ಬೇಕು", ann[-1]["text_kn"])
+        self.assertEqual(call("POST", f"/api/session/{sid}/call-waiter/cancel", {}, headers=g)[0], 200)
+        v = call("GET", f"/api/session/{sid}", headers=g)[1]
+        self.assertFalse(v["waiter_called"])
+        self.assertIsNone(v["waiter_call"])
+        self.assertEqual(call("POST", f"/api/session/{sid}/call-waiter/cancel", {})[0], 401)  # needs the guest token
+
+
 if __name__ == "__main__":
     unittest.main()

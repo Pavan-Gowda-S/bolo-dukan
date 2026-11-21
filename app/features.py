@@ -39,7 +39,12 @@ def _rs(paise: int) -> str:
 
 # ===================================================================== 1. Kannada alerts
 
-def announce(conn, restaurant_id: int, table_number: int, event: str, items=None, amount_paise: int | None = None) -> None:
+WAITER_REASONS_KN = {"Water": "ನೀರು ಬೇಕು", "Cutlery": "ಚಮಚ ಮತ್ತು ತಟ್ಟೆ ಬೇಕು", "Clean the table": "ಟೇಬಲ್ ಸ್ವಚ್ಛ ಮಾಡಬೇಕು",
+                     "Help to order": "ಆರ್ಡರ್ ಮಾಡಲು ಸಹಾಯ ಬೇಕು", "Extra chutney / sambar": "ಇನ್ನಷ್ಟು ಚಟ್ನಿ ಸಾಂಬಾರ್ ಬೇಕು"}
+
+
+def announce(conn, restaurant_id: int, table_number: int, event: str, items=None, amount_paise: int | None = None,
+             reason: str = "") -> None:
     """Create an announcement from FIXED templates (no AI), so the words are always right."""
     if not config.FEATURE_KANNADA_ALERTS:
         return
@@ -58,6 +63,8 @@ def announce(conn, restaurant_id: int, table_number: int, event: str, items=None
                   f"Table {n} has paid. Total {_rs(amount_paise or 0)} rupees.")
     elif event == "waiter":
         kn, en = f"ಟೇಬಲ್ {n}, ವೇಟರ್ ಬೇಕು.", f"Table {n} needs a waiter."
+        if reason in WAITER_REASONS_KN:  # fixed phrases only (no AI)
+            kn, en = f"ಟೇಬಲ್ {n}, {WAITER_REASONS_KN[reason]}.", f"Table {n}: {reason.lower()}, please."
     elif event == "bill":
         kn, en = f"ಟೇಬಲ್ {n}, ಬಿಲ್ ಕೇಳುತ್ತಿದ್ದಾರೆ.", f"Table {n} wants the bill."
     elif event == "quiz":

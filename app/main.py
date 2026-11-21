@@ -295,6 +295,8 @@ def _session_view(conn, s: dict) -> dict:
         "pay_method": s.get("pay_method", ""),
         "guests": guests,
         "waiter_called": calls > 0,
+        "waiter_call": row(conn.execute("SELECT id, reason, created_at FROM waiter_calls WHERE session_id = ? AND done = 0 ORDER BY id DESC LIMIT 1", (s["id"],)).fetchone()),
+        "started_at": s.get("started_at"),
         "payment": {"status": pay["status"], "amount_paise": pay["amount_paise"]} if pay else None,
         "split": upgrades.split_summary(conn, s["id"]),
     }
@@ -826,6 +828,15 @@ def guest_order(req: Request, session_id: int):
         return {"ok": True, "order_id": oid, "session": _session_view(conn, s)}
 
 
+@route("POST", "/api/session/{session_id:int}/call-waiter/cancel")
+def guest_cancel_waiter(req: Request, session_id: int):
+    """The guest no longer needs the waiter (e.g. tapped by mistake)."""
+    with db() as conn:
+        s = _guest_session(conn, session_id, req)
+        conn.execute("UPDATE waiter_calls SET done = 1 WHERE session_id = ? AND done = 0", (s["id"],))
+    return {"ok": True}
+
+
 @route("POST", "/api/session/{session_id:int}/call-waiter")
 def guest_call_waiter(req: Request, session_id: int):
     reason = _str(req.json(), "reason", 0, 120)
@@ -842,7 +853,7 @@ def _call_waiter(conn, s: dict, reason: str = "") -> bool:
     if conn.execute("SELECT 1 FROM waiter_calls WHERE session_id = ? AND done = 0", (s["id"],)).fetchone():
         return False
     conn.execute("INSERT INTO waiter_calls (session_id, reason, created_at) VALUES (?, ?, ?)", (s["id"], reason, now_iso()))
-    features.announce(conn, s["restaurant_id"], s["table_number"], "waiter")
+    features.announce(conn, s["restaurant_id"], s["table_number"], "waiter", reason=reason)
     return True
 
 

@@ -197,6 +197,8 @@
     $("mTable").textContent = info.table.number;
     $("mGuests").textContent = [sess.guests > 1 ? `· ${sess.guests} phones` : "", info.features.seats && info.table.seats ? `· ${info.table.seats} seats` : ""].filter(Boolean).join(" ");
     $("mCode").textContent = sess.join_code || "····";
+    if (renderMain.wasCalled && !sess.waiter_called) BD.toast("The waiter has seen your request ✓", "ok");
+    renderMain.wasCalled = sess.waiter_called;
     $("waiterBtn").classList.toggle("called", sess.waiter_called);
     $("waiterBtn").title = sess.waiter_called ? "A waiter is coming" : "Call waiter";
     const active = sess.orders.filter(o => o.status !== "REJECTED" && o.status !== "SERVED").length;
@@ -378,12 +380,19 @@
       const k = it.name + "|" + it.unit_price_paise; const l = lines.get(k) || { name: it.name, price: it.unit_price_paise, qty: 0 }; l.qty += it.qty; lines.set(k, l);
     }));
     const pending = sess.orders.filter(o => o.status === "PENDING").length;
-    let html = `<div class="bill"><div class="row spread"><h3>${BD.esc(info.restaurant.name)}</h3><span style="font-weight:800;opacity:.6">TABLE ${info.table.number}</span></div><div style="margin-top:12px">`;
+    const when = new Date(sess.started_at || Date.now()).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" });
+    const nItems = [...lines.values()].reduce((a, l) => a + l.qty, 0);
+    const tables = [info.table.number].concat(info.table.merged || []).join(" + ");
+    let html = `<div class="bill receipt"><div class="rc-head"><div class="rc-logo">${BD.logoSvg}</div><h3>${BD.esc(info.restaurant.name)}</h3>
+      <div class="rc-meta"><span>Table ${tables}</span><span>Bill #${sess.id}</span><span>${when}</span></div></div><div class="rc-lines">`;
     if (!lines.size) html += `<p style="opacity:.6">Nothing on the bill yet. Only orders the cashier accepted show here.</p>`;
-    lines.forEach(l => html += `<div class="ln"><span>${l.qty} × ${BD.esc(l.name)}</span><span class="mono">${BD.rupees(l.qty * l.price)}</span></div>`);
-    html += `</div><div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise)}</b></div>`;
+    lines.forEach(l => html += `<div class="ln"><span><b>${l.qty} ×</b> ${BD.esc(l.name)}<small>${BD.rupees(l.price)} each</small></span><span class="mono">${l.price ? BD.rupees(l.qty * l.price) : "FREE"}</span></div>`);
+    html += `</div><div class="rc-sub"><span>${nItems} item${nItems === 1 ? "" : "s"}</span><span class="mono">${BD.rupees(sess.bill_paise)}</span></div>
+      <div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise)}</b></div>
+      ${sess.status === "PAID" || sess.pay_method ? "" : `<p class="rc-note">Prices as on the menu. Pay by UPI or at the counter.</p>`}`;
     if (sess.status === "PAID") html += `<div style="margin-top:14px;text-align:center;font-weight:900;font-size:1.3rem;color:#0d8a5f;letter-spacing:.2em;border:3px solid #0d8a5f;border-radius:12px;padding:6px;transform:rotate(-4deg)">PAID ✓</div>`;
-    html += `</div>`;
+    html += `<div class="rc-edge"></div></div>`;
+    if (lines.size) html += `<div class="row share-row"><button class="btn-ghost grow wa-btn" id="shareWa"><span class="wa-ic">🟢</span> Share on WhatsApp</button>${navigator.share ? `<button class="btn-ghost" id="shareAny" aria-label="Share">↗ Share</button>` : ""}</div>`;
     if (pending) html += `<div class="notice" style="margin-top:26px">${pending} order${pending > 1 ? "s are" : " is"} waiting for the cashier. ${pending > 1 ? "They'll" : "It'll"} appear on the bill once accepted.</div>`;
 
     html += `<div class="pay-box">`;
@@ -415,6 +424,16 @@
     }
     html += `</div>`;
     setHtml("tabBill", html);
+    const billText = () => {
+      const out = [`🧾 *${info.restaurant.name}*`, `Table ${tables} · Bill #${sess.id}`, when, ""];
+      lines.forEach(l => out.push(`${l.qty} × ${l.name} — ${l.price ? BD.rupees(l.qty * l.price) : "FREE"}`));
+      out.push("", `*Total: ${BD.rupees(sess.bill_paise)}*`);
+      if (sess.status === "PAID") out.push("✅ Paid by UPI");
+      out.push("", "Ordered with Bolo Dukaan");
+      return out.join("\n");
+    };
+    const wa = $("shareWa"); if (wa) wa.onclick = () => window.open("https://wa.me/?text=" + encodeURIComponent(billText()), "_blank", "noopener");
+    const sh = $("shareAny"); if (sh) sh.onclick = () => navigator.share({ title: `${info.restaurant.name} bill`, text: billText() }).catch(() => {});
     wireBill();
     if ($("splitBox")) loadSplit();
   }
@@ -514,11 +533,30 @@
 
   // ---------------------------------------------------------------- waiter & code
   $("waiterBtn").onclick = callWaiter;
-  async function callWaiter() {
-    if (sess.waiter_called) return BD.toast("A waiter is already on the way 🙂");
-    try { await guestApi(`/api/session/${me.sid}/call-waiter`, { body: { reason: "" } }); sess.waiter_called = true; renderMain(); BD.toast("A waiter is on the way", "ok"); BD.buzz(20); }
-    catch (x) { BD.toast(x.message, "bad"); }
+  // Call waiter: pick what you need (the kitchen hears it in Kannada), see that it's on the way, cancel if not needed.
+  const REASONS = [["Water", "💧"], ["Cutlery", "🍴"], ["Clean the table", "🧹"], ["Help to order", "📝"], ["Extra chutney / sambar", "🥣"], ["", "🙋", "Something else"]];
+  function renderWaiterSheet() {
+    const c = sess.waiter_call;
+    $("wsBody").innerHTML = c
+      ? `<div class="ws-wait"><div class="ws-bell">🔔</div><h3 style="margin:12px 0 4px">A waiter is on the way</h3>
+          <p class="muted">${c.reason ? `You asked for: <b>${BD.esc(c.reason)}</b> · ` : ""}${BD.ago(c.created_at)}</p>
+          <div class="row" style="justify-content:center;margin-top:14px;gap:8px"><button class="btn-ghost" id="wsCancel">Don't need it any more</button><button class="btn" data-close>OK</button></div></div>`
+      : `<div class="ws-grid">${REASONS.map(([r, ic, label]) => `<button class="ws-opt" data-reason="${BD.esc(r)}"><span>${ic}</span>${BD.esc(label || r)}</button>`).join("")}</div>
+         <form class="row" id="wsForm" style="gap:8px;margin-top:12px"><input class="input grow" id="wsText" maxlength="100" placeholder="Or type it (e.g. baby chair)"><button class="btn">Call</button></form>`;
+    const cancel = $("wsCancel");
+    if (cancel) cancel.onclick = async () => { try { await guestApi(`/api/session/${me.sid}/call-waiter/cancel`, { body: {} }); sess.waiter_called = false; sess.waiter_call = null; renderMain(); closeSheets(); BD.toast("Okay, cancelled", "ok"); } catch (x) { BD.toast(x.message, "bad"); } };
+    const form = $("wsForm");
+    if (form) form.onsubmit = e => { e.preventDefault(); sendCall($("wsText").value.trim() || ""); };
   }
+  $("wsBody").addEventListener("click", e => { const b = e.target.closest("[data-reason]"); if (b) sendCall(b.dataset.reason); });
+  async function sendCall(reason) {
+    try {
+      await guestApi(`/api/session/${me.sid}/call-waiter`, { body: { reason } });
+      sess.waiter_called = true; sess.waiter_call = { reason, created_at: new Date().toISOString() };
+      renderMain(); renderWaiterSheet(); BD.buzz([20, 40, 20]);
+    } catch (x) { BD.toast(x.message, "bad"); }
+  }
+  function callWaiter() { renderWaiterSheet(); openSheet("waiterSheet"); }
   $("codeChip").onclick = async () => {
     if (!sess || !sess.join_code) return;
     const text = `Join our table at ${info.restaurant.name}: scan the QR on table ${info.table.number} and enter code ${sess.join_code}`;
