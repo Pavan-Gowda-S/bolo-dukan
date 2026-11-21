@@ -20,7 +20,7 @@ from app import main  # noqa: E402
 from app.web import HTTPError, Request  # noqa: E402
 
 FLAGS = ("FEATURE_MENU_PREVIEW", "FEATURE_SEATS", "FEATURE_DISH_DETAILS", "FEATURE_KITCHEN_TV", "FEATURE_STAFF",
-         "FEATURE_GAME_ROOMS", "FEATURE_FLOOR_PLAN", "FEATURE_KANNADA_ALERTS", "FEATURE_BUDGET_ORDER")
+         "FEATURE_GAME_ROOMS", "FEATURE_FLOOR_PLAN", "FEATURE_KANNADA_ALERTS", "FEATURE_BUDGET_ORDER", "FEATURE_MERGE_TABLES", "FEATURE_DAILY_REPORT")
 
 
 def call(method, path, body=None, cookie="", headers=None, raw=None, ctype=None):
@@ -313,6 +313,45 @@ class StaffTests(Base):
         self.assertEqual(call("GET", "/api/waiter/board", cookie=w)[0], 404)
         sid, g = self.start(0, approve=False)
         self.assertEqual(call("POST", f"/api/session/{sid}/approve", {}, w)[0], 401)
+
+
+class MergeTests(Base):
+    def test_merge_free_table_then_scan_joins_host(self):
+        sid, g = self.start(0)
+        t1, t2 = self.tables[0], self.tables[1]
+        s, r, _ = call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t2["id"]}, self.owner)
+        self.assertEqual(s, 200, r)
+        info = call("GET", f"/api/t/{t2['token']}")[1]
+        self.assertEqual((info["table"]["number"], info["table"]["seats"], info["table"]["merged"], info["active_status"]), (1, 8, [2], "OPEN"))
+        self.assertEqual(call("POST", f"/api/t/{t2['token']}/start", {"device_id": "x"})[0], 409)  # joins the host with its code instead
+
+    def test_merge_two_ordering_tables_moves_orders(self):
+        sid1, g1 = self.start(0)
+        sid2, g2 = self.start(1)
+        self.order(sid1, g1)
+        self.order(sid2, g2, ((1, 3),))
+        s, r, _ = call("POST", "/api/tables/merge", {"host_table_id": self.tables[0]["id"], "table_id": self.tables[1]["id"]}, self.owner)
+        self.assertEqual(s, 200, r)
+        host = call("GET", f"/api/session/{sid1}", headers=g1)[1]
+        self.assertEqual(len(host["orders"]), 2)
+        self.assertEqual(host["guests"], 2)
+        self.assertEqual(call("GET", f"/api/session/{sid2}", headers=g2)[1]["id"], sid1)  # the phone follows to the host order
+        # freeing the host unmerges
+        oid = [o["id"] for o in host["orders"]]
+        for o in oid:
+            call("POST", f"/api/orders/{o}/status", {"status": "ACCEPTED"}, self.owner)
+        call("POST", f"/api/session/{sid1}/cash", {}, self.owner)
+        dash = call("GET", "/api/dashboard", cookie=self.owner)[1]
+        self.assertIsNone(dash["tables"][1]["merged_into"])
+
+    def test_rules(self):
+        t1, t2, t3 = self.tables
+        self.start(1)
+        s, r, _ = call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t2["id"]}, self.owner)
+        self.assertEqual(s, 409, r)  # the ordering table must be the host
+        self.assertEqual(call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t1["id"]}, self.owner)[0], 400)
+        config.FEATURE_MERGE_TABLES = False
+        self.assertEqual(call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t3["id"]}, self.owner)[0], 404)
 
 
 if __name__ == "__main__":

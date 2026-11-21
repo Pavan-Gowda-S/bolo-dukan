@@ -65,6 +65,15 @@
           }
         });
       }
+      if (data.features.merge_tables) {
+        const host = t.merged_into && data.tables.find(x => x.id === t.merged_into);
+        const joined = data.tables.filter(x => x.merged_into === t.id).map(x => x.number);
+        if (t.merged_into) body = `<p class="faint" style="margin:8px 0">🔗 Merged with Table ${host ? host.number : "?"}</p><div class="acts"><button class="btn-ghost sm" data-a="unmerge" data-t="${t.id}">Unmerge</button></div>`;
+        else {
+          if (joined.length) body = `<p style="margin:6px 0 0;color:#a5e8ff;font-weight:700">🔗 + Table ${joined.join(", ")}</p>` + body;
+          if (!s || s.status === "OPEN" || s.status === "WAITING_APPROVAL") body += `<div class="acts"><button class="btn-ghost sm" data-a="merge" data-t="${t.id}" data-n="${t.number}">🔗 Merge a table into this one</button></div>`;
+        }
+      }
       const hot = s && (s.status === "WAITING_APPROVAL" || s.pending_count || s.waiter_calls.length);
       return `<article class="wt ${hot ? "hot" : ""}" style="--c:${color}"><div class="wt-h"><div class="wt-n">Table ${t.number}${seats ? `<small>${seats}</small>` : ""}</div><span class="wt-st">${label}</span></div>${body}</article>`;
     }).join("");
@@ -85,6 +94,13 @@
     if (a === "prep") { path = `/api/orders/${b.dataset.o}/status`; body = { status: "PREPARING" }; }
     if (a === "served") { path = `/api/orders/${b.dataset.o}/status`; body = { status: "SERVED" }; }
     if (a === "wdone") path = `/api/waiter-calls/${b.dataset.c}/done`;
+    if (a === "unmerge") path = `/api/tables/${b.dataset.t}/unmerge`;
+    if (a === "merge") {
+      const n = prompt(`Which table number should join Table ${b.dataset.n}? (Its QR will open the same order and bill.)`); if (!n) return;
+      const other = data.tables.find(x => String(x.number) === n.trim());
+      if (!other) { BD.toast("That table isn't one of yours", "bad"); return; }
+      path = "/api/tables/merge"; body = { host_table_id: Number(b.dataset.t), table_id: other.id };
+    }
     BD.busy(b, true);
     try { await BD.api(path, { body }); BD.buzz(20); if (a === "accept") BD.toast("Sent to the kitchen", "ok"); await load(); }
     catch (x) { BD.toast(x.message, "bad"); BD.busy(b, false); }

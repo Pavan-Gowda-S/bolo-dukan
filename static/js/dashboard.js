@@ -125,6 +125,12 @@
         ${sp ? `<div class="split-pill"><span class="sp-bar"><i style="width:${Math.round(sp.paid / sp.total * 100)}%"></i></span>${sp.paid} of ${sp.total} paid${sp.pending_paise ? ` · ${BD.rupees(sp.pending_paise)} pending` : ""}</div>` : ""}
         ${acts ? `<div class="acts">${acts}</div>` : ""}`;
     }
+    if (data.features.merge_tables) {
+      const host = t.merged_into && data.tables.find(x => x.id === t.merged_into);
+      const guests = data.tables.filter(x => x.merged_into === t.id).map(x => x.number);
+      if (host) body = `<div class="merge-badge">🔗 Merged with Table ${host.number}</div><div class="acts"><button class="btn-ghost sm" data-a="unmerge" data-t="${t.id}">Unmerge</button></div>`;
+      else if (guests.length) body = `<div class="merge-badge">🔗 + Table ${guests.join(", ")}</div>` + body;
+    }
     const say = cardSay.get(t.number);
     const sayHtml = say && say.until > Date.now() ? `<div class="kn-say">🔊 ${BD.esc(say.text)}</div>` : "";
     return `${v.waiter ? `<span class="bell" title="Waiter called">🔔</span>` : ""}
@@ -172,6 +178,11 @@
     if (!t) return closeDrawer();
     const v = viewOf(t), s = t.session, d = $("drawer");
     let html = `<div class="d-head"><div><div class="eyebrow" style="color:${v.color}">${BD.esc(v.stateLabel)}</div><div class="d-num">Table ${t.number}</div></div><button class="btn-ghost sm" id="dClose" aria-label="Close">✕</button></div>`;
+    if (data.features.merge_tables && !t.merged_into && (!s || s.status === "OPEN" || s.status === "WAITING_APPROVAL")) {
+      const cands = data.tables.filter(x => x.id !== t.id && !x.merged_into && !data.tables.some(y => y.merged_into === x.id)
+        && (!x.session || (s && (x.session.status === "OPEN" || x.session.status === "WAITING_APPROVAL"))));
+      if (cands.length) html += `<div class="merge-row"><span>🔗 Big group?</span><select class="input input-sm" id="mergeSel">${cands.map(x => `<option value="${x.id}">Table ${x.number}${x.session ? " (ordering: orders move here)" : ""}${data.features.seats && x.seats ? ` · ${x.seats} seats` : ""}</option>`).join("")}</select><button class="btn-ghost sm" data-a="merge" data-t="${t.id}">Merge into this table</button></div>`;
+    }
     if (!s) {
       html += `<div class="glass card center" style="margin-top:20px"><div style="font-size:2.6rem" class="float">🪑</div><p class="muted">This table is free. When guests scan its QR code and tap “Start ordering”, it lights up yellow here.</p></div>`;
     } else {
@@ -221,6 +232,15 @@
     const tbl = data.tables.find(t => t.session && (String(t.session.id) === sid || t.session.orders.some(o => String(o.id) === oid)));
     try {
       if (a === "rejorder") return openReason(oid);
+      if (a === "merge" || a === "unmerge") {
+        const other = a === "merge" ? data.tables.find(x => String(x.id) === $("mergeSel").value) : null;
+        if (a === "merge" && !confirm(`Merge Table ${other.number} into this table? Its QR code will open the same order and bill.`)) return;
+        BD.busy(btn, true);
+        if (a === "merge") await BD.api("/api/tables/merge", { body: { host_table_id: Number(btn.dataset.t), table_id: other.id } });
+        else await BD.api(`/api/tables/${btn.dataset.t}/unmerge`, { body: {} });
+        BD.toast(a === "merge" ? "Tables merged" : "Table unmerged", "ok", 2200);
+        return poll(true);
+      }
       if (a === "sharecash" && !confirm("Mark this share as paid in cash?")) return;
       if (a === "reward") {
         BD.busy(btn, true);

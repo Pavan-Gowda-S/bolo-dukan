@@ -290,6 +290,8 @@ def init_db() -> None:
             if col not in menu_cols:  # 4: optional dish details, entered by the owner (NULL = unknown)
                 conn.execute(f"ALTER TABLE menu_items ADD COLUMN {col} {decl}")
         table_cols = {r[1] for r in conn.execute("PRAGMA table_info(tables)")}
+        if "merged_into" not in table_cols:  # merged tables: this table's QR opens the host table's order
+            conn.execute("ALTER TABLE tables ADD COLUMN merged_into INTEGER")
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")
         rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}

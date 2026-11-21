@@ -342,7 +342,7 @@ def waiter_board(req: Request):
     st = require_staff(req, roles=("waiter",))
     with db() as conn:
         r = row(conn.execute("SELECT name, language FROM restaurants WHERE id = ?", (st["restaurant_id"],)).fetchone())
-        q = "SELECT id, number, seats FROM tables WHERE restaurant_id = ? AND active = 1"
+        q = "SELECT id, number, seats, merged_into FROM tables WHERE restaurant_id = ? AND active = 1"
         args = [st["restaurant_id"]]
         if st["table_ids"] is not None:
             q += f" AND id IN ({','.join('?' * len(st['table_ids']))})"
@@ -366,4 +366,79 @@ def waiter_board(req: Request):
             f"AND event_type IN ('start', 'order', 'waiter', 'bill') AND table_number IN ({','.join('?' * len(numbers)) or 'NULL'}) ORDER BY id",
             (st["restaurant_id"], features._ago_iso(120), *numbers))) if numbers else []
     return {"me": {"name": st["name"], "role": st["role"]}, "restaurant": r, "tables": tables, "announcements": ann,
-            "features": {"seats": config.FEATURE_SEATS, "kannada_alerts": config.FEATURE_KANNADA_ALERTS}, "server_time": now_iso()}
+            "features": {"seats": config.FEATURE_SEATS, "kannada_alerts": config.FEATURE_KANNADA_ALERTS,
+                         "merge_tables": config.FEATURE_MERGE_TABLES}, "server_time": now_iso()}
+
+
+# ===================================================================== merge two tables (big groups)
+
+from .db import BILL_REQUESTED, CLOSED, OPEN, PAID, WAITING_APPROVAL  # noqa: E402
+
+
+def merge_info(conn, t: dict) -> dict:
+    """Seats of the whole group and the numbers of tables merged into this host table."""
+    if not config.FEATURE_MERGE_TABLES:
+        return {"seats": t["seats"], "merged": []}
+    others = rows(conn.execute("SELECT number, seats FROM tables WHERE merged_into = ? AND active = 1 ORDER BY number", (t["id"],)))
+    return {"seats": t["seats"] + sum(o["seats"] for o in others), "merged": [o["number"] for o in others]}
+
+
+def _merge_tables(conn, who: dict, ids) -> list[dict]:
+    if not config.FEATURE_MERGE_TABLES:
+        _off()
+    out = []
+    for tid in ids:
+        t = row(conn.execute("SELECT * FROM tables WHERE id = ? AND active = 1", (tid,)).fetchone())
+        if t is None:
+            raise HTTPError(404, "Table not found")
+        if t["restaurant_id"] != who["restaurant_id"]:
+            raise HTTPError(403 if not who["is_owner"] else 404, "Table not found")
+        if who["table_ids"] is not None and t["id"] not in who["table_ids"]:
+            raise HTTPError(403, "This table isn't assigned to you.")
+        out.append(t)
+    return out
+
+
+@route("POST", "/api/tables/merge")
+def merge_tables(req: Request):
+    """Merge `table_id` into `host_table_id`: its QR opens the host's order. If it already has guests, they and their
+    orders move to the host's order (one bill). Undone with /unmerge or automatically when the host table is freed."""
+    who = actor(req)
+    d = req.json()
+    try:
+        host_id, other_id = int(d.get("host_table_id")), int(d.get("table_id"))
+    except (TypeError, ValueError):
+        raise HTTPError(400, "Pick two tables")
+    if host_id == other_id:
+        raise HTTPError(400, "Pick two different tables")
+    with db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        host, other = _merge_tables(conn, who, (host_id, other_id))
+        if host["merged_into"]:
+            raise HTTPError(409, f"Table {host['number']} is already merged into another table.")
+        if other["merged_into"]:
+            raise HTTPError(409, f"Table {other['number']} is already merged.")
+        if conn.execute("SELECT 1 FROM tables WHERE merged_into = ?", (other["id"],)).fetchone():
+            raise HTTPError(409, f"Other tables are merged into Table {other['number']}. Unmerge them first.")
+        hs, os_ = m._active_session(conn, host["id"]), m._active_session(conn, other["id"])
+        if os_:
+            if not hs:
+                raise HTTPError(409, f"Table {other['number']} is already ordering. Pick it as the main table instead.")
+            if hs["status"] not in (OPEN, WAITING_APPROVAL) or os_["status"] not in (OPEN, WAITING_APPROVAL):
+                raise HTTPError(409, "Can't merge a table whose bill is requested or paid.")
+            if conn.execute("SELECT 1 FROM payments WHERE session_id IN (?, ?) AND status = 'ACTIVE'", (hs["id"], os_["id"])).fetchone():
+                raise HTTPError(409, "A payment is in progress. Try again after it finishes.")
+            for tbl in ("session_guests", "orders", "waiter_calls"):  # one group, one bill
+                conn.execute(f"UPDATE {tbl} SET session_id = ? WHERE session_id = ?", (hs["id"], os_["id"]))
+            conn.execute("UPDATE table_sessions SET status = ?, closed_at = ? WHERE id = ?", (CLOSED, now_iso(), os_["id"]))
+        conn.execute("UPDATE tables SET merged_into = ? WHERE id = ?", (host["id"], other["id"]))
+    return {"ok": True, "host": host["number"], "merged": other["number"]}
+
+
+@route("POST", "/api/tables/{table_id:int}/unmerge")
+def unmerge_table(req: Request, table_id: int):
+    who = actor(req)
+    with db() as conn:
+        (t,) = _merge_tables(conn, who, (table_id,))
+        conn.execute("UPDATE tables SET merged_into = NULL WHERE id = ?", (t["id"],))
+    return {"ok": True}

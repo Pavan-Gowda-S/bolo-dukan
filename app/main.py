@@ -217,6 +217,14 @@ def _table_by_token(conn, token: str) -> dict:
     ).fetchone())
     if t is None:
         raise HTTPError(404, "This QR code is not valid any more. Please ask the staff.")
+    if t.get("merged_into") and config.FEATURE_MERGE_TABLES:  # merged for a big group: act on the host table
+        host = row(conn.execute(
+            "SELECT t.*, r.name AS restaurant_name, r.language, r.wifi_name, r.wifi_password "
+            "FROM tables t JOIN restaurants r ON r.id = t.restaurant_id WHERE t.id = ? AND t.active = 1 AND t.restaurant_id = ?",
+            (t["merged_into"], t["restaurant_id"]),
+        ).fetchone())
+        if host:
+            return host
     return t
 
 
@@ -689,10 +697,11 @@ def guest_table(req: Request, token: str):
         t = _table_by_token(conn, token)
         active = _active_session(conn, t["id"])
         menu = _menu(conn, t["restaurant_id"], only_available=True)
+        group = restaurant.merge_info(conn, t)  # merged tables: total seats and the other table numbers
     store.menu_extras(menu)  # approx. calories/protein and real photos, when switched on
     dish_nutrition(menu)     # 4: owner-entered values first; never guessed
     return {
-        "table": {"number": t["number"], "seats": t["seats"]},
+        "table": {"number": t["number"], "seats": group["seats"], "merged": group["merged"]},
         "restaurant": {"name": t["restaurant_name"], "language": t["language"],
                        "wifi_name": t["wifi_name"], "wifi_password": t["wifi_password"]},
         "active_status": active["status"] if active else None,
@@ -764,7 +773,14 @@ def guest_join(req: Request, token: str):
 @route("GET", "/api/session/{session_id:int}")
 def guest_session(req: Request, session_id: int):
     with db() as conn:
-        return _session_view(conn, _guest_session(conn, session_id, req))
+        try:
+            return _session_view(conn, _guest_session(conn, session_id, req))
+        except HTTPError as e:
+            # merged tables: this phone's guest token moved to the host table's order; follow it
+            g = conn.execute("SELECT session_id FROM session_guests WHERE token = ?", (req.header("X-Guest-Token") or "",)).fetchone()
+            if e.status != 401 or not g or g["session_id"] == session_id:
+                raise
+            return _session_view(conn, _guest_session(conn, g["session_id"], req))
 
 
 @route("POST", "/api/session/{session_id:int}/orders")
@@ -1111,7 +1127,7 @@ def dashboard(req: Request):
     with db() as conn:
         r = row(conn.execute("SELECT * FROM restaurants WHERE id = ?", (rid,)).fetchone())
         tables = rows(conn.execute(
-            "SELECT id, number, seats FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
+            "SELECT id, number, seats, merged_into FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number", (rid,)
         ))
         for t in tables:
             s = _active_session(conn, t["id"])
@@ -1222,6 +1238,7 @@ def cashier_cash(req: Request, session_id: int):
                      "WHERE session_id = ? AND status = ?", (ORDER_REJECTED, ts, session_id, PENDING))
         conn.execute("UPDATE table_sessions SET status = ?, settled_paise = ?, settled_at = ?, pay_method = 'CASH', "
                      "closed_at = ? WHERE id = ?", (PAID_CASH, amount, ts, ts, session_id))
+        conn.execute("UPDATE tables SET merged_into = NULL WHERE merged_into = (SELECT table_id FROM table_sessions WHERE id = ?)", (session_id,))
         conn.execute("UPDATE payments SET status = 'CANCELLED' WHERE session_id = ? AND status = 'ACTIVE'", (session_id,))
         conn.execute("UPDATE waiter_calls SET done = 1 WHERE session_id = ?", (session_id,))
     for link_id in links:
@@ -1243,6 +1260,7 @@ def cashier_free(req: Request, session_id: int):
         conn.execute("UPDATE orders SET status = ?, reject_reason = 'Table closed', updated_at = ? "
                      "WHERE session_id = ? AND status = ?", (ORDER_REJECTED, ts, session_id, PENDING))
         conn.execute("UPDATE table_sessions SET status = ?, closed_at = ? WHERE id = ?", (CLOSED, ts, session_id))
+        conn.execute("UPDATE tables SET merged_into = NULL WHERE merged_into = ?", (s["table_id"],))  # group left
         conn.execute("UPDATE payments SET status = 'CANCELLED' WHERE session_id = ? AND status = 'ACTIVE'", (session_id,))
         conn.execute("UPDATE waiter_calls SET done = 1 WHERE session_id = ?", (session_id,))
     return {"ok": True}

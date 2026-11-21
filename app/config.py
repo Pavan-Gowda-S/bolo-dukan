@@ -108,6 +108,8 @@ FEATURE_KITCHEN_TV = _flag("FEATURE_KITCHEN_TV", False)          # 3: big-screen
 FEATURE_STAFF = _flag("FEATURE_STAFF", False)                    # 2: waiter accounts + waiter portal
 FEATURE_GAME_ROOMS = _flag("FEATURE_GAME_ROOMS", False)          # 5: private trivia room for one table
 FEATURE_FLOOR_PLAN = _flag("FEATURE_FLOOR_PLAN", False)          # 7: floor plan from a blueprint
+FEATURE_MERGE_TABLES = _flag("FEATURE_MERGE_TABLES", False)      # merge two tables for a big group
+FEATURE_DAILY_REPORT = _flag("FEATURE_DAILY_REPORT", False)      # daily report: CSV download + printable PDF
 
 
 def gemini_ready() -> bool:
@@ -155,6 +157,8 @@ def features() -> dict:
         "staff": FEATURE_STAFF,
         "game_rooms": FEATURE_GAME_ROOMS,
         "floor_plan": FEATURE_FLOOR_PLAN,
+        "merge_tables": FEATURE_MERGE_TABLES,
+        "daily_report": FEATURE_DAILY_REPORT,
         "online_payment": cashfree_ready(),
         "ai_provider": ai_provider(),
     }

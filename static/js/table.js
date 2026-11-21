@@ -41,7 +41,7 @@
   }
 
   async function fetchSession() {
-    try { sess = await guestApi("/api/session/" + me.sid); }
+    try { sess = await guestApi("/api/session/" + me.sid); if (sess && sess.id !== me.sid) { me.sid = sess.id; saveMe(); BD.toast("Your table was joined with another table. Same order, one bill.", "info", 5000); } }
     catch (x) { if (x.status === 401 || x.status === 404) { forget(); } }
   }
 
