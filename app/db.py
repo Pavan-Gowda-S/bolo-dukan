@@ -298,6 +298,8 @@ def init_db() -> None:
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")
         rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}
+        if "storage_seeded" not in rest_cols:  # storage room: full starter list loaded once on first visit
+            conn.execute("ALTER TABLE restaurants ADD COLUMN storage_seeded INTEGER NOT NULL DEFAULT 0")
         if "floor_layout" not in rest_cols:  # AI-read blueprint layout (rooms, walls, counters), saved after the owner applies it
             conn.execute("ALTER TABLE restaurants ADD COLUMN floor_layout TEXT NOT NULL DEFAULT ''")
         if "floor_image" not in rest_cols:  # 7: optional blueprint, stored under data/uploads/r<id>/
