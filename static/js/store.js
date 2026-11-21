@@ -80,7 +80,7 @@
     if (!list.length) { $("orders").innerHTML = `<div class="glass card center"><div class="big-ic">📦</div><p class="muted">${orderFilter === "open" ? "No orders to pack right now." : "Nothing here."}</p></div>`; return; }
     $("orders").innerHTML = list.map((o, i) => {
       const all = o.items.every((_, k) => picked.has(o.id + ":" + k));
-      return `<div class="glass ocard s-${o.status}" style="animation-delay:${i * .04}s">
+      return `<div class="glass ocard s-${o.status} ${drawOrders.done ? "still" : ""}" style="animation-delay:${i * .04}s">
         <div class="row spread wrap"><div><b style="font-size:1.15rem">Order #${o.id}</b> <span class="faint small">${BD.esc(o.customer_name || "Customer")} · ${BD.esc(o.phone)} · ${BD.ago(o.paid_at || o.created_at)}</span>
           ${o.source === "planner" ? `<span class="chip" style="margin-left:6px">🍳 Meal plan${o.plan ? ` · ${o.plan.people} people · ${o.plan.days} days` : ""}</span>` : ""}</div>
           <b class="mono">${BD.rupees(o.total_paise)}</b></div>
@@ -91,6 +91,7 @@
           ${o.status === "PACKED" ? `<button class="btn sm" data-st="DONE" data-oid="${o.id}">Handed over</button>` : ""}
           ${o.status === "PENDING_PAYMENT" ? `<span class="faint small">Not paid yet — don't pack.</span>` : ""}</div></div>`;
     }).join("");
+    drawOrders.done = true;
   }
   $("orders").addEventListener("change", e => {
     const c = e.target.closest("[data-pick]"); if (!c) return;

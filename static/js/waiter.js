@@ -21,7 +21,9 @@
     try { data = await BD.api("/api/waiter/board"); }
     catch (x) { if (x.status === 401 || x.status === 404) { location.href = "/staff/login"; return; } return; }
     $("who").textContent = "👋 " + data.me.name; $("rname").textContent = data.restaurant.name;
-    notify(); draw(); first = false;
+    notify(); draw();
+    if (first) setTimeout(() => $("grid").classList.remove("first"), 900);
+    first = false;
   }
 
   function notify() {

@@ -287,3 +287,4 @@
 }
 @media (prefers-reduced-motion: reduce) { .basket, .orbit, .mode-card .ic, .rd-hero img { animation: none; } }
 .ptable .switch { display: inline-block; vertical-align: middle; }
+.ocard.still { animation: none; }

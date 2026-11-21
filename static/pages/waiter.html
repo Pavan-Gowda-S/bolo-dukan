@@ -13,8 +13,10 @@
   .w-head { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: rgba(10,6,19,.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .w-head .who { font-weight: 800; } .w-head .r { color: var(--muted); font-size: .85rem; }
   .w-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; padding: 14px 16px 40px; }
-  .wt { border-radius: 20px; padding: 14px; border: 2px solid var(--c, var(--line)); background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); animation: wIn .45s var(--ease) both; }
-  .wt.hot { animation: wIn .45s var(--ease) both, glow 1.4s ease-in-out infinite; }
+  .wt { border-radius: 20px; padding: 14px; border: 2px solid var(--c, var(--line)); background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); }
+  .w-grid.first .wt { animation: wIn .45s var(--ease) both; }
+  .wt.hot { animation: glow 1.4s ease-in-out infinite; }
+  .w-grid.first .wt.hot { animation: wIn .45s var(--ease) both, glow 1.4s ease-in-out infinite; }
   @keyframes wIn { from { opacity: 0; transform: translateY(12px); } }
   @keyframes glow { 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 35%, transparent); } }
   .wt-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -36,7 +38,7 @@
 <div class="app">
   <header class="w-head"><div class="grow"><div class="who" id="who">Waiter</div><div class="r" id="rname"></div></div>
     <button class="btn-ghost sm" id="soundBtn">🔔 Sound</button><button class="btn-ghost sm" id="logout">Log out</button></header>
-  <main class="w-grid" id="grid"><div class="muted" style="padding:30px">Loading…</div></main>
+  <main class="w-grid first" id="grid"><div class="muted" style="padding:30px">Loading…</div></main>
 </div>
 <script src="/static/js/waiter.js"></script>
 </body>

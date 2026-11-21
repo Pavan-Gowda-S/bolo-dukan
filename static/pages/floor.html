@@ -14,7 +14,7 @@
 <script src="/static/js/common.js"></script>
 <style>
   .fp-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
-  .fp-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .fp-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: start; }
   .fp { position: relative; width: 100%; border-radius: 18px; overflow: hidden; border: 1px solid var(--line-2); touch-action: none; user-select: none;
     background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 5%), #140c22; }
   .fp img { display: block; width: 100%; height: auto; pointer-events: none; opacity: .92; }
@@ -72,7 +72,7 @@ function draw() {
 let drag = null;
 $("fp").addEventListener("pointerdown", e => {
   const mk = e.target.closest(".mk"); if (!mk) return;
-  drag = mk; mk.classList.add("drag"); mk.setPointerCapture(e.pointerId); e.preventDefault();
+  drag = mk; mk.classList.add("drag"); try { mk.setPointerCapture(e.pointerId); } catch (_) {} e.preventDefault();
 });
 $("fp").addEventListener("pointermove", e => {
   if (!drag) return;

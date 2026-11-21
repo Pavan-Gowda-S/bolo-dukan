@@ -386,7 +386,7 @@
     let html = `<div class="bill receipt"><div class="rc-head"><div class="rc-logo">${BD.logoSvg}</div><h3>${BD.esc(info.restaurant.name)}</h3>
       <div class="rc-meta"><span>Table ${tables}</span><span>Bill #${sess.id}</span><span>${when}</span></div></div><div class="rc-lines">`;
     if (!lines.size) html += `<p style="opacity:.6">Nothing on the bill yet. Only orders the cashier accepted show here.</p>`;
-    lines.forEach(l => html += `<div class="ln"><span><b>${l.qty} ×</b> ${BD.esc(l.name)}<small>${BD.rupees(l.price)} each</small></span><span class="mono">${l.price ? BD.rupees(l.qty * l.price) : "FREE"}</span></div>`);
+    lines.forEach(l => html += `<div class="ln"><span><span><b>${l.qty} ×</b> ${BD.esc(l.name)}</span><small>${BD.rupees(l.price)} each</small></span><span class="mono">${l.price ? BD.rupees(l.qty * l.price) : "FREE"}</span></div>`);
     html += `</div><div class="rc-sub"><span>${nItems} item${nItems === 1 ? "" : "s"}</span><span class="mono">${BD.rupees(sess.bill_paise)}</span></div>
       <div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise)}</b></div>
       ${sess.status === "PAID" || sess.pay_method ? "" : `<p class="rc-note">Prices as on the menu. Pay by UPI or at the counter.</p>`}`;

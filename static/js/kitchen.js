@@ -13,19 +13,27 @@
   setInterval(clock, 1000); clock();
 
   const mmss = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+  function times() {  // every second: only the timers and colours change, so nothing flickers
+    const now = Date.now() + offset;
+    document.querySelectorAll(".tk[data-at]").forEach(el => {
+      const age = now - new Date(el.dataset.at).getTime();
+      el.querySelector(".tk-time").textContent = mmss(age);
+      el.classList.toggle("red", age > 20 * 60000); el.classList.toggle("amber", age > 10 * 60000 && age <= 20 * 60000);
+    });
+  }
   function draw() {
     const now = Date.now() + offset;
     $("kstat").textContent = tickets.length ? `${tickets.length} ticket${tickets.length === 1 ? "" : "s"}` : "";
     if (!tickets.length) { $("grid").innerHTML = `<div class="empty-k">No orders right now 🍳</div>`; return; }
     $("grid").innerHTML = tickets.map(t => {
       const age = now - new Date(t.accepted_at).getTime(), cls = age > 20 * 60000 ? "red" : age > 10 * 60000 ? "amber" : "";
-      return `<article class="tk ${cls} ${t._new ? "new" : ""}">
+      return `<article class="tk ${cls} ${t._new || first ? "new" : ""}" data-at="${BD.esc(t.accepted_at)}">
         <div class="tk-h"><div class="tk-t">TABLE ${t.table_number}<small>${t.seats ? `${t.seats} seats · ` : ""}order ${t.order_no}</small></div><div class="tk-time">${mmss(age)}</div></div>
         ${t.items.map(i => `<div class="tk-i"><b>${i.qty} ×</b><span>${BD.esc(i.name)}${i.name_local ? `<small>${BD.esc(i.name_local)}</small>` : ""}</span></div>`).join("")}
         ${t.status === "PREPARING" ? `<span class="cook">🔥 Cooking</span>` : ""}</article>`;
     }).join("");
   }
-  setInterval(draw, 1000);
+  setInterval(times, 1000);
 
   async function poll() {
     try {
@@ -37,11 +45,15 @@
       offset = new Date(d.server_time).getTime() - Date.now();
       lang = d.restaurant.language || "kn-IN";
       $("rname").textContent = d.restaurant.name + " · Kitchen"; $("sTitle").textContent = d.restaurant.name + " · Kitchen";
+      const sig = JSON.stringify(d.tickets.map(t => [t.order_id, t.status]));
       tickets = d.tickets.map(t => Object.assign(t, { _new: !first && !seen.has(t.order_id) }));
       tickets.forEach(t => seen.add(t.order_id));
-      if (tickets.some(t => t._new)) { BD.sound.chime("order"); setTimeout(() => { tickets.forEach(t => t._new = false); draw(); }, 6000); }
+      if (tickets.some(t => t._new)) BD.sound.chime("order");
+      if (sig !== draw.sig || first) {  // redraw only when tickets change; the highlight fades after 6 s
+        draw.sig = sig; draw();
+        setTimeout(() => document.querySelectorAll(".tk.new").forEach(e => e.classList.remove("new")), 6000);
+      }
       first = false;
-      draw();
       if (started) (d.announcements || []).forEach(a => { if (!heard.has(a.id)) { heard.add(a.id); queue.push(a.id); } });
       drain();
     } catch (e) {

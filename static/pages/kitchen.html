@@ -19,9 +19,9 @@
   .k-conn.off { background: rgba(239,68,68,.2); color: #ff8fa3; animation: blink 1s step-end infinite; }
   @keyframes blink { 50% { opacity: .4; } }
   .k-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; padding: 22px 28px; height: calc(100dvh - 90px); overflow: auto; align-content: start; }
-  .tk { border-radius: 22px; padding: 18px 20px; background: linear-gradient(160deg, #1a1030, #120a22); border: 3px solid rgba(46,230,166,.55); box-shadow: 0 20px 50px -20px rgba(0,0,0,.9); animation: slideIn .6s var(--spring) both; }
-  .tk.amber { border-color: #f59e0b; } .tk.red { border-color: #ef4444; animation: slideIn .6s var(--spring) both, pulseRed 1.6s ease-in-out infinite; }
-  .tk.new { box-shadow: 0 0 0 6px rgba(255,193,69,.5), 0 20px 50px -20px rgba(0,0,0,.9); }
+  .tk { border-radius: 22px; padding: 18px 20px; background: linear-gradient(160deg, #1a1030, #120a22); border: 3px solid rgba(46,230,166,.55); box-shadow: 0 20px 50px -20px rgba(0,0,0,.9); transition: border-color .6s; }
+  .tk.amber { border-color: #f59e0b; } .tk.red { border-color: #ef4444; animation: pulseRed 1.6s ease-in-out infinite; }
+  .tk.new { animation: slideIn .6s var(--spring) both; box-shadow: 0 0 0 6px rgba(255,193,69,.5), 0 20px 50px -20px rgba(0,0,0,.9); }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-30px) scale(.94); } }
   @keyframes pulseRed { 50% { box-shadow: 0 0 0 6px rgba(239,68,68,.35), 0 20px 50px -20px rgba(0,0,0,.9); } }
   .tk-h { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; border-bottom: 2px dashed rgba(255,255,255,.15); padding-bottom: 10px; margin-bottom: 10px; }
