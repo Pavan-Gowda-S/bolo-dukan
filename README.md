@@ -24,6 +24,9 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 
 ---
 
+
+> 🚀 **Go live for free, always on:** see [DEPLOY.md](DEPLOY.md). It takes one command on a free Oracle Cloud server and gives you HTTPS, auto-restart and daily backups.
+
 ## Contents
 
 - [What it does](#what-it-does)
