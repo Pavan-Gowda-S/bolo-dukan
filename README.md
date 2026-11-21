@@ -13,6 +13,8 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![Sarvam AI](https://img.shields.io/badge/Voice%20%26%20AI-Sarvam%20AI-FF6B00)
 ![Cashfree](https://img.shields.io/badge/Payments-Cashfree%20UPI-6A1B9A)
+![Gemini](https://img.shields.io/badge/Blueprint%20reading-Gemini%20vision-4285F4)
+![Relay](https://img.shields.io/badge/AI%20agent-Relay.app-111111)
 ![Three.js](https://img.shields.io/badge/3D-Three.js-000000?logo=threedotjs&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-one--click%20start-0078D6?logo=windows&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white)
@@ -31,9 +33,11 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 - [Quick start (Windows)](#quick-start-windows)
 - [Configuration and switches](#configuration-and-switches)
 - [Restaurant upgrades in detail](#restaurant-upgrades-in-detail)
+- [Blueprint to 3D (Gemini vision)](#blueprint-to-3d-gemini-vision)
+- [Payments with Cashfree](#payments-with-cashfree)
+- [Relay AI agent](#relay-ai-agent)
 - [Supermarket mode and AI Meal Planner](#supermarket-mode-and-ai-meal-planner)
 - [How a table works](#how-a-table-works)
-- [Payments with Cashfree](#payments-with-cashfree)
 - [Security](#security)
 - [Architecture](#architecture)
 - [API reference](#api-reference)
@@ -57,7 +61,7 @@ Waiters work from their own phones, the kitchen gets a big-screen display, and t
 
 ## Voice and AI: Sarvam
 
-All voice and language features run on **[Sarvam AI](https://www.sarvam.ai)**, built for Indian languages. Gemini is only a backup that is used if a Sarvam call fails or no Sarvam key is set.
+All voice and language features run on **[Sarvam AI](https://www.sarvam.ai)**, built for Indian languages. Gemini is a backup for those, and is used on its own for one job Sarvam doesn't do: **reading a floor-plan image** (see [Blueprint to 3D](#blueprint-to-3d-gemini-vision)).
 
 | Job | Sarvam model |
 |---|---|
@@ -75,7 +79,7 @@ All voice and language features run on **[Sarvam AI](https://www.sarvam.ai)**, b
 - **Menu from a photo or PDF**: Sarvam reads every dish, local-script name and price; the owner reviews before saving
 - Menu by **CSV** (Excel "Save as CSV" works) or typed one by one, with optional description, veg/non-veg, spice level, allergens and nutrition
 - **Tables and chairs**: type or tap the number of tables, set chairs per table or "__ chairs for all tables"
-- **Optional floor plan**: upload a blueprint and drag tables onto it; the 3D floor follows it
+- **Optional floor plan**: upload a blueprint and the app **reads it** (walls traced from the drawing, tables, chairs, counters and rooms found by Gemini), then builds the same floor in 3D after you tap Apply
 - **Printable QR cards** with seats, Wi-Fi details and captions in Kannada and Hindi
 - **Staff**: add waiters with a username and PIN, assign tables, reset PINs, deactivate
 - **Daily report**: download a CSV or save a clean printable page as PDF
@@ -88,7 +92,7 @@ All voice and language features run on **[Sarvam AI](https://www.sarvam.ai)**, b
 - **Order by budget**: "₹800, dinner for 4" builds a cart in code (no AI) that never goes over budget
 - **Call a waiter for something specific** (water, cutlery, clean the table, help to order, extra chutney, or type it), see it's on the way, cancel it, and get a tick when it's done
 - **Shared table**: friends join with a 4-digit code and all phones share one bill
-- **Receipt-style bill** with **Share on WhatsApp**, UPI payment, and **split the bill** equally or by items
+- **Receipt-style bill** with **Share on WhatsApp**, an optional **tip** (5 / 10 / 15 % or any amount), UPI payment through **Cashfree**, and **split the bill** equally or by items
 - **Games**: "Play with all tables" (live Table Quiz with a free-tea prize and today's leaderboard) or **"Play with my table"** (a private trivia room with its own QR), plus Rickshaw Rush, Dosa Flip, Chai Catch and Spice Match
 
 **For the cashier**
@@ -97,6 +101,7 @@ All voice and language features run on **[Sarvam AI](https://www.sarvam.ai)**, b
 - **Spoken alerts** in Kannada, Hindi or English via Sarvam Bulbul, with browser-voice and text fallbacks
 - **Sales summary**: collected today, bills, average, UPI vs cash, top items; shows who approved a table and who accepted an order
 - **Owner voice assistant**: "aaj ka collection?", "how many tables are free?", "free table 4" (actions ask for a tap first)
+- **Relay AI agent** (optional): paid bills, waiter calls and the daily report go to your Relay.app workflow, where an AI agent can summarise, alert or log them
 
 **Built for Windows**
 - Double-click `start.bat`. It needs only Python and **one pure-Python package** (`qrcode`). The web server, database and HTTPS calls use Python's standard library, so Windows **Smart App Control** never blocks a compiled file.
@@ -153,7 +158,9 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 |---|---|
 | `SARVAM_API_KEY` | **Main voice and AI**: Saaras speech-to-text, Bulbul voice, sarvam-105b chat, Document Intelligence. Get one at [dashboard.sarvam.ai](https://dashboard.sarvam.ai) |
 | `SARVAM_TTS_SPEAKER` · `SARVAM_TIMEOUT` | Voice (default `kavya`) and call timeout (default 15 s) |
-| `GEMINI_API_KEY` | Optional backup if a Sarvam call fails. [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `GEMINI_API_KEY` | Reads floor-plan images; backup if a Sarvam call fails. [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `GEMINI_VISION_MODEL` | Optional model for blueprint reading. If the main model's free quota runs out, the app falls back to `gemini-3.5-flash-lite` (its own quota) |
+| `RELAY_WEBHOOK_URL` | Optional: the Webhook-trigger URL of your Relay.app workflow (`https://hook.relay.app/...`) |
 | `GOOGLE_CLIENT_ID` | Sign in with Google. Create an OAuth **Web application** client in [Google Cloud Console](https://console.cloud.google.com/apis/credentials) and add your origins |
 | `CASHFREE_APP_ID` / `CASHFREE_SECRET_KEY` / `CASHFREE_ENV` | Payment links. Use **sandbox** keys from the Cashfree merchant dashboard |
 | `PUBLIC_URL` | Optional fixed public URL; leave empty to auto-detect ngrok |
@@ -181,6 +188,9 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 | `FEATURE_MERGE_TABLES` | Merge two tables for a big group | Separate bills |
 | `FEATURE_GAME_ROOMS` | "Play with my table" private trivia | Restaurant-wide games |
 | `FEATURE_FLOOR_PLAN` | Blueprint + table positions, plan view, 3D layout | Auto layout |
+| `FEATURE_FLOOR_AI` | Read the blueprint: walls from the drawing, tables/counters/rooms with Gemini (needs `GEMINI_API_KEY`) | Walls only; drag tables by hand |
+| `FEATURE_TIPS` | Tip chips on the guest bill, added to the Cashfree UPI amount | No tip option |
+| `FEATURE_RELAY` | Send events to a Relay.app AI agent (needs `RELAY_WEBHOOK_URL`) | Nothing is sent |
 | `FEATURE_DAILY_REPORT` | CSV + printable daily report | Sales strip |
 | `FEATURE_SUPERMARKET` · `FEATURE_MEAL_PLANNER` | Supermarket mode and the meal planner | Restaurant only |
 | `FEATURE_GEMINI_TTS` | Allow Gemini's voice as a backup (default on) | Browser voice |
@@ -203,7 +213,71 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 
 **Trivia: two modes.** Tapping Play asks *Play with all tables* (the restaurant quiz and leaderboard) or *Play with my table*: a private room with its own QR and WhatsApp link (`/g/<room>`) that opens **only the game**. Players pick a nickname, the host starts, everyone gets the same question with a 15-second countdown, faster right answers score more, and there's a live leaderboard and a podium. The room closes when the table is freed or after 3 hours.
 
-**Floor plan from a blueprint (optional).** Upload a PNG or JPG (up to 5 MB) at `/owner/floor` and drag each table (mouse or touch, snap to grid, reset to auto layout) while a live 3D preview updates. The dashboard's 3D floor lays the blueprint on the floor and puts tables where they really are; a **Plan** view shows the blueprint with live coloured markers. Owners who skip it keep the automatic layout.
+**Floor plan from a blueprint (optional).** Upload a PNG or JPG (up to 5 MB) at `/owner/floor`; the app reads it and proposes walls, tables, counters and rooms (see [Blueprint to 3D](#blueprint-to-3d-gemini-vision)), and you can still drag each table (mouse or touch, snap to grid, reset to auto layout) while a live 3D preview updates. The dashboard's 3D floor lays the blueprint on the floor and puts tables where they really are; a **Plan** view shows the blueprint with live coloured markers. Owners who skip it keep the automatic layout.
+
+## Blueprint to 3D (Gemini vision)
+
+Upload a PNG or JPG of your floor plan on **Setup → Floor plan** and the app reads it straight away (or tap **✨ Build 3D from blueprint**):
+
+1. **Walls and doors, traced from the drawing.** The browser finds the thick wall lines in the image itself, so the 3D walls follow your plan exactly and door gaps stay open. No AI, nothing leaves the computer.
+2. **Tables, chairs, counters and rooms, found by Gemini.** Two Gemini vision calls run in parallel: one finds each table, its label ("T4") and how many chairs are drawn; the other finds rooms (kitchen, store, restroom, dining hall…) and counters (range, sink, prep island, cashier, serving pass…). Sarvam's document reader turns pages into text and loses positions, so Gemini is the right tool here.
+3. **Checked against the drawing.** Every table, counter and room Gemini proposes is checked against the actual lines in the image; anything that isn't really drawn there is dropped. A "table" on top of the stove (burner circles) is ignored.
+4. **You approve.** A panel shows what was found ("6 tables · 26 chairs · 15 counters · 5 rooms · 21 wall pieces") with a live 3D preview. Tick what to use (build walls/counters/rooms, move tables to their spots, set chairs from the plan) and tap **Apply**. Nothing is saved before that.
+
+The dashboard's **3D floor** then lays your blueprint on the floor, raises the walls with door gaps, builds counters as solid blocks (steel in the kitchen, gold at the cashier), tints and labels the rooms, and places every table where the plan shows it with the right number of chairs. The **Plan** view shows the same blueprint with live table colours.
+
+The free Gemini tier allows a limited number of requests per day; if the main model's quota is used up, the app automatically tries `gemini-3.5-flash-lite`, and if every model is out it still traces the walls and tells you to drag the tables by hand. A ready-made example is in `static/img/blueprints/dosa-corner-floor-plan.png` (made with `scripts/make_blueprint.py`).
+
+## Payments with Cashfree
+
+Bolo Dukaan takes UPI payments through **[Cashfree Payment Links](https://www.cashfree.com/payment-links/)** (API version 2023-08-01). Card and UPI details go only to Cashfree; this server never sees them.
+
+**Setup**
+1. Create a Cashfree merchant account and open **Developers → API Keys** in the dashboard. Start with the **Test (sandbox)** keys.
+2. Add them to `.env`: `CASHFREE_APP_ID=…`, `CASHFREE_SECRET_KEY=…`, `CASHFREE_ENV=sandbox` (use `production` only with live keys after Cashfree activates your account).
+3. Run `ngrok.bat` so Cashfree can reach your webhook over HTTPS. The app sends `https://<your-ngrok>/api/webhooks/cashfree` as the notify URL on every link automatically.
+4. Run `check.bat`: it creates a ₹1 sandbox link to prove the keys work.
+
+**How a bill is paid**
+1. The guest taps **Request the bill**. The server sums the accepted items; the phone never sends an amount. New orders stop.
+2. Optional **tip** (`FEATURE_TIPS`): the guest picks 5 / 10 / 15 % or any amount up to half the bill; the server works out the paise and adds it to the link.
+3. **Pay** creates one Cashfree Payment Link for exactly that amount (`bd<session>c<n>…`), valid for about 30 minutes; tapping Pay again reuses it, or replaces it if the amount changed or it expired.
+4. The guest pays by UPI on Cashfree's page and comes back to `/paid`.
+5. The table turns **PAID only when Cashfree's API confirms `PAID` for the full amount.** A webhook (HMAC-SHA256 signature checked) or the guest's "check status" only *triggers* that check, and repeats do nothing.
+6. The dashboard turns green and says "ಟೇಬಲ್ 4, ಹಣ ಪಾವತಿಯಾಗಿದೆ" once.
+
+**Split the bill** (`FEATURE_SPLIT_BILL`): each share gets its own Cashfree link; the table is PAID when every share is paid or the cashier takes the rest in cash. **Cash**: "Paid in cash" is refused if the bill was just paid online. **Supermarket orders** and the **meal-planner cart** use the same links and the same full-amount check.
+
+Testing in sandbox: use Cashfree's test UPI flow on the sandbox page. Never use real money with sandbox keys, and never commit your keys (`.env` is in `.gitignore`).
+
+## Relay AI agent
+
+**Where Relay is used:** Bolo Dukaan can hand events to an AI agent in **[Relay.app](https://www.relay.app)**, so the owner gets summaries and alerts without building anything. It's optional and off by default.
+
+| Event | When it's sent | What's in it |
+|---|---|---|
+| `bill_paid` | After Cashfree confirms a UPI payment, or staff mark cash | table, method, amount, tip, items with qty and amount |
+| `waiter_call` | A guest calls a waiter | table and reason (water, cutlery…) |
+| `daily_report` | The owner taps **🤖 Send to Relay AI agent** on `/owner/report` | the day's total, bills, UPI vs cash, every item sold |
+
+Customer phone numbers and payment secrets are never sent. Events go out in the background, so the restaurant never waits for Relay.
+
+**Set it up (about 5 minutes):**
+1. In Relay.app, create a workflow with a **Webhook** trigger and copy its URL.
+2. Add AI steps, for example:
+   - *daily_report* → "Write a 3-line summary of today's sales and top dishes" → send to WhatsApp, Slack or email.
+   - *bill_paid* → add a row to a Google Sheet.
+   - *waiter_call* → if the same table calls twice, message the manager.
+3. In `.env`: `RELAY_WEBHOOK_URL=<that URL>` and `FEATURE_RELAY=true`, then restart.
+4. Open **Daily report → 🤖 Send to Relay AI agent** to send a test.
+
+The code lives in `app/relay.py` (sender) and `app/restaurant.py` (`relay_bill`, `relay_event`, `/api/owner/report/relay`). Example payload:
+
+```json
+{"event": "bill_paid", "restaurant": "Dosa Corner", "sent_at": "2026-11-21T08:30:00+00:00", "source": "bolo-dukaan",
+ "data": {"table": 4, "method": "upi", "amount_rupees": 209.0, "tip_rupees": 19.0,
+          "items": [{"name": "Masala Dosa", "qty": 2, "amount_rupees": 160.0}, {"name": "Filter Coffee", "qty": 1, "amount_rupees": 30.0}]}}
+```
 
 ## Supermarket mode and AI Meal Planner
 
@@ -231,14 +305,6 @@ Guest scans QR ──► browse menu ──► "Start ordering" ──► WAITIN
 
 Dashboard colours: grey empty · **yellow flashing** wants to start · blue ordering · **orange flashing** new order · purple bill requested · green paid · red bell waiter called.
 
-## Payments with Cashfree
-
-- The bill is **summed by the server** from accepted orders. The phone never sends an amount.
-- After the bill is requested, no new orders can be placed.
-- One payment link per bill (or per share when split). An expired link is replaced when the guest taps Pay again.
-- A table is marked **PAID only after Cashfree's API confirms `PAID` with the full amount.** A signed webhook only *triggers* that check, and duplicate webhooks do nothing.
-- "Paid in cash" is refused if the bill was just paid online.
-
 ## Security
 
 | Risk | Defence |
@@ -250,7 +316,9 @@ Dashboard colours: grey empty · **yellow flashing** wants to start · blue orde
 | Staff cookie forged from an owner cookie | Separately signed `bd_staff` cookie |
 | Kitchen link leaked | Random 32-character link, read-only, no prices or phones; **Regenerate** kills the old one |
 | Game room link shared | It opens only the game; it closes with the table or after 3 hours |
-| Blueprint upload | PNG/JPG only (checked by file signature), 5 MB limit, served only to the owner and staff |
+| Blueprint upload | PNG/JPG only (checked by file signature), 5 MB limit, served only to the owner and staff; the AI's reading is a proposal, checked against the drawing and saved only after the owner taps Apply |
+| Tips | Worked out and capped (half the bill) on the server; part of the Cashfree full-amount check |
+| Relay events | Off by default; HTTPS only; no phone numbers or secrets in the payload |
 | Faked payment | HMAC webhook signature + status check with Cashfree |
 | Dashboard access | PBKDF2-salted passwords or Google ID token verified with Google; signed HttpOnly cookie |
 | Secrets | Keys stay in `.env`; a leak check scans every page and API response |
@@ -291,6 +359,9 @@ Dashboard colours: grey empty · **yellow flashing** wants to start · blue orde
 | Owner | GET · POST | `/api/owner/kitchen-link` · `/regenerate` | Kitchen TV link |
 | Owner | GET | `/api/owner/report?date=` · `/api/owner/report.csv?date=` | Daily report |
 | Owner | GET / PUT · POST / DELETE | `/api/owner/floor` · `/api/owner/floor/image` | Floor positions · blueprint |
+| Owner | POST · PUT | `/api/owner/floor/read` · `/api/owner/floor/layout` | Read the blueprint with Gemini (proposal) · save the approved layout |
+| Owner | POST | `/api/owner/report/relay` | Send the daily report to the Relay AI agent |
+| Guest | POST | `/api/session/{id}/tip` | Choose a tip (5 / 10 / 15 % or rupees) |
 | Owner | POST | `/api/owner/voice` · `/api/owner/voice/confirm` | Owner voice assistant |
 | Guest | GET | `/api/t/{token}` | Table (seats, merged), restaurant, menu |
 | Guest | POST | `/api/t/{token}/start` · `/join` | Ask to start · join with code |
@@ -324,12 +395,14 @@ Dashboard colours: grey empty · **yellow flashing** wants to start · blue orde
 ```
 app/
   main.py        core routes: owner, tables, orders, bills, dashboard
-  restaurant.py  kitchen TV, staff + waiter portal, merge tables, daily report, game rooms, floor plan
+  restaurant.py  kitchen TV, staff + waiter portal, merge tables, daily report, game rooms, floor plan, tips, Relay hooks
+  floorplan.py   clean-up of the AI's blueprint reading (pure functions, tested)
+  relay.py       Relay.app AI agent webhook sender
   features.py    voice ordering, Kannada alerts, budget basket, table quiz, menu photo
   upgrades.py    sales summary, split bill, owner voice assistant
   ai.py          Sarvam first, Gemini backup
   sarvam.py      Saaras STT, Bulbul TTS, sarvam-105b chat, Document Intelligence
-  gemini.py      backup AI
+  gemini.py      blueprint reading (vision) and backup AI
   cashfree.py    payment links and webhook signatures
   store.py · planner.py   supermarket and meal planner
   summary.py · split.py · budget.py   pure functions (tested)
@@ -338,9 +411,9 @@ app/
 static/
   pages/   landing, signup, login, setup, menu, qr, dashboard, table, paid, kitchen, waiter, staff,
            staff_login, report, floor, game, store, shop, credits
-  js/      common, bg3d, floor3d, dashboard, dashboard_plus, table, games, kitchen, waiter, store, shop, planner
+  js/      common, bg3d, floor3d, blueprint (wall tracing + checks), dashboard, dashboard_plus, table, games, kitchen, waiter, store, shop, planner
   css/     design system and page styles
-scripts/   check_sarvam.py, seed_source.py, fetch_photos.py, localize_photos.py
+scripts/   check_sarvam.py, seed_source.py, fetch_photos.py, localize_photos.py, make_blueprint.py
 tests/     pytest suite (pure functions + real routes on a temporary database)
 run.py · start.bat · start.ps1 · check.bat · check.py · ngrok.bat · .env.example
 ```

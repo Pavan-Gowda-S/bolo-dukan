@@ -19,6 +19,23 @@ function labelTexture(text, sub, color) {
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
   return tex;
 }
+function roomLabelTexture(text, color) {
+  const c = document.createElement("canvas"); c.width = 512; c.height = 128;
+  const g = c.getContext("2d");
+  g.font = "800 54px 'Plus Jakarta Sans', system-ui, sans-serif";
+  const w = Math.min(500, g.measureText(text).width + 70);
+  g.fillStyle = "rgba(10,6,20,.78)"; roundRect(g, 256 - w / 2, 18, w, 92, 46); g.fill();
+  g.strokeStyle = color; g.lineWidth = 4; roundRect(g, 256 - w / 2, 18, w, 92, 46); g.stroke();
+  g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(text, 256, 66);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  return tex;
+}
+const ROOM_TINT = { kitchen: 0xff9f1c, store: 0x4cc9f0, restroom: 0x9b5cff, cashier: 0xffc145, entrance: 0x2ee6a6, bar: 0xff3d9a, office: 0x4cc9f0, other: 0xffffff };
+const COUNTER_STYLE = {
+  kitchen: { color: 0xc5cfdc, h: 0.95, metal: 0.75, rough: 0.3 }, cashier: { color: 0xffc145, h: 1.05, metal: 0.1, rough: 0.35 },
+  serving: { color: 0xffd98a, h: 1.0, metal: 0.1, rough: 0.4 }, bar: { color: 0x8a5a3c, h: 1.1, metal: 0.1, rough: 0.4 },
+  other: { color: 0x7d8ca6, h: 0.5, metal: 0.2, rough: 0.6 },
+};
 function roundRect(g, x, y, w, h, r) {
   g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
   g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
@@ -187,10 +204,20 @@ const Floor3D = {
     const n = views.length, cols = Math.ceil(Math.sqrt(n * 1.4)), gap = 4.1;
     const rowsN = Math.ceil(n / cols);
     const planned = n > 0 && views.every(v => v.pos_x != null && v.pos_y != null);
-    const S = Math.max(16, Math.sqrt(n) * gap * 1.7), ar = this.bpAspect || 1.6;
+    const ar = this.bpAspect || 1.6;
+    let S = Math.max(16, Math.sqrt(n) * gap * 1.7);
+    if (planned) {  // scale the floor so the two closest tables (3D tables + chairs are ~3.6 wide) never overlap
+      let dmin = Infinity;
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+        const dx = (views[i].pos_x - views[j].pos_x) / 100 * Math.sqrt(ar), dz = (views[i].pos_y - views[j].pos_y) / 100 / Math.sqrt(ar);
+        dmin = Math.min(dmin, Math.hypot(dx, dz));
+      }
+      if (isFinite(dmin) && dmin > 0) S = Math.min(60, Math.max(S, 3.9 / dmin));
+    }
     const W = S * Math.sqrt(ar), D = S / Math.sqrt(ar);
-    this.planSize = planned ? [W, D] : null;
+    this.planSize = planned || this.layout ? [W, D] : null;
     this.fitBlueprint();
+    if (this.layout && this.layoutBuilt !== this.layoutKey + "|" + W.toFixed(2) + "|" + D.toFixed(2)) this.buildLayout(W, D);
     views.forEach((v, i) => {
       const c = i % cols, r = Math.floor(i / cols);
       const x = planned ? (v.pos_x / 100 - 0.5) * W : (c - (cols - 1) / 2) * gap, z = planned ? (v.pos_y / 100 - 0.5) * D : (r - (rowsN - 1) / 2) * gap;
@@ -237,10 +264,53 @@ const Floor3D = {
       if (this.lastViews) this.update(this.lastViews); else this.fitBlueprint();
     });
   },
+  // The blueprint, built in 3D: walls traced from the image, counters, room tints and names (from the AI reading,
+  // checked against the drawing and applied by the owner). Coordinates are % of the image.
+  setLayout(layout) {
+    const key = layout ? JSON.stringify(layout) : "";
+    if (key === this.layoutKey) return;
+    this.layoutKey = key; this.layout = layout && (layout.walls || []).length + (layout.counters || []).length + (layout.rooms || []).length ? layout : null;
+    if (!this.layout && this.layoutGroup) { this.scene.remove(this.layoutGroup); this.layoutGroup = null; this.layoutBuilt = null; }
+    if (this.lastViews) this.update(this.lastViews);
+  },
+  buildLayout(W, D) {
+    if (this.layoutGroup) { this.scene.remove(this.layoutGroup); this.layoutGroup.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } }); }
+    const g = new THREE.Group(); this.layoutGroup = g; this.layoutBuilt = this.layoutKey + "|" + W.toFixed(2) + "|" + D.toFixed(2);
+    const X = p => (p / 100 - 0.5) * W, Z = p => (p / 100 - 0.5) * D;
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0xf2f6ff, roughness: 0.55, metalness: 0.05 });
+    const capMat = new THREE.MeshStandardMaterial({ color: 0xffc145, roughness: 0.4, emissive: 0x6b4a00, emissiveIntensity: 0.35 });
+    (this.layout.walls || []).forEach(w => {
+      const x1 = X(w[0]), z1 = Z(w[1]), x2 = X(w[2]), z2 = Z(w[3]);
+      const len = Math.hypot(x2 - x1, z2 - z1), th = Math.max(0.12, (w[4] || 0.6) / 100 * W);
+      if (len < 0.2) return;
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(len + th * 0.9, 1.05, th), wallMat);
+      wall.position.set((x1 + x2) / 2, 0.525, (z1 + z2) / 2); wall.rotation.y = -Math.atan2(z2 - z1, x2 - x1);
+      wall.castShadow = wall.receiveShadow = true; g.add(wall);
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(len + th * 0.9, 0.04, th * 1.02), capMat);   // thin warm top edge
+      cap.position.set(wall.position.x, 1.07, wall.position.z); cap.rotation.y = wall.rotation.y; g.add(cap);
+    });
+    (this.layout.counters || []).forEach(c => {
+      const st = COUNTER_STYLE[c.kind] || COUNTER_STYLE.other;
+      const w = Math.max(0.2, c.w / 100 * W * 0.94), d = Math.max(0.2, c.h / 100 * D * 0.94);
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, st.h, d), new THREE.MeshPhysicalMaterial({ color: st.color, metalness: st.metal, roughness: st.rough, clearcoat: 0.4 }));
+      m.position.set(X(c.x + c.w / 2), st.h / 2, Z(c.y + c.h / 2)); m.castShadow = m.receiveShadow = true; g.add(m);
+    });
+    (this.layout.rooms || []).forEach(r => {
+      const color = ROOM_TINT[r.type];
+      if (color != null && r.type !== "dining") {
+        const tint = new THREE.Mesh(new THREE.PlaneGeometry(r.w / 100 * W, r.h / 100 * D),
+          new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.13, depthWrite: false }));
+        tint.rotation.x = -Math.PI / 2; tint.position.set(X(r.x + r.w / 2), 0.03, Z(r.y + r.h / 2)); g.add(tint);
+      }
+      const lab = new THREE.Sprite(new THREE.SpriteMaterial({ map: roomLabelTexture((r.label || r.type).toUpperCase(), "#" + (color != null ? color : 0xffffff).toString(16).padStart(6, "0")), transparent: true, depthWrite: false }));
+      lab.scale.set(3.2, 0.8, 1); lab.position.set(X(r.x + r.w / 2), r.type === "dining" ? 0.6 : 1.9, Z(r.y + r.h / 2)); g.add(lab);
+    });
+    this.scene.add(g);
+  },
   fitBlueprint() {
     if (!this.bp) return;
     const [W, D] = this.planSize || [16 * Math.sqrt(this.bpAspect), 16 / Math.sqrt(this.bpAspect)];
-    this.bp.scale.set(W * 1.08, D * 1.08, 1);
+    this.bp.scale.set(W, D, 1);  // exactly the area tables and walls are placed on
   },
 
   frame() {

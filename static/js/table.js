@@ -388,7 +388,8 @@
     if (!lines.size) html += `<p style="opacity:.6">Nothing on the bill yet. Only orders the cashier accepted show here.</p>`;
     lines.forEach(l => html += `<div class="ln"><span><span><b>${l.qty} ×</b> ${BD.esc(l.name)}</span><small>${BD.rupees(l.price)} each</small></span><span class="mono">${l.price ? BD.rupees(l.qty * l.price) : "FREE"}</span></div>`);
     html += `</div><div class="rc-sub"><span>${nItems} item${nItems === 1 ? "" : "s"}</span><span class="mono">${BD.rupees(sess.bill_paise)}</span></div>
-      <div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise)}</b></div>
+      ${sess.tip_paise ? `<div class="rc-sub"><span>Tip · thank you</span><span class="mono">${BD.rupees(sess.tip_paise)}</span></div>` : ""}
+      <div class="tot"><span>Total</span><b class="mono">${BD.rupees(sess.bill_paise + (sess.tip_paise || 0))}</b></div>
       ${sess.status === "PAID" || sess.pay_method ? "" : `<p class="rc-note">Prices as on the menu. Pay by UPI or at the counter.</p>`}`;
     if (sess.status === "PAID") html += `<div style="margin-top:14px;text-align:center;font-weight:900;font-size:1.3rem;color:#0d8a5f;letter-spacing:.2em;border:3px solid #0d8a5f;border-radius:12px;padding:6px;transform:rotate(-4deg)">PAID ✓</div>`;
     html += `<div class="rc-edge"></div></div>`;
@@ -411,9 +412,14 @@
       }
       if (info.features.online_payment) {
         const phone = BD.store.get("bd_phone") || "";
+        const tip = sess.tip_paise || 0, pctOf = p => Math.round(sess.bill_paise * p / 100 / 100) * 100;
+        if (info.features.tips) html += `<div class="glass tip-box"><div class="row spread"><b>Add a tip for the staff?</b><span class="faint small">optional</span></div>
+          <div class="tip-chips">${[0, 5, 10, 15].map(p => `<button class="pill ${(p === 0 ? tip === 0 : tip === pctOf(p) && tip > 0) ? "active" : ""}" data-tip="${p}">${p ? `${p}% · ${BD.rupees(pctOf(p))}` : "No tip"}</button>`).join("")}
+          <button class="pill ${tip && ![5, 10, 15].some(p => pctOf(p) === tip) ? "active" : ""}" data-tip="custom">Other</button></div>
+          ${tip ? `<p class="small" style="margin:8px 0 0;color:var(--mint)">Thank you! ${BD.rupees(tip)} goes to the team.</p>` : ""}</div>`;
         html += `<h3 style="margin-bottom:6px">Pay by UPI</h3><p class="muted small" style="margin:0 0 12px">Cashfree needs a phone number for the receipt.</p>
           <form id="payForm" class="stack" novalidate><input class="input" id="payPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" value="${BD.esc(phone)}" maxlength="14">
-          <button class="btn lg block mint" id="payBtn">Pay ${BD.rupees(sess.bill_paise)} →</button></form>
+          <button class="btn lg block mint" id="payBtn">Pay ${BD.rupees(sess.bill_paise + (info.features.tips ? sess.tip_paise || 0 : 0))} →</button></form>
           <button class="btn-ghost block" id="checkPay" style="margin-top:10px">I've paid · check status</button>
           <p class="faint small center" style="margin-top:10px">Or pay at the counter in cash. The cashier will close the table.</p>`;
       } else {
@@ -427,11 +433,21 @@
     const billText = () => {
       const out = [`🧾 *${info.restaurant.name}*`, `Table ${tables} · Bill #${sess.id}`, when, ""];
       lines.forEach(l => out.push(`${l.qty} × ${l.name} — ${l.price ? BD.rupees(l.qty * l.price) : "FREE"}`));
-      out.push("", `*Total: ${BD.rupees(sess.bill_paise)}*`);
+      if (sess.tip_paise) out.push("", `Tip: ${BD.rupees(sess.tip_paise)}`);
+      out.push("", `*Total: ${BD.rupees(sess.bill_paise + (sess.tip_paise || 0))}*`);
       if (sess.status === "PAID") out.push("✅ Paid by UPI");
       out.push("", "Ordered with Bolo Dukaan");
       return out.join("\n");
     };
+    document.querySelectorAll("[data-tip]").forEach(b => b.onclick = async () => {
+      let body;
+      if (b.dataset.tip === "custom") {
+        const v = prompt("Tip amount in ₹ (up to half the bill):", sess.tip_paise ? sess.tip_paise / 100 : "");
+        if (v === null) return; body = { rupees: Number(String(v).replace(/[^\d.]/g, "")) || 0 };
+      } else body = { percent: Number(b.dataset.tip) };
+      try { const r = await guestApi(`/api/session/${me.sid}/tip`, { body }); sess.tip_paise = r.tip_paise; renderBill(); if (r.tip_paise) { BD.buzz(15); BD.toast("Tip added. Thank you!", "ok", 1800); } }
+      catch (x) { BD.toast(x.message, "bad"); }
+    });
     const wa = $("shareWa"); if (wa) wa.onclick = () => window.open("https://wa.me/?text=" + encodeURIComponent(billText()), "_blank", "noopener");
     const sh = $("shareAny"); if (sh) sh.onclick = () => navigator.share({ title: `${info.restaurant.name} bill`, text: billText() }).catch(() => {});
     wireBill();

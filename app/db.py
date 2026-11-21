@@ -298,6 +298,8 @@ def init_db() -> None:
         if "seats" not in table_cols:  # 6: chairs per table
             conn.execute("ALTER TABLE tables ADD COLUMN seats INTEGER NOT NULL DEFAULT 4")
         rest_cols = {r[1] for r in conn.execute("PRAGMA table_info(restaurants)")}
+        if "floor_layout" not in rest_cols:  # AI-read blueprint layout (rooms, walls, counters), saved after the owner applies it
+            conn.execute("ALTER TABLE restaurants ADD COLUMN floor_layout TEXT NOT NULL DEFAULT ''")
         if "floor_image" not in rest_cols:  # 7: optional blueprint, stored under data/uploads/r<id>/
             conn.execute("ALTER TABLE restaurants ADD COLUMN floor_image TEXT NOT NULL DEFAULT ''")
         if "kitchen_token" not in rest_cols:  # 3: secret link for the kitchen TV
@@ -308,6 +310,8 @@ def init_db() -> None:
         if "accepted_by" not in order_cols:  # 2: "owner" or "waiter:Ravi"
             conn.execute("ALTER TABLE orders ADD COLUMN accepted_by TEXT NOT NULL DEFAULT ''")
         sess_cols = {r[1] for r in conn.execute("PRAGMA table_info(table_sessions)")}
+        if "tip_paise" not in sess_cols:  # tip chosen by the guest, added to the UPI link
+            conn.execute("ALTER TABLE table_sessions ADD COLUMN tip_paise INTEGER NOT NULL DEFAULT 0")
         if "approved_by" not in sess_cols:
             conn.execute("ALTER TABLE table_sessions ADD COLUMN approved_by TEXT NOT NULL DEFAULT ''")
         conn.executescript("""

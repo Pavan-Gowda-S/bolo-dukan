@@ -56,10 +56,13 @@ SECRET_KEY = _secret_key()
 
 # Public HTTPS address (your ngrok link). Leave empty to auto-detect a running ngrok.
 PUBLIC_URL = os.getenv("PUBLIC_URL", "").strip().rstrip("/")
+# Relay.app AI agent: the URL of a Relay workflow's Webhook trigger (https://hook.relay.app/...). Optional.
+RELAY_WEBHOOK_URL = os.getenv("RELAY_WEBHOOK_URL", "").strip()
 
 # Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
+GEMINI_VISION_MODEL = os.getenv("GEMINI_VISION_MODEL", "").strip()  # optional: model for reading floor plans
 GEMINI_TTS_MODEL = os.getenv("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts").strip()
 GEMINI_TTS_VOICE = os.getenv("GEMINI_TTS_VOICE", "Kore").strip()
 
@@ -108,6 +111,9 @@ FEATURE_KITCHEN_TV = _flag("FEATURE_KITCHEN_TV", False)          # 3: big-screen
 FEATURE_STAFF = _flag("FEATURE_STAFF", False)                    # 2: waiter accounts + waiter portal
 FEATURE_GAME_ROOMS = _flag("FEATURE_GAME_ROOMS", False)          # 5: private trivia room for one table
 FEATURE_FLOOR_PLAN = _flag("FEATURE_FLOOR_PLAN", False)          # 7: floor plan from a blueprint
+FEATURE_FLOOR_AI = _flag("FEATURE_FLOOR_AI", False)              # read an uploaded blueprint with Gemini vision
+FEATURE_RELAY = _flag("FEATURE_RELAY", False)                    # send events to a Relay.app AI agent (RELAY_WEBHOOK_URL)
+FEATURE_TIPS = _flag("FEATURE_TIPS", False)                      # guests can add a tip to the UPI payment
 FEATURE_MERGE_TABLES = _flag("FEATURE_MERGE_TABLES", False)      # merge two tables for a big group
 FEATURE_DAILY_REPORT = _flag("FEATURE_DAILY_REPORT", False)      # daily report: CSV download + printable PDF
 
@@ -158,6 +164,9 @@ def features() -> dict:
         "game_rooms": FEATURE_GAME_ROOMS,
         "floor_plan": FEATURE_FLOOR_PLAN,
         "merge_tables": FEATURE_MERGE_TABLES,
+        "tips": FEATURE_TIPS and cashfree_ready(),
+        "floor_ai": FEATURE_FLOOR_PLAN and FEATURE_FLOOR_AI and gemini_ready(),
+        "relay": FEATURE_RELAY and bool(RELAY_WEBHOOK_URL),
         "daily_report": FEATURE_DAILY_REPORT,
         "online_payment": cashfree_ready(),
         "ai_provider": ai_provider(),

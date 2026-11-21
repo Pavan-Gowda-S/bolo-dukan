@@ -332,7 +332,7 @@
   function loadFloor() {
     if (floorLoaded) { if (window.Floor3D && window.Floor3D.ready) { window.Floor3D.resize(); pushFloor(); } return; }
     floorLoaded = true;
-    import("/static/js/floor3d.js?v=4").then(() => {
+    import("/static/js/floor3d.js?v=5").then(() => {
       window.Floor3D.mount($("floorMount"), id => openDrawer(id));
       window.Floor3D.visible = view === "floor";
       pushFloor();
@@ -345,6 +345,11 @@
   function pushFloor() {
     if (!(window.Floor3D && window.Floor3D.ready && data)) return;
     if (window.Floor3D.setBlueprint) window.Floor3D.setBlueprint(blueprintUrl());
+    if (window.Floor3D.setLayout) {  // walls, counters and rooms read from the blueprint (applied by the owner)
+      let lay = null;
+      try { lay = data.features.floor_plan && data.restaurant.floor_layout ? JSON.parse(data.restaurant.floor_layout) : null; } catch (e) {}
+      window.Floor3D.setLayout(lay);
+    }
     window.Floor3D.update(data.tables.map(viewOf));
   }
   // 7: 2D plan view: the blueprint with live table markers in the dashboard colours

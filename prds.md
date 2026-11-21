@@ -240,7 +240,24 @@ Product requirements for Bolo Dukaan. Voice and language run on **Sarvam AI** (G
 - Owner uploads a PNG/JPG up to 5 MB (checked by file signature), stored under `data/uploads/r<id>/`, served only to the owner and staff.
 - Placement editor: the image fills the editor; each table is a marker sized by seats ("T4 · 6"); drag with mouse or touch, snap to a light grid, "Reset to auto layout", live 3D preview. Positions saved as % (`tables.pos_x`, `pos_y`, 0–100).
 - Dashboard **Plan** view and the waiter floor view show the blueprint with live coloured markers; tap to open the table.
-- `floor3d.js` lays the blueprint on the 3D floor and places tables at their positions with as many chairs as seats; without positions it keeps the automatic layout. No AI detection of tables.
+- `floor3d.js` lays the blueprint on the 3D floor and places tables at their positions with as many chairs as seats; without positions it keeps the automatic layout.
+- **Reading the blueprint** **[SWITCH: FEATURE_FLOOR_AI]**: walls and door gaps are traced from the image pixels in the browser (no AI); Gemini vision proposes tables (label, chairs, shape), counters and rooms; every proposal is checked against the drawn lines and shown to the owner, who taps **Apply**. The 3D floor then raises the walls, builds counters and room labels, and places tables. If Gemini is unavailable or out of quota, walls are still traced and tables can be dragged by hand.
+
+---
+
+## PRD-17: Tips
+
+**[SWITCH: FEATURE_TIPS]** — once the bill is requested the guest can add 0 / 5 / 10 / 15 % or a rupee amount (max half the bill). The server works out the paise and adds it to the Cashfree link; the table is PAID only when Cashfree confirms the full amount including the tip. The receipt and WhatsApp share show the tip.
+
+**Verified by:** `TipTests`.
+
+---
+
+## PRD-18: Relay AI agent
+
+**[SWITCH: FEATURE_RELAY + RELAY_WEBHOOK_URL]** — `bill_paid`, `waiter_call` and on-demand `daily_report` events are POSTed (HTTPS, background thread) to the owner's Relay.app workflow, where AI steps summarise, alert or log them. No phone numbers or secrets in the payload; nothing is sent when off.
+
+**Verified by:** `RelayTests`.
 
 **Verified by:** `FloorPlanTests` (bad file type and size rejected, positions validated, image not public).
 

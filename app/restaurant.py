@@ -729,7 +729,9 @@ def floor_get(req: Request):
         img = conn.execute("SELECT floor_image FROM restaurants WHERE id = ?", (owner["restaurant_id"],)).fetchone()[0]
         tables = rows(conn.execute("SELECT id, number, seats, pos_x, pos_y FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number",
                                    (owner["restaurant_id"],)))
-    return {"image": f"/api/floor/image?v={img}" if img else None, "tables": tables}
+        lay = conn.execute("SELECT floor_layout FROM restaurants WHERE id = ?", (owner["restaurant_id"],)).fetchone()[0]
+    return {"image": f"/api/floor/image?v={img}" if img else None, "tables": tables,
+            "layout": json.loads(lay) if lay else None, "ai": config.features()["floor_ai"]}
 
 
 @route("POST", "/api/owner/floor/image")
@@ -751,8 +753,8 @@ def floor_upload(req: Request):
         old.unlink()
     (folder / f"floor.{ext}").write_bytes(f.data)
     ver = f"floor.{ext}:{secrets.token_hex(4)}"
-    with db() as conn:
-        conn.execute("UPDATE restaurants SET floor_image = ? WHERE id = ?", (ver, owner["restaurant_id"]))
+    with db() as conn:  # a new blueprint: the old AI layout no longer fits it
+        conn.execute("UPDATE restaurants SET floor_image = ?, floor_layout = '' WHERE id = ?", (ver, owner["restaurant_id"]))
     return {"ok": True, "image": f"/api/floor/image?v={ver}"}
 
 
@@ -763,7 +765,7 @@ def floor_delete(req: Request):
     for old in _floor_path(owner["restaurant_id"], "").glob("floor.*"):
         old.unlink()
     with db() as conn:
-        conn.execute("UPDATE restaurants SET floor_image = '' WHERE id = ?", (owner["restaurant_id"],))
+        conn.execute("UPDATE restaurants SET floor_image = '', floor_layout = '' WHERE id = ?", (owner["restaurant_id"],))
     return {"ok": True}
 
 
@@ -809,4 +811,158 @@ def floor_save(req: Request):
                 raise HTTPError(400, "Positions must be 0 to 100")
             clean.append((None if x is None else round(x, 2), None if y is None else round(y, 2), tid))
         conn.executemany("UPDATE tables SET pos_x = ?, pos_y = ? WHERE id = ?", clean)
+    return {"ok": True}
+
+
+# ---------------- AI reading of the blueprint (Gemini vision). Proposes only; the owner taps Apply.
+
+from . import floorplan, gemini  # noqa: E402
+
+
+@route("POST", "/api/owner/floor/read")
+def floor_read(req: Request):
+    owner = m.require_owner(req)
+    _floor_on()
+    if not config.features()["floor_ai"]:
+        _off()
+    with db() as conn:
+        img = conn.execute("SELECT floor_image FROM restaurants WHERE id = ?", (owner["restaurant_id"],)).fetchone()[0]
+        tables = rows(conn.execute("SELECT id, number, seats FROM tables WHERE restaurant_id = ? AND active = 1 ORDER BY number",
+                                   (owner["restaurant_id"],)))
+    if not img:
+        raise HTTPError(409, "Upload a blueprint first.")
+    name = img.split(":", 1)[0]
+    path = _floor_path(owner["restaurant_id"], name)
+    if not path.exists():
+        raise HTTPError(409, "Upload a blueprint first.")
+    data, mime = path.read_bytes(), "image/png" if name.endswith(".png") else "image/jpeg"
+    from concurrent.futures import ThreadPoolExecutor
+    kinds = ("tables", "fixtures")
+    try:  # two focused Gemini detections in parallel (precise boxes); the browser keeps what matches the drawing
+        with ThreadPoolExecutor(2) as ex:
+            tables, fixtures = ex.map(lambda k: gemini.detect_floor_objects(data, mime, k), kinds)
+    except gemini.GeminiError as e:
+        msg = str(e) if "quota" in str(e) else "Couldn't read the blueprint right now."
+        raise HTTPError(502, msg + " You can still drag the tables by hand.")
+    raw = {"tables": tables, "rooms": [f for f in fixtures if str(f.get("kind", "")).lower() == "room"],
+           "counters": [f for f in fixtures if str(f.get("kind", "")).lower() != "room"]}
+    # candidates only: the browser checks them against the drawing, traces the walls and matches the tables
+    return {"layout": floorplan.normalize_layout(raw), "tables": tables}
+
+
+@route("PUT", "/api/owner/floor/layout")
+def floor_layout_save(req: Request):
+    """Save the layout the owner approved (and, if they ticked it, table positions and chairs from the blueprint)."""
+    owner = m.require_owner(req)
+    _floor_on()
+    d = req.json()
+    layout = floorplan.clean_saved_layout(d.get("layout")) if d.get("layout") else None
+    with db() as conn:
+        valid = {r[0] for r in conn.execute("SELECT id FROM tables WHERE restaurant_id = ? AND active = 1", (owner["restaurant_id"],))}
+        for p in (d.get("positions") or [])[:200]:
+            try:
+                tid, x, y = int(p["table_id"]), float(p["x"]), float(p["y"])
+            except (TypeError, ValueError, KeyError):
+                raise HTTPError(400, "Bad positions")
+            if tid not in valid or not (0 <= x <= 100 and 0 <= y <= 100):
+                raise HTTPError(400, "Bad positions")
+            conn.execute("UPDATE tables SET pos_x = ?, pos_y = ? WHERE id = ?", (round(x, 2), round(y, 2), tid))
+        for tid, n in (d.get("seats") or {}).items():
+            try:
+                tid, n = int(tid), int(n)
+            except (TypeError, ValueError):
+                raise HTTPError(400, "Bad chairs")
+            if tid in valid and 1 <= n <= 20 and config.FEATURE_SEATS:
+                conn.execute("UPDATE tables SET seats = ? WHERE id = ?", (n, tid))
+        conn.execute("UPDATE restaurants SET floor_layout = ? WHERE id = ?",
+                     (json.dumps(layout, separators=(",", ":")) if layout else "", owner["restaurant_id"]))
+    return {"ok": True}
+
+
+# ===================================================================== tips on the guest bill
+
+TIP_PERCENTS = (0, 5, 10, 15)
+
+
+@route("POST", "/api/session/{session_id:int}/tip")
+def set_tip(req: Request, session_id: int):
+    """The guest picks 0/5/10/15 % or a rupee amount. The server works out the paise from the bill and caps it at 50 %."""
+    if not config.features()["tips"]:
+        _off()
+    d = req.json()
+    with db() as conn:
+        s = m._guest_session(conn, session_id, req)
+        if s["status"] != m.BILL_REQUESTED:
+            raise HTTPError(409, "You can add a tip once the bill is ready.")
+        from . import upgrades
+        if upgrades.split_active(conn, session_id):
+            raise HTTPError(409, "This bill is split, so a tip can't be added here.")
+        bill = m._bill_paise(conn, session_id)
+        if "percent" in d:
+            try:
+                pct = int(d.get("percent"))
+            except (TypeError, ValueError):
+                raise HTTPError(400, "Pick a tip")
+            if pct not in TIP_PERCENTS:
+                raise HTTPError(400, "Pick 0, 5, 10 or 15 %")
+            tip = round(bill * pct / 100 / 100) * 100  # whole rupees
+        else:
+            try:
+                tip = int(round(float(d.get("rupees")) * 100))
+            except (TypeError, ValueError):
+                raise HTTPError(400, "Enter the tip in rupees")
+            if tip < 0:
+                raise HTTPError(400, "A tip can't be negative")
+        if tip > bill // 2:
+            raise HTTPError(400, f"A tip can be at most half the bill (₹{bill // 200:,}).")
+        conn.execute("UPDATE table_sessions SET tip_paise = ? WHERE id = ?", (tip, session_id))
+    return {"ok": True, "tip_paise": tip, "total_paise": bill + tip}
+
+
+# ===================================================================== Relay.app AI agent (optional)
+
+from . import relay  # noqa: E402
+
+
+def relay_event(conn, restaurant_id: int, event: str, data: dict) -> None:
+    if not relay.enabled():
+        return
+    name = conn.execute("SELECT name FROM restaurants WHERE id = ?", (restaurant_id,)).fetchone()[0]
+    relay.send(event, name, data)
+
+
+def relay_bill(conn, session_id: int, method: str, amount_paise: int) -> None:
+    """A verified paid bill (UPI after Cashfree confirmed it, or cash marked by staff). No phone numbers."""
+    if not relay.enabled():
+        return
+    s = row(conn.execute("SELECT s.tip_paise, t.number, t.restaurant_id FROM table_sessions s JOIN tables t ON t.id = s.table_id "
+                         "WHERE s.id = ?", (session_id,)).fetchone())
+    if not s:
+        return
+    items = rows(conn.execute(
+        "SELECT oi.name, SUM(oi.qty) AS qty, SUM(oi.qty * oi.unit_price_paise) AS amount_paise FROM order_items oi "
+        "JOIN orders o ON o.id = oi.order_id WHERE o.session_id = ? AND o.status IN ('ACCEPTED', 'PREPARING', 'SERVED') "
+        "GROUP BY oi.name ORDER BY amount_paise DESC", (session_id,)))
+    relay_event(conn, s["restaurant_id"], "bill_paid", {
+        "table": s["number"], "method": method, "amount_rupees": round(amount_paise / 100, 2),
+        "tip_rupees": round((s["tip_paise"] or 0) / 100, 2) if method == "upi" else 0,
+        "items": [{"name": i["name"], "qty": i["qty"], "amount_rupees": round(i["amount_paise"] / 100, 2)} for i in items]})
+
+
+@route("POST", "/api/owner/report/relay")
+def report_to_relay(req: Request):
+    """Owner taps 'Send to Relay AI agent' on the daily report: the day's numbers go to the Relay workflow."""
+    owner = _report_owner(req)
+    if not relay.enabled():
+        raise HTTPError(409, "Relay isn't set up. Add RELAY_WEBHOOK_URL and FEATURE_RELAY=true to .env.")
+    with db() as conn:
+        rep = _report(conn, owner["restaurant_id"], req.json().get("date"))
+    rs = lambda p: round(p / 100, 2)  # noqa: E731
+    data = {"date": rep["date"], "collected_rupees": rs(rep["summary"]["collected_paise"]), "bills": rep["summary"]["bills"],
+            "average_rupees": rs(rep["summary"]["average_paise"]), "upi_rupees": rs(rep["summary"]["online_paise"]),
+            "cash_rupees": rs(rep["summary"]["cash_paise"]),
+            "items": [{"name": i["name"], "qty": i["qty"], "amount_rupees": rs(i["amount_paise"])} for i in rep["items"][:50]],
+            "bill_list": [{"time": b["time"], "table": b["table"], "amount_rupees": rs(b["amount_paise"]), "method": b["method"]} for b in rep["bills"]]}
+    if not relay.send("daily_report", rep["restaurant"], data, wait=True):
+        raise HTTPError(502, "Relay didn't accept the report. Check RELAY_WEBHOOK_URL.")
     return {"ok": True}

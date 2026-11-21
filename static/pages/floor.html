@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/static/css/dashboard.css">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <script src="/static/js/common.js"></script>
+<script src="/static/js/blueprint.js"></script>
 <style>
   .fp-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
   .fp-wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; align-items: start; }
@@ -24,6 +25,18 @@
   .mk.rect { border-radius: 12px; }
   .mk.drag { cursor: grabbing; transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 14px 30px rgba(0,0,0,.6), 0 0 0 6px rgba(255,193,69,.35); z-index: 5; }
   .mk small { display: block; font-weight: 700; font-size: .62rem; opacity: .8; }
+  .ai-panel { padding: 16px 18px; border-radius: 18px; margin: 0 0 16px; border-color: rgba(155,92,255,.45); background: linear-gradient(135deg, rgba(155,92,255,.14), rgba(76,201,240,.06)); animation: aiIn .5s var(--ease) both; }
+  @keyframes aiIn { from { opacity: 0; transform: translateY(-8px); } }
+  .ai-steps { display: grid; gap: 6px; margin: 8px 0 0; }
+  .ai-steps div { display: flex; gap: 10px; align-items: center; font-weight: 600; color: var(--muted); }
+  .ai-steps div.done { color: var(--text); } .ai-steps div.done i { background: var(--mint); color: #032019; }
+  .ai-steps i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: .75rem; background: rgba(255,255,255,.1); }
+  .ai-steps div.now i { border: 2px solid var(--violet); border-right-color: transparent; animation: spin .8s linear infinite; background: none; }
+  .ai-found { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ai-opts { display: grid; gap: 6px; margin: 10px 0 14px; font-size: .92rem; }
+  .ai-opts label { display: flex; gap: 8px; align-items: center; }
+  .ai-opts input { accent-color: var(--mint); width: 18px; height: 18px; }
+  .mk.ai { box-shadow: 0 0 0 4px rgba(155,92,255,.55), 0 8px 18px rgba(0,0,0,.5); }
   .preview3d { height: 420px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line-2); background: #0b0716; }
   @media (max-width: 900px) { .fp-wrap { grid-template-columns: 1fr; } .preview3d { height: 300px; } }
 </style>
@@ -38,12 +51,14 @@
     <p class="muted" style="max-width:720px">Upload a photo or drawing of your floor (PNG or JPG, up to 5 MB) and drag each table to where it really is. The dashboard's 3D floor and the plan view then match your restaurant. You can also skip the image and just arrange the tables.</p>
     <div class="fp-tools">
       <label class="btn sm" style="cursor:pointer">⬆ Upload blueprint<input type="file" id="file" accept="image/png,image/jpeg" hidden></label>
+      <button class="btn cool sm hidden" id="readBtn">✨ Build 3D from blueprint</button>
       <button class="btn-ghost sm hidden" id="rmImg">Remove image</button>
       <button class="btn-ghost sm" id="reset">Reset to auto layout</button>
       <label class="row small muted" style="gap:6px"><input type="checkbox" id="snap" checked> Snap to grid</label>
       <span class="grow"></span>
       <button class="btn mint" id="save" disabled>Save positions</button>
     </div>
+    <div class="glass ai-panel hidden" id="aiPanel" aria-live="polite"></div>
     <div class="fp-wrap">
       <div><div class="fp noimg" id="fp"></div><p class="faint small" style="margin-top:8px">Drag the circles (round tables are sized by chairs). Works with mouse and touch.</p></div>
       <div><div class="preview3d" id="p3d"></div><p class="faint small" style="margin-top:8px">3D preview · drag to orbit</p></div>
@@ -53,7 +68,7 @@
 <script>
 BD.ownerNav("/dashboard");
 const $ = id => document.getElementById(id);
-let data = null, pos = new Map(), dirty = false;
+let data = null, pos = new Map(), dirty = false, draft = null, draftMatches = null, keepPos = null;
 function auto(i, n) { const cols = Math.ceil(Math.sqrt(n * 1.4)), rows = Math.ceil(n / cols), c = i % cols, r = Math.floor(i / cols); return [((c + .5) / cols) * 100, ((r + .5) / rows) * 100]; }
 function setDirty(v) { dirty = v; $("save").disabled = !v; }
 async function load() {
@@ -65,9 +80,10 @@ function draw() {
   const fp = $("fp");
   fp.classList.toggle("noimg", !data.image);
   $("rmImg").classList.toggle("hidden", !data.image);
+  $("readBtn").classList.toggle("hidden", !data.image);
   fp.innerHTML = (data.image ? `<img src="${BD.esc(data.image)}" alt="Floor plan" onload="window.__fpLoaded && window.__fpLoaded()">` : "") +
     data.tables.map(t => { const [x, y] = pos.get(t.id), size = 34 + Math.min(20, t.seats) * 3;
-      return `<div class="mk ${t.seats > 6 ? "rect" : ""}" data-id="${t.id}" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px" role="button" aria-label="Table ${t.number}, ${t.seats} seats. Drag to move.">T${t.number}<small>${t.seats}</small></div>`; }).join("");
+      return `<div class="mk ${t.seats > 6 ? "rect" : ""} ${draftMatches && draftMatches.some(m => m.table_id === t.id) ? "ai" : ""}" data-id="${t.id}" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px" role="button" aria-label="Table ${t.number}, ${t.seats} seats. Drag to move.">T${t.number}<small>${t.seats}</small></div>`; }).join("");
 }
 let drag = null;
 $("fp").addEventListener("pointerdown", e => {
@@ -95,11 +111,88 @@ $("file").onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
   if (f.size > 5e6) { BD.toast("The image must be 5 MB or smaller", "bad"); return; }
   const fd = new FormData(); fd.append("file", f);
-  try { const r = await BD.api("/api/owner/floor/image", { form: fd }); data.image = r.image; draw(); preview(); BD.toast("Blueprint uploaded. Now drag the tables onto it.", "ok", 4000); }
+  try {
+    const r = await BD.api("/api/owner/floor/image", { form: fd }); data.image = r.image; data.layout = null; draw(); preview();
+    BD.toast("Blueprint uploaded. Reading it now…", "ok", 3000);
+    readBlueprint();  // straight away: walls from the drawing + tables, counters and rooms (AI); the owner approves
+  }
   catch (x) { BD.toast(x.message, "bad"); }
   e.target.value = "";
 };
-$("rmImg").onclick = async () => { if (!confirm("Remove the blueprint image? Table positions are kept.")) return; try { await BD.api("/api/owner/floor/image", { method: "DELETE" }); data.image = null; draw(); preview(); } catch (x) { BD.toast(x.message, "bad"); } };
+$("rmImg").onclick = async () => { if (!confirm("Remove the blueprint image? Table positions are kept.")) return; try { await BD.api("/api/owner/floor/image", { method: "DELETE" }); data.image = null; data.layout = null; cancelDraft(); draw(); preview(); } catch (x) { BD.toast(x.message, "bad"); } };
+$("readBtn").onclick = () => readBlueprint();
+
+// ---------------------------------------------------------------- read the blueprint -> proposal -> Apply
+function steps(list) {
+  $("aiPanel").classList.remove("hidden");
+  $("aiPanel").innerHTML = `<b>✨ Reading your blueprint</b><div class="ai-steps">${list.map(([t, st]) => `<div class="${st}"><i>${st === "done" ? "✓" : st === "now" ? "" : "·"}</i>${t}</div>`).join("")}</div>`;
+}
+async function readBlueprint() {
+  if (!data.image) return;
+  const ai = data.ai;
+  BD.busy($("readBtn"), true);
+  const list = [["Tracing walls and doors from the drawing", "now"]].concat(ai ? [["Finding tables, chairs, counters and rooms (Gemini)", ""], ["Checking each one against the drawing", ""]] : []);
+  steps(list);
+  let im, traced, found = { rooms: [], counters: [], tables: [] }, aiNote = "";
+  try { im = await Blueprint.load(data.image); traced = Blueprint.traceWalls(im); }
+  catch (e) { $("aiPanel").innerHTML = `<div class="notice bad">Couldn't read the image. Try a clearer PNG or JPG.</div>`; BD.busy($("readBtn"), false); return; }
+  list[0][1] = "done";
+  if (ai) {
+    list[1][1] = "now"; steps(list);
+    try {
+      const r = await BD.api("/api/owner/floor/read", { body: {} });
+      list[1][1] = "done"; list[2][1] = "now"; steps(list);
+      found = Blueprint.refine(r.layout, im, traced.mask);
+      list[2][1] = "done";
+    } catch (x) { aiNote = x.message; list[1][1] = ""; }
+  }
+  steps(list);
+  draft = { walls: traced.walls, rooms: found.rooms, counters: found.counters, tables: found.tables };
+  draftMatches = Blueprint.matchTables(found.tables, data.tables);
+  keepPos = new Map(pos);
+  draftMatches.forEach(m => pos.set(m.table_id, [m.x, m.y]));
+  const seatChanges = draftMatches.filter(m => m.seats && data.tables.find(t => t.id === m.table_id).seats !== m.seats);
+  const chairs = found.tables.reduce((s, t) => s + (t.seats || 0), 0);
+  $("aiPanel").innerHTML = `<div class="row spread wrap"><b>✨ Here's what I found</b><span class="faint small">Nothing is saved until you tap Apply</span></div>
+    <div class="ai-found">
+      <span class="chip">🧱 ${traced.walls.length} wall pieces</span>
+      ${ai && !aiNote ? `<span class="chip">🍽️ ${found.tables.length} table${found.tables.length === 1 ? "" : "s"}${found.tables.length ? ` (${found.tables.map(t => BD.esc(t.label || "?")).join(", ")})` : ""}${chairs ? ` · ${chairs} chairs` : ""}</span>
+        <span class="chip">🗄️ ${found.counters.length} counters</span>
+        <span class="chip">🚪 ${found.rooms.length} rooms${found.rooms.length ? ` (${found.rooms.map(r => BD.esc(r.label)).join(", ")})` : ""}</span>` : ""}
+    </div>
+    ${aiNote ? `<p class="notice" style="margin:6px 0">${BD.esc(aiNote)} Walls were still traced; drag the tables by hand.</p>` : !ai ? `<p class="faint small">Turn on <span class="kbd">FEATURE_FLOOR_AI</span> (needs <span class="kbd">GEMINI_API_KEY</span>) to also find tables, counters and rooms.</p>` : ""}
+    ${data.tables.length !== found.tables.length && ai && !aiNote ? `<p class="faint small">You have ${data.tables.length} tables in Setup and the plan shows ${found.tables.length}. ${found.tables.length > data.tables.length ? "Add more tables in Setup to place the rest." : "Tables not found stay where they are."}</p>` : ""}
+    <div class="ai-opts">
+      <label><input type="checkbox" id="optWalls" checked> Build the walls, counters and rooms in 3D</label>
+      ${draftMatches.length ? `<label><input type="checkbox" id="optPos" checked> Move ${draftMatches.length} table${draftMatches.length === 1 ? "" : "s"} to where the plan shows them (purple outline)</label>` : ""}
+      ${seatChanges.length ? `<label><input type="checkbox" id="optSeats" checked> Set chairs from the plan: ${seatChanges.map(m => `T${m.number} → ${m.seats}`).join(", ")}</label>` : ""}
+    </div>
+    <div class="row" style="gap:8px"><button class="btn mint" id="aiApply">Apply</button><button class="btn-ghost" id="aiCancel">Cancel</button></div>`;
+  $("aiApply").onclick = applyDraft; $("aiCancel").onclick = () => { cancelDraft(); draw(); preview(); };
+  ["optWalls", "optPos"].forEach(id => { const el = $(id); if (el) el.onchange = () => { if (id === "optPos") { draftMatches.forEach(m => pos.set(m.table_id, el.checked ? [m.x, m.y] : keepPos.get(m.table_id))); draw(); } preview(); }; });
+  BD.busy($("readBtn"), false);
+  draw(); preview();
+}
+function cancelDraft() {
+  if (keepPos) pos = keepPos;
+  draft = null; draftMatches = null; keepPos = null;
+  $("aiPanel").classList.add("hidden"); $("aiPanel").innerHTML = "";
+}
+async function applyDraft() {
+  const usePos = $("optPos") && $("optPos").checked, useSeats = $("optSeats") && $("optSeats").checked, useWalls = $("optWalls").checked;
+  const body = { layout: useWalls ? draft : null, positions: usePos ? draftMatches.map(m => ({ table_id: m.table_id, x: m.x, y: m.y })) : [],
+                 seats: useSeats ? Object.fromEntries(draftMatches.filter(m => m.seats).map(m => [m.table_id, m.seats])) : {} };
+  BD.busy($("aiApply"), true);
+  try {
+    await BD.api("/api/owner/floor/layout", { method: "PUT", body });
+    data.layout = useWalls ? draft : null;
+    if (useSeats) draftMatches.forEach(m => { const t = data.tables.find(t => t.id === m.table_id); if (t && m.seats) t.seats = m.seats; });
+    if (!usePos && keepPos) pos = keepPos;
+    draft = null; draftMatches = null; keepPos = null; setDirty(false);
+    $("aiPanel").innerHTML = `<b>✓ Applied.</b> <span class="muted">The dashboard's 3D floor now matches your blueprint. You can still drag tables and Save.</span>`;
+    BD.confetti(80); draw(); preview();
+  } catch (x) { BD.toast(x.message, "bad"); BD.busy($("aiApply"), false); }
+}
 addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
 
 // live 3D preview with the same renderer as the dashboard
@@ -107,8 +200,13 @@ let p3 = null;
 function preview() {
   if (!data) return;
   const views = data.tables.map(t => ({ id: t.id, number: t.number, seats: t.seats, state: "empty", stateLabel: "Free", color: "#6b6584", pos_x: pos.get(t.id)[0], pos_y: pos.get(t.id)[1] }));
-  const go = () => { window.Floor3D.setBlueprint(data.image); window.Floor3D.update(views); };
-  if (!p3) p3 = import("/static/js/floor3d.js?v=4").then(() => window.Floor3D.mount($("p3d"), () => {}));
+  const go = () => {
+    window.Floor3D.setBlueprint(data.image);
+    const lay = draft ? ($("optWalls") && !$("optWalls").checked ? null : draft) : data.layout;
+    if (window.Floor3D.setLayout) window.Floor3D.setLayout(lay);
+    window.Floor3D.update(views);
+  };
+  if (!p3) p3 = import("/static/js/floor3d.js?v=5").then(() => window.Floor3D.mount($("p3d"), () => {}));
   p3.then(go).catch(() => { $("p3d").innerHTML = `<p class="muted center" style="padding:60px 20px">The 3D preview needs internet (Three.js).</p>`; });
 }
 load();

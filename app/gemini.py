@@ -286,3 +286,75 @@ def speak(text: str) -> bytes:
         _tts_cache.clear()
     _tts_cache[text] = wav
     return wav
+
+
+# ---------------------------------------------------------------- floor plan (blueprint) reading
+
+def _salvage_boxes(text: str) -> list[dict]:
+    """Detection answers are a JSON list of {"box_2d": [...], "label": ...}. If the model runs on or gets cut off,
+    keep every complete item, and drop exact duplicates."""
+    out, seen = [], set()
+    for mo in re.finditer(r"\{[^{}]*\}", text or ""):
+        try:
+            o = json.loads(mo.group())
+        except json.JSONDecodeError:
+            continue
+        b = o.get("box_2d") if isinstance(o, dict) else None
+        key = json.dumps(b)
+        if isinstance(b, list) and len(b) == 4 and key not in seen:
+            seen.add(key)
+            out.append(o)
+    return out
+
+
+VISION_FALLBACKS = ("gemini-3.5-flash-lite",)  # each model has its own free quota
+
+
+def _vision_models() -> list[str]:
+    first = config.GEMINI_VISION_MODEL or config.GEMINI_MODEL
+    return [first] + [m for m in VISION_FALLBACKS if m != first]
+
+
+DETECT_PROMPTS = {
+    "tables": 'Detect each dining table drawn in this restaurant floor plan (the round or rectangular table shapes, not the chairs). '
+              'Output a json list where each entry contains the 2D bounding box in "box_2d", the name written inside it in "label" '
+              '(like "T3"), and the number of chairs drawn around it in "seats".',
+    "rooms": 'Detect each enclosed room in this restaurant floor plan: the whole area inside its walls, not just its name text. '
+             'Rooms are things like the kitchen, store, cold room, restroom, dining hall and cashier area. '
+             'Output a json list where each entry contains the 2D bounding box in "box_2d" and the room name written on the plan in "label".',
+    "fixtures": 'Detect each enclosed room and each fixed counter or big equipment block in this restaurant floor plan. '
+                'Rooms: the whole area inside the walls (kitchen, store, cold room, restroom, dining hall, cashier area), not just the name text. '
+                'Counters: cooking range, sink, dish counter, fridge, prep island, serving pass, cashier counter, bar, waiting bench, hand wash. '
+                'Output a json list where each entry contains the 2D bounding box in "box_2d", the name written on the plan in "label", '
+                'and "kind": "room" or "counter".',
+    "counters": 'Detect each fixed counter or big equipment block drawn in this restaurant floor plan (cooking range, sink, dish counter, '
+                'fridge, prep island, serving pass, cashier counter, bar, waiting bench, hand wash). Output a json list where each entry '
+                'contains the 2D bounding box in "box_2d" and the name written on or next to it in "label".',
+}
+
+
+def detect_floor_objects(image: bytes, mime_type: str, kind: str) -> list[dict]:
+    """Gemini's native object detection (box_2d on 0-1000) for one kind of thing. Precise positions."""
+    body = {
+        "contents": [{"role": "user", "parts": [
+            {"text": DETECT_PROMPTS[kind]},
+            {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(image).decode()}}]}],
+        "generationConfig": {"temperature": 0.5, "maxOutputTokens": 4096, "thinkingConfig": {"thinkingBudget": 0}},
+    }
+    last, quota = None, False
+    for model in _vision_models():
+        for attempt in (1, 2):
+            try:
+                return _salvage_boxes(_text_of(_generate(model, body, timeout=90)))
+            except GeminiError as e:
+                last, msg = e, str(e)
+                if "(429)" in msg or "(404)" in msg:   # quota used up or model retired: next model
+                    quota = quota or "(429)" in msg
+                    break
+                transient = "(5" in msg or "reach Gemini" in msg or "no answer" in msg
+                if transient and attempt == 1:          # busy or slow: one more try
+                    continue
+                raise
+    if quota:
+        raise GeminiError("Gemini's free quota is used up for today. Try again later or add a new GEMINI_API_KEY.") from last
+    raise last

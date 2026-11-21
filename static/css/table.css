@@ -271,3 +271,7 @@ body.preview .item { grid-template-columns: 76px 1fr; }
 .gx-mode { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 16px 10px; border-radius: 20px; cursor: pointer; color: var(--text); border: 1px solid var(--line-2); transition: transform .25s var(--spring), border-color .2s; animation: itemIn .5s var(--ease) both; }
 .gx-mode:hover { transform: translateY(-3px); border-color: rgba(255,193,69,.6); }
 .gx-mode .gx-ico { font-size: 2rem; }
+
+/* tips */
+.tip-box { padding: 14px 16px; border-radius: 18px; margin: 0 0 16px; }
+.tip-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }

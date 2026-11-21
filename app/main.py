@@ -293,6 +293,7 @@ def _session_view(conn, s: dict) -> dict:
         "bill_paise": _bill_paise(conn, s["id"]),
         "settled_paise": s.get("settled_paise", 0),
         "pay_method": s.get("pay_method", ""),
+        "tip_paise": int(s.get("tip_paise") or 0) if config.FEATURE_TIPS else 0,
         "guests": guests,
         "waiter_called": calls > 0,
         "waiter_call": row(conn.execute("SELECT id, reason, created_at FROM waiter_calls WHERE session_id = ? AND done = 0 ORDER BY id DESC LIMIT 1", (s["id"],)).fetchone()),
@@ -854,6 +855,7 @@ def _call_waiter(conn, s: dict, reason: str = "") -> bool:
         return False
     conn.execute("INSERT INTO waiter_calls (session_id, reason, created_at) VALUES (?, ?, ?)", (s["id"], reason, now_iso()))
     features.announce(conn, s["restaurant_id"], s["table_number"], "waiter", reason=reason)
+    restaurant.relay_event(conn, s["restaurant_id"], "waiter_call", {"table": s["table_number"], "reason": reason or "Needs help"})
     return True
 
 
@@ -904,6 +906,8 @@ def guest_pay(req: Request, session_id: int):
         if upgrades.split_active(conn, session_id):
             raise HTTPError(409, "This bill is split. Pay your share from the split list.")
         amount = _bill_paise(conn, session_id)  # always from the database, never from the phone
+        if amount > 0 and config.FEATURE_TIPS:
+            amount += int(s.get("tip_paise") or 0)  # the tip the guest chose (worked out and capped on the server)
         if amount <= 0:
             raise HTTPError(409, "Nothing to pay.")
         restaurant = conn.execute("SELECT name FROM restaurants WHERE id = ?", (s["restaurant_id"],)).fetchone()["name"]
@@ -966,6 +970,7 @@ def _check_payment(link_id: str) -> str:
                                      "ON t.id = s.table_id WHERE s.id = ?", (pay["session_id"],)).fetchone()
                 if where:  # only after Cashfree confirmed it
                     features.announce(conn, where["restaurant_id"], where["number"], "paid", amount_paise=pay["amount_paise"])
+                    restaurant.relay_bill(conn, pay["session_id"], "upi", pay["amount_paise"])  # Relay AI agent (optional)
         return "PAID"
     status = str(link.get("link_status", "")).upper()
     if status in ("EXPIRED", "CANCELLED") and pay["status"] == "ACTIVE":
@@ -1252,6 +1257,7 @@ def cashier_cash(req: Request, session_id: int):
         conn.execute("UPDATE tables SET merged_into = NULL WHERE merged_into = (SELECT table_id FROM table_sessions WHERE id = ?)", (session_id,))
         conn.execute("UPDATE payments SET status = 'CANCELLED' WHERE session_id = ? AND status = 'ACTIVE'", (session_id,))
         conn.execute("UPDATE waiter_calls SET done = 1 WHERE session_id = ?", (session_id,))
+        restaurant.relay_bill(conn, session_id, "cash", amount)  # Relay AI agent (optional)
     for link_id in links:
         cashfree.cancel_link(link_id)
     return {"ok": True}

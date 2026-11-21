@@ -44,6 +44,7 @@
       <label class="field" style="margin:0"><input class="input input-sm" type="date" id="day" aria-label="Report date"></label>
       <a class="btn sm" id="csv">⬇ Download CSV</a>
       <button class="btn-ghost sm" id="pdf">🖨 Save as PDF</button>
+      <button class="btn-ghost sm hidden" id="relay" title="Send today's numbers to your Relay.app AI agent">🤖 Send to Relay AI agent</button>
       <span class="faint small">“Save as PDF”: choose <b>Save as PDF</b> as the printer.</span>
     </div>
     <article class="paper" id="paper"><p>Loading…</p></article>
@@ -76,6 +77,13 @@ async function load() {
 }
 $("day").onchange = load;
 $("pdf").onclick = () => window.print();
+BD.api("/api/health").then(h => $("relay").classList.toggle("hidden", !h.features.relay)).catch(() => {});
+$("relay").onclick = async () => {
+  BD.busy($("relay"), true);
+  try { await BD.api("/api/owner/report/relay", { body: { date: $("day").value } }); BD.toast("Sent. Your Relay agent has today's report.", "ok", 4000); }
+  catch (x) { BD.toast(x.message, "bad", 5000); }
+  BD.busy($("relay"), false);
+};
 load();
 </script>
 </body>

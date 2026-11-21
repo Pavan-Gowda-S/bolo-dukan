@@ -41,7 +41,9 @@ A single Python process serving a vanilla-JS frontend, with SQLite as the only d
 | Pure logic | `app/budget.py`, `summary.py`, `split.py`, `planner.py` | Money and maths as testable pure functions (no HTTP, no AI) |
 | Data | `app/db.py` | `SCHEMA`, additive migrations in `init_db()`, status constants, `row`/`rows` helpers |
 | Auth | `app/auth.py` | PBKDF2 hashing, signed HttpOnly owner cookie (`bd_owner`) and a separately signed staff cookie (`bd_staff`) |
-| AI | `app/ai.py`, `sarvam.py`, `gemini.py` | Sarvam first (Saaras STT, Bulbul TTS, sarvam-105b chat, Document Intelligence), Gemini backup |
+| AI | `app/ai.py`, `sarvam.py`, `gemini.py` | Sarvam first (Saaras STT, Bulbul TTS, sarvam-105b chat, Document Intelligence), Gemini backup; Gemini vision reads floor-plan images (`detect_floor_objects`, quota fallback model) |
+| Blueprint | `app/floorplan.py`, `static/js/blueprint.js` | Clean-up of the AI's reading (pure, tested); wall tracing from pixels and checking proposals against the drawing in the browser |
+| Integrations | `app/relay.py` | Optional Relay.app AI-agent webhook (bill_paid, waiter_call, daily_report) |
 | Payments | `app/cashfree.py` | Payment links, HMAC webhook check, status re-check |
 | Config | `app/config.py` | `.env` loading, `FEATURE_*` flags, `features()` payload for the pages, `*_ready()` checks |
 | HTTP client | `app/net.py` | Standard-library `urllib` wrapper used for every outgoing call |
