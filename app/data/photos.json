@@ -667,14 +667,16 @@
   "page": "https://commons.wikimedia.org/wiki/File:Ragi_Dosa_Mumbai.jpg",
   "author": "Pradeep717",
   "license": "CC BY-SA 4.0",
-  "title": "File:Ragi Dosa Mumbai.jpg"
+  "title": "File:Ragi Dosa Mumbai.jpg",
+  "local": "/static/img/photos/recipe_ragi_dosa.jpg"
  },
  "recipe:oats_upma": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Oats_Upma...yummy.jpg/960px-Oats_Upma...yummy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Oats_Upma...yummy.jpg",
   "author": "vrk1219",
   "license": "CC BY-SA 4.0",
-  "title": "File:Oats Upma...yummy.jpg"
+  "title": "File:Oats Upma...yummy.jpg",
+  "local": "/static/img/photos/recipe_oats_upma.jpg"
  },
  "recipe:oats_porridge": {
   "thumb": "https://upload.wikimedia.org/wikipedia/commons/1/19/Porridge_oats_with_blueberries_and_cinnamon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
@@ -688,70 +690,80 @@
   "page": "https://commons.wikimedia.org/wiki/File:Traditional_Vermicelli_Upma_(Semiya_Upma)_with_Fresh_Vegetables.jpg",
   "author": "Srujanabotcha",
   "license": "CC BY-SA 4.0",
-  "title": "File:Traditional Vermicelli Upma (Semiya Upma) with Fresh Vegetables.jpg"
+  "title": "File:Traditional Vermicelli Upma (Semiya Upma) with Fresh Vegetables.jpg",
+  "local": "/static/img/photos/recipe_semiya_upma.jpg"
  },
  "recipe:aloo_paratha": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Aloo_Paratha_%2896238%29.jpg/960px-Aloo_Paratha_%2896238%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Aloo_Paratha_(96238).jpg",
   "author": "Gannu03",
   "license": "CC BY-SA 4.0",
-  "title": "File:Aloo Paratha (96238).jpg"
+  "title": "File:Aloo Paratha (96238).jpg",
+  "local": "/static/img/photos/recipe_aloo_paratha.jpg"
  },
  "recipe:methi_thepla": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Masala_thepla_with_Methi_kela.JPG/960px-Masala_thepla_with_Methi_kela.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Masala_thepla_with_Methi_kela.JPG",
   "author": "Rupasree",
   "license": "CC BY-SA 4.0",
-  "title": "File:Masala thepla with Methi kela.JPG"
+  "title": "File:Masala thepla with Methi kela.JPG",
+  "local": "/static/img/photos/recipe_methi_thepla.jpg"
  },
  "recipe:poori_sagu": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg/960px-Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Poori_Sagu_Karnataka_Kannada_%E0%B2%AA%E0%B3%82%E0%B2%B0%E0%B2%BF_%E0%B2%B8%E0%B2%BE%E0%B2%97%E0%B3%81_%E0%B2%95%E0%B2%A8%E0%B3%8D%E0%B2%A8%E0%B2%A1.jpg",
   "author": "Wikichethan",
   "license": "CC BY-SA 4.0",
-  "title": "File:Poori Sagu Karnataka Kannada ಪೂರಿ ಸಾಗು ಕನ್ನಡ.jpg"
+  "title": "File:Poori Sagu Karnataka Kannada ಪೂರಿ ಸಾಗು ಕನ್ನಡ.jpg",
+  "local": "/static/img/photos/recipe_poori_sagu.jpg"
  },
  "recipe:besan_chilla": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Chilla_besan.JPG/960px-Chilla_besan.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Chilla_besan.JPG",
   "author": "Kamalsahansi",
   "license": "CC BY-SA 4.0",
-  "title": "File:Chilla besan.JPG"
+  "title": "File:Chilla besan.JPG",
+  "local": "/static/img/photos/recipe_besan_chilla.jpg"
  },
  "recipe:moong_chilla": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Moonglet_chilla_with_curd_and_hot_tea.jpg/960px-Moonglet_chilla_with_curd_and_hot_tea.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Moonglet_chilla_with_curd_and_hot_tea.jpg",
   "author": "RekhaY07",
   "license": "CC BY-SA 4.0",
-  "title": "File:Moonglet chilla with curd and hot tea.jpg"
+  "title": "File:Moonglet chilla with curd and hot tea.jpg",
+  "local": "/static/img/photos/recipe_moong_chilla.jpg"
  },
  "recipe:pesarattu": {
   "thumb": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Pesarattu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
   "page": "https://commons.wikimedia.org/wiki/File:Pesarattu.jpg",
   "author": "Ryallabandi at en.wikipedia",
   "license": "CC BY-SA 3.0",
-  "title": "File:Pesarattu.jpg"
+  "title": "File:Pesarattu.jpg",
+  "local": "/static/img/photos/recipe_pesarattu.jpg"
  },
  "recipe:adai": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Adai_Dosai_with_Chutney_01.jpg/960px-Adai_Dosai_with_Chutney_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Adai_Dosai_with_Chutney_01.jpg",
   "author": "Sudhan Ram",
   "license": "CC BY-SA 4.0",
-  "title": "File:Adai Dosai with Chutney 01.jpg"
+  "title": "File:Adai Dosai with Chutney 01.jpg",
+  "local": "/static/img/photos/recipe_adai.jpg"
  },
  "recipe:uttapam": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Onion_%22Uttapam%22.jpg/960px-Onion_%22Uttapam%22.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Onion_%22Uttapam%22.jpg",
   "author": "Raj.Ranveer",
   "license": "CC BY-SA 4.0",
-  "title": "File:Onion \"Uttapam\".jpg"
+  "title": "File:Onion \"Uttapam\".jpg",
+  "local": "/static/img/photos/recipe_uttapam.jpg"
  },
  "recipe:veg_sandwich": {
   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Veg_Sandwich_3.jpg/960px-Veg_Sandwich_3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
   "page": "https://commons.wikimedia.org/wiki/File:Veg_Sandwich_3.jpg",
   "author": "Ganesh Mohan T",
   "license": "CC BY-SA 4.0",
-  "title": "File:Veg Sandwich 3.jpg"
+  "title": "File:Veg Sandwich 3.jpg",
+  "local": "/static/img/photos/recipe_veg_sandwich.jpg"
  },
  "recipe:paneer_paratha": {
   "thumb": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Awadhi_palak_paneer_paratha_dahi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
