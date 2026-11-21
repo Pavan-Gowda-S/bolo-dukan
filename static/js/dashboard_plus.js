@@ -20,6 +20,10 @@
     }
     if (feats.owner_voice) buildOwnerMic();
     if (feats.kitchen_tv) buildKitchenLink();
+    if (feats.daily_report) {
+      const a = document.createElement("a"); a.className = "btn-ghost"; a.href = "/owner/report"; a.textContent = "📄 Daily report";
+      const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(a);
+    }
     if (feats.staff) {
       const a = document.createElement("a"); a.className = "btn-ghost"; a.href = "/owner/staff"; a.textContent = "🧑‍🍳 Staff";
       const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(a);

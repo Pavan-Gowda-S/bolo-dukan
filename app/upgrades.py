@@ -54,7 +54,7 @@ def _ist_hhmm(iso: str) -> str:
 METHOD = {"ONLINE": "online", "CASH": "cash", "SPLIT": "split"}
 
 
-def restaurant_sales(conn, restaurant_id: int, date_str: str | None = None) -> dict:
+def restaurant_sales(conn, restaurant_id: int, date_str: str | None = None, top_n: int = 3) -> dict:
     start, end, day = ist_day_bounds(date_str)
     sess = rows(conn.execute(
         "SELECT s.id, s.settled_paise, s.settled_at, s.pay_method, t.number FROM table_sessions s JOIN tables t ON t.id = s.table_id "
@@ -71,8 +71,9 @@ def restaurant_sales(conn, restaurant_id: int, date_str: str | None = None) -> d
             "SELECT oi.name, oi.qty, oi.unit_price_paise FROM order_items oi JOIN orders o ON o.id = oi.order_id "
             f"WHERE o.session_id = ? AND o.status IN ({','.join('?' * len(BILLABLE_ORDER_STATUSES))})",
             (s["id"], *BILLABLE_ORDER_STATUSES)))
-    out = summarize(bills, items)
+    out = summarize(bills, items, top_n=top_n)
     out["date"] = day
+    out["_items"] = items  # used by the daily report (removed before the summary API answers)
     return out
 
 
@@ -86,7 +87,9 @@ def sales_summary(req: Request):
         if biz == "supermarket":
             from . import store
             return store.store_sales(conn, owner["restaurant_id"], req.query.get("date"))
-        return restaurant_sales(conn, owner["restaurant_id"], req.query.get("date"))
+        out = restaurant_sales(conn, owner["restaurant_id"], req.query.get("date"))
+        out.pop("_items", None)
+        return out
 
 
 # ===================================================================== A2. split the bill

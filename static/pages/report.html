@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Daily Report</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500..700&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<style>
+  .tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 24px 0 16px; }
+  .paper { background: #fff; color: #1a1424; border-radius: 18px; padding: clamp(18px, 4vw, 40px); box-shadow: 0 40px 80px -30px rgba(0,0,0,.8); animation: up .6s var(--ease) both; }
+  @keyframes up { from { opacity: 0; transform: translateY(20px); } }
+  .paper h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); color: #1a1424; }
+  .paper .sub { color: #6b6280; margin: 4px 0 20px; }
+  .kp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+  .kp div { border: 1px solid #e7e2ef; border-radius: 12px; padding: 12px; }
+  .kp span { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #6b6280; font-weight: 700; }
+  .kp b { font-family: var(--font-display); font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+  .paper h3 { color: #1a1424; margin: 20px 0 8px; font-size: 1.1rem; }
+  .paper table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  .paper th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #6b6280; padding: 8px; border-bottom: 2px solid #1a1424; }
+  .paper td { padding: 7px 8px; border-bottom: 1px solid #eee8f5; font-variant-numeric: tabular-nums; }
+  .paper td.r, .paper th.r { text-align: right; }
+  .paper tfoot td { font-weight: 800; border-top: 2px solid #1a1424; border-bottom: 0; }
+  .foot { margin-top: 22px; color: #8a829c; font-size: .8rem; }
+  @media (max-width: 640px) { .kp { grid-template-columns: 1fr 1fr; } }
+  @media print {
+    body { background: #fff !important; } .grain, .topbar, .tools, #toasts { display: none !important; }
+    .container { width: 100% !important; } .paper { box-shadow: none; border-radius: 0; padding: 0; animation: none; }
+    tr { break-inside: avoid; }
+  }
+</style>
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding-bottom:60px">
+    <div class="tools">
+      <label class="field" style="margin:0"><input class="input input-sm" type="date" id="day" aria-label="Report date"></label>
+      <a class="btn sm" id="csv">⬇ Download CSV</a>
+      <button class="btn-ghost sm" id="pdf">🖨 Save as PDF</button>
+      <span class="faint small">“Save as PDF”: choose <b>Save as PDF</b> as the printer.</span>
+    </div>
+    <article class="paper" id="paper"><p>Loading…</p></article>
+  </main>
+</div>
+<script>
+BD.ownerNav("/dashboard");
+const $ = id => document.getElementById(id);
+const today = new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 10);
+$("day").value = BD.qs("date") || today; $("day").max = today;
+const rs = p => "₹" + (p / 100).toLocaleString("en-IN", { minimumFractionDigits: p % 100 ? 2 : 0, maximumFractionDigits: 2 });
+async function load() {
+  const d = $("day").value;
+  $("csv").href = "/api/owner/report.csv?date=" + d;
+  history.replaceState(null, "", "?date=" + d);
+  let r;
+  try { r = await BD.api("/api/owner/report?date=" + d); }
+  catch (x) { if (x.status === 401) location.href = "/owner/login?next=/owner/report"; $("paper").innerHTML = `<p>${BD.esc(x.message)}</p>`; return; }
+  const s = r.summary;
+  document.title = `${r.restaurant} · Report ${r.date}`;
+  $("paper").innerHTML = `<h1>${BD.esc(r.restaurant)}</h1><div class="sub">Daily report · ${new Date(r.date + "T00:00:00").toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</div>
+    <div class="kp"><div><span>Collected</span><b>${rs(s.collected_paise)}</b></div><div><span>Bills</span><b>${s.bills}</b></div><div><span>Average bill</span><b>${rs(s.average_paise)}</b></div>
+      <div><span>UPI · Cash</span><b style="font-size:1.05rem">${rs(s.online_paise)} · ${rs(s.cash_paise)}</b></div></div>
+    <h3>Bills</h3>${r.bills.length ? `<table><thead><tr><th>Time</th><th>Table</th><th>Method</th><th>Cashfree link</th><th class="r">Amount</th></tr></thead><tbody>
+      ${r.bills.map(b => `<tr><td>${BD.esc(b.time)}</td><td>${b.table}</td><td>${b.method === "cash" ? "Cash" : b.method === "split" ? "UPI (split)" : "UPI"}</td><td style="font-size:.78rem;color:#6b6280">${BD.esc(b.link_id || "—")}</td><td class="r">${rs(b.amount_paise)}</td></tr>`).join("")}</tbody>
+      <tfoot><tr><td colspan="4">Total</td><td class="r">${rs(s.collected_paise)}</td></tr></tfoot></table>` : `<p style="color:#6b6280">No paid bills on this day.</p>`}
+    <h3>Items sold</h3>${r.items.length ? `<table><thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Amount</th></tr></thead><tbody>
+      ${r.items.map(i => `<tr><td>${BD.esc(i.name)}</td><td class="r">${i.qty}</td><td class="r">${rs(i.amount_paise)}</td></tr>`).join("")}</tbody></table>` : `<p style="color:#6b6280">—</p>`}
+    <div class="foot">Only bills confirmed as paid (Cashfree-verified UPI or marked cash) are counted. Generated ${new Date(r.generated_at).toLocaleString("en-IN")} · Bolo Dukaan</div>`;
+}
+$("day").onchange = load;
+$("pdf").onclick = () => window.print();
+load();
+</script>
+</body>
+</html>

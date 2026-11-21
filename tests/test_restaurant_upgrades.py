@@ -20,7 +20,7 @@ from app import main  # noqa: E402
 from app.web import HTTPError, Request  # noqa: E402
 
 FLAGS = ("FEATURE_MENU_PREVIEW", "FEATURE_SEATS", "FEATURE_DISH_DETAILS", "FEATURE_KITCHEN_TV", "FEATURE_STAFF",
-         "FEATURE_GAME_ROOMS", "FEATURE_FLOOR_PLAN", "FEATURE_KANNADA_ALERTS", "FEATURE_BUDGET_ORDER", "FEATURE_MERGE_TABLES", "FEATURE_DAILY_REPORT")
+         "FEATURE_GAME_ROOMS", "FEATURE_FLOOR_PLAN", "FEATURE_KANNADA_ALERTS", "FEATURE_BUDGET_ORDER", "FEATURE_MERGE_TABLES", "FEATURE_DAILY_REPORT", "FEATURE_SALES_SUMMARY")
 
 
 def call(method, path, body=None, cookie="", headers=None, raw=None, ctype=None):
@@ -352,6 +352,29 @@ class MergeTests(Base):
         self.assertEqual(call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t1["id"]}, self.owner)[0], 400)
         config.FEATURE_MERGE_TABLES = False
         self.assertEqual(call("POST", "/api/tables/merge", {"host_table_id": t1["id"], "table_id": t3["id"]}, self.owner)[0], 404)
+
+
+class ReportTests(Base):
+    def test_report_csv_and_json(self):
+        sid, g = self.start(0)
+        oid = self.order(sid, g, ((0, 2), (1, 1)))[1]["order_id"]
+        call("POST", f"/api/orders/{oid}/status", {"status": "ACCEPTED"}, self.owner)
+        self.assertEqual(call("POST", f"/api/session/{sid}/cash", {}, self.owner)[0], 200)
+        r = call("GET", "/api/owner/report", cookie=self.owner)[1]
+        self.assertEqual((r["summary"]["collected_paise"], r["summary"]["bills"], r["summary"]["cash_paise"]), (19000, 1, 19000))
+        self.assertEqual(r["items"][0], {"name": "Masala Dosa", "qty": 2, "amount_paise": 16000})
+        s, body, resp = call("GET", "/api/owner/report.csv", cookie=self.owner)
+        text = body.decode("utf-8-sig")
+        self.assertEqual(s, 200)
+        self.assertIn("attachment", resp.headers["Content-Disposition"])
+        self.assertIn("Collected (Rs),190.00", text)
+        self.assertIn("Masala Dosa,2,160.00", text)
+        self.assertNotIn("_items", call("GET", "/api/dashboard/summary", cookie=self.owner)[1])
+
+    def test_owner_only_and_flag(self):
+        self.assertEqual(call("GET", "/api/owner/report.csv")[0], 401)
+        config.FEATURE_DAILY_REPORT = False
+        self.assertEqual(call("GET", "/api/owner/report", cookie=self.owner)[0], 404)
 
 
 if __name__ == "__main__":

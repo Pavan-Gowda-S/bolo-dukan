@@ -442,3 +442,69 @@ def unmerge_table(req: Request, table_id: int):
         (t,) = _merge_tables(conn, who, (table_id,))
         conn.execute("UPDATE tables SET merged_into = NULL WHERE id = ?", (t["id"],))
     return {"ok": True}
+
+
+# ===================================================================== daily report (CSV + printable PDF)
+
+import csv  # noqa: E402
+import io  # noqa: E402
+
+from .web import Response  # noqa: E402
+
+
+def _report(conn, rid: int, date_str) -> dict:
+    from . import upgrades
+    s = upgrades.restaurant_sales(conn, rid, date_str, top_n=10_000)
+    totals: dict[str, list] = {}
+    for it in s.pop("_items"):
+        t = totals.setdefault(it["name"], [0, 0])
+        t[0] += int(it["qty"])
+        t[1] += int(it["qty"]) * int(it["unit_price_paise"])
+    items = sorted(({"name": n, "qty": q, "amount_paise": a} for n, (q, a) in totals.items()), key=lambda x: (-x["amount_paise"], x["name"]))
+    r = row(conn.execute("SELECT name FROM restaurants WHERE id = ?", (rid,)).fetchone())
+    return {"restaurant": r["name"], "date": s["date"], "summary": {k: s[k] for k in ("collected_paise", "bills", "average_paise", "online_paise",
+            "cash_paise", "online_count", "cash_count")}, "items": items, "bills": s["bill_list"], "generated_at": now_iso()}
+
+
+def _report_owner(req: Request) -> dict:
+    owner = m.require_owner(req)
+    if not config.FEATURE_DAILY_REPORT:
+        _off()
+    return owner
+
+
+@route("GET", "/api/owner/report")
+def report_json(req: Request):
+    owner = _report_owner(req)
+    with db() as conn:
+        return _report(conn, owner["restaurant_id"], req.query.get("date"))
+
+
+@route("GET", "/api/owner/report.csv")
+def report_csv(req: Request):
+    owner = _report_owner(req)
+    with db() as conn:
+        rep = _report(conn, owner["restaurant_id"], req.query.get("date"))
+    rs = lambda p: f"{p / 100:.2f}"  # noqa: E731
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow([f"{rep['restaurant']} - daily report", rep["date"]])
+    sm = rep["summary"]
+    w.writerows([[], ["Summary"], ["Collected (Rs)", rs(sm["collected_paise"])], ["Bills", sm["bills"]], ["Average bill (Rs)", rs(sm["average_paise"])],
+                 ["Online / UPI (Rs)", rs(sm["online_paise"]), f"{sm['online_count']} bills"], ["Cash (Rs)", rs(sm["cash_paise"]), f"{sm['cash_count']} bills"],
+                 [], ["Bills"], ["Time (IST)", "Table", "Amount (Rs)", "Method", "Cashfree link"]])
+    for b in rep["bills"]:
+        w.writerow([b["time"], b["table"], rs(b["amount_paise"]), b["method"], b.get("link_id") or ""])
+    w.writerows([[], ["Items sold"], ["Item", "Qty", "Amount (Rs)"]])
+    for i in rep["items"]:
+        w.writerow([i["name"], i["qty"], rs(i["amount_paise"])])
+    data = "﻿" + buf.getvalue()  # BOM so Excel opens Kannada/₹ correctly
+    return Response(data.encode("utf-8"), 200, "text/csv; charset=utf-8",
+                    {"Content-Disposition": f'attachment; filename="report-{rep["date"]}.csv"', "Cache-Control": "no-store"})
+
+
+@route("GET", "/owner/report")
+def report_page(req: Request):
+    if not config.FEATURE_DAILY_REPORT:
+        _off()
+    return file_response(config.STATIC_DIR / "pages" / "report.html")
