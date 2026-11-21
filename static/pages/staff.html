@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Staff</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<style>
+  .st-grid { display: grid; grid-template-columns: 1fr 380px; gap: 18px; align-items: start; margin-top: 18px; }
+  .sm-card { padding: 16px; border-radius: 20px; margin-bottom: 12px; animation: sIn .45s var(--ease) both; }
+  .sm-card.off { opacity: .55; }
+  @keyframes sIn { from { opacity: 0; transform: translateY(12px); } }
+  .tchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tchips label { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line-2); font-size: .82rem; font-weight: 700; cursor: pointer; }
+  .tchips input { accent-color: var(--marigold); }
+  .tchips label:has(input:checked) { background: rgba(255,193,69,.15); border-color: rgba(255,193,69,.6); }
+  @media (max-width: 900px) { .st-grid { grid-template-columns: 1fr; } }
+</style>
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding:24px 0 60px">
+    <div class="eyebrow">Staff</div>
+    <h2 style="margin-top:6px">Waiters</h2>
+    <p class="muted" style="max-width:640px">Waiters log in on their own phone with a PIN. They see only their tables and can approve tables, check and accept orders, mark food served and clear waiter calls. They can't see sales, bills, the menu editor or settings.</p>
+    <div class="st-grid">
+      <div id="list"></div>
+      <form class="glass card" id="add" novalidate>
+        <h3>Add a waiter</h3>
+        <div class="stack" style="margin-top:12px">
+          <label class="field"><span>Name</span><input class="input" name="name" maxlength="40" required placeholder="Ravi"></label>
+          <label class="field"><span>Username</span><input class="input" name="username" maxlength="20" autocapitalize="none" required placeholder="ravi"></label>
+          <label class="field"><span>PIN (4-6 digits)</span><input class="input mono" name="pin" inputmode="numeric" maxlength="6" required></label>
+          <div class="field"><span>Tables (none ticked = all tables)</span><div class="tchips" id="addTables"></div></div>
+          <div class="err" id="err"></div>
+          <button class="btn block" id="go">Add waiter</button>
+          <p class="faint small" id="loginHint"></p>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+<script>
+BD.ownerNav("/dashboard");
+const $ = id => document.getElementById(id);
+let data = null;
+const chips = (name, sel) => data.tables.map(t => `<label><input type="checkbox" name="${name}" value="${t.id}" ${sel.includes(t.id) ? "checked" : ""}>T${t.number}</label>`).join("");
+async function load() {
+  try { data = await BD.api("/api/owner/staff"); }
+  catch (x) { if (x.status === 404) { document.querySelector("main").innerHTML = `<div class="glass card center" style="margin-top:30px"><p class="muted">Turn on staff accounts with <span class="kbd">FEATURE_STAFF=true</span> in .env and restart.</p></div>`; return; } BD.toast(x.message, "bad"); return; }
+  $("addTables").innerHTML = chips("t_new", []);
+  $("loginHint").innerHTML = `Waiter login page: <a href="${BD.esc(data.login_url)}" target="_blank" rel="noopener">${BD.esc(data.login_url)}</a> · restaurant code <span class="kbd">${BD.esc(data.restaurant_code)}</span>`;
+  $("list").innerHTML = data.staff.length ? data.staff.map((s, i) => `<div class="glass sm-card ${s.active ? "" : "off"}" data-id="${s.id}" style="animation-delay:${i * .04}s">
+    <div class="row spread wrap"><div><b style="font-size:1.1rem">🧑‍🍳 ${BD.esc(s.name)}</b> <span class="faint small">@${BD.esc(s.username)} · ${s.active ? "active" : "deactivated"}</span></div>
+      <div class="row" style="gap:6px"><button class="btn-ghost sm" data-a="copy" data-url="${BD.esc(s.login_url)}">Copy login link</button><button class="btn-ghost sm" data-a="pin">Reset PIN</button><button class="btn-ghost sm" data-a="active">${s.active ? "Deactivate" : "Activate"}</button></div></div>
+    <div class="tchips">${chips("t_" + s.id, s.table_ids)}</div>
+    <div class="row" style="margin-top:8px"><span class="faint small grow">${s.table_ids.length ? s.table_ids.length + " table(s)" : "All tables"}</span><button class="btn-ghost sm" data-a="tables">Save tables</button></div></div>`).join("")
+    : `<div class="glass card center"><div style="font-size:2.4rem">🧑‍🍳</div><p class="muted">No waiters yet. Add one on the right.</p></div>`;
+}
+$("add").addEventListener("submit", async e => {
+  e.preventDefault(); $("err").textContent = "";
+  const f = e.target, table_ids = [...f.querySelectorAll("[name=t_new]:checked")].map(x => Number(x.value));
+  if (!/^\d{4,6}$/.test(f.pin.value)) return $("err").textContent = "PIN must be 4 to 6 digits";
+  BD.busy($("go"), true);
+  try { await BD.api("/api/owner/staff", { body: { name: f.name.value, username: f.username.value, pin: f.pin.value, table_ids } }); f.reset(); BD.toast("Waiter added", "ok"); await load(); }
+  catch (x) { $("err").textContent = x.message; }
+  BD.busy($("go"), false);
+});
+$("list").addEventListener("click", async e => {
+  const b = e.target.closest("[data-a]"); if (!b) return;
+  const card = b.closest("[data-id]"), id = Number(card.dataset.id), s = data.staff.find(x => x.id === id);
+  try {
+    if (b.dataset.a === "copy") { await navigator.clipboard.writeText(b.dataset.url).catch(() => prompt("Copy:", b.dataset.url)); BD.toast("Link copied", "ok"); return; }
+    if (b.dataset.a === "pin") { const p = prompt(`New PIN for ${s.name} (4-6 digits):`); if (p === null) return; await BD.api(`/api/owner/staff/${id}`, { method: "PUT", body: { pin: p.trim() } }); BD.toast("PIN changed", "ok"); }
+    if (b.dataset.a === "active") await BD.api(`/api/owner/staff/${id}`, { method: "PUT", body: { active: !s.active } });
+    if (b.dataset.a === "tables") { const ids = [...card.querySelectorAll(`[name=t_${id}]:checked`)].map(x => Number(x.value)); await BD.api(`/api/owner/staff/${id}`, { method: "PUT", body: { table_ids: ids } }); BD.toast("Tables saved", "ok"); }
+    await load();
+  } catch (x) { BD.toast(x.message, "bad"); }
+});
+load();
+</script>
+</body>
+</html>

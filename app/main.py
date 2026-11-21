@@ -1126,6 +1126,7 @@ def dashboard(req: Request):
                 "join_code": s["join_code"],
                 "started_at": s["started_at"],
                 "guest_phone": s["guest_phone"],
+                "approved_by": s.get("approved_by", ""),
                 "guests": conn.execute("SELECT COUNT(*) FROM session_guests WHERE session_id = ?", (s["id"],)).fetchone()[0],
                 "orders": orders,
                 "pending_count": sum(1 for o in orders if o["status"] == PENDING),
@@ -1156,20 +1157,20 @@ def dashboard(req: Request):
 
 @route("POST", "/api/session/{session_id:int}/approve")
 def cashier_approve(req: Request, session_id: int):
-    owner = require_owner(req)
+    who = restaurant.actor(req)  # owner, or (FEATURE_STAFF) a waiter of this table
     with db() as conn:
-        s = _owner_session(conn, session_id, owner)
+        s = restaurant.session_for(conn, session_id, who)
         if s["status"] != WAITING_APPROVAL:
             raise HTTPError(409, "This table is not waiting for approval.")
-        conn.execute("UPDATE table_sessions SET status = ? WHERE id = ?", (OPEN, session_id))
+        conn.execute("UPDATE table_sessions SET status = ?, approved_by = ? WHERE id = ?", (OPEN, who["label"], session_id))
     return {"ok": True}
 
 
 @route("POST", "/api/session/{session_id:int}/reject")
 def cashier_reject(req: Request, session_id: int):
-    owner = require_owner(req)
+    who = restaurant.actor(req)
     with db() as conn:
-        s = _owner_session(conn, session_id, owner)
+        s = restaurant.session_for(conn, session_id, who)
         if s["status"] != WAITING_APPROVAL:
             raise HTTPError(409, "Only a waiting table can be rejected. Use Free table instead.")
         conn.execute("UPDATE table_sessions SET status = ?, closed_at = ? WHERE id = ?", (REJECTED, now_iso(), session_id))
@@ -1178,7 +1179,7 @@ def cashier_reject(req: Request, session_id: int):
 
 @route("POST", "/api/orders/{order_id:int}/status")
 def cashier_order_status(req: Request, order_id: int):
-    owner = require_owner(req)
+    who = restaurant.actor(req)
     d = req.json()
     new = str(d.get("status") or "").upper()
     reason = _str(d, "reason", 0, 160)
@@ -1186,13 +1187,15 @@ def cashier_order_status(req: Request, order_id: int):
         o = row(conn.execute("SELECT * FROM orders WHERE id = ?", (order_id,)).fetchone())
         if o is None:
             raise HTTPError(404, "Order not found")
-        s = _owner_session(conn, o["session_id"], owner)
+        s = restaurant.session_for(conn, o["session_id"], who)
         if s["status"] not in (OPEN, BILL_REQUESTED, PAID):
             raise HTTPError(409, "This table is closed.")
         if new not in ORDER_FLOW.get(o["status"], set()):
             raise HTTPError(409, f"Can't change an order from {o['status'].lower()} to {new.lower()}.")
         conn.execute("UPDATE orders SET status = ?, reject_reason = ?, updated_at = ? WHERE id = ?",
                      (new, reason if new == ORDER_REJECTED else o["reject_reason"], now_iso(), order_id))
+        if new == ACCEPTED:
+            conn.execute("UPDATE orders SET accepted_by = ? WHERE id = ?", (who["label"], order_id))
         restaurant.on_order_status(conn, o, new, s["restaurant_id"], s["table_number"])  # 3: kitchen TV
     return {"ok": True}
 
@@ -1247,12 +1250,12 @@ def cashier_free(req: Request, session_id: int):
 
 @route("POST", "/api/waiter-calls/{call_id:int}/done")
 def cashier_waiter_done(req: Request, call_id: int):
-    owner = require_owner(req)
+    who = restaurant.actor(req)
     with db() as conn:
         c = row(conn.execute("SELECT * FROM waiter_calls WHERE id = ?", (call_id,)).fetchone())
         if c is None:
             raise HTTPError(404, "Not found")
-        _owner_session(conn, c["session_id"], owner)
+        restaurant.session_for(conn, c["session_id"], who)
         conn.execute("UPDATE waiter_calls SET done = 1 WHERE id = ?", (call_id,))
     return {"ok": True}
 

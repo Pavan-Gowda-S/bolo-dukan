@@ -59,6 +59,28 @@ def read_owner_cookie(value: str | None) -> int | None:
         return None
 
 
+STAFF_COOKIE = "bd_staff"
+STAFF_MAX_AGE = 60 * 60 * 16  # one long shift
+
+
+def make_staff_cookie(staff_id: int) -> str:
+    payload = f"{staff_id}.{int(time.time()) + STAFF_MAX_AGE}"
+    return f"{payload}.{_sign('staff.' + payload)}"
+
+
+def read_staff_cookie(value: str | None) -> int | None:
+    if not value:
+        return None
+    try:
+        staff_id, expires, sig = value.split(".")
+        payload = f"{staff_id}.{expires}"
+        if not hmac.compare_digest(sig, _sign("staff." + payload)) or int(expires) < time.time():
+            return None
+        return int(staff_id)
+    except Exception:
+        return None
+
+
 def require_owner(request: Request) -> dict:
     """The logged-in owner, or 401."""
     owner_id = next((oid for oid in map(read_owner_cookie, request.cookie_all(COOKIE_NAME)) if oid is not None), None)

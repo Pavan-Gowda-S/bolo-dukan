@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Staff Login</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/auth.css">
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app auth-wrap">
+  <a class="brand auth-brand" href="/"><span class="brand-mark" id="mark"></span><span>Bolo Dukaan</span></a>
+  <form class="glass auth-card reveal" data-tilt="4" id="form" novalidate>
+    <div class="eyebrow">Staff</div>
+    <h2 style="margin:8px 0 6px">Waiter <span class="hot-text serif-i">login</span></h2>
+    <p class="muted" style="margin:0 0 22px">Use the username and PIN your owner gave you.</p>
+    <div class="stack">
+      <label class="field"><span>Restaurant code</span><input class="input" name="restaurant" autocomplete="organization" autocapitalize="none" required placeholder="dosa-corner"></label>
+      <label class="field"><span>Username</span><input class="input" name="username" autocomplete="username" autocapitalize="none" required></label>
+      <label class="field"><span>PIN</span><input class="input mono" name="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" required placeholder="4 to 6 digits"></label>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn lg block" id="go">Start my shift →</button>
+    </div>
+  </form>
+</div>
+<script>
+document.getElementById("mark").innerHTML = BD.logoSvg;
+const form = document.getElementById("form"), err = document.getElementById("err"), go = document.getElementById("go");
+if (BD.qs("r")) form.restaurant.value = BD.qs("r");
+if (BD.qs("u")) form.username.value = BD.qs("u");
+(form.restaurant.value ? (form.username.value ? form.pin : form.username) : form.restaurant).focus();
+form.addEventListener("submit", async e => {
+  e.preventDefault(); err.textContent = "";
+  const d = Object.fromEntries(new FormData(form));
+  if (!/^\d{4,6}$/.test(d.pin)) return err.textContent = "PIN must be 4 to 6 digits";
+  BD.busy(go, true, "Checking…");
+  try { const r = await BD.api("/api/staff/login", { body: d }); location.href = r.next; }
+  catch (x) { err.textContent = x.message; form.pin.value = ""; form.pin.focus(); BD.busy(go, false); }
+});
+</script>
+</body>
+</html>

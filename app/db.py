@@ -298,6 +298,22 @@ def init_db() -> None:
         ann_cols = {r[1] for r in conn.execute("PRAGMA table_info(announcements)")}
         if "kitchen_claimed" not in ann_cols:  # 3: the kitchen TV claims its own copy
             conn.execute("ALTER TABLE announcements ADD COLUMN kitchen_claimed INTEGER NOT NULL DEFAULT 0")
+        if "accepted_by" not in order_cols:  # 2: "owner" or "waiter:Ravi"
+            conn.execute("ALTER TABLE orders ADD COLUMN accepted_by TEXT NOT NULL DEFAULT ''")
+        sess_cols = {r[1] for r in conn.execute("PRAGMA table_info(table_sessions)")}
+        if "approved_by" not in sess_cols:
+            conn.execute("ALTER TABLE table_sessions ADD COLUMN approved_by TEXT NOT NULL DEFAULT ''")
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS staff (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+                name TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'waiter', username TEXT NOT NULL,
+                pin_hash TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL,
+                UNIQUE (restaurant_id, username));
+            CREATE TABLE IF NOT EXISTS staff_tables (
+                staff_id INTEGER NOT NULL REFERENCES staff(id), table_id INTEGER NOT NULL REFERENCES tables(id),
+                PRIMARY KEY (staff_id, table_id));
+        """)
         if "accepted_at" not in order_cols:
             conn.execute("ALTER TABLE orders ADD COLUMN accepted_at TEXT")
         if "business_type" not in rest_cols:
