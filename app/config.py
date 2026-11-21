@@ -117,6 +117,7 @@ FEATURE_ROULETTE = _flag("FEATURE_ROULETTE", False)              # Bill Roulette
 FEATURE_HOUSIE = _flag("FEATURE_HOUSIE", False)                  # live Housie (tambola) for the whole restaurant
 FEATURE_LUCKY_SPIN = _flag("FEATURE_LUCKY_SPIN", False)          # spin-the-wheel unlocked by spending
 FEATURE_AISLE_FINDER = _flag("FEATURE_AISLE_FINDER", False)      # supermarket: 3D store map showing the product's aisle
+FEATURE_STORAGE_FINDER = _flag("FEATURE_STORAGE_FINDER", False)  # restaurant: 3D storage room map (covers, utensils, vegetables…)
 try:
     LUCKY_SPIN_MIN_PAISE = max(0, int(float(os.getenv("LUCKY_SPIN_MIN_RUPEES", "300")) * 100))
 except ValueError:
@@ -178,6 +179,7 @@ def features() -> dict:
         "lucky_spin": FEATURE_LUCKY_SPIN,
         "lucky_spin_min_paise": LUCKY_SPIN_MIN_PAISE if FEATURE_LUCKY_SPIN else None,
         "aisle_finder": FEATURE_SUPERMARKET and FEATURE_AISLE_FINDER,
+        "storage_finder": FEATURE_STORAGE_FINDER,
         "floor_ai": FEATURE_FLOOR_PLAN and FEATURE_FLOOR_AI and gemini_ready(),
         "relay": FEATURE_RELAY and bool(RELAY_WEBHOOK_URL),
         "daily_report": FEATURE_DAILY_REPORT,

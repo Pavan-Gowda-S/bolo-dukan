@@ -37,7 +37,8 @@ function textSprite(text, sub, color = "#ffc145") {
 const hue = str => { let h = 0; for (const ch of str) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; };
 
 let scene3d = null;
-function open(mount, products, categories, product) {
+function open(mount, products, categories, product, opts = {}) {
+  const AW = opts.aisleWord || "AISLE", CT = opts.counter || ["BILLING", "pay by UPI"], EN = opts.entrance || ["ENTRANCE", "you are here"];
   close();
   const { cats, aisles, where } = layout(products, categories);
   const W = mount.clientWidth || 800, H = mount.clientHeight || 520;
@@ -90,13 +91,13 @@ function open(mount, products, categories, product) {
   // aisle signs hanging above each walkway
   for (let k = 1; k <= aisles; k++) {
     const left = cats[(k - 1) * 2], right = cats[(k - 1) * 2 + 1];
-    const s = textSprite(`AISLE ${k}`, [left, right].filter(Boolean).join(" · ")); s.position.set(aisleX(k), 3.3, -L / 2 + 0.6); scene.add(s);
+    const s = textSprite(`${AW} ${k}`, [left, right].filter(Boolean).join(" · ")); s.position.set(aisleX(k), 3.3, -L / 2 + 0.6); scene.add(s);
   }
   // entrance + billing counters
   const counterMat = new THREE.MeshStandardMaterial({ color: 0xffc145, roughness: 0.35 });
   [-1, 1].forEach(sgn => { const c = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1, 0.9), counterMat); c.position.set(sgn * 3.2, 0.5, 9.2); c.castShadow = true; scene.add(c); });
-  const bill = textSprite("BILLING", "pay by UPI"); bill.position.set(0, 2.4, 9.2); bill.scale.set(2.6, 0.8, 1); scene.add(bill);
-  const ent = textSprite("ENTRANCE", "you are here", "#2ee6a6"); ent.position.set(0, 2, 13.2); scene.add(ent);
+  const bill = textSprite(CT[0], CT[1]); bill.position.set(0, 2.4, 9.2); bill.scale.set(2.6, 0.8, 1); scene.add(bill);
+  const ent = textSprite(EN[0], EN[1], "#2ee6a6"); ent.position.set(0, 2, 13.2); scene.add(ent);
   const youMat = new THREE.MeshStandardMaterial({ color: 0x2ee6a6, emissive: 0x0a6b4c });
   const you = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.1, 32), youMat); you.position.set(0, 0.05, 13); scene.add(you);
 

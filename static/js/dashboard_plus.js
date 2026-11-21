@@ -24,6 +24,10 @@
       const a = document.createElement("a"); a.className = "btn-ghost"; a.href = "/owner/report"; a.textContent = "📄 Daily report";
       const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(a);
     }
+    if (feats.storage_finder) {
+      const a = document.createElement("a"); a.className = "btn-ghost"; a.href = "/owner/storage"; a.textContent = "📦 Storage room";
+      const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(a);
+    }
     if (feats.staff) {
       const a = document.createElement("a"); a.className = "btn-ghost"; a.href = "/owner/staff"; a.textContent = "🧑‍🍳 Staff";
       const bar = document.querySelector(".dash-head .row.wrap"); if (bar) bar.prepend(a);

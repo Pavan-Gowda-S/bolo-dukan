@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0613">
+<title>Storage Room</title>
+<link rel="icon" href="/static/img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500..700&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Kannada:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+  .sr-head { display: flex; justify-content: space-between; align-items: end; gap: 14px; flex-wrap: wrap; margin: 26px 0 16px; }
+  .sr-search { display: flex; gap: 10px; padding: 14px; border-radius: 22px; }
+  .sr-search .input { font-size: 1.05rem; }
+  .sr-hits { margin-top: 10px; display: grid; gap: 6px; }
+  .sr-hit { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--text); cursor: pointer; }
+  .sr-hit:hover { border-color: rgba(46,230,166,.6); background: rgba(46,230,166,.08); }
+  .sr-grid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; margin-top: 16px; align-items: start; }
+  .sr-sec { margin-bottom: 14px; padding: 14px 16px; border-radius: 20px; }
+  .sr-sec h3 { font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .sr-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .sr-row:first-of-type { border-top: 0; }
+  .sr-row .nm { flex: 1; min-width: 0; }
+  .sr-row .nm b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sr-q { display: flex; align-items: center; gap: 4px; }
+  .sr-q button, .sr-ic { width: 32px; height: 32px; border-radius: 10px; border: 1px solid var(--line-2); background: rgba(255,255,255,.05); color: var(--text); cursor: pointer; font-size: .95rem; }
+  .sr-q span { min-width: 74px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; font-size: .9rem; }
+  .low-tag { font-size: .68rem; font-weight: 800; letter-spacing: .06em; color: #1a0b07; background: #ffc145; padding: 2px 7px; border-radius: 99px; margin-left: 6px; vertical-align: middle; }
+  .sr-empty { text-align: center; padding: 40px 20px; }
+  .map-ov { position: fixed; inset: 0; z-index: 90; background: #0d0818; }
+  .map-mount { position: absolute; inset: 0; }
+  .map-card { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(520px, calc(100% - 24px)); padding: 14px 16px; border-radius: 20px; background: rgba(14,8,26,.92) !important; border-color: rgba(46,230,166,.4) !important; }
+  .map-aisle { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 18px; background: linear-gradient(135deg, #2ee6a6, #3b82f6); color: #06121a; font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1; flex: none; }
+  .map-aisle small { font-family: var(--font); font-size: .58rem; letter-spacing: .14em; }
+  .map-close { position: absolute; top: 14px; right: 14px; z-index: 2; }
+  @media (max-width: 860px) { .sr-grid { grid-template-columns: 1fr; } }
+</style>
+<script src="/static/js/common.js"></script>
+</head>
+<body>
+<div class="grain"></div>
+<div class="app">
+  <header class="topbar" id="nav"></header>
+  <main class="container" style="padding-bottom:60px">
+    <div class="sr-head">
+      <div><div class="eyebrow">Back of house</div><h2 style="margin-top:6px">📦 Storage room</h2>
+        <p class="muted small" style="margin-top:4px">Type what you need (covers, ladle, onion…) and see the exact rack and shelf in 3D.</p></div>
+      <span class="chip hidden" id="lowChip"></span>
+    </div>
+    <div class="glass sr-search">
+      <input class="input grow" id="q" type="search" placeholder="Where is the… parcel cover? curry leaves? dosa tawa?" autocomplete="off" aria-label="Find an item in the storage room">
+    </div>
+    <div class="sr-hits" id="hits"></div>
+
+    <div class="sr-grid">
+      <div id="list"><p class="muted">Loading…</p></div>
+      <aside class="glass card" style="position:sticky;top:90px">
+        <h3>Add an item</h3>
+        <form id="add" class="stack" style="margin-top:10px">
+          <label class="field"><span>Item</span><input class="input" id="aName" maxlength="60" required placeholder="e.g. Parcel covers (big)"></label>
+          <label class="field"><span>Section (rack)</span><input class="input" id="aCat" maxlength="40" required list="cats" placeholder="e.g. Covers & packaging"></label>
+          <datalist id="cats"></datalist>
+          <div class="row" style="gap:8px">
+            <label class="field grow"><span>Quantity</span><input class="input" id="aQty" type="number" min="0" step="any" value="0"></label>
+            <label class="field" style="width:96px"><span>Unit</span><input class="input" id="aUnit" maxlength="12" placeholder="kg"></label>
+          </div>
+          <label class="field"><span>Warn me when it falls to (optional)</span><input class="input" id="aLow" type="number" min="0" step="any" value="0"></label>
+          <div class="err" id="aErr" role="alert"></div>
+          <button class="btn block">+ Add to storage</button>
+        </form>
+        <p class="faint small" style="margin-top:12px">Each section gets its own side of a rack row, items A–Z, three shelves per bay, so the map stays the same for everyone.</p>
+      </aside>
+    </div>
+  </main>
+</div>
+<div class="map-ov hidden" id="mapOv" role="dialog" aria-modal="true" aria-label="Storage room map">
+  <div class="map-mount" id="mapMount"></div>
+  <div class="map-card glass" id="mapCard"></div>
+  <button class="btn-ghost map-close" id="mapClose" aria-label="Close map">✕ Close</button>
+</div>
+<script>
+BD.ownerNav("/dashboard");
+const $ = id => document.getElementById(id);
+const API = "/api/owner/storage";
+let D = { items: [], categories: [] }, map3d = null;
+const fmt = n => (Math.round(n * 1000) / 1000).toLocaleString("en-IN");
+const qtyText = i => `${fmt(i.qty)} ${BD.esc(i.unit)}`.trim();
+
+async function call(path, body) {
+  try { D = await BD.api(path, body ? { body } : undefined); render(); return true; }
+  catch (x) { if (x.status === 401) location.href = "/owner/login?next=/owner/storage"; else BD.toast(x.message, "bad"); return false; }
+}
+function render() {
+  $("cats").innerHTML = D.categories.map(c => `<option value="${BD.esc(c)}">`).join("");
+  $("lowChip").classList.toggle("hidden", !D.low); $("lowChip").textContent = `⚠ ${D.low} running low`;
+  if (!D.items.length) {
+    $("list").innerHTML = `<div class="glass sr-empty"><div style="font-size:3rem">📦</div><h3 style="margin:8px 0">Your storage room is empty</h3>
+      <p class="muted small" style="margin-bottom:14px">Add items on the right, or start with a ready list of covers, utensils, vegetables, grains, spices, dairy and cleaning items you can edit.</p>
+      <button class="btn" id="starter">Load the starter list</button></div>`;
+    $("starter").onclick = () => call(API + "/starter", {});
+  } else {
+    $("list").innerHTML = D.categories.map((c, ci) => {
+      const its = D.items.filter(i => i.category === c);
+      return `<section class="glass sr-sec"><h3><span>${BD.esc(c)}</span><span class="faint small">Row ${Math.floor([...D.categories].sort((a, b) => a.localeCompare(b)).indexOf(c) / 2) + 1} · ${its.length}</span></h3>
+        ${its.map(i => `<div class="sr-row"><div class="nm"><b>${BD.esc(i.name)}${i.low ? `<span class="low-tag">LOW</span>` : ""}</b></div>
+          <div class="sr-q"><button data-d="${i.id}" aria-label="One less ${BD.esc(i.name)}">−</button><span>${qtyText(i)}</span><button data-u="${i.id}" aria-label="One more ${BD.esc(i.name)}">+</button></div>
+          <button class="sr-ic" data-map="${i.id}" title="Show on the 3D map" aria-label="Show ${BD.esc(i.name)} on the map">📍</button>
+          <button class="sr-ic" data-del="${i.id}" title="Remove" aria-label="Remove ${BD.esc(i.name)}">🗑</button></div>`).join("")}</section>`;
+    }).join("");
+  }
+  search();
+}
+function search() {
+  const words = $("q").value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) { $("hits").innerHTML = ""; return; }
+  const hits = D.items.filter(i => words.every(w => (i.name + " " + i.category).toLowerCase().includes(w))).slice(0, 8);
+  $("hits").innerHTML = hits.length ? hits.map(i => `<button class="sr-hit" data-map="${i.id}"><span style="font-size:1.4rem">📍</span>
+      <span class="grow"><b>${BD.esc(i.name)}</b><span class="faint small" style="display:block">${BD.esc(i.category)} · ${qtyText(i)}</span></span><span class="chip">Show</span></button>`).join("")
+    : `<p class="muted small">Nothing called “${BD.esc($("q").value.trim())}” in the storage list yet. Add it on the right.</p>`;
+}
+$("q").addEventListener("input", search);
+$("q").addEventListener("keydown", e => { if (e.key === "Enter") { const b = $("hits").querySelector("[data-map]"); if (b) b.click(); } });
+const byId = id => D.items.find(i => i.id === Number(id));
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-d],[data-u],[data-map],[data-del]"); if (!b) return;
+  if (b.dataset.map) return showMap(byId(b.dataset.map));
+  if (b.dataset.del) { const i = byId(b.dataset.del); if (i && confirm(`Remove “${i.name}” from the storage list?`)) call(`${API}/${i.id}/delete`, {}); return; }
+  const i = byId(b.dataset.d || b.dataset.u); if (!i) return;
+  const step = i.qty < 2 && /kg|litre|l\b/i.test(i.unit) ? 0.25 : 1;
+  call(`${API}/${i.id}`, { qty: Math.max(0, Math.round((i.qty + (b.dataset.u ? step : -step)) * 1000) / 1000) });
+});
+$("add").onsubmit = async e => {
+  e.preventDefault(); $("aErr").textContent = "";
+  try {
+    D = await BD.api(API, { body: { name: $("aName").value, category: $("aCat").value, qty: $("aQty").value, unit: $("aUnit").value, low_at: $("aLow").value } });
+    render(); BD.toast(`Added ${$("aName").value.trim()}`); $("aName").value = ""; $("aQty").value = 0; $("aLow").value = 0; $("aName").focus();
+  } catch (x) { $("aErr").textContent = x.message; }
+};
+async function showMap(it) {
+  if (!it) return;
+  $("mapOv").classList.remove("hidden"); document.documentElement.style.overflow = "hidden";
+  $("mapCard").innerHTML = `<p class="muted">Building the storage room…</p>`;
+  try { map3d = map3d || await import("/static/js/store3d.js?v=2").then(() => window.Store3D); }
+  catch (_) { $("mapCard").innerHTML = `<p class="muted">The 3D map needs internet (Three.js).</p>`; return; }
+  const w = map3d.open($("mapMount"), D.items, D.categories, it, { aisleWord: "ROW", counter: ["KITCHEN", "cooking area"], entrance: ["DOOR", "you are here"] });
+  $("mapCard").innerHTML = w ? `<div class="row" style="gap:12px;align-items:center"><span class="map-aisle"><small>ROW</small>${w.aisle}</span>
+      <span class="grow"><b>${BD.esc(it.name)}</b><span class="muted small" style="display:block">${BD.esc(w.category)} · ${w.side} rack · bay ${w.bay + 1} · ${["bottom", "middle", "top"][w.level]} shelf</span>
+      <span class="small" style="color:var(--mint)">${qtyText(it)} in stock · follow the green path from the door</span></span></div>`
+    : `<p class="muted">Couldn't place this item on the map.</p>`;
+}
+$("mapClose").onclick = () => { $("mapOv").classList.add("hidden"); document.documentElement.style.overflow = ""; if (map3d) map3d.close(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("mapOv").classList.contains("hidden")) $("mapClose").click(); });
+call(API);
+</script>
+</body>
+</html>

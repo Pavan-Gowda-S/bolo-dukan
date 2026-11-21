@@ -194,6 +194,7 @@ Everything lives in `.env` (never commit it; it's in `.gitignore`). Restart afte
 | `FEATURE_HOUSIE` | Live Housie (tambola) for the whole restaurant; line → free juice, full house → free starter | Other games |
 | `FEATURE_LUCKY_SPIN` + `LUCKY_SPIN_MIN_RUPEES` | Spin the wheel once the table's accepted bill reaches the amount (default ₹300) | No wheel |
 | `FEATURE_AISLE_FINDER` | Supermarket: 3D store map with the product's aisle, side, bay and shelf | Search only |
+| `FEATURE_STORAGE_FINDER` | Restaurant: 📦 Storage room on the owner site, 3D map of the store room (covers, utensils, vegetables…) | Hidden |
 | `FEATURE_FLOOR_AI` | Read the blueprint: walls from the drawing, tables/counters/rooms with Gemini (needs `GEMINI_API_KEY`) | Walls only; drag tables by hand |
 | `FEATURE_TIPS` | Tip chips on the guest bill, added to the Cashfree UPI amount | No tip option |
 | `FEATURE_RELAY` | Send events to a Relay.app AI agent (needs `RELAY_WEBHOOK_URL`) | Nothing is sent |
@@ -359,6 +360,8 @@ The code lives in `app/relay.py` (sender) and `app/restaurant.py` (`relay_bill`,
 Choose **Supermarket** when you sign up (needs `FEATURE_SUPERMARKET=true`). You land on **/store**: products (demo catalogue of ~160 groceries, CSV, or a price-list photo you check before saving), a shop link + QR, paid orders with a pick-and-pack checklist and Kannada alerts, and today's sales.
 
 **3D aisle finder** (`FEATURE_AISLE_FINDER`): a shopper taps **📍 Find in store**, types "chips", picks the exact type (Lay's Magic Masala, Bingo, Pringles…), and a 3D store opens. It has aisles with hanging signs, shelves stocked in each category's colour, the entrance and billing counters, a **glowing green path** from the entrance, and a **bouncing pin** on the exact spot. The camera flies in, and a card says *Aisle 7 · Snacks · left side · bay 2 · top shelf* with **Add to cart**. Every product card has a 📍 button too. The layout is built from the store's own categories (two per aisle, A–Z), so every shopper sees the same map.
+
+**📦 Restaurant storage room** (`FEATURE_STORAGE_FINDER`): on the owner dashboard, **📦 Storage room** lists everything in the back room by section (covers & packaging, utensils, vegetables, grains, spices, oil, dairy, cleaning). One tap loads a starter list you can edit. Type "parcel cover" or "curry leaves" and the same 3D map opens with rack rows, the door and the kitchen, and a pin on the shelf: *Row 2 · Covers & packaging · left rack · bay 2 · top shelf*. There are +/− buttons for quantity and an optional "warn me at" level that shows a **LOW** tag. Only the owner can see or change it.
 
 Customers can **shop directly** (search, categories, cart, or say "eradu kilo atta, ondu litre haalu") or **plan meals**: an 8-step wizard (people, budget, days, meals, appliances, diet, goal, staples), up to 100 matching recipes ranked by goal with nutrition and estimated cost, recipe detail with steps in English, ಕನ್ನಡ or हिन्दी, **read-aloud** and **hands-free mode** ("next", "ಮುಂದೆ", "आगे"), a YouTube link, then a cart of the cheapest packs with **Fill to budget** (lands ₹20–30 under, never over) and UPI payment.
 

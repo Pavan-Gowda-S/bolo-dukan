@@ -351,6 +351,11 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS housie_claims (
                 round_id INTEGER NOT NULL, prize TEXT NOT NULL, session_id INTEGER NOT NULL, table_number INTEGER NOT NULL,
                 created_at TEXT NOT NULL, PRIMARY KEY (round_id, prize));
+            CREATE TABLE IF NOT EXISTS storage_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
+                name TEXT NOT NULL, category TEXT NOT NULL, qty REAL NOT NULL DEFAULT 0, unit TEXT NOT NULL DEFAULT '',
+                low_at REAL NOT NULL DEFAULT 0, note TEXT NOT NULL DEFAULT '', updated_at TEXT NOT NULL);
+            CREATE INDEX IF NOT EXISTS storage_items_r ON storage_items (restaurant_id);
             CREATE TABLE IF NOT EXISTS lucky_spins (
                 session_id INTEGER PRIMARY KEY, segment INTEGER NOT NULL, label TEXT NOT NULL, created_at TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS staff_tables (
