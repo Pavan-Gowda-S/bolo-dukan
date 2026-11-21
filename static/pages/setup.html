@@ -17,6 +17,14 @@
   .big-step { display: flex; align-items: center; gap: 16px; }
   .big-step .stepper button { width: 46px; height: 46px; font-size: 1.4rem; }
   .big-step .val { font-family: var(--font-display); font-size: 2.6rem; min-width: 64px; }
+  .count-in { width: 96px; text-align: center; background: transparent; border: 0; border-bottom: 2px dashed rgba(255,193,69,.45); color: var(--text); outline: none; padding: 0; -moz-appearance: textfield; }
+  .count-in:focus { border-bottom-color: var(--marigold); }
+  .count-in::-webkit-inner-spin-button, .seat-in::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .mini-step { display: inline-flex; align-items: center; gap: 2px; background: rgba(0,0,0,.3); border: 1px solid var(--line); border-radius: 99px; padding: 2px; }
+  .mini-step button { width: 28px; height: 28px; border-radius: 50%; border: 0; background: rgba(255,255,255,.08); color: var(--text); font-weight: 800; cursor: pointer; transition: transform .15s var(--spring), background .2s; }
+  .mini-step button:hover { background: rgba(255,255,255,.18); } .mini-step button:active { transform: scale(.85); }
+  .seat-in { width: 42px; text-align: center; background: transparent; border: 0; color: var(--text); font-weight: 800; font-size: 1rem; outline: none; -moz-appearance: textfield; }
+  .seat-all { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 14px; background: rgba(255,193,69,.08); border: 1px solid rgba(255,193,69,.35); margin-bottom: 10px; font-weight: 700; }
   .floor-wrap { perspective: 1100px; padding: 20px 10px 40px; overflow: hidden; }
   .floor { transform: rotateX(56deg) rotateZ(-30deg); transform-style: preserve-3d; display: grid; gap: 18px; justify-content: center; padding: 26px;
     border-radius: 28px; background: radial-gradient(circle at 50% 40%, rgba(255,159,28,.12), transparent 70%), repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 34px), repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 34px), #160d26;
@@ -51,10 +59,10 @@
       <div class="stack" style="gap:22px">
         <label class="field"><span>Restaurant name</span><input class="input" name="name" id="name" maxlength="80"></label>
         <div class="field"><span>How many tables?</span>
-          <div class="big-step"><div class="stepper"><button type="button" id="minus" aria-label="Fewer tables">−</button><span class="val mono" id="count">8</span><button type="button" id="plus" aria-label="More tables">+</button></div><span class="muted small">Each table gets its own QR code</span></div>
+          <div class="big-step"><div class="stepper"><button type="button" id="minus" aria-label="Fewer tables">−</button><input class="val mono count-in" id="count" type="number" inputmode="numeric" min="1" max="60" value="8" aria-label="Number of tables"><button type="button" id="plus" aria-label="More tables">+</button></div><span class="muted small">Each table gets its own QR code</span></div>
         </div>
         <div class="field hidden" id="seatsBox"><span>Chairs at each table</span>
-          <div class="row wrap" style="gap:8px;margin-bottom:10px"><span class="muted small">Apply to all</span><input class="input input-sm mono" id="seatsAll" type="number" min="1" max="20" value="4" style="width:80px" aria-label="Chairs for every table"><button type="button" class="btn-ghost sm" id="seatsApply">Apply</button></div>
+          <div class="seat-all"><span class="mini-step"><button type="button" data-all="-1" aria-label="One chair less at every table">−</button><input class="seat-in mono" id="seatsAll" type="number" inputmode="numeric" min="1" max="20" value="4" aria-label="Chairs for all tables"><button type="button" data-all="1" aria-label="One chair more at every table">+</button></span><span>chairs for all tables</span><span class="faint small">(change one table below if it's different)</span></div>
           <div class="seats-grid" id="seatsGrid"></div>
         </div>
         <div class="field"><span>Kitchen language (for spoken alerts)</span>
@@ -89,13 +97,24 @@ function drawSeats() {
   if (!seatsOn) return;
   while (seats.length < count) seats.push(Number($("seatsAll").value) || 4);
   seats.length = count;
-  $("seatsGrid").innerHTML = seats.map((n, i) => `<label>Table ${i + 1}<input class="input input-sm mono" type="number" min="1" max="20" value="${n}" data-seat="${i}" aria-label="Chairs at table ${i + 1}"></label>`).join("");
+  $("seatsGrid").innerHTML = seats.map((n, i) => `<label>Table ${i + 1}<span class="mini-step"><button type="button" data-step="${i}" data-d="-1" aria-label="One chair less at table ${i + 1}">−</button><input class="seat-in mono" type="number" inputmode="numeric" min="1" max="20" value="${n}" data-seat="${i}" aria-label="Chairs at table ${i + 1}"><button type="button" data-step="${i}" data-d="1" aria-label="One chair more at table ${i + 1}">+</button></span></label>`).join("");
 }
+const clampSeat = v => Math.max(1, Math.min(20, Math.round(Number(v)) || 1));
 $("seatsGrid").addEventListener("input", e => { const i = e.target.dataset.seat; if (i != null) seats[Number(i)] = Number(e.target.value); });
-$("seatsApply").onclick = () => { const n = Math.max(1, Math.min(20, Number($("seatsAll").value) || 4)); $("seatsAll").value = n; seats = seats.map(() => n); drawSeats(); };
+$("seatsGrid").addEventListener("change", e => { const i = e.target.dataset.seat; if (i != null) { seats[Number(i)] = clampSeat(e.target.value); e.target.value = seats[Number(i)]; } });
+$("seatsGrid").addEventListener("click", e => {
+  const b = e.target.closest("[data-step]"); if (!b) return;
+  const i = Number(b.dataset.step); seats[i] = clampSeat((Number(seats[i]) || 1) + Number(b.dataset.d));
+  b.parentElement.querySelector("input").value = seats[i]; BD.buzz(6);
+});
+function setAll(n) { n = clampSeat(n); $("seatsAll").value = n; seats = seats.map(() => n); drawSeats(); }
+document.querySelector(".seat-all").addEventListener("click", e => { const b = e.target.closest("[data-all]"); if (b) { setAll(Number($("seatsAll").value) + Number(b.dataset.all)); BD.buzz(6); } });
+$("seatsAll").addEventListener("input", e => { const n = Number(e.target.value); if (n >= 1 && n <= 20) { seats = seats.map(() => n); drawSeats(); } });
+$("seatsAll").addEventListener("change", e => setAll(e.target.value));
+$("seatsBox").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("input")) { e.preventDefault(); e.target.blur(); } });
 function drawFloor() {
   drawSeats();
-  $("count").textContent = count;
+  if (document.activeElement !== $("count")) $("count").value = count;
   $("pvCount").textContent = count + (count === 1 ? " table" : " tables");
   const cols = Math.min(6, Math.ceil(Math.sqrt(count * 1.5)));
   const floor = $("floor");
@@ -108,6 +127,9 @@ function drawFloor() {
   while (floor.children.length > count) floor.lastChild.remove();
 }
 $("minus").onclick = () => { if (count > 1) { count--; drawFloor(); } };
+$("count").addEventListener("input", e => { const n = Math.round(Number(e.target.value)); if (n >= 1 && n <= 60) { count = n; drawFloor(); } });
+$("count").addEventListener("change", e => { count = Math.max(1, Math.min(60, Math.round(Number(e.target.value)) || 1)); e.target.value = count; drawFloor(); });
+$("count").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); e.target.blur(); } });
 $("plus").onclick = () => { if (count < 60) { count++; drawFloor(); } };
 $("name").addEventListener("input", e => $("pvTitle").textContent = e.target.value || "Your floor");
 
