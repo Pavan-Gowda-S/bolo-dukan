@@ -362,3 +362,48 @@ body.preview .item { grid-template-columns: 76px 1fr; }
 .spin-nudge .sp-mini { font-size: 1.6rem; animation: spinMini 4s linear infinite; }
 @keyframes spinMini { to { transform: rotate(360deg); } }
 .payer-tag { margin-top: 10px; padding: 8px 12px; border-radius: 12px; background: rgba(255,77,109,.12); border: 1px dashed #e7a3b1; text-align: center; font-weight: 800; }
+
+/* Bill Roulette: the revolver */
+.rv-stage { display: grid; grid-template-columns: 1.6fr 1fr; gap: 6px; align-items: center; margin: 4px 0 8px; }
+.rv-wrap { position: relative; width: 100%; max-width: 420px; margin: 0 auto; filter: drop-shadow(0 18px 22px rgba(0,0,0,.65)); transition: transform .5s var(--ease); }
+.rv-wrap.rv-idle { max-width: 300px; animation: rvFloat 4s ease-in-out infinite; }
+@keyframes rvFloat { 50% { transform: translateY(-6px) rotate(-2deg); } }
+.rv { width: 100%; height: auto; overflow: visible; display: block; }
+.rv-hammer { transform-box: view-box; transform-origin: 118px 64px; transition: transform .12s ease-out; }
+.rv-wrap.cocked .rv-hammer { transform: rotate(-34deg); transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.rv-wrap.fire .rv-hammer { transform: rotate(0deg); transition: transform .05s ease-in; }
+.rv-trigger { transform-box: view-box; transform-origin: 190px 120px; transition: transform .08s; }
+.rv-wrap.fire .rv-trigger { transform: rotate(18deg); }
+.rv-flutes.turning { animation: flutes .09s linear infinite; }
+@keyframes flutes { to { transform: translateY(-16px); } }
+.rv-wrap.aim { transform: scale(1.06) translateY(-4px); animation: aimShake .12s linear infinite; }
+@keyframes aimShake { 25% { translate: .6px 0; } 75% { translate: -.6px .4px; } }
+.rv-flash { opacity: 0; transform-box: view-box; transform-origin: 430px 79px; }
+.rv-wrap.bang .rv-flash { animation: muzzle .28s ease-out; }
+@keyframes muzzle { 0% { opacity: 1; transform: scale(.4); } 30% { opacity: 1; transform: scale(1.25); } 100% { opacity: 0; transform: scale(1.6); } }
+.rv-wrap.bang .rv { animation: recoil .55s cubic-bezier(.2,.8,.3,1); transform-origin: 30% 80%; }
+@keyframes recoil { 0% { transform: none; } 12% { transform: translateX(-26px) rotate(-14deg); } 100% { transform: none; } }
+.rv-smoke { position: absolute; right: 2%; top: 34%; width: 28px; height: 28px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(220,220,230,.75), rgba(160,160,175,0) 70%); animation: smoke 1.6s ease-out forwards; }
+@keyframes smoke { from { opacity: .95; transform: translate(0, 0) scale(.4); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(3.2); } }
+.rv-wrap.safe-flash { animation: safeGlow .6s ease-out; }
+@keyframes safeGlow { 0% { filter: drop-shadow(0 0 0 rgba(46,230,166,0)); } 30% { filter: drop-shadow(0 0 22px rgba(46,230,166,.9)); } 100% { filter: drop-shadow(0 18px 22px rgba(0,0,0,.65)); } }
+.rv-wrap.fired .rv-hammer { transform: none; }
+.rl-front { position: relative; height: 190px; perspective: 700px; display: grid; place-items: center; }
+.rl-front .rl-cyl { width: 150px; height: 150px; transform: rotateY(-18deg) rotate(var(--a, 0deg)); }
+.rl-front .rl-ch { width: 36px; height: 36px; margin: -18px; transform: rotate(var(--r)) translateY(-46px); }
+.rl-front .rl-hub { width: 34px; height: 34px; margin: -17px; }
+.rl-front .rl-pin { top: 2px; }
+.rl-whiteout { position: absolute; inset: 0; background: #fff; pointer-events: none; z-index: 5; animation: whiteout .7s ease-out forwards; }
+@keyframes whiteout { 0% { opacity: .95; } 100% { opacity: 0; } }
+.rl-shake { animation: bigShake .5s; }
+@keyframes bigShake { 10% { transform: translate(-14px, 6px) rotate(-1deg); } 30% { transform: translate(12px, -8px) rotate(1deg); } 50% { transform: translate(-8px, 4px); } 70% { transform: translate(6px, -3px); } 100% { transform: none; } }
+@media (max-width: 520px) { .rv-stage { grid-template-columns: 1fr; } .rl-front { height: 150px; } .rl-front .rl-cyl { width: 120px; height: 120px; } .rl-front .rl-ch { width: 30px; height: 30px; margin: -15px; transform: rotate(var(--r)) translateY(-37px); } }
+/* bigger revolver, chamber view in the corner */
+.rv-stage { display: block; position: relative; padding-top: 8px; }
+.rv-stage .rv-wrap { max-width: 470px; width: 86%; margin: 0 0 0 2%; }
+.rv-stage .rl-front { position: absolute; right: 0; top: -6px; height: 140px; width: 140px; }
+.rv-stage .rl-front .rl-cyl { width: 116px; height: 116px; }
+.rv-stage .rl-front .rl-ch { width: 28px; height: 28px; margin: -14px; transform: rotate(var(--r)) translateY(-36px); }
+.rv-stage .rl-front .rl-hub { width: 26px; height: 26px; margin: -13px; }
+@media (max-width: 520px) { .rv-stage .rl-front { width: 104px; height: 104px; top: -14px; } .rv-stage .rl-front .rl-cyl { width: 86px; height: 86px; } .rv-stage .rl-front .rl-ch { width: 22px; height: 22px; margin: -11px; transform: rotate(var(--r)) translateY(-27px); } .rv-stage .rv-wrap { width: 100%; } }
