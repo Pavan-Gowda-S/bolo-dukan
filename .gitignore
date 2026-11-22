@@ -3,6 +3,7 @@
 
 # Local data: database, uploads, login-cookie secret, test audio
 /data/
+.memorygraph/
 
 # Python
 .venv/

@@ -1315,7 +1315,13 @@ def announce(req: Request):
 
 @route("GET", "/api/health")
 def health(req: Request):
-    return {"ok": True, "features": config.features()}
+    db_status = "ok"
+    try:
+        with db() as conn:
+            conn.execute("SELECT 1").fetchone()
+    except Exception:
+        db_status = "error"
+    return {"ok": db_status == "ok", "database": db_status, "features": config.features()}
 
 
 # Sarvam features, budget order and the table quiz live in features.py. Imported last so it can use the
